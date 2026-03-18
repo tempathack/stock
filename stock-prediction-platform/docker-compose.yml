@@ -1,0 +1,28 @@
+services:
+  api:
+    image: stock-prediction-api:latest
+    ports:
+      - "8000:8000"
+
+  kafka-consumer:
+    image: stock-prediction-consumer:latest
+
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    ports:
+      - "5432:5432"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    ports:
+      - "9092:9092"
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    ports:
+      - "2181:2181"
+
+  frontend:
+    image: stock-prediction-frontend:latest
+    ports:
+      - "3000:3000"
