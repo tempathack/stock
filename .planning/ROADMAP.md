@@ -67,6 +67,12 @@
 2. All 5 namespaces (ingestion, processing, storage, ml, frontend) active in cluster
 3. deploy-all.sh present and applies all manifests in correct order
 
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Implement setup-minikube.sh and deploy-all.sh scripts
+- [ ] 02-02-PLAN.md — Execute scripts and verify live cluster state
 ---
 
 ### Phase 3: FastAPI Base Service
