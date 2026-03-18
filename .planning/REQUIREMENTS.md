@@ -18,8 +18,8 @@
 
 - [x] **API-01**: FastAPI app skeleton with config.py, main.py, router structure
 - [x] **API-02**: GET /health endpoint returning service status
-- [ ] **API-03**: Dockerfile for FastAPI service (multi-stage)
-- [ ] **API-04**: K8s Deployment + Service YAML for FastAPI in ingestion namespace
+- [x] **API-03**: Dockerfile for FastAPI service (multi-stage)
+- [x] **API-04**: K8s Deployment + Service YAML for FastAPI in ingestion namespace
 - [ ] **API-05**: POST /ingest/intraday endpoint (triggers Yahoo Finance intraday fetch)
 - [ ] **API-06**: POST /ingest/historical endpoint (triggers Yahoo Finance historical fetch)
 - [ ] **API-07**: GET /predict/{ticker} endpoint (returns 7-day forecast)

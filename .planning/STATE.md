@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-03-18T22:45:29.752Z"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-03-18T22:50:40.173Z"
 progress:
   total_phases: 30
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # STATE.md — Project Memory
@@ -33,7 +33,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 |-------|------|--------|-----------|
 | 1 | Repo & Folder Scaffold | Complete (3/3 plans) | 2026-03-18 |
 | 2 | Minikube & K8s Namespaces | Complete (2/2 plans) | 2026-03-18 |
-| 3 | FastAPI Base Service | In progress (1/3 plans) | — |
+| 3 | FastAPI Base Service | In progress (2/3 plans) | — |
 | 4 | PostgreSQL + TimescaleDB | Not started | — |
 | 5 | Kafka via Strimzi | Not started | — |
 | 6 | Yahoo Finance Ingestion Service | Not started | — |
@@ -74,11 +74,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 02 Plan 02]: No code changes needed -- scripts from Plan 01 executed correctly on first run against live cluster
 - [Phase 03 Plan 01]: Used lifespan context manager (not deprecated on_startup/on_shutdown)
 - [Phase 03 Plan 01]: Added -p no:logfire to pytest.ini to work around broken logfire plugin in environment
+- [Phase 03 Plan 02]: Used imagePullPolicy: Never for local Minikube development (no registry needed)
+- [Phase 03 Plan 02]: Installed curl in runtime Docker stage for HEALTHCHECK command
+- [Phase 03 Plan 02]: Copied /usr/local/bin from builder to ensure uvicorn binary available in runtime stage
 
 ## Last Session
 
-- **Stopped at:** Completed 03-01-PLAN.md
-- **Timestamp:** 2026-03-18T22:45:00Z
+- **Stopped at:** Completed 03-02-PLAN.md
+- **Timestamp:** 2026-03-18T22:49:35Z
 
 ## Notes
 

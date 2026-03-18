@@ -86,11 +86,11 @@ Plans:
 3. K8s Deployment + Service YAML applies to ingestion namespace
 4. Pod is Running and /health is reachable via port-forward
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans executed
 
 Plans:
-- [ ] 03-01-PLAN.md — FastAPI app skeleton (config.py + health.py + main.py + tests)
-- [ ] 03-02-PLAN.md — Dockerfile, K8s manifests, deploy-all.sh integration
+- [x] 03-01-PLAN.md — FastAPI app skeleton (config.py + health.py + main.py + tests)
+- [x] 03-02-PLAN.md — Dockerfile, K8s manifests, deploy-all.sh integration
 
 ---
 
