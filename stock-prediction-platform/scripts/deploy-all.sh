@@ -28,9 +28,10 @@ echo "[Phase 2] Applying namespaces..."
 kubectl apply -f "$PROJECT_ROOT/k8s/namespaces.yaml"
 
 # --- Phase 3: FastAPI Base Service ---
-# echo "[Phase 3] Deploying FastAPI service..."
-# kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/fastapi-deployment.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/fastapi-service.yaml"
+echo "[Phase 3] Deploying FastAPI service..."
+kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/configmap.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/fastapi-deployment.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/fastapi-service.yaml"
 
 # --- Phase 4: Storage (PostgreSQL + TimescaleDB) ---
 # echo "[Phase 4] Deploying PostgreSQL..."
