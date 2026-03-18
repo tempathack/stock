@@ -6,7 +6,7 @@
 
 - [ ] **INFRA-01**: Minikube cluster initialized with 5 namespaces: ingestion, processing, storage, ml, frontend
 - [ ] **INFRA-02**: K8s namespace YAML manifests for all 5 namespaces
-- [ ] **INFRA-03**: Base folder structure created (stock-prediction-platform/ tree)
+- [x] **INFRA-03**: Base folder structure created (stock-prediction-platform/ tree)
 - [ ] **INFRA-04**: setup-minikube.sh shell script with all cluster bootstrap steps
 - [ ] **INFRA-05**: deploy-all.sh orchestration script
 - [ ] **INFRA-06**: docker-compose.yml for local dev convenience
