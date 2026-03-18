@@ -9,7 +9,7 @@
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 1 | 3/3 | Complete   | 2026-03-18 | 3 |
-| 2 | Minikube & K8s Namespaces | Local cluster up, 5 namespaces active | INFRA-01, INFRA-02, INFRA-04, INFRA-05 | 3 |
+| 2 | 1/2 | In Progress|  | 3 |
 | 3 | FastAPI Base Service | /health endpoint, Dockerfile, K8s deployment | API-01, API-02, API-03, API-04 | 4 |
 | 4 | PostgreSQL + TimescaleDB | DB deployed, schema initialized, indexes | DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07 | 4 |
 | 5 | Kafka via Strimzi | Broker running, topics created | KAFKA-01, KAFKA-02, KAFKA-03, KAFKA-04, KAFKA-05 | 3 |
@@ -68,7 +68,7 @@
 3. deploy-all.sh present and applies all manifests in correct order
 
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 02-01-PLAN.md — Implement setup-minikube.sh and deploy-all.sh scripts
