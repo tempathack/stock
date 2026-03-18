@@ -8,7 +8,7 @@
 
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
-| 1 | 1/3 | In Progress|  | 3 |
+| 1 | 2/3 | In Progress|  | 3 |
 | 2 | Minikube & K8s Namespaces | Local cluster up, 5 namespaces active | INFRA-01, INFRA-02, INFRA-04, INFRA-05 | 3 |
 | 3 | FastAPI Base Service | /health endpoint, Dockerfile, K8s deployment | API-01, API-02, API-03, API-04 | 4 |
 | 4 | PostgreSQL + TimescaleDB | DB deployed, schema initialized, indexes | DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07 | 4 |
