@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: processing-config
+  namespace: processing
+data:
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-kafka-bootstrap.storage.svc.cluster.local:9092"
+  KAFKA_GROUP_ID: "stock-consumer-group"
+  INTRADAY_TOPIC: "intraday-data"
+  HISTORICAL_TOPIC: "historical-data"
+  BATCH_SIZE: "100"
+  BATCH_TIMEOUT_MS: "5000"
+  LOG_LEVEL: "INFO"

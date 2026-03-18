@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: intraday-ingestion
+  namespace: ingestion
+  labels:
+    app: intraday-ingestion
+    app.kubernetes.io/part-of: stock-prediction-platform
+spec:
+  # Run every 5 minutes on weekdays between 09:30 and 16:05 ET
+  schedule: "*/5 14-21 * * 1-5"
+  timeZone: "America/New_York"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 60
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        metadata:
+          labels:
+            app: intraday-ingestion
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: intraday-trigger
+              image: stock-api:latest
+              imagePullPolicy: Never
+              command: ["python", "-m", "app.jobs.trigger_intraday"]
+              envFrom:
+                - configMapRef:
+                    name: ingestion-config
+                - secretRef:
+                    name: stock-platform-secrets
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "512Mi"

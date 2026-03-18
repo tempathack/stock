@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-serving
+  namespace: ml
+  labels:
+    app: model-serving
+    app.kubernetes.io/part-of: stock-prediction-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-serving
+  template:
+    metadata:
+      labels:
+        app: model-serving
+    spec:
+      containers:
+        - name: model-serving
+          image: stock-api:latest
+          imagePullPolicy: Never
+          command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: stock-platform-secrets
+          env:
+            - name: MODEL_REGISTRY_PATH
+              value: "/models"
+            - name: LOG_LEVEL
+              value: "INFO"
+          volumeMounts:
+            - name: model-artifacts
+              mountPath: /models
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+      volumes:
+        - name: model-artifacts
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-serving
+  namespace: ml
+spec:
+  selector:
+    app: model-serving
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP

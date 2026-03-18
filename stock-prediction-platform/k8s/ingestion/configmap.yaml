@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingestion-config
+  namespace: ingestion
+data:
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-kafka-bootstrap.storage.svc.cluster.local:9092"
+  INTRADAY_TOPIC: "intraday-data"
+  HISTORICAL_TOPIC: "historical-data"
+  API_BASE_URL: "http://stock-api.ingestion.svc.cluster.local:8000"
+  LOG_LEVEL: "INFO"
