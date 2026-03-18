@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Phase 3 context gathered
-last_updated: "2026-03-18T22:28:11.499Z"
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-18T22:45:29.752Z"
 progress:
   total_phases: 30
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 7
+  completed_plans: 6
 ---
 
 # STATE.md — Project Memory
@@ -33,7 +33,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 |-------|------|--------|-----------|
 | 1 | Repo & Folder Scaffold | Complete (3/3 plans) | 2026-03-18 |
 | 2 | Minikube & K8s Namespaces | Complete (2/2 plans) | 2026-03-18 |
-| 3 | FastAPI Base Service | Not started | — |
+| 3 | FastAPI Base Service | In progress (1/3 plans) | — |
 | 4 | PostgreSQL + TimescaleDB | Not started | — |
 | 5 | Kafka via Strimzi | Not started | — |
 | 6 | Yahoo Finance Ingestion Service | Not started | — |
@@ -72,11 +72,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 02]: Plain echo output with === separators, no colour codes for CI compatibility
 - [Phase 02]: check_command function in setup-minikube.sh, inline checks in deploy-all.sh
 - [Phase 02 Plan 02]: No code changes needed -- scripts from Plan 01 executed correctly on first run against live cluster
+- [Phase 03 Plan 01]: Used lifespan context manager (not deprecated on_startup/on_shutdown)
+- [Phase 03 Plan 01]: Added -p no:logfire to pytest.ini to work around broken logfire plugin in environment
 
 ## Last Session
 
-- **Stopped at:** Phase 3 context gathered
-- **Timestamp:** 2026-03-18T22:16:47Z
+- **Stopped at:** Completed 03-01-PLAN.md
+- **Timestamp:** 2026-03-18T22:45:00Z
 
 ## Notes
 

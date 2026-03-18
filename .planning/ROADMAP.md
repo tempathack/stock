@@ -8,8 +8,7 @@
 
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
-| 1 | 3/3 | Complete   | 2026-03-18 | 3 |
-| 2 | 2/2 | Complete   | 2026-03-18 | 3 |
+| 1 | 3/3 | Complete   | 2026-03-18 | 3 | 1/2 | In Progress|  | Complete   | 2026-03-18 | 3 |
 | 3 | FastAPI Base Service | /health endpoint, Dockerfile, K8s deployment | API-01, API-02, API-03, API-04 | 4 |
 | 4 | PostgreSQL + TimescaleDB | DB deployed, schema initialized, indexes | DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07 | 4 |
 | 5 | Kafka via Strimzi | Broker running, topics created | KAFKA-01, KAFKA-02, KAFKA-03, KAFKA-04, KAFKA-05 | 3 |
@@ -87,7 +86,7 @@ Plans:
 3. K8s Deployment + Service YAML applies to ingestion namespace
 4. Pod is Running and /health is reachable via port-forward
 
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 03-01-PLAN.md — FastAPI app skeleton (config.py + health.py + main.py + tests)

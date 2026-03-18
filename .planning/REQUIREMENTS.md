@@ -16,8 +16,8 @@
 
 ### FastAPI Backend — Base
 
-- [ ] **API-01**: FastAPI app skeleton with config.py, main.py, router structure
-- [ ] **API-02**: GET /health endpoint returning service status
+- [x] **API-01**: FastAPI app skeleton with config.py, main.py, router structure
+- [x] **API-02**: GET /health endpoint returning service status
 - [ ] **API-03**: Dockerfile for FastAPI service (multi-stage)
 - [ ] **API-04**: K8s Deployment + Service YAML for FastAPI in ingestion namespace
 - [ ] **API-05**: POST /ingest/intraday endpoint (triggers Yahoo Finance intraday fetch)
