@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-19T07:34:14.239Z"
+status: in_progress
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-03-19T07:50:02Z"
 progress:
   total_phases: 30
-  completed_phases: 3
-  total_plans: 10
-  completed_plans: 9
+  completed_phases: 4
+  total_plans: 12
+  completed_plans: 12
 ---
 
 # STATE.md — Project Memory
@@ -19,13 +19,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 04 — postgresql-timescaledb
+**Current focus:** Phase 05 — kafka-strimzi
 
 ## Current Status
 
-- **Active phase:** 3
-- **Phase name:** FastAPI Base Service
-- **Overall progress:** 2 / 30 phases complete
+- **Active phase:** 5
+- **Phase name:** Kafka via Strimzi
+- **Overall progress:** 4 / 30 phases complete
 
 ## Phase Completion Log
 
@@ -33,8 +33,8 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 |-------|------|--------|-----------|
 | 1 | Repo & Folder Scaffold | Complete (3/3 plans) | 2026-03-18 |
 | 2 | Minikube & K8s Namespaces | Complete (2/2 plans) | 2026-03-18 |
-| 3 | FastAPI Base Service | In progress (2/3 plans) | — |
-| 4 | PostgreSQL + TimescaleDB | Not started | — |
+| 3 | FastAPI Base Service | Complete (3/3 plans) | 2026-03-19 |
+| 4 | PostgreSQL + TimescaleDB | Complete (3/3 plans) | 2026-03-19 |
 | 5 | Kafka via Strimzi | Not started | — |
 | 6 | Yahoo Finance Ingestion Service | Not started | — |
 | 7 | FastAPI Ingestion Endpoints | Not started | — |
@@ -83,11 +83,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 04-01]: CREATE EXTENSION without CASCADE: TimescaleDB image has no unmet dependencies; explicit is more predictable
 - [Phase 04-01]: Transaction wrapping (BEGIN/COMMIT) in init.sql prevents half-initialized database state
 - [Phase 04-01]: updated_at trigger on stocks table provides database-level updated_at guarantee
+- [Phase 04-03]: No file changes needed in Plan 03 — artefacts from Plans 01 and 02 deployed correctly on first run
+- [Phase 04-03]: Human checkpoint used as final DB gate — automated smoke tests cover CI, human visual confirms full schema correctness
 
 ## Last Session
 
-- **Stopped at:** Completed 04-01-PLAN.md
-- **Timestamp:** 2026-03-18T22:49:35Z
+- **Stopped at:** Completed 04-03-PLAN.md
+- **Timestamp:** 2026-03-19T07:50:02Z
 
 ## Notes
 
