@@ -21,7 +21,7 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 ### Active
 
 - [ ] FastAPI service full endpoints: /ingest/intraday, /ingest/historical, /predict/{ticker}, /predict/bulk, /models/comparison, /models/drift, /market/overview, /market/indicators/{ticker}
-- [ ] Kafka via Strimzi: intraday-data and historical-data topics
+- [x] Kafka via Strimzi: intraday-data and historical-data topics — Validated in Phase 5: KRaft mode, Strimzi 0.40, both topics produce/consume confirmed
 - [ ] K8s CronJobs for intraday (daily, market hours) and historical (weekly) ingestion
 - [ ] Yahoo Finance ingestion for all S&P 500 stocks (dev: 20 stocks subset)
 - [ ] Kafka consumers with micro-batch processing, idempotent upserts, retry/dead-letter handling
@@ -73,11 +73,11 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Minikube for local K8s | No cloud costs, full K8s feature parity for dev | — Pending |
-| Kafka via Strimzi operator | Production-grade operator, K8s-native | — Pending |
+| Kafka via Strimzi operator | Production-grade operator, K8s-native | Deployed — 0.40.0, KRaft mode, storage namespace, OOMKill fix: operator 768Mi / entity-op 512Mi |
 | TimescaleDB extension on PostgreSQL | Time-series query optimization for large OHLCV tables | Deployed — 2.25.2, 6 tables, 2 hypertables |
 | Kubeflow for ML pipeline | Containerized, reproducible, versionable pipeline steps | — Pending |
 | SHAP for explainability | Industry standard, supports tree and kernel explainers | — Pending |
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | — Pending |
 
 ---
-*Last updated: 2026-03-19 — Phase 4 complete (PostgreSQL + TimescaleDB live in Minikube)*
+*Last updated: 2026-03-19 — Phase 5 complete (Kafka via Strimzi live in Minikube, KRaft mode)*
