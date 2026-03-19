@@ -126,6 +126,12 @@ Plans:
 3. intraday-data topic exists and is producible/consumable
 4. historical-data topic exists and is producible/consumable (verified with kafka-console tools)
 
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Write Kafka/Strimzi K8s manifests and update deployment scripts
+- [ ] 05-02-PLAN.md — Deploy to live cluster and verify full Kafka stack
 ---
 
 ### Phase 6: Yahoo Finance Ingestion Service
