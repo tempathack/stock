@@ -1,7 +1,7 @@
 ---
 phase: 5
 slug: kafka-via-strimzi
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-03-19
