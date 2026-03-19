@@ -9,8 +9,7 @@
 | # | Phase | Goal | Requirements | Success Criteria |
 |---|-------|------|--------------|------------------|
 | 1 | 3/3 | Complete   | 2026-03-18 | 3 | 1/2 | In Progress|  | Complete   | 2026-03-18 | 3 |
-| 3 | FastAPI Base Service | /health endpoint, Dockerfile, K8s deployment | API-01, API-02, API-03, API-04 | 4 |
-| 4 | PostgreSQL + TimescaleDB | DB deployed, schema initialized, indexes | DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07 | 4 |
+| 3 | FastAPI Base Service | /health endpoint, Dockerfile, K8s deployment | API-01, API-02, API-03, API-04 | 4 | 2/3 | In Progress|  | DB deployed, schema initialized, indexes | DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07 | 4 |
 | 5 | Kafka via Strimzi | Broker running, topics created | KAFKA-01, KAFKA-02, KAFKA-03, KAFKA-04, KAFKA-05 | 3 |
 | 6 | Yahoo Finance Ingestion Service | Fetch S&P 500 OHLCV, produce to Kafka | INGEST-01, INGEST-02, INGEST-03, INGEST-06 | 4 |
 | 7 | FastAPI Ingestion Endpoints | /ingest/intraday and /ingest/historical wired | API-05, API-06 | 3 |
@@ -106,7 +105,7 @@ Plans:
 3. All 6 tables created: stocks, ohlcv_daily, ohlcv_intraday, predictions, model_registry, drift_logs
 4. Composite PKs, indexes, and date partitioning verified via `\d` inspection
 
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 04-01-PLAN.md — Write db/init.sql with full schema (6 tables, hypertables, indexes, trigger)

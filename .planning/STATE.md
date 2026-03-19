@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-18T23:03:39.212Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-19T07:34:14.239Z"
 progress:
   total_phases: 30
   completed_phases: 3
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 10
+  completed_plans: 9
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 03 — fastapi-base-service
+**Current focus:** Phase 04 — postgresql-timescaledb
 
 ## Current Status
 
@@ -77,10 +77,16 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 03 Plan 02]: Used imagePullPolicy: Never for local Minikube development (no registry needed)
 - [Phase 03 Plan 02]: Installed curl in runtime Docker stage for HEALTHCHECK command
 - [Phase 03 Plan 02]: Copied /usr/local/bin from builder to ensure uvicorn binary available in runtime stage
+- [Phase 04]: Used dry-run=client -o yaml | kubectl apply pattern for idempotent Secret and ConfigMap creation
+- [Phase 04]: Removed phantom postgres-service.yaml reference from deploy-all.sh — Service is embedded in postgresql-deployment.yaml
+- [Phase 04]: Corrected deploy-all.sh file names: postgres-* prefix -> postgresql-*, postgres-configmap.yaml -> configmap.yaml
+- [Phase 04-01]: CREATE EXTENSION without CASCADE: TimescaleDB image has no unmet dependencies; explicit is more predictable
+- [Phase 04-01]: Transaction wrapping (BEGIN/COMMIT) in init.sql prevents half-initialized database state
+- [Phase 04-01]: updated_at trigger on stocks table provides database-level updated_at guarantee
 
 ## Last Session
 
-- **Stopped at:** Phase 4 context gathered
+- **Stopped at:** Completed 04-01-PLAN.md
 - **Timestamp:** 2026-03-18T22:49:35Z
 
 ## Notes
