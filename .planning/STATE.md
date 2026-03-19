@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Phase 06 context gathered
-last_updated: "2026-03-19T12:03:54.420Z"
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-03-19T12:27:13.459Z"
 progress:
   total_phases: 30
   completed_phases: 5
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 14
+  completed_plans: 13
 ---
 
 # STATE.md — Project Memory
@@ -36,7 +36,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 3 | FastAPI Base Service | Complete (3/3 plans) | 2026-03-19 |
 | 4 | PostgreSQL + TimescaleDB | Complete (3/3 plans) | 2026-03-19 |
 | 5 | Kafka via Strimzi | Complete (2/2 plans) | 2026-03-19 |
-| 6 | Yahoo Finance Ingestion Service | Not started | — |
+| 6 | Yahoo Finance Ingestion Service | In progress (1/3 plans) | — |
 | 7 | FastAPI Ingestion Endpoints | Not started | — |
 | 8 | K8s CronJobs for Ingestion | Not started | — |
 | 9 | Kafka Consumers — Batch Writer | Not started | — |
@@ -90,11 +90,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 05]: Operator install in setup-minikube.sh with 300s wait; workloads in deploy-all.sh (established pattern)
 - [Phase 05-02]: Increased Strimzi operator memory limit to 512Mi and entity operator to 384Mi for Minikube stability
 - [Phase 05-02]: Human checkpoint used as final Kafka gate -- 6-check verification covers operator, broker, entity operator, both topics produce/consume
+- [Phase 06-01]: Used yfinance.download with MultiIndex column droplevel(1) for yfinance >= 1.0 compatibility
+- [Phase 06-01]: Tenacity retry targets requests exceptions (ConnectionError, Timeout, HTTPError) not yfinance-specific
+- [Phase 06-01]: Volume=0 explicitly valid per must_haves (pre-market/after-hours bars)
 
 ## Last Session
 
-- **Stopped at:** Phase 06 context gathered
-- **Timestamp:** 2026-03-19T09:03:00Z
+- **Stopped at:** Completed 06-01-PLAN.md
+- **Timestamp:** 2026-03-19T12:26:01Z
 
 ## Notes
 

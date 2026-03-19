@@ -49,12 +49,12 @@
 
 ### Data Ingestion
 
-- [ ] **INGEST-01**: yahoo_finance.py service — fetches OHLCV for S&P 500 tickers via yfinance
-- [ ] **INGEST-02**: S&P 500 ticker list (dev: 20-stock subset, prod: full universe)
+- [x] **INGEST-01**: yahoo_finance.py service — fetches OHLCV for S&P 500 tickers via yfinance
+- [x] **INGEST-02**: S&P 500 ticker list (dev: 20-stock subset, prod: full universe)
 - [ ] **INGEST-03**: kafka_producer.py — validates, normalizes, and publishes to Kafka topics
 - [ ] **INGEST-04**: K8s CronJob for intraday ingestion (daily, market hours)
 - [ ] **INGEST-05**: K8s CronJob for historical ingestion (weekly)
-- [ ] **INGEST-06**: Data validation and normalization logic (schema enforcement, nulls, types)
+- [x] **INGEST-06**: Data validation and normalization logic (schema enforcement, nulls, types)
 
 ### Kafka Consumers
 
