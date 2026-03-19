@@ -146,6 +146,12 @@ Plans:
 3. Data validation rejects malformed/null records with structured error logs
 4. Valid records published to correct Kafka topics (confirmed with consumer)
 
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Test stubs, config extension, and YahooFinanceService implementation
+- [ ] 06-02-PLAN.md — Kafka producer (OHLCVProducer) implementation with tests
 ---
 
 ### Phase 7: FastAPI Ingestion Endpoints
