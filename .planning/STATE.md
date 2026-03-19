@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-19T08:43:57.042Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-19T09:04:20.909Z"
 progress:
   total_phases: 30
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # STATE.md — Project Memory
@@ -19,13 +19,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 05 — kafka-via-strimzi
+**Current focus:** Phase 06 — yahoo-finance-ingestion
 
 ## Current Status
 
-- **Active phase:** 5
-- **Phase name:** Kafka via Strimzi
-- **Overall progress:** 4 / 30 phases complete
+- **Active phase:** 6
+- **Phase name:** Yahoo Finance Ingestion Service
+- **Overall progress:** 5 / 30 phases complete
 
 ## Phase Completion Log
 
@@ -35,7 +35,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 2 | Minikube & K8s Namespaces | Complete (2/2 plans) | 2026-03-18 |
 | 3 | FastAPI Base Service | Complete (3/3 plans) | 2026-03-19 |
 | 4 | PostgreSQL + TimescaleDB | Complete (3/3 plans) | 2026-03-19 |
-| 5 | Kafka via Strimzi | Not started | — |
+| 5 | Kafka via Strimzi | Complete (2/2 plans) | 2026-03-19 |
 | 6 | Yahoo Finance Ingestion Service | Not started | — |
 | 7 | FastAPI Ingestion Endpoints | Not started | — |
 | 8 | K8s CronJobs for Ingestion | Not started | — |
@@ -88,11 +88,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 05]: Strimzi operator YAML downloaded and committed for offline reproducibility (not fetched at runtime)
 - [Phase 05]: Used targeted sed (namespace: myproject -> storage) to avoid replacing unrelated namespace refs
 - [Phase 05]: Operator install in setup-minikube.sh with 300s wait; workloads in deploy-all.sh (established pattern)
+- [Phase 05-02]: Increased Strimzi operator memory limit to 512Mi and entity operator to 384Mi for Minikube stability
+- [Phase 05-02]: Human checkpoint used as final Kafka gate -- 6-check verification covers operator, broker, entity operator, both topics produce/consume
 
 ## Last Session
 
-- **Stopped at:** Completed 05-01-PLAN.md
-- **Timestamp:** 2026-03-19T07:50:02Z
+- **Stopped at:** Completed 05-02-PLAN.md
+- **Timestamp:** 2026-03-19T09:03:00Z
 
 ## Notes
 

@@ -10,7 +10,7 @@
 |---|-------|------|--------------|------------------|
 | 1 | 3/3 | Complete   | 2026-03-18 | 3 | 1/2 | In Progress|  | Complete   | 2026-03-18 | 3 |
 | 3 | FastAPI Base Service | /health endpoint, Dockerfile, K8s deployment | API-01, API-02, API-03, API-04 | 4 | 3/3 | Complete   | 2026-03-19 | DB deployed, schema initialized, indexes | DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07 | 4 |
-| 5 | Kafka via Strimzi | Broker running, topics created | KAFKA-01, KAFKA-02, KAFKA-03, KAFKA-04, KAFKA-05 | 3 |
+| 5 | 2/2 | Complete   | 2026-03-19 | 3 |
 | 6 | Yahoo Finance Ingestion Service | Fetch S&P 500 OHLCV, produce to Kafka | INGEST-01, INGEST-02, INGEST-03, INGEST-06 | 4 |
 | 7 | FastAPI Ingestion Endpoints | /ingest/intraday and /ingest/historical wired | API-05, API-06 | 3 |
 | 8 | K8s CronJobs for Ingestion | Scheduled intraday + historical CronJobs | INGEST-04, INGEST-05 | 3 |
@@ -127,11 +127,11 @@ Plans:
 4. historical-data topic exists and is producible/consumable (verified with kafka-console tools)
 
 
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
-- [ ] 05-01-PLAN.md — Write Kafka/Strimzi K8s manifests and update deployment scripts
-- [ ] 05-02-PLAN.md — Deploy to live cluster and verify full Kafka stack
+- [x] 05-01-PLAN.md — Write Kafka/Strimzi K8s manifests and update deployment scripts
+- [x] 05-02-PLAN.md — Deploy to live cluster and verify full Kafka stack
 ---
 
 ### Phase 6: Yahoo Finance Ingestion Service
