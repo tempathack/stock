@@ -39,11 +39,10 @@ kubectl apply -f "$PROJECT_ROOT/k8s/storage/configmap.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgresql-pvc.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgresql-deployment.yaml"
 
-# --- Phase 5: Kafka (Strimzi Operator) ---
-# echo "[Phase 5] Deploying Strimzi and Kafka..."
-# kubectl apply -f "$PROJECT_ROOT/k8s/kafka/strimzi-operator.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/kafka/kafka-cluster.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/kafka/kafka-topics.yaml"
+# --- Phase 5: Kafka (Strimzi) ---
+echo "[Phase 5] Deploying Kafka cluster and topics..."
+kubectl apply -f "$PROJECT_ROOT/k8s/kafka/kafka-cluster.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/kafka/kafka-topics.yaml"
 
 # --- Phase 6-7: Ingestion Service ---
 # echo "[Phase 6-7] Deploying ingestion service..."

@@ -70,6 +70,13 @@ kubectl create configmap postgresql-init-sql \
   -n storage \
   --dry-run=client -o yaml | kubectl apply -f -
 
+# --- Phase 5: Strimzi Kafka Operator ---
+echo "=== Installing Strimzi Kafka Operator ==="
+kubectl apply -f "$PROJECT_ROOT/k8s/kafka/strimzi-operator.yaml" -n storage
+echo "Waiting for Strimzi operator to be ready..."
+kubectl wait --for=condition=Ready pod -l name=strimzi-cluster-operator -n storage --timeout=300s
+echo "Strimzi operator ready"
+
 # --- Verification ---
 echo "=== Verifying namespaces ==="
 kubectl get namespaces
