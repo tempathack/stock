@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-03-19T12:27:13.459Z"
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-03-19T12:30:58.919Z"
 progress:
   total_phases: 30
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 14
-  completed_plans: 13
+  completed_plans: 14
 ---
 
 # STATE.md — Project Memory
@@ -19,13 +19,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 06 — yahoo-finance-ingestion
+**Current focus:** Phase 07 — fastapi-ingestion-endpoints
 
 ## Current Status
 
 - **Active phase:** 6
 - **Phase name:** Yahoo Finance Ingestion Service
-- **Overall progress:** 5 / 30 phases complete
+- **Overall progress:** 6 / 30 phases complete
 
 ## Phase Completion Log
 
@@ -36,7 +36,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 3 | FastAPI Base Service | Complete (3/3 plans) | 2026-03-19 |
 | 4 | PostgreSQL + TimescaleDB | Complete (3/3 plans) | 2026-03-19 |
 | 5 | Kafka via Strimzi | Complete (2/2 plans) | 2026-03-19 |
-| 6 | Yahoo Finance Ingestion Service | In progress (1/3 plans) | — |
+| 6 | Yahoo Finance Ingestion Service | Complete (2/2 plans) | 2026-03-19 |
 | 7 | FastAPI Ingestion Endpoints | Not started | — |
 | 8 | K8s CronJobs for Ingestion | Not started | — |
 | 9 | Kafka Consumers — Batch Writer | Not started | — |
@@ -93,10 +93,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 06-01]: Used yfinance.download with MultiIndex column droplevel(1) for yfinance >= 1.0 compatibility
 - [Phase 06-01]: Tenacity retry targets requests exceptions (ConnectionError, Timeout, HTTPError) not yfinance-specific
 - [Phase 06-01]: Volume=0 explicitly valid per must_haves (pre-market/after-hours bars)
+- [Phase 06]: Used defaultdict grouping by ticker for batched flush instead of itertools.groupby
 
 ## Last Session
 
-- **Stopped at:** Completed 06-01-PLAN.md
+- **Stopped at:** Completed 06-02-PLAN.md
 - **Timestamp:** 2026-03-19T12:26:01Z
 
 ## Notes

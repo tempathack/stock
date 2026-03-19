@@ -11,7 +11,7 @@
 | 1 | 3/3 | Complete   | 2026-03-18 | 3 | 1/2 | In Progress|  | Complete   | 2026-03-18 | 3 |
 | 3 | FastAPI Base Service | /health endpoint, Dockerfile, K8s deployment | API-01, API-02, API-03, API-04 | 4 | 3/3 | Complete   | 2026-03-19 | DB deployed, schema initialized, indexes | DB-01, DB-02, DB-03, DB-04, DB-05, DB-06, DB-07 | 4 |
 | 5 | 2/2 | Complete   | 2026-03-19 | 3 |
-| 6 | 1/2 | In Progress|  | 4 |
+| 6 | 2/2 | Complete   | 2026-03-19 | 4 |
 | 7 | FastAPI Ingestion Endpoints | /ingest/intraday and /ingest/historical wired | API-05, API-06 | 3 |
 | 8 | K8s CronJobs for Ingestion | Scheduled intraday + historical CronJobs | INGEST-04, INGEST-05 | 3 |
 | 9 | Kafka Consumers — Batch Writer | Consume topics, upsert to PostgreSQL | CONS-01, CONS-02, CONS-03, CONS-04, CONS-05, CONS-06, CONS-07 | 4 |
@@ -147,7 +147,7 @@ Plans:
 4. Valid records published to correct Kafka topics (confirmed with consumer)
 
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 06-01-PLAN.md — Test stubs, config extension, and YahooFinanceService implementation
