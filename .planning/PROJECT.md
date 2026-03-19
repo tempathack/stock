@@ -12,15 +12,15 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 
 ### Validated
 
-(None yet — ship to validate)
+- [x] Minikube-based Kubernetes cluster with namespace separation (ingestion, processing, storage, ml, frontend) — Validated in Phase 2
+- [x] Every service has a Dockerfile with multi-stage builds — Validated in Phase 3
+- [x] All config via environment variables — no hardcoded secrets — Validated in Phase 3
+- [x] FastAPI service with /health endpoint — Validated in Phase 3
+- [x] PostgreSQL with TimescaleDB: stocks, ohlcv_daily, ohlcv_intraday, predictions, model_registry, drift_logs tables — Validated in Phase 4: live cluster confirmed 6 tables, hypertables, indexes, TimescaleDB 2.25.2
 
 ### Active
 
-- [ ] Minikube-based Kubernetes cluster with namespace separation (ingestion, processing, storage, ml, frontend)
-- [ ] Every service has a Dockerfile with multi-stage builds
-- [ ] All config via environment variables — no hardcoded secrets
-- [ ] FastAPI service with /health, /ingest/intraday, /ingest/historical, /predict/{ticker}, /predict/bulk, /models/comparison, /models/drift, /market/overview, /market/indicators/{ticker}
-- [ ] PostgreSQL with TimescaleDB: stocks, ohlcv_daily, ohlcv_intraday, predictions, model_registry, drift_logs tables
+- [ ] FastAPI service full endpoints: /ingest/intraday, /ingest/historical, /predict/{ticker}, /predict/bulk, /models/comparison, /models/drift, /market/overview, /market/indicators/{ticker}
 - [ ] Kafka via Strimzi: intraday-data and historical-data topics
 - [ ] K8s CronJobs for intraday (daily, market hours) and historical (weekly) ingestion
 - [ ] Yahoo Finance ingestion for all S&P 500 stocks (dev: 20 stocks subset)
@@ -74,10 +74,10 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 |----------|-----------|---------|
 | Minikube for local K8s | No cloud costs, full K8s feature parity for dev | — Pending |
 | Kafka via Strimzi operator | Production-grade operator, K8s-native | — Pending |
-| TimescaleDB extension on PostgreSQL | Time-series query optimization for large OHLCV tables | — Pending |
+| TimescaleDB extension on PostgreSQL | Time-series query optimization for large OHLCV tables | Deployed — 2.25.2, 6 tables, 2 hypertables |
 | Kubeflow for ML pipeline | Containerized, reproducible, versionable pipeline steps | — Pending |
 | SHAP for explainability | Industry standard, supports tree and kernel explainers | — Pending |
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | — Pending |
 
 ---
-*Last updated: 2026-03-18 after initialization*
+*Last updated: 2026-03-19 — Phase 4 complete (PostgreSQL + TimescaleDB live in Minikube)*
