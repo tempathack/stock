@@ -34,11 +34,10 @@ kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/fastapi-deployment.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/fastapi-service.yaml"
 
 # --- Phase 4: Storage (PostgreSQL + TimescaleDB) ---
-# echo "[Phase 4] Deploying PostgreSQL..."
-# kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgres-pvc.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgres-deployment.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgres-service.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgres-configmap.yaml"
+echo "[Phase 4] Deploying PostgreSQL + TimescaleDB..."
+kubectl apply -f "$PROJECT_ROOT/k8s/storage/configmap.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgresql-pvc.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/storage/postgresql-deployment.yaml"
 
 # --- Phase 5: Kafka (Strimzi Operator) ---
 # echo "[Phase 5] Deploying Strimzi and Kafka..."
