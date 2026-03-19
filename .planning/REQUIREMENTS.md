@@ -32,11 +32,11 @@
 ### PostgreSQL / Storage
 
 - [x] **DB-01**: PostgreSQL deployed in storage namespace with PVC
-- [ ] **DB-02**: TimescaleDB extension enabled
-- [ ] **DB-03**: init.sql with all table schemas: stocks, ohlcv_daily, ohlcv_intraday, predictions, model_registry, drift_logs
-- [ ] **DB-04**: Composite primary keys on (ticker, date) and (ticker, timestamp)
-- [ ] **DB-05**: Indexes on (ticker, date) and (ticker, timestamp)
-- [ ] **DB-06**: Partitioning on date columns for ohlcv_daily and ohlcv_intraday
+- [x] **DB-02**: TimescaleDB extension enabled
+- [x] **DB-03**: init.sql with all table schemas: stocks, ohlcv_daily, ohlcv_intraday, predictions, model_registry, drift_logs
+- [x] **DB-04**: Composite primary keys on (ticker, date) and (ticker, timestamp)
+- [x] **DB-05**: Indexes on (ticker, date) and (ticker, timestamp)
+- [x] **DB-06**: Partitioning on date columns for ohlcv_daily and ohlcv_intraday
 - [x] **DB-07**: K8s ConfigMap for PostgreSQL credentials
 
 ### Kafka / Streaming
