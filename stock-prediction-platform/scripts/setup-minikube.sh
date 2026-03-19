@@ -56,6 +56,20 @@ echo "=== Applying namespace manifests... ==="
 kubectl apply -f "$PROJECT_ROOT/k8s/namespaces.yaml"
 echo "Namespaces applied"
 
+# --- Phase 4: PostgreSQL secrets and init SQL ConfigMap ---
+# DEV ONLY: password is devpassword123 — never use this in production
+echo "=== Creating PostgreSQL secret (dev-only password) ==="
+kubectl create secret generic stock-platform-secrets \
+  --from-literal=POSTGRES_PASSWORD=devpassword123 \
+  -n storage \
+  --dry-run=client -o yaml | kubectl apply -f -
+
+echo "=== Creating PostgreSQL init SQL ConfigMap ==="
+kubectl create configmap postgresql-init-sql \
+  --from-file=init.sql="$PROJECT_ROOT/db/init.sql" \
+  -n storage \
+  --dry-run=client -o yaml | kubectl apply -f -
+
 # --- Verification ---
 echo "=== Verifying namespaces ==="
 kubectl get namespaces
