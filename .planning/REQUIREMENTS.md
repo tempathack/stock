@@ -41,11 +41,11 @@
 
 ### Kafka / Streaming
 
-- [ ] **KAFKA-01**: Strimzi operator deployed in storage namespace
-- [ ] **KAFKA-02**: Kafka broker with persistent storage
-- [ ] **KAFKA-03**: intraday-data topic created
-- [ ] **KAFKA-04**: historical-data topic created
-- [ ] **KAFKA-05**: K8s manifests for Kafka/Strimzi
+- [x] **KAFKA-01**: Strimzi operator deployed in storage namespace
+- [x] **KAFKA-02**: Kafka broker with persistent storage
+- [x] **KAFKA-03**: intraday-data topic created
+- [x] **KAFKA-04**: historical-data topic created
+- [x] **KAFKA-05**: K8s manifests for Kafka/Strimzi
 
 ### Data Ingestion
 

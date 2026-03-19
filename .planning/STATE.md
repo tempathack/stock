@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-19T08:07:54.553Z"
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-19T08:43:57.042Z"
 progress:
   total_phases: 30
   completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 12
+  completed_plans: 11
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 05 — kafka-strimzi
+**Current focus:** Phase 05 — kafka-via-strimzi
 
 ## Current Status
 
@@ -85,10 +85,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 04-01]: updated_at trigger on stocks table provides database-level updated_at guarantee
 - [Phase 04-03]: No file changes needed in Plan 03 — artefacts from Plans 01 and 02 deployed correctly on first run
 - [Phase 04-03]: Human checkpoint used as final DB gate — automated smoke tests cover CI, human visual confirms full schema correctness
+- [Phase 05]: Strimzi operator YAML downloaded and committed for offline reproducibility (not fetched at runtime)
+- [Phase 05]: Used targeted sed (namespace: myproject -> storage) to avoid replacing unrelated namespace refs
+- [Phase 05]: Operator install in setup-minikube.sh with 300s wait; workloads in deploy-all.sh (established pattern)
 
 ## Last Session
 
-- **Stopped at:** Phase 5 context gathered
+- **Stopped at:** Completed 05-01-PLAN.md
 - **Timestamp:** 2026-03-19T07:50:02Z
 
 ## Notes
