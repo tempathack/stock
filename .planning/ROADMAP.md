@@ -206,6 +206,14 @@ Plans:
 3. All volatility indicators (Bollinger, ATR, Rolling Vol) computed correctly
 4. All volume indicators (OBV, VWAP, Vol SMA, A/D) and return/log-return features computed correctly
 
+**Plans:** 0/4 plans executed
+
+Plans:
+- [ ] 10-01-PLAN.md — Momentum indicators (RSI, MACD, Stochastic) + test infrastructure
+- [ ] 10-02-PLAN.md — Trend indicators (SMA, EMA, ADX) + _true_range helper
+- [ ] 10-03-PLAN.md — Volatility indicators (Bollinger, ATR, Rolling Vol)
+- [ ] 10-04-PLAN.md — Volume indicators (OBV, VWAP, Vol SMA, A/D) + returns + compute_all_indicators
+
 ---
 
 ### Phase 11: Lag Features & Transformer Pipelines
@@ -234,6 +242,13 @@ Plans:
 3. RandomizedSearchCV or Optuna tunes Ridge, Lasso, ElasticNet with defined search spaces
 4. Per-model metrics (R², MAE, RMSE, MAPE, Directional Accuracy, fold variance) computed and stored
 
+**Plans:** 3/3 plans complete
+
+Plans:
+- [x] 12-01-PLAN.md — Evaluation metrics (6 functions) + TimeSeriesSplit cross-validation
+- [x] 12-02-PLAN.md — ModelConfig, TrainingResult dataclasses, LINEAR_MODELS search spaces
+- [x] 12-03-PLAN.md — Model trainer: train_single_model, train_linear_models (18 runs), JSON persistence
+
 ---
 
 ### Phase 13: Tree-Based & Boosting Models
@@ -248,6 +263,12 @@ Plans:
 3. Optional boosters (XGBoost, LightGBM, CatBoost) trained if dependencies available
 4. All metrics computed per model and stored in consistent format
 
+**Plans:** 2/2 plans complete
+
+Plans:
+- [x] 13-01-PLAN.md — TREE_MODELS + BOOSTER_MODELS configs, search spaces, conditional imports
+- [x] 13-02-PLAN.md — train_tree_models, train_all_models batch functions + tests
+
 ---
 
 ### Phase 14: Distance, SVM & Neural Models
@@ -261,6 +282,12 @@ Plans:
 2. SVR and MLP hyperparameter-tuned
 3. All metrics computed per model and stored
 4. Training completes within reasonable wall time (MLP early stopping configured)
+
+**Plans:** 0/2 plans executed
+
+Plans:
+- [ ] 14-01-PLAN.md — DISTANCE_NEURAL_MODELS configs, search spaces, registration + config tests
+- [ ] 14-02-PLAN.md — train_distance_neural_models batch fn, train_all_models update + trainer tests
 
 ---
 

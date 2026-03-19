@@ -31,8 +31,9 @@ spec:
               envFrom:
                 - configMapRef:
                     name: ingestion-config
-                - secretRef:
-                    name: stock-platform-secrets
+              env:
+                - name: TRIGGER_TIMEOUT_SECONDS
+                  value: "300"
               resources:
                 requests:
                   cpu: "100m"

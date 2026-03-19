@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-03-19T12:30:58.919Z"
+stopped_at: Completed Phase 13
+last_updated: "2026-03-19T23:30:00.000Z"
 progress:
   total_phases: 30
-  completed_phases: 6
-  total_plans: 14
-  completed_plans: 14
+  completed_phases: 13
+  total_plans: 29
+  completed_plans: 29
 ---
 
 # STATE.md — Project Memory
@@ -19,13 +19,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 07 — fastapi-ingestion-endpoints
+**Current focus:** Phase 14 — Distance, SVM & Neural Models
 
 ## Current Status
 
-- **Active phase:** 6
-- **Phase name:** Yahoo Finance Ingestion Service
-- **Overall progress:** 6 / 30 phases complete
+- **Active phase:** 14
+- **Phase name:** Distance, SVM & Neural Models
+- **Overall progress:** 13 / 30 phases complete
 
 ## Phase Completion Log
 
@@ -37,13 +37,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 4 | PostgreSQL + TimescaleDB | Complete (3/3 plans) | 2026-03-19 |
 | 5 | Kafka via Strimzi | Complete (2/2 plans) | 2026-03-19 |
 | 6 | Yahoo Finance Ingestion Service | Complete (2/2 plans) | 2026-03-19 |
-| 7 | FastAPI Ingestion Endpoints | Not started | — |
-| 8 | K8s CronJobs for Ingestion | Not started | — |
-| 9 | Kafka Consumers — Batch Writer | Not started | — |
-| 10 | Technical Indicators | Not started | — |
-| 11 | Lag Features & Transformer Pipelines | Not started | — |
-| 12 | Linear & Regularized Models | Not started | — |
-| 13 | Tree-Based & Boosting Models | Not started | — |
+| 7 | FastAPI Ingestion Endpoints | Complete (1/1 plans) | 2026-03-19 |
+| 8 | K8s CronJobs for Ingestion | Complete (1/1 plans) | 2026-03-19 |
+| 9 | Kafka Consumers — Batch Writer | Complete (2/2 plans) | 2026-03-19 |
+| 10 | Technical Indicators | Complete (4/4 plans) | 2026-03-19 |
+| 11 | Lag Features & Transformer Pipelines | Complete (2/2 plans) | 2026-03-19 |
+| 12 | Linear & Regularized Models | Complete (3/3 plans) | 2026-03-19 |
+| 13 | Tree-Based & Boosting Models | Complete (2/2 plans) | 2026-03-19 |
 | 14 | Distance, SVM & Neural Models | Not started | — |
 | 15 | Evaluation Framework & Model Selection | Not started | — |
 | 16 | SHAP Explainability | Not started | — |
@@ -94,11 +94,44 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 06-01]: Tenacity retry targets requests exceptions (ConnectionError, Timeout, HTTPError) not yfinance-specific
 - [Phase 06-01]: Volume=0 explicitly valid per must_haves (pre-market/after-hours bars)
 - [Phase 06]: Used defaultdict grouping by ticker for batched flush instead of itertools.groupby
+- [Phase 07]: Endpoints return 502 with structured detail on Yahoo Finance or Kafka failures (not 500)
+- [Phase 07]: IngestRequest body is optional — omitting body uses default ticker list from settings
+- [Phase 07]: Zero records fetched returns 200 (completed) with counts=0; Kafka producer not instantiated
+- [Phase 10]: Hand-rolled pandas/numpy for all 14 indicator families — no TA-Lib or pandas-ta
+- [Phase 10]: Wilder's smoothing (EWM alpha=1/period) for RSI and ATR
+- [Phase 10]: _true_range shared helper used by both compute_atr and compute_adx
+- [Phase 10]: OBV first row is NaN due to close.diff() — tests skip first row for comparison
+- [Phase 10]: Rolling volatility annualized with sqrt(252); VWAP is cumulative (not session-reset)
+- [Phase 10]: compute_all_indicators orchestrator calls all 14 functions and adds 27 columns
+- [Phase 12]: Train each model with all 3 scaler variants (standard, quantile, minmax) — 18 runs total
+- [Phase 12]: RandomizedSearchCV for hyperparameter tuning (not Optuna) with TimeSeriesSplit as cv
+- [Phase 12]: Search spaces: Ridge/Lasso alpha logspace, ElasticNet alpha+l1_ratio, Huber epsilon linspace
+- [Phase 12]: LinearRegression and BayesianRidge skip tuning (no configurable hyperparameters)
+- [Phase 12]: Results stored as JSON artifacts to disk — DB persistence deferred to Phase 15
+- [Phase 12]: Pipeline structure: Pipeline([("scaler", ...), ("model", ...)]) — scaler fits inside CV folds
+- [Phase 12]: Kubeflow component stubs left untouched — those are Phases 17–19
+- [Phase 12]: register_model_family extensibility pattern for Phases 13–14 to add tree/neural configs
+- [Phase 10]: 54 tests covering all indicator families + orchestrator, 0.84s runtime
+- [Phase 11]: Target is percentage return (pct_change), not raw future price
+- [Phase 11]: Lags and rolling stats on close column only
+- [Phase 11]: dropna() removes both warm-up NaN rows and tail NaN rows (FEAT-21)
+- [Phase 11]: QuantileTransformer uses output_distribution="normal" for regression compatibility
+- [Phase 11]: build_scaler_pipeline factory returns Pipeline([('scaler', Scaler)]) — model appended in Phase 12
+- [Phase 11]: Had to force-reinstall scipy (corrupt .pyd binary on Windows) to fix sklearn import
+- [Phase 13]: TREE_MODELS dict with 6 sklearn tree/ensemble regressors + search spaces
+- [Phase 13]: BOOSTER_MODELS dict with conditional imports (xgboost, lightgbm, catboost)
+- [Phase 13]: All boosters use verbose=0/-1 to suppress training output
+- [Phase 13]: RF and GBM get n_iter=50; other tree models use default 30
+- [Phase 13]: All tree models set random_state=42 for reproducibility
+- [Phase 13]: register_model_family("tree", TREE_MODELS) at module load; boosters auto-registered if available
+- [Phase 13]: train_tree_models() supports include_boosters=False flag; train_all_models() combines linear + tree
+- [Phase 13]: Upgraded xgboost→3.2.0, lightgbm→4.6.0, catboost→1.2.10, pyarrow→23.0.1 for NumPy 2.x compat
+- [Phase 11]: 41 tests (27 lag/rolling/target/drop + 14 scaler pipeline), 6.08s runtime
 
 ## Last Session
 
-- **Stopped at:** Completed 06-02-PLAN.md
-- **Timestamp:** 2026-03-19T12:26:01Z
+- **Stopped at:** Completed Phase 11 — Lag Features & Transformer Pipelines
+- **Timestamp:** 2026-03-19T21:00:00Z
 
 ## Notes
 

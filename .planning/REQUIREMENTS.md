@@ -20,8 +20,8 @@
 - [x] **API-02**: GET /health endpoint returning service status
 - [x] **API-03**: Dockerfile for FastAPI service (multi-stage)
 - [x] **API-04**: K8s Deployment + Service YAML for FastAPI in ingestion namespace
-- [ ] **API-05**: POST /ingest/intraday endpoint (triggers Yahoo Finance intraday fetch)
-- [ ] **API-06**: POST /ingest/historical endpoint (triggers Yahoo Finance historical fetch)
+- [x] **API-05**: POST /ingest/intraday endpoint (triggers Yahoo Finance intraday fetch)
+- [x] **API-06**: POST /ingest/historical endpoint (triggers Yahoo Finance historical fetch)
 - [ ] **API-07**: GET /predict/{ticker} endpoint (returns 7-day forecast)
 - [ ] **API-08**: GET /predict/bulk endpoint (forecasts for all S&P 500)
 - [ ] **API-09**: GET /models/comparison endpoint (model metrics comparison)
@@ -52,8 +52,8 @@
 - [x] **INGEST-01**: yahoo_finance.py service — fetches OHLCV for S&P 500 tickers via yfinance
 - [x] **INGEST-02**: S&P 500 ticker list (dev: 20-stock subset, prod: full universe)
 - [x] **INGEST-03**: kafka_producer.py — validates, normalizes, and publishes to Kafka topics
-- [ ] **INGEST-04**: K8s CronJob for intraday ingestion (daily, market hours)
-- [ ] **INGEST-05**: K8s CronJob for historical ingestion (weekly)
+- [x] **INGEST-04**: K8s CronJob for intraday ingestion (daily, market hours)
+- [x] **INGEST-05**: K8s CronJob for historical ingestion (weekly)
 - [x] **INGEST-06**: Data validation and normalization logic (schema enforcement, nulls, types)
 
 ### Kafka Consumers

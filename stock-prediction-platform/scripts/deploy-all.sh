@@ -50,14 +50,23 @@ kubectl apply -f "$PROJECT_ROOT/k8s/kafka/kafka-topics.yaml"
 # kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/ingestion-service.yaml"
 
 # --- Phase 8: Ingestion CronJobs ---
-# echo "[Phase 8] Deploying ingestion CronJobs..."
-# kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/cronjob-intraday.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/cronjob-historical.yaml"
+echo "[Phase 8] Deploying ingestion CronJobs..."
+kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/cronjob-intraday.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/cronjob-historical.yaml"
 
 # --- Phase 9: Kafka Consumers ---
-# echo "[Phase 9] Deploying Kafka consumer service..."
-# kubectl apply -f "$PROJECT_ROOT/k8s/processing/consumer-deployment.yaml"
-# kubectl apply -f "$PROJECT_ROOT/k8s/processing/consumer-service.yaml"
+echo "[Phase 9] Building Kafka consumer Docker image..."
+eval $(minikube docker-env)
+docker build -t stock-kafka-consumer:latest "$PROJECT_ROOT/services/kafka-consumer/"
+
+echo "[Phase 9] Deploying Kafka consumer service..."
+kubectl apply -f "$PROJECT_ROOT/k8s/processing/configmap.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/processing/kafka-consumer-deployment.yaml"
+
+echo "[Phase 9] Waiting for kafka-consumer deployment..."
+kubectl rollout status deployment/kafka-consumer -n processing --timeout=120s
+
+echo "[Phase 9] ✓ Kafka consumer service deployed"
 
 # --- Phase 17-20: Kubeflow Pipelines (ML) ---
 # echo "[Phase 17-20] Deploying Kubeflow Pipelines..."
