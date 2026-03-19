@@ -106,6 +106,13 @@ Plans:
 3. All 6 tables created: stocks, ohlcv_daily, ohlcv_intraday, predictions, model_registry, drift_logs
 4. Composite PKs, indexes, and date partitioning verified via `\d` inspection
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Write db/init.sql with full schema (6 tables, hypertables, indexes, trigger)
+- [ ] 04-02-PLAN.md — Update setup-minikube.sh (Secret + ConfigMap) and deploy-all.sh (uncomment Phase 4)
+- [ ] 04-03-PLAN.md — Deploy to live Minikube cluster and verify all DB requirements
+
 ---
 
 ### Phase 5: Kafka via Strimzi
