@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.config import settings
-from app.routers import health, ingest
+from app.routers import health, ingest, market, models, predict
 from app.utils.logging import get_logger
 
 logger = get_logger(__name__)
@@ -35,3 +35,6 @@ app = FastAPI(
 
 app.include_router(health.router)
 app.include_router(ingest.router)
+app.include_router(predict.router)
+app.include_router(models.router)
+app.include_router(market.router)

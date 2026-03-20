@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed Phase 13
-last_updated: "2026-03-19T23:30:00.000Z"
+stopped_at: Completed Phase 23
+last_updated: "2026-03-20T20:30:00.000Z"
 progress:
   total_phases: 30
-  completed_phases: 13
-  total_plans: 29
-  completed_plans: 29
+  completed_phases: 23
+  total_plans: 45
+  completed_plans: 45
 ---
 
 # STATE.md — Project Memory
@@ -19,13 +19,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 14 — Distance, SVM & Neural Models
+**Current focus:** Phase 20 — Kubeflow Pipeline — Full Definition & Trigger
 
 ## Current Status
 
-- **Active phase:** 14
-- **Phase name:** Distance, SVM & Neural Models
-- **Overall progress:** 13 / 30 phases complete
+- **Active phase:** 24
+- **Phase name:** FastAPI Market Endpoints
+- **Phase plans:** 0/1 complete
+- **Overall progress:** 23 / 30 phases complete
 
 ## Phase Completion Log
 
@@ -44,16 +45,16 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 11 | Lag Features & Transformer Pipelines | Complete (2/2 plans) | 2026-03-19 |
 | 12 | Linear & Regularized Models | Complete (3/3 plans) | 2026-03-19 |
 | 13 | Tree-Based & Boosting Models | Complete (2/2 plans) | 2026-03-19 |
-| 14 | Distance, SVM & Neural Models | Not started | — |
-| 15 | Evaluation Framework & Model Selection | Not started | — |
-| 16 | SHAP Explainability | Not started | — |
-| 17 | Kubeflow Pipeline — Data & Feature Components | Not started | — |
-| 18 | Kubeflow Pipeline — Training & Eval Components | Not started | — |
-| 19 | Kubeflow Pipeline — Selection, Persistence & Deployment | Not started | — |
-| 20 | Kubeflow Pipeline — Full Definition & Trigger | Not started | — |
-| 21 | Drift Detection System | Not started | — |
-| 22 | Drift Auto-Retrain Trigger | Not started | — |
-| 23 | FastAPI Prediction & Model Endpoints | Not started | — |
+| 14 | Distance, SVM & Neural Models | Complete (2/2 plans) | 2026-03-19 |
+| 15 | Evaluation Framework & Model Selection | Complete (3/3 plans) | 2026-03-20 |
+| 16 | SHAP Explainability | Complete (1/1 plans) | 2026-03-20 |
+| 17 | Kubeflow Pipeline — Data & Feature Components | Complete (2/2 plans) | 2026-03-20 |
+| 18 | Kubeflow Pipeline — Training & Eval Components | Complete (2/2 plans) | 2026-03-20 |
+| 19 | Kubeflow Pipeline — Selection, Persistence & Deployment | Complete (2/2 plans) | 2026-03-20 |
+| 20 | Kubeflow Pipeline — Full Definition & Trigger | Complete (2/2 plans) | 2026-03-20 |
+| 21 | Drift Detection System | Complete (2/2 plans) | 2026-03-20 |
+| 22 | Drift Auto-Retrain Trigger | Complete (1/1 plans) | 2026-03-20 |
+| 23 | FastAPI Prediction & Model Endpoints | Complete (1/1 plans) | 2026-03-20 |
 | 24 | FastAPI Market Endpoints | Not started | — |
 | 25 | React App Bootstrap & Navigation | Not started | — |
 | 26 | Frontend — /models Page | Not started | — |
@@ -98,6 +99,10 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 07]: IngestRequest body is optional — omitting body uses default ticker list from settings
 - [Phase 07]: Zero records fetched returns 200 (completed) with counts=0; Kafka producer not instantiated
 - [Phase 10]: Hand-rolled pandas/numpy for all 14 indicator families — no TA-Lib or pandas-ta
+- [Phase 16]: Three-tier explainer routing: TreeExplainer for tree/boosters, LinearExplainer for linear family, KernelExplainer fallback for distance/neural
+- [Phase 16]: SHAP results stored as JSON (shap_importance.json + shap_values.json) in same registry folder as pipeline.pkl
+- [Phase 16]: KernelExplainer capped at 200 samples + kmeans(50) background for compute tractability
+- [Phase 16]: Created numba shim in venv to resolve shap 0.51 / numpy 2.4 compatibility (numba 0.64 requires numpy<2.0)
 - [Phase 10]: Wilder's smoothing (EWM alpha=1/period) for RSI and ATR
 - [Phase 10]: _true_range shared helper used by both compute_atr and compute_adx
 - [Phase 10]: OBV first row is NaN due to close.diff() — tests skip first row for comparison
@@ -127,11 +132,61 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 13]: train_tree_models() supports include_boosters=False flag; train_all_models() combines linear + tree
 - [Phase 13]: Upgraded xgboost→3.2.0, lightgbm→4.6.0, catboost→1.2.10, pyarrow→23.0.1 for NumPy 2.x compat
 - [Phase 11]: 41 tests (27 lag/rolling/target/drop + 14 scaler pipeline), 6.08s runtime
+- [Phase 17]: Components are pure Python functions (not KFP containers) — @dsl.component wrapping deferred to Phase 20
+- [Phase 17]: Data passes as pd.DataFrame in-process; Parquet serialization deferred to Phase 20
+- [Phase 17]: DBSettings dataclass uses os.environ.get() defaults matching K8s storage-config ConfigMap
+- [Phase 17]: load_ticker_data uses parameterized SQL (%s placeholders) — no string interpolation
+- [Phase 17]: feature_engineer processes each ticker independently to prevent cross-ticker contamination
+- [Phase 17]: label_generator target computed per-ticker via shift(-horizon) to prevent leakage
+- [Phase 17]: Tickers with empty/insufficient data skipped with warning log, not error
+- [Phase 17]: KFP standalone manifest is scaffold only (ConfigMap reference to v2.3.0) — not applied to cluster
+- [Phase 17]: Fixed shap/numba import crash (numba requires numpy<2.0) with lazy import in evaluation/__init__.py and explainer.py
+- [Phase 17]: 43 new tests (18 data_loader + 11 feature_engineer + 14 label_generator), 285 total non-shap tests passing
+- [Phase 18]: Components are pure Python functions matching Phase 17 pattern — @dsl.component wrapping deferred to Phase 20
+- [Phase 18]: prepare_training_data() orchestrates feature engineering + label generation + train/test split in one call
+- [Phase 18]: train_all_models_pipeline() delegates to existing train_all_models() and wraps results with registry_dir param
+- [Phase 18]: generate_cv_report() produces JSON comparison of fold metrics across all models
+- [Phase 18]: evaluate_models() wraps rank_models() + generates RankedModel list for downstream components
+- [Phase 18]: generate_comparison_report() produces JSON model comparison with metrics, ranking, and stability
+- [Phase 19]: KF-09 (explainability) and KF-10/KF-11 (winner selection + persistence) already complete from Phases 15-16 — no changes needed
+- [Phase 19]: Three new ModelRegistry methods: activate_model(), deactivate_all(), get_active_model() for is_active tracking
+- [Phase 19]: is_active is distinct from is_winner — a model can be winner but not yet deployed (pre-deployment) or active but not latest winner (between retrain cycles)
+- [Phase 19]: deploy_winner_model() orchestrates: find winner → deactivate all → copy artifacts to serving dir → write serving_config.json → activate in registry
+- [Phase 19]: Serving directory is flat (pipeline.pkl, metadata.json, features.json, SHAP files, serving_config.json) — flattened from registry versioned layout
+- [Phase 19]: Deployment is idempotent — serving dir cleared via shutil.rmtree before each deploy
+- [Phase 19]: Integration test chains select_and_persist_winner → explain_top_models → deploy_winner_model with round-trip pipeline.predict() validation
+- [Phase 19]: SHAP-dependent integration tests guarded with _shap_available flag (numba/numpy 2.x incompatibility in test env)
+- [Phase 19]: 21 new tests (8 registry activation + 10 deployer + 3 integration), 46 phase-specific tests passing
+- [Phase 20]: Two-layer pipeline — pure Python orchestrator (run_training_pipeline) + KFP DSL wrapper (compile_kfp_pipeline)
+- [Phase 20]: Parquet serialization via pyarrow for inter-component data transfer in KFP mode; in-memory passing for local orchestrator
+- [Phase 20]: PipelineRunResult dataclass captures full audit trail (run_id, timestamps, steps_completed, winner_info, deploy_info)
+- [Phase 20]: _rebuild_pipelines() reconstructs fitted sklearn Pipelines from TrainingResult list for selection/explanation steps
+- [Phase 20]: trigger_retraining() entry point with reason tracking (manual/data_drift/prediction_drift/concept_drift/scheduled)
+- [Phase 20]: Retraining log appended as JSONL to {registry_dir}/runs/retraining_log.jsonl
+- [Phase 20]: DBSettings import uses TYPE_CHECKING guard to avoid psycopg2 requirement at module level
+- [Phase 20]: components/__init__.py uses graceful psycopg2 import fallback for data_loader exports
+- [Phase 20]: 22 new tests (8 serialization + 8 training pipeline + 6 drift pipeline); integration tests confirmed passing but slow (~10min for full model suite)
+- [Phase 21]: Three detector classes: DataDriftDetector (KS-test + PSI), PredictionDriftDetector (error multiplier), ConceptDriftDetector (RMSE degradation)
+- [Phase 21]: DriftResult dataclass as common return type for all detectors with severity levels (none/low/medium/high)
+- [Phase 21]: PSI hand-rolled with quantile-based binning and clipping (no external drift library)
+- [Phase 21]: DriftMonitor orchestrates all three detectors in a single check() call → DriftCheckResult
+- [Phase 21]: DriftLogger persists events to JSONL file; DB persistence gated behind psycopg2 availability
+- [Phase 21]: evaluate_and_trigger() bridges detection → logging → trigger_retraining() with auto_retrain flag
+- [Phase 21]: 36 new tests (20 detector + 7 monitor + 9 trigger), all passing in ~35s
+- [Phase 22]: evaluate_and_trigger() extended with regenerate_predictions parameter for post-retrain prediction refresh
+- [Phase 22]: predictor.py generates predictions from active serving directory (pipeline.pkl + features.json + metadata.json)
+- [Phase 22]: save_predictions() writes latest.json to registry predictions/ folder
+- [Phase 22]: 7 new predictor tests + 9 trigger tests updated, 43 drift-related tests pass in ~10s
+- [Phase 23]: Four new endpoints: GET /predict/{ticker}, GET /predict/bulk, GET /models/comparison, GET /models/drift
+- [Phase 23]: File-based service layer (prediction_service.py) reads cached predictions, model metadata, and drift logs
+- [Phase 23]: /predict/bulk registered before /{ticker} to prevent path variable capture of "bulk"
+- [Phase 23]: Protected namespaces disabled on schemas with model_name field (Pydantic v2 compat)
+- [Phase 23]: 25 new API tests (7 predict + 8 models + 10 service), 74 total API tests passing
 
 ## Last Session
 
-- **Stopped at:** Completed Phase 11 — Lag Features & Transformer Pipelines
-- **Timestamp:** 2026-03-19T21:00:00Z
+- **Stopped at:** Completed Phase 23 — FastAPI Prediction & Model Endpoints
+- **Timestamp:** 2026-03-20T20:30:00Z
 
 ## Notes
 

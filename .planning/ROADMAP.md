@@ -23,9 +23,9 @@
 | 15 | Evaluation Framework | All metrics, model ranking, winner selection | EVAL-01–EVAL-10 | 4 |
 | 16 | SHAP Explainability | SHAP values for top 5 models, store summary | EVAL-11, EVAL-12 | 3 |
 | 17 | Kubeflow Pipeline — Data & Features | KF install, data_loading, feature_engineering, label_generation components | KF-01, KF-02, KF-03, KF-04 | 3 |
-| 18 | Kubeflow Pipeline — Training & Eval | train_models, cross_validation, evaluation, model_comparison components | KF-05, KF-06, KF-07, KF-08 | 3 |
+| 18 | Kubeflow Pipeline — Training & Eval | train_models, cross_validation, evaluation, model_comparison components | KF-05, KF-06, KF-07, KF-08 | 2/2 | Complete | 2026-03-20 | 3 |
 | 19 | Kubeflow Pipeline — Selection & Deploy | explainability, winner_selection, model_persistence, deployment components | KF-09, KF-10, KF-11, KF-12 | 4 |
-| 20 | Kubeflow Pipeline — Definition & Trigger | Full pipeline definition, versioning, manual + drift triggers | KF-13, KF-14, KF-15 | 3 |
+| 20 | Kubeflow Pipeline — Definition & Trigger | Full pipeline definition, versioning, manual + drift triggers | KF-13, KF-14, KF-15 | 0/2 | Not started | — | 3 |
 | 21 | Drift Detection System | All 3 drift types, daily check, drift_logs | DRIFT-01–DRIFT-05 | 4 |
 | 22 | Drift Auto-Retrain Trigger | Trigger Kubeflow on drift, redeploy, regenerate predictions | DRIFT-06, DRIFT-07 | 3 |
 | 23 | FastAPI Prediction & Model Endpoints | /predict/{ticker}, /predict/bulk, /models/comparison, /models/drift | API-07, API-08, API-09, API-10 | 4 |
@@ -303,6 +303,13 @@ Plans:
 3. ONE winner model identified and written to model_registry with is_active=true
 4. Winner's artifact, scaler pipeline, feature list, and full metrics persisted to disk + DB
 
+**Plans:** 0/3 plans executed
+
+Plans:
+- [ ] 15-01-PLAN.md — ranking.py: composite scoring, variance penalty, winner selection + tests
+- [ ] 15-02-PLAN.md — registry.py: ModelRegistry (save/load/list artifacts + metadata) + tests
+- [ ] 15-03-PLAN.md — Pipeline components (evaluator.py, model_selector.py) + tests
+
 ---
 
 ### Phase 16: SHAP Explainability
@@ -312,10 +319,15 @@ Plans:
 **Requirements:** EVAL-11, EVAL-12
 
 **Success Criteria:**
-1. TreeExplainer used for tree-based models; KernelExplainer as fallback for linear/neural
+1. TreeExplainer used for tree-based models; LinearExplainer for linear family; KernelExplainer as fallback for distance/neural
 2. Feature importance rankings computed and stored for top 5 models
-3. SHAP summary (beeswarm data) stored in structured format (JSON or DB)
+3. SHAP summary (beeswarm data) stored as JSON in model registry folder (shap_importance.json + shap_values.json)
 4. Explainability output consumable by /models/comparison API endpoint
+
+**Plans:** 1/1 plans executed
+
+Plans:
+- [x] 16-01-PLAN.md — SHAP analysis module, explainer pipeline component + tests
 
 ---
 
@@ -331,6 +343,12 @@ Plans:
 3. feature_engineering component applies all indicators and lag features correctly
 4. label_generation component produces t+7 targets with no leakage
 
+**Plans:** 2/2 plans executed
+
+Plans:
+- [x] 17-01-PLAN.md — Data loading component + KFP scaffold + tests
+- [x] 17-02-PLAN.md — Feature engineering & label generation components + tests
+
 ---
 
 ### Phase 18: Kubeflow Pipeline — Training & Evaluation Components
@@ -344,6 +362,12 @@ Plans:
 2. cross_validation component applies TimeSeriesSplit ≥5 folds
 3. evaluation component outputs all 6 metrics per model
 4. model_comparison component ranks models and outputs winner candidate
+
+**Plans:** 2/2 plans executed
+
+Plans:
+- [x] 18-01-PLAN.md — Data preparation (prepare_training_data) + training orchestration (train_all_models_pipeline) + tests
+- [x] 18-02-PLAN.md — Cross-validation report component (generate_cv_report) + exports + tests
 
 ---
 
@@ -359,6 +383,12 @@ Plans:
 3. model_persistence component saves artifact + scaler + feature list to artifact path
 4. deployment component deploys winner model as live serving endpoint in ml namespace
 
+**Plans:** 2/2 plans executed
+
+Plans:
+- [x] 19-01-PLAN.md — Registry activation methods (activate, deactivate, get_active) + deployment component (deployer.py) + tests
+- [x] 19-02-PLAN.md — End-to-end pipeline integration tests (KF-09 → KF-12 chained flow)
+
 ---
 
 ### Phase 20: Kubeflow Pipeline — Full Definition & Trigger
@@ -372,6 +402,12 @@ Plans:
 2. Pipeline is versioned (pipeline version recorded in model_registry)
 3. Pipeline can be triggered manually via Kubeflow UI or API call
 4. drift_pipeline.py trigger invokes the training pipeline programmatically
+
+**Plans:** 0/2 plans executed
+
+Plans:
+- [ ] 20-01-PLAN.md — Parquet serialisation + training pipeline orchestrator + versioning + tests
+- [ ] 20-02-PLAN.md — Drift trigger + KFP pipeline definition + tests
 
 ---
 
@@ -404,7 +440,7 @@ Plans:
 
 ### Phase 23: FastAPI Prediction & Model Endpoints
 
-**Goal:** Implement /predict/{ticker}, /predict/bulk, /models/comparison, and /models/drift endpoints backed by live data.
+**Goal:** Implement /predict/{ticker}, /predict/bulk, /models/comparison, and /models/drift endpoints backed by file-based model registry and drift logs.
 
 **Requirements:** API-07, API-08, API-09, API-10
 
@@ -413,6 +449,11 @@ Plans:
 2. GET /predict/bulk returns forecasts for all configured S&P 500 tickers
 3. GET /models/comparison returns ranked model table with all 6 metrics
 4. GET /models/drift returns current drift status, last check time, and any active alerts
+
+**Plans:** 0/1 plans complete
+
+Plans:
+- [ ] 23-01-PLAN.md — Prediction & Model Endpoints (schemas, service, routers, tests) — pre-implemented, verify
 
 ---
 

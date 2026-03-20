@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.pipeline import Pipeline
 
@@ -17,6 +18,7 @@ from ml.evaluation.cross_validation import create_time_series_cv, walk_forward_e
 from ml.features.transformations import SCALER_VARIANTS, build_scaler_pipeline
 from ml.models.model_configs import (
     BOOSTER_MODELS,
+    DISTANCE_NEURAL_MODELS,
     LINEAR_MODELS,
     TREE_MODELS,
     ModelConfig,
@@ -130,6 +132,48 @@ def _search_space_size(param_dist: dict) -> int:
 
 
 # ---------------------------------------------------------------------------
+# Data preparation — multi-ticker → single temporal split
+# ---------------------------------------------------------------------------
+
+
+def prepare_training_data(
+    data_dict: dict[str, pd.DataFrame],
+    feature_names: list[str],
+    target_col: str = "target_7d",
+    test_ratio: float = 0.2,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Consolidate per-ticker DataFrames into a single temporal train/test split.
+
+    Returns ``(X_train, y_train, X_test, y_test)`` as numpy arrays.
+
+    Raises ``ValueError`` if *data_dict* is empty or produces zero rows.
+    """
+    if not data_dict:
+        raise ValueError("data_dict must be non-empty.")
+
+    combined = pd.concat(data_dict.values()).sort_index()
+
+    if combined.empty:
+        raise ValueError("All DataFrames are empty after concatenation.")
+
+    y = combined[target_col].values
+    X = combined[feature_names].values
+
+    split_idx = int(len(combined) * (1 - test_ratio))
+    if split_idx <= 0 or split_idx >= len(combined):
+        raise ValueError(
+            f"Invalid split: {split_idx} rows for train out of {len(combined)} total."
+        )
+
+    logger.info(
+        "Prepared training data: %d total rows, %d train, %d test, %d features.",
+        len(combined), split_idx, len(combined) - split_idx, len(feature_names),
+    )
+
+    return X[:split_idx], y[:split_idx], X[split_idx:], y[split_idx:]
+
+
+# ---------------------------------------------------------------------------
 # Batch training — all linear models × all scalers
 # ---------------------------------------------------------------------------
 
@@ -214,6 +258,44 @@ def train_tree_models(
     return results
 
 
+# ---------------------------------------------------------------------------
+# Batch training — distance, SVM & neural models × all scalers
+# ---------------------------------------------------------------------------
+
+
+def train_distance_neural_models(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    n_splits: int = 5,
+) -> list[TrainingResult]:
+    """Train all distance/SVM/neural models × 3 scaler variants = 9 runs.
+
+    Returns
+    -------
+    List of 9 ``TrainingResult`` objects sorted by OOS RMSE (ascending).
+    """
+    results: list[TrainingResult] = []
+
+    for config in DISTANCE_NEURAL_MODELS.values():
+        for scaler in SCALER_VARIANTS:
+            logger.info("Training %s with %s scaler...", config.name, scaler)
+            result = train_single_model(
+                config=config,
+                X_train=X_train,
+                y_train=y_train,
+                X_test=X_test,
+                y_test=y_test,
+                scaler_variant=scaler,
+                n_splits=n_splits,
+            )
+            results.append(result)
+
+    results.sort(key=lambda r: r.oos_metrics["rmse"])
+    return results
+
+
 def train_all_models(
     X_train: np.ndarray,
     y_train: np.ndarray,
@@ -221,12 +303,60 @@ def train_all_models(
     y_test: np.ndarray,
     n_splits: int = 5,
 ) -> list[TrainingResult]:
-    """Train all model families (linear + tree + boosters) and return sorted results."""
+    """Train all model families (linear + tree + boosters + distance/neural) and return sorted results."""
     linear = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
     tree = train_tree_models(X_train, y_train, X_test, y_test, n_splits)
-    combined = linear + tree
+    distance_neural = train_distance_neural_models(X_train, y_train, X_test, y_test, n_splits)
+    combined = linear + tree + distance_neural
     combined.sort(key=lambda r: r.oos_metrics["rmse"])
     return combined
+
+
+# ---------------------------------------------------------------------------
+# Pipeline entry point — data dict → results + fitted pipelines
+# ---------------------------------------------------------------------------
+
+
+def train_all_models_pipeline(
+    data_dict: dict[str, pd.DataFrame],
+    feature_names: list[str],
+    target_col: str = "target_7d",
+    test_ratio: float = 0.2,
+    n_splits: int = 5,
+) -> tuple[list[TrainingResult], dict[str, Pipeline]]:
+    """Pipeline entry point: prepare data, train all models, return results + pipelines.
+
+    Returns ``(results, pipelines)`` — sorted results and fitted pipelines keyed
+    by ``"{model_name}_{scaler_variant}"``.
+    """
+    X_train, y_train, X_test, y_test = prepare_training_data(
+        data_dict, feature_names, target_col, test_ratio,
+    )
+
+    results = train_all_models(X_train, y_train, X_test, y_test, n_splits)
+
+    all_configs: dict[str, ModelConfig] = {
+        **LINEAR_MODELS, **TREE_MODELS, **BOOSTER_MODELS, **DISTANCE_NEURAL_MODELS,
+    }
+
+    pipelines: dict[str, Pipeline] = {}
+    for result in results:
+        config = all_configs[result.model_name]
+        pipeline = _build_pipeline(config, result.scaler_variant)
+        if result.best_params:
+            pipeline.set_params(
+                **{f"model__{k}": v for k, v in result.best_params.items()}
+            )
+        pipeline.fit(X_train, y_train)
+        key = f"{result.model_name}_{result.scaler_variant}"
+        pipelines[key] = pipeline
+
+    logger.info(
+        "Pipeline training complete: %d models, %d fitted pipelines.",
+        len(results), len(pipelines),
+    )
+
+    return results, pipelines
 
 
 # ---------------------------------------------------------------------------

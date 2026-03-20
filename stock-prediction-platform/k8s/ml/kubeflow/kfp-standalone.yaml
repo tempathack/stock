@@ -1,0 +1,35 @@
+# Kubeflow Pipelines — Standalone Deployment for Minikube
+#
+# This manifest references the official KFP v2 standalone deployment.
+# It is NOT applied automatically by deploy-all.sh — manual setup required.
+#
+# Prerequisites:
+#   1. Minikube running with ≥4 CPU, ≥8 GB RAM
+#   2. ml namespace exists (created in Phase 2)
+#
+# Installation:
+#   export PIPELINE_VERSION=2.3.0
+#   kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION"
+#   kubectl wait --for condition=established --timeout=60s crd/applications.app.k8s.io
+#   kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic?ref=$PIPELINE_VERSION"
+#
+# Port-forward to UI:
+#   kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80
+#
+# Verify:
+#   curl http://localhost:8080/apis/v2beta1/healthz
+#
+# Note: KFP deploys its own namespace (kubeflow). Pipeline components
+# in this project run as pods in the ml namespace, connecting to the
+# KFP API server in the kubeflow namespace.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kfp-install-reference
+  namespace: ml
+  labels:
+    app.kubernetes.io/part-of: stock-prediction-platform
+data:
+  KFP_VERSION: "2.3.0"
+  KFP_INSTALL_DOCS: "https://www.kubeflow.org/docs/components/pipelines/operator-guides/installation/"

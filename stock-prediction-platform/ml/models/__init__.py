@@ -13,6 +13,7 @@ from ml.models.model_configs import (
     get_model_configs,
     register_model_family,
 )
+from ml.models.registry import ModelRegistry
 
 __all__ = [
     "BOOSTER_MODELS",
@@ -20,6 +21,7 @@ __all__ = [
     "LINEAR_MODELS",
     "TREE_MODELS",
     "ModelConfig",
+    "ModelRegistry",
     "TrainingResult",
     "get_all_model_configs",
     "get_model_configs",

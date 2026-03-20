@@ -38,5 +38,10 @@ class Settings(BaseSettings):
     # Group 5 — Ingestion (Phase 6+)
     TICKER_SYMBOLS: str = "AAPL,MSFT,GOOGL,AMZN,NVDA,META,TSLA,BRK-B,JPM,JNJ,V,PG,UNH,HD,MA,BAC,XOM,PFE,ABBV,CVX"
 
+    # Group 6 — ML / Model Serving (Phase 23+)
+    MODEL_REGISTRY_DIR: str = "model_registry"
+    DRIFT_LOG_DIR: str = "drift_logs"
+    SERVING_DIR: str = "/models/active"
+
 
 settings = Settings()

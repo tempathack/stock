@@ -12,6 +12,23 @@ from ml.evaluation.metrics import (
     compute_r2,
     compute_rmse,
 )
+from ml.evaluation.ranking import (
+    RankedModel,
+    WinnerResult,
+    compute_composite_score,
+    rank_models,
+    select_winner,
+)
+
+try:
+    from ml.evaluation.shap_analysis import (
+        compute_feature_importance,
+        compute_shap_values,
+        get_explainer_type,
+        get_shap_summary,
+    )
+except ImportError:  # shap / numba not available in this environment
+    pass
 
 __all__ = [
     "compute_r2",
@@ -23,4 +40,13 @@ __all__ = [
     "compute_all_metrics",
     "create_time_series_cv",
     "walk_forward_evaluate",
+    "RankedModel",
+    "WinnerResult",
+    "compute_composite_score",
+    "rank_models",
+    "select_winner",
+    "compute_feature_importance",
+    "compute_shap_values",
+    "get_explainer_type",
+    "get_shap_summary",
 ]
