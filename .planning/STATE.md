@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-stopped_at: Completed Phase 23
-last_updated: "2026-03-20T20:30:00.000Z"
+stopped_at: Planning Phase 30
+last_updated: "2026-03-22T13:30:00.000Z"
 progress:
   total_phases: 30
-  completed_phases: 23
-  total_plans: 45
-  completed_plans: 45
+  completed_phases: 29
+  total_plans: 51
+  completed_plans: 46
 ---
 
 # STATE.md — Project Memory
@@ -19,14 +19,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 20 — Kubeflow Pipeline — Full Definition & Trigger
+**Current focus:** Phase 25 — React App Bootstrap & Navigation
 
 ## Current Status
 
-- **Active phase:** 24
-- **Phase name:** FastAPI Market Endpoints
-- **Phase plans:** 0/1 complete
-- **Overall progress:** 23 / 30 phases complete
+- **Active phase:** 30
+- **Phase name:** Integration Testing & Seed Data
+- **Phase plans:** 0/5 complete
+- **Overall progress:** 29 / 30 phases complete
 
 ## Phase Completion Log
 
@@ -55,13 +55,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 21 | Drift Detection System | Complete (2/2 plans) | 2026-03-20 |
 | 22 | Drift Auto-Retrain Trigger | Complete (1/1 plans) | 2026-03-20 |
 | 23 | FastAPI Prediction & Model Endpoints | Complete (1/1 plans) | 2026-03-20 |
-| 24 | FastAPI Market Endpoints | Not started | — |
-| 25 | React App Bootstrap & Navigation | Not started | — |
-| 26 | Frontend — /models Page | Not started | — |
-| 27 | Frontend — /forecasts Page | Not started | — |
-| 28 | Frontend — /dashboard Page | Not started | — |
-| 29 | Frontend — /drift Page | Not started | — |
-| 30 | Integration Testing & Seed Data | Not started | — |
+| 24 | FastAPI Market Endpoints | Complete (1/1 plans) | 2026-03-21 |
+| 25 | React App Bootstrap & Navigation | Complete | 2026-03-21 |
+| 26 | Frontend — /models Page | Complete | 2026-03-21 |
+| 27 | Frontend — /forecasts Page | Complete | 2026-03-21 |
+| 28 | Frontend — /dashboard Page | Complete | 2026-03-22 |
+| 29 | Frontend — /drift Page | Complete | 2026-03-22 |
+| 30 | Integration Testing & Seed Data | Planned (0/5 plans) | — |
 
 ## Decisions
 
@@ -182,11 +182,17 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 23]: /predict/bulk registered before /{ticker} to prevent path variable capture of "bulk"
 - [Phase 23]: Protected namespaces disabled on schemas with model_name field (Pydantic v2 compat)
 - [Phase 23]: 25 new API tests (7 predict + 8 models + 10 service), 74 total API tests passing
+- [Phase 24]: DB-backed endpoints — market overview reads from PostgreSQL via LATERAL join; indicators reuse ml.features.indicators
+- [Phase 24]: Graceful degradation — get_market_overview returns [] and get_ticker_indicators returns None when DB unavailable
+- [Phase 24]: psycopg2 lazy import inside functions so API starts even without psycopg2
+- [Phase 24]: NaN/inf → None sanitization for JSON serialization of indicator values
+- [Phase 24]: Added repo root to services/api/tests/conftest.py sys.path so ml.* imports work from API test directory
+- [Phase 24]: 14 new tests (7 router + 7 service), all passing
 
 ## Last Session
 
-- **Stopped at:** Completed Phase 23 — FastAPI Prediction & Model Endpoints
-- **Timestamp:** 2026-03-20T20:30:00Z
+- **Stopped at:** Planning Phase 30 — Integration Testing & Seed Data
+- **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
 

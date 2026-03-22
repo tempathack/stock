@@ -129,7 +129,6 @@ def _load_ohlcv_from_db(
         ORDER BY date DESC
         LIMIT %s
     """
-
     try:
         with psycopg2.connect(db_url) as conn:
             with conn.cursor() as cur:
@@ -142,5 +141,5 @@ def _load_ohlcv_from_db(
         df = df.sort_values("date").reset_index(drop=True)
         return df
     except Exception:
-        logger.exception("Failed to load OHLCV from DB for %s", ticker)
+        logger.exception("Failed to load OHLCV for %s", ticker)
         return None

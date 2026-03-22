@@ -23,6 +23,10 @@ services:
       - "2181:2181"
 
   frontend:
-    image: stock-prediction-frontend:latest
+    build: ./services/frontend
     ports:
-      - "3000:3000"
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://api:8000
+    depends_on:
+      - api

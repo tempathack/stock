@@ -32,7 +32,7 @@
 | 24 | FastAPI Market Endpoints | /market/overview, /market/indicators/{ticker} | API-11, API-12 | 3 |
 | 25 | React App Bootstrap & Navigation | App skeleton, dark theme, nav, API client, K8s deployment | FE-01–FE-06 | 4 |
 | 26 | Frontend — /models Page | Model comparison table, SHAP charts, fold charts, winner highlight | FMOD-01–FMOD-06 | 5 |
-| 27 | Frontend — /forecasts Page | Forecast table, filters, comparison, stock detail, TA overlay, SHAP | FFOR-01–FFOR-06 | 5 |
+| 27 | Frontend — /forecasts Page | Forecast table, filters, comparison, stock detail, TA overlay, SHAP | FFOR-01–FFOR-06 | 3/3 | Complete | 2026-03-21 | 5 |
 | 28 | Frontend — /dashboard Page | Treemap, intraday + historical charts, TA panel, metric cards | FDASH-01–FDASH-08 | 5 |
 | 29 | Frontend — /drift Page | Active model card, rolling perf chart, drift timeline, retrain panel, feature dists | FDRFT-01–FDRFT-05 | 4 |
 | 30 | Integration Testing & Seed Data | End-to-end flow validation, seed script | TEST-01–TEST-05 | 5 |
@@ -481,6 +481,13 @@ Plans:
 3. API client layer (React Query or Zustand) configured and hitting FastAPI health endpoint
 4. Dockerfile builds and K8s Deployment/Service applies in frontend namespace
 
+**Plans:** 0/3 plans executed
+
+Plans:
+- [ ] 25-01-PLAN.md — Vite + React + Tailwind scaffold, dark theme, API client (FE-01, FE-02, FE-05)
+- [ ] 25-02-PLAN.md — Routing, layout, sidebar navigation, page skeletons (FE-03, FE-04)
+- [ ] 25-03-PLAN.md — Dockerfile, docker-compose update, build & dev server verification (FE-06)
+
 ---
 
 ### Phase 26: Frontend — /models Page
@@ -495,6 +502,13 @@ Plans:
 3. Winner model row highlighted with reasoning tooltip
 4. SHAP feature importance bar chart rendered for selected model
 5. SHAP beeswarm plot and fold-by-fold performance chart rendered
+
+**Plans:** 0/3 plans executed
+
+Plans:
+- [ ] 26-01-PLAN.md — Install Recharts, Add Types, Build Model Comparison Table (FMOD-01, FMOD-02, FMOD-03)
+- [ ] 26-02-PLAN.md — SHAP Charts (Bar + Beeswarm) and Fold Performance Chart (FMOD-04, FMOD-05, FMOD-06)
+- [ ] 26-03-PLAN.md — Model Detail Expansion, Polish, and Build Verification
 
 ---
 
@@ -511,9 +525,16 @@ Plans:
 4. Per-stock detail shows historical + 7-day forecast chart
 5. TA indicators (RSI, MACD, Bollinger Bands) overlay on detail chart and SHAP panel rendered
 
+**Plans:** 0/3 plans executed
+
+Plans:
+- [ ] 27-01-PLAN.md — Forecast types, mock data, ForecastTable & ForecastFilters (FFOR-01, FFOR-02)
+- [ ] 27-02-PLAN.md — StockComparisonPanel, StockDetailChart, IndicatorOverlayCharts (FFOR-03, FFOR-04, FFOR-05)
+- [ ] 27-03-PLAN.md — StockShapPanel, responsive polish, edge cases, build verification (FFOR-06)
+
 ---
 
-### Phase 28: Frontend — /dashboard Page
+### Phase 28: Frontend — /dashboard Page ✅ COMPLETE (2026-03-22, 3/3 plans executed)
 
 **Goal:** Full market dashboard with interactive treemap, intraday candlestick, historical chart, TA panel, and metric cards.
 
@@ -525,6 +546,11 @@ Plans:
 3. Intraday minute-level candlestick chart renders for selected stock
 4. Historical OHLCV chart renders with adjustable timeframe selector
 5. TA panel (RSI, MACD, Bollinger Bands, MAs, Volume, VWAP) renders correctly with key metric cards
+
+Plans:
+- [x] 28-01-PLAN.md — Treemap types, mock data, MarketTreemap, MetricCards, dashboard wiring (FDASH-01, FDASH-02, FDASH-06, FDASH-08)
+- [x] 28-02-PLAN.md — CandlestickChart, HistoricalChart, TimeframeSelector (FDASH-03, FDASH-04)
+- [x] 28-03-PLAN.md — DashboardTAPanel, responsive polish, build verification (FDASH-05, FDASH-07, FDASH-08)
 
 ---
 
@@ -555,6 +581,15 @@ Plans:
 3. FastAPI prediction + market endpoints return correct data visible in React frontend
 4. Drift detection → retrain → redeploy cycle runs end-to-end without manual intervention
 5. seed-data.sh populates all tables with realistic test data for development
+
+**Plans:** 0/5 plans executed
+
+Plans:
+- [ ] 30-01-PLAN.md — seed-data.sh: populate all 6 PostgreSQL tables with realistic S&P 500 test data
+- [ ] 30-02-PLAN.md — Integration test: ingest → Kafka → PostgreSQL flow (TEST-01)
+- [ ] 30-03-PLAN.md — Integration test: ML pipeline → model registry → serving → predictions (TEST-02)
+- [ ] 30-04-PLAN.md — Integration test: FastAPI endpoints → frontend contract validation (TEST-03)
+- [ ] 30-05-PLAN.md — Integration test: drift detection → retraining → redeployment cycle (TEST-04)
 
 ---
 

@@ -1,6 +1,14 @@
 """Shared pytest fixtures for Phase 6+ tests."""
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+# Ensure the repo root is on sys.path so `ml.*` imports work from services/api/
+_repo_root = str(Path(__file__).resolve().parents[3])
+if _repo_root not in sys.path:
+    sys.path.insert(0, _repo_root)
+
 import numpy as np
 import pandas as pd
 import pytest

@@ -142,6 +142,6 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trigger_stocks_updated_at
     BEFORE UPDATE ON stocks
     FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+    EXECUTE FUNCTION update_updated_at_column();pl
 
 COMMIT;
