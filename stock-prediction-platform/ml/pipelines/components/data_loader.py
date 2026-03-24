@@ -91,6 +91,9 @@ def load_ticker_data(
     df = pd.DataFrame(rows, columns=["date"] + _COLUMNS)
     df["date"] = pd.to_datetime(df["date"])
     df = df.set_index("date")
+    # Cast NUMERIC columns from decimal.Decimal to float64 for arithmetic ops
+    for col in _COLUMNS:
+        df[col] = df[col].astype(float)
     return df
 
 

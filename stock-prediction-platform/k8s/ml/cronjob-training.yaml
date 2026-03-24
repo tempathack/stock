@@ -49,6 +49,15 @@ spec:
                       key: DATABASE_URL_WRITER
                 - name: STORAGE_BACKEND
                   value: "s3"
+                - name: TICKERS
+                  value: "AAPL,MSFT,GOOGL,AMZN,NVDA,META,TSLA,JPM,JNJ,V"
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: POSTGRES_PASSWORD
+                - name: POSTGRES_USER
+                  value: "stockuser"
               resources:
                 requests:
                   cpu: "500m"

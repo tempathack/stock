@@ -84,7 +84,7 @@ BEGIN
         FOR d IN
             SELECT dd::date
             FROM generate_series(
-                CURRENT_DATE - INTERVAL '130 days',
+                CURRENT_DATE - INTERVAL '500 days',
                 CURRENT_DATE - INTERVAL '1 day',
                 '1 day'
             ) AS dd

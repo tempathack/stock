@@ -28,6 +28,7 @@ from ml.pipelines.components.model_trainer import (
     _build_pipeline,
     prepare_training_data,
     train_all_models,
+    train_linear_models,
 )
 from ml.models.ensemble import StackingEnsemble
 from ml.pipelines.components.model_selector import select_and_persist_winner
@@ -161,6 +162,7 @@ def run_training_pipeline(
     enable_ensemble: bool = True,
     use_feature_store: bool = False,
     horizons: list[int] | None = None,
+    linear_only: bool = False,
 ) -> PipelineRunResult:
     """Execute the full 12-step training pipeline.
 
@@ -244,7 +246,11 @@ def run_training_pipeline(
                     )
 
                     # Step 5: Train all models
-                    results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits)
+                    if linear_only:
+                        logger.info("LINEAR_ONLY mode — skipping tree/booster models for speed")
+                        results_list = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
+                    else:
+                        results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits)
                     pipelines = _rebuild_pipelines(results_list, X_train, y_train)
                     total_models += len(results_list)
 
@@ -333,7 +339,11 @@ def run_training_pipeline(
             )
 
             # Step 5: Train all models
-            results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits)
+            if linear_only:
+                logger.info("LINEAR_ONLY mode — skipping tree/booster models for speed")
+                results_list = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
+            else:
+                results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits)
             pipelines = _rebuild_pipelines(results_list, X_train, y_train)
             result.n_models_trained = len(results_list)
             result.steps_completed.append("train_models")
@@ -443,9 +453,12 @@ if __name__ == "__main__":
         description="Run the stock prediction training pipeline",
     )
     parser.add_argument("--tickers", type=str, help="Comma-separated ticker list")
-    parser.add_argument("--registry-dir", default="model_registry")
-    parser.add_argument("--serving-dir", default="/models/active")
+    parser.add_argument("--registry-dir", default=os.environ.get("MODEL_REGISTRY_DIR", "model_registry"))
+    parser.add_argument("--serving-dir", default=os.environ.get("SERVING_DIR", "/models/active"))
     parser.add_argument("--skip-shap", action="store_true")
+    parser.add_argument("--linear-only", action="store_true",
+        help="Train only linear models (faster, for E2E validation). "
+             "Also enabled via LINEAR_ONLY=true env var.")
     parser.add_argument(
         "--horizons", type=str, default=None,
         help="Comma-separated horizon days for multi-horizon mode (e.g. 1,7,30)",
@@ -459,11 +472,13 @@ if __name__ == "__main__":
         if args.horizons
         else None
     )
+    linear_only = args.linear_only or os.environ.get("LINEAR_ONLY", "").lower() in ("1", "true", "yes")
     run_result = run_training_pipeline(
         tickers=tickers,
         registry_dir=args.registry_dir,
         serving_dir=args.serving_dir,
         skip_shap=args.skip_shap,
         horizons=horizons_list,
+        linear_only=linear_only,
     )
     print(json.dumps(run_result.to_dict(), indent=2, default=str))
