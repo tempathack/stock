@@ -1203,6 +1203,26 @@ Plans:
 - [x] 57-01-PLAN.md — Remove legacy manifests, update deploy-all.sh, reclaim PVC
 - [x] 57-02-PLAN.md — Full E2E smoke test (train → serve → predict → drift → retrain), update README
 
+### Phase 58: Fix docker-compose runtime: kafka-consumer configurable broker + ml-pipeline entrypoint fix
+
+**Goal:** Fix two docker-compose runtime crashes: kafka-consumer hardcoded K8s broker default and ml-pipeline ValueError when TICKERS not provided via CLI.
+**Requirements**: FIX-KAFKA, FIX-ML
+**Depends on:** Phase 57
+**Plans:** 1 plan
+
+Plans:
+- [ ] 58-01-PLAN.md — Fix ConsumerSettings broker default, inject env vars in docker-compose, fix __main__ TICKERS env fallback
+
+### Phase 59: Minikube E2E validation: start cluster, deploy full stack, run ingest-train-serve flow
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 58
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 59 to break down)
+
 ---
 
 ## Requirement Traceability
