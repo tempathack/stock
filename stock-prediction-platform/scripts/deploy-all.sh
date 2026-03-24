@@ -139,11 +139,14 @@ kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-m
 kubectl wait --for=condition=Available deployment/cert-manager-cainjector -n cert-manager --timeout=180s
 
 echo "[Phase 54] Installing KServe (RawDeployment mode)..."
-kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.14.1/kserve.yaml
+# Use --server-side to avoid the 256KB last-applied-configuration annotation limit on KServe CRDs
+kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.14.1/kserve.yaml \
+    --server-side --force-conflicts
 kubectl wait --for=condition=Available deployment/kserve-controller-manager -n kserve --timeout=180s
 
 echo "[Phase 54] Installing KServe cluster resources (ServingRuntimes)..."
-kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.14.1/kserve-cluster-resources.yaml
+kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.14.1/kserve-cluster-resources.yaml \
+    --server-side --force-conflicts
 
 echo "[Phase 54] Configuring KServe for RawDeployment mode..."
 kubectl patch configmap/inferenceservice-config -n kserve --type=merge \
