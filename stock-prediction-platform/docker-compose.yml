@@ -3,6 +3,10 @@ services:
     image: stock-prediction-api:latest
     ports:
       - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
 
   kafka-consumer:
     image: stock-prediction-consumer:latest
@@ -22,6 +26,12 @@ services:
     ports:
       - "2181:2181"
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+
   frontend:
     build: ./services/frontend
     ports:
@@ -30,3 +40,40 @@ services:
       - VITE_API_URL=http://api:8000
     depends_on:
       - api
+
+  ml-pipeline:
+    build:
+      context: .
+      dockerfile: ml/Dockerfile
+    image: stock-ml-pipeline:latest
+    environment:
+      - DATABASE_URL=postgresql://stockuser:${POSTGRES_PASSWORD}@postgres:5432/stockdb
+      - MODEL_REGISTRY_DIR=/data/model_registry
+      - SERVING_DIR=/data/models/active
+      - DRIFT_LOG_DIR=/data/drift_logs
+    depends_on:
+      - postgres
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  loki:
+    image: grafana/loki:2.9.6
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    depends_on:
+      - prometheus
+      - loki

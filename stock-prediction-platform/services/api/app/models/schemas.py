@@ -15,6 +15,8 @@ class PredictionResponse(BaseModel):
     predicted_price: float
     model_name: str
     confidence: float | None = None
+    horizon_days: int | None = None
+    assigned_model_id: int | None = None
 
 
 class BulkPredictionResponse(BaseModel):
@@ -22,6 +24,12 @@ class BulkPredictionResponse(BaseModel):
     model_name: str | None = None
     generated_at: str | None = None
     count: int
+    horizon_days: int | None = None
+
+
+class AvailableHorizonsResponse(BaseModel):
+    horizons: list[int]
+    default: int
 
 
 # ── Ingestion ─────────────────────────────────────────────────────────────
@@ -48,6 +56,7 @@ class ModelComparisonEntry(BaseModel):
     version: int | None = None
     is_winner: bool
     is_active: bool
+    traffic_weight: float = 0.0
     oos_metrics: dict = {}
     fold_stability: float | None = None
     best_params: dict = {}
@@ -74,6 +83,34 @@ class DriftStatusResponse(BaseModel):
     any_recent_drift: bool
     latest_event: DriftEventEntry | None = None
     count: int
+
+
+# ── Rolling Performance & Retrain Status ─────────────────────────────────
+
+
+class RollingPerfEntry(BaseModel):
+    date: str
+    rmse: float | None = None
+    mae: float | None = None
+    directional_accuracy: float | None = None
+    n_predictions: int = 0
+
+
+class RollingPerformanceResponse(BaseModel):
+    entries: list[RollingPerfEntry] = []
+    model_name: str | None = None
+    period_days: int = 30
+    count: int = 0
+
+
+class RetrainStatusResponse(BaseModel):
+    model_name: str | None = None
+    version: str | None = None
+    trained_at: str | None = None
+    is_active: bool = False
+    oos_metrics: dict = {}
+    previous_model: str | None = None
+    previous_trained_at: str | None = None
 
 
 # ── Market ────────────────────────────────────────────────────────────────
@@ -128,3 +165,68 @@ class TickerIndicatorsResponse(BaseModel):
     latest: IndicatorValues | None = None
     series: list[IndicatorValues] = []
     count: int
+
+
+# ── Backtest ──────────────────────────────────────────────────────────────
+
+
+class BacktestDataPoint(BaseModel):
+    date: str
+    actual_price: float
+    predicted_price: float
+    error: float
+    error_pct: float
+
+
+class BacktestMetrics(BaseModel):
+    rmse: float
+    mae: float
+    mape: float
+    directional_accuracy: float
+    r2: float
+    total_points: int
+
+
+class BacktestResponse(BaseModel):
+    ticker: str
+    model_name: str
+    horizon: int
+    start_date: str
+    end_date: str
+    metrics: BacktestMetrics
+    series: list[BacktestDataPoint]
+
+
+# ── A/B Testing ───────────────────────────────────────────────────────────
+
+
+class ABTestAssignmentEntry(BaseModel):
+    id: int
+    ticker: str
+    model_id: int
+    model_name: str
+    predicted_price: float
+    actual_price: float | None = None
+    horizon_days: int = 7
+    assigned_at: str
+    evaluated_at: str | None = None
+
+
+class ABResultsModelEntry(BaseModel):
+    model_id: int
+    model_name: str
+    version: str | None = None
+    traffic_weight: float = 0.0
+    n_assignments: int = 0
+    n_evaluated: int = 0
+    mae: float | None = None
+    rmse: float | None = None
+    directional_accuracy: float | None = None
+
+
+class ABResultsResponse(BaseModel):
+    models: list[ABResultsModelEntry]
+    total_assignments: int = 0
+    total_evaluated: int = 0
+    period_start: str | None = None
+    period_end: str | None = None

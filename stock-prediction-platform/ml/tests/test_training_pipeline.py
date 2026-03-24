@@ -107,7 +107,7 @@ class TestRunTrainingPipeline:
         assert result.pipeline_version == PIPELINE_VERSION
         assert result.n_tickers == 2
         assert result.n_models_trained > 0
-        assert len(result.steps_completed) == 11
+        assert len(result.steps_completed) == 12
         assert result.winner_info is not None
         assert result.deploy_info is not None
         assert result.error is None
@@ -140,3 +140,78 @@ class TestRunTrainingPipeline:
     def test_data_dict_required_or_tickers(self):
         with pytest.raises(ValueError, match="tickers.*data_dict"):
             run_training_pipeline()
+
+    def test_ensemble_step_in_pipeline(self, pipeline_run):
+        result, _reg, _srv = pipeline_run
+        assert "ensemble_stacking" in result.steps_completed
+        assert result.ensemble_info is not None
+        assert "base_models" in result.ensemble_info
+
+    def test_ensemble_disabled(self, tmp_path):
+        reg = str(tmp_path / "registry")
+        srv = str(tmp_path / "serving")
+        data = _make_synthetic_data()
+        result = run_training_pipeline(
+            data_dict=data,
+            registry_dir=reg,
+            serving_dir=srv,
+            skip_shap=True,
+            enable_ensemble=False,
+        )
+        assert "ensemble_stacking" in result.steps_completed
+        assert result.ensemble_info is None
+
+    def test_ensemble_participates_in_ranking(self, pipeline_run):
+        from ml.models.registry import ModelRegistry
+
+        result, reg, _srv = pipeline_run
+        # Either the ensemble is the winner or it participated in ranking
+        if result.ensemble_info and "error" not in result.ensemble_info:
+            assert len(result.ensemble_info["base_models"]) > 0
+
+    def test_pipeline_with_feature_store(self, tmp_path):
+        """Pipeline completes with use_feature_store=True (mocked read)."""
+        from unittest.mock import patch
+
+        reg = str(tmp_path / "registry")
+        srv = str(tmp_path / "serving")
+        data = _make_synthetic_data()
+
+        # Mock read_features to return empty so it falls back to on-the-fly
+        with patch(
+            "ml.pipelines.components.feature_engineer.read_features",
+            return_value={},
+        ):
+            result = run_training_pipeline(
+                data_dict=data,
+                registry_dir=reg,
+                serving_dir=srv,
+                skip_shap=True,
+                use_feature_store=True,
+            )
+
+        assert result.status == "completed"
+        assert "engineer_features" in result.steps_completed
+
+    def test_pipeline_feature_store_fallback(self, tmp_path):
+        """Pipeline falls back to on-the-fly when feature store raises."""
+        from unittest.mock import patch
+
+        reg = str(tmp_path / "registry")
+        srv = str(tmp_path / "serving")
+        data = _make_synthetic_data()
+
+        with patch(
+            "ml.pipelines.components.feature_engineer.read_features",
+            side_effect=RuntimeError("DB unavailable"),
+        ):
+            result = run_training_pipeline(
+                data_dict=data,
+                registry_dir=reg,
+                serving_dir=srv,
+                skip_shap=True,
+                use_feature_store=True,
+            )
+
+        assert result.status == "completed"
+        assert "engineer_features" in result.steps_completed

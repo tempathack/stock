@@ -65,7 +65,7 @@ class TestPredictTicker:
         data = resp.json()
         assert set(data.keys()) == {
             "ticker", "prediction_date", "predicted_date",
-            "predicted_price", "model_name", "confidence",
+            "predicted_price", "model_name", "confidence", "horizon_days",
         }
 
 
@@ -94,7 +94,7 @@ class TestPredictBulk:
         resp = client.get("/predict/bulk")
         data = resp.json()
         assert set(data.keys()) == {
-            "predictions", "model_name", "generated_at", "count",
+            "predictions", "model_name", "generated_at", "count", "horizon_days",
         }
         for pred in data["predictions"]:
             assert "ticker" in pred

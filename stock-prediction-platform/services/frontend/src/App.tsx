@@ -8,6 +8,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Models = lazy(() => import("./pages/Models"));
 const Forecasts = lazy(() => import("./pages/Forecasts"));
 const Drift = lazy(() => import("./pages/Drift"));
+const Backtest = lazy(() => import("./pages/Backtest"));
 
 export default function App() {
   return (
@@ -45,6 +46,14 @@ export default function App() {
               element={
                 <Suspense fallback={<LoadingSpinner />}>
                   <Drift />
+                </Suspense>
+              }
+            />
+            <Route
+              path="backtest"
+              element={
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Backtest />
                 </Suspense>
               }
             />

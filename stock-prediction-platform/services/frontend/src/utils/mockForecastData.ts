@@ -44,10 +44,10 @@ function seededRandom(seed: string): () => number {
   };
 }
 
-export function generateMockForecasts(): ForecastRow[] {
+export function generateMockForecasts(horizon = 7): ForecastRow[] {
   const rng = seededRandom("forecasts_phase27");
   const today = new Date().toISOString().split("T")[0]!;
-  const futureDate = new Date(Date.now() + 7 * 86400000)
+  const futureDate = new Date(Date.now() + horizon * 86400000)
     .toISOString()
     .split("T")[0]!;
 
@@ -70,6 +70,7 @@ export function generateMockForecasts(): ForecastRow[] {
       model_name: "Ridge_standard",
       prediction_date: today,
       predicted_date: futureDate,
+      horizon_days: horizon,
     };
   });
 }

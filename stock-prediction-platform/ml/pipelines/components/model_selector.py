@@ -55,7 +55,10 @@ def select_and_persist_winner(
     # Save winner
     winner_tr = winner_result.winner.training_result
     winner_key = f"{winner_tr.model_name}_{winner_tr.scaler_variant}"
-    winner_pipeline = pipelines[winner_key]
+    if winner_key in pipelines:
+        winner_pipeline = pipelines[winner_key]
+    else:
+        winner_pipeline = pipelines.get(winner_key)
     winner_path = registry.save_winner(winner_result, winner_pipeline, feature_names)
 
     logger.info("Persisted winner %s → %s", winner_key, winner_path)

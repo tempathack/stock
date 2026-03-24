@@ -211,14 +211,137 @@
 - [ ] **TEST-04**: Drift detection → retraining → redeployment cycle validated
 - [ ] **TEST-05**: seed-data.sh script for test data population
 
+---
+
+## v1.1 Requirements
+
+### Live Inference Integration
+
+- [ ] **LIVE-01**: GET /predict/{ticker} returns live model inference (not cached JSON)
+- [ ] **LIVE-02**: GET /predict/bulk runs live inference for all configured tickers
+- [ ] **LIVE-03**: GET /models/comparison queries model_registry table when DATABASE_URL set
+- [ ] **LIVE-04**: GET /models/drift queries drift_logs table when DATABASE_URL set
+- [ ] **LIVE-05**: Graceful fallback to cached file responses when DB or model unavailable
+- [ ] **LIVE-06**: Frontend shows loading spinner during API fetch (no flash of mock data)
+- [ ] **LIVE-07**: Frontend uses API as primary data source; mock data only on error
+- [ ] **LIVE-08**: New API endpoints: /models/drift/rolling-performance and /models/retrain-status
+- [ ] **LIVE-09**: Drift page powered by live API data (rolling perf, retrain status, feature dists)
+
+### ML K8s Deployment
+
+- [ ] **DEPLOY-01**: ML pipeline Dockerfile (Python 3.11, multi-stage, all ML dependencies)
+- [ ] **DEPLOY-02**: K8s ConfigMap for ML namespace (DATABASE_URL, MODEL_REGISTRY_DIR, SERVING_DIR, DRIFT_LOG_DIR)
+- [ ] **DEPLOY-03**: K8s CronJob for weekly model retraining (Sunday 03:00 UTC)
+- [ ] **DEPLOY-04**: K8s CronJob for daily drift detection (weekdays 22:00 UTC)
+- [ ] **DEPLOY-05**: PersistentVolumeClaim for model artifacts (5Gi, ReadWriteOnce)
+- [ ] **DEPLOY-06**: model-serving Deployment uses PVC (not emptyDir)
+- [ ] **DEPLOY-07**: deploy-all.sh phases 17–25 uncommented and active
+- [ ] **DEPLOY-08**: ml/drift/trigger.py CLI entry point for K8s CronJob execution
+
+### Monitoring & Observability
+
+- [ ] **MON-01**: FastAPI /metrics endpoint via prometheus-fastapi-instrumentator
+- [ ] **MON-02**: Custom Prometheus metrics: prediction_requests_total, prediction_latency_seconds, model_inference_errors_total
+- [ ] **MON-03**: Kafka consumer /metrics on port 9090 (messages_consumed_total, batch_write_duration, consumer_lag)
+- [ ] **MON-04**: Prometheus server deployed in monitoring namespace
+- [ ] **MON-05**: Grafana deployed with provisioned datasources and dashboards
+- [ ] **MON-06**: API Health dashboard (request rate, latency p50/p95/p99, error rate)
+- [ ] **MON-07**: ML Performance dashboard (model RMSE over time, retraining frequency, drift events)
+- [ ] **MON-08**: Alert rules: drift severity high → Slack, API error rate > 5%, Kafka consumer lag > 1000
+- [ ] **MON-09**: structlog JSON output configured for FastAPI and Kafka consumer
+- [ ] **MON-10**: Centralized log aggregation via Loki + Promtail with Grafana datasource
+
+### Database Hardening
+
+- [ ] **DBHARD-01**: Alembic configured with alembic.ini, env.py, and versions/ directory
+- [ ] **DBHARD-02**: Initial Alembic migration matching db/init.sql schema (all 6 tables)
+- [ ] **DBHARD-03**: API Dockerfile runs alembic upgrade head on startup
+- [ ] **DBHARD-04**: SQLAlchemy async engine with connection pooling (pool_size=10, max_overflow=20)
+- [ ] **DBHARD-05**: market_service.py migrated from raw psycopg2 to SQLAlchemy async sessions
+- [ ] **DBHARD-06**: K8s Secrets replace hardcoded credentials in configmaps
+- [ ] **DBHARD-07**: Database RBAC roles: stock_readonly (API reads), stock_writer (consumer + ML)
+- [ ] **DBHARD-08**: Daily pg_dump backup CronJob with 7-day retention
+
+### Advanced ML Capabilities
+
+- [ ] **ADVML-01**: StackingRegressor ensemble with Ridge meta-learner from top-N base models
+- [ ] **ADVML-02**: Ensemble integrated into training_pipeline.py as optional step after ranking
+- [ ] **ADVML-03**: Multi-horizon target generation (1d, 7d, 30d) in label_generator.py
+- [ ] **ADVML-04**: Separate model suite trained per prediction horizon
+- [ ] **ADVML-05**: GET /predict/{ticker}?horizon=1|7|30 query parameter support
+- [ ] **ADVML-06**: Frontend horizon toggle (1D / 7D / 30D) on Forecasts page
+- [ ] **ADVML-07**: feature_store PostgreSQL table with daily CronJob for precomputed features
+- [ ] **ADVML-08**: Training pipeline reads from feature store instead of computing on-the-fly
+
+### Frontend Enhancements
+
+- [ ] **FENH-01**: WebSocket endpoint /ws/prices pushing price updates every 5s during market hours
+- [ ] **FENH-02**: useWebSocket.ts custom React hook with reconnection logic
+- [ ] **FENH-03**: Dashboard CandlestickChart receives live candle updates via WebSocket
+- [ ] **FENH-04**: GET /backtest/{ticker}?start=...&end=... endpoint returning actual vs predicted series
+- [ ] **FENH-05**: Backtest.tsx page with dual-line chart (actual vs predicted) and metrics summary
+- [x] **FENH-06**: CSV and PDF export buttons on Forecasts, Models, and Backtest pages
+- [x] **FENH-07**: Mobile responsive layout (sm/md/lg breakpoints, treemap→list, tables→cards)
+
+### Production Hardening
+
+- [x] **PROD-01**: Redis deployed in storage namespace (single replica, 256Mi)
+- [x] **PROD-02**: API response caching with configurable TTL (market 30s, predictions 60s, models 300s)
+- [x] **PROD-03**: Cache invalidation on model retrain (pub/sub or manual flush)
+- [ ] **PROD-04**: API rate limiting via slowapi (100/min global, 30/min /predict, 10/min /ingest)
+- [ ] **PROD-05**: Deep health checks: DB connectivity, Kafka reachability, model freshness, prediction staleness
+- [x] **PROD-06**: A/B model testing with traffic_weight field in model_registry
+- [x] **PROD-07**: ab_test_assignments table logging which model served each prediction
+- [x] **PROD-08**: GET /models/ab-results endpoint comparing live accuracy of concurrent models
+
+### Object Storage — MinIO
+
+- [ ] **OBJST-01**: MinIO deployed in storage namespace with persistent volume (10Gi)
+- [ ] **OBJST-02**: S3 buckets created: model-artifacts, drift-logs
+- [ ] **OBJST-03**: K8s Secret for MinIO root credentials (access key, secret key)
+- [ ] **OBJST-04**: K8s ConfigMap with MINIO_ENDPOINT, MINIO_BUCKET_MODELS, MINIO_BUCKET_DRIFT
+- [ ] **OBJST-05**: boto3 or minio SDK added to ml/requirements.txt
+- [ ] **OBJST-06**: ModelRegistry save/load operations use S3-compatible API
+- [ ] **OBJST-07**: Model artifacts stored at s3://model-artifacts/{model_name}/{version}/
+- [ ] **OBJST-08**: STORAGE_BACKEND env var toggles between local filesystem and S3
+- [ ] **OBJST-09**: Training pipeline persists artifacts to MinIO
+- [ ] **OBJST-10**: Deployer uploads winner model to s3://model-artifacts/serving/active/
+- [ ] **OBJST-11**: Drift pipeline reads/writes from MinIO (drift logs + baseline models)
+- [ ] **OBJST-12**: K8s CronJobs use MinIO env vars instead of PVC mounts
+
+### Model Serving — KServe
+
+- [ ] **KSERV-01**: KServe controller deployed (cert-manager + KServe manifests)
+- [ ] **KSERV-02**: KServe CRDs installed (InferenceService, ServingRuntime, ClusterServingRuntime)
+- [ ] **KSERV-03**: KServe configured with S3 credentials for MinIO access
+- [ ] **KSERV-04**: ClusterServingRuntime for sklearn models deployed
+- [ ] **KSERV-05**: InferenceService CR pointing to s3://model-artifacts/serving/active/
+- [ ] **KSERV-06**: KServe predictor pod downloads model from MinIO via storage-initializer
+- [ ] **KSERV-07**: V2 inference protocol endpoint operational (POST /v2/models/{model}/infer)
+- [ ] **KSERV-08**: Autoscaling configured (scale-to-zero on idle)
+- [ ] **KSERV-09**: prediction_service.py calls KServe V2 inference endpoint via HTTP
+- [ ] **KSERV-10**: KSERVE_INFERENCE_URL configurable via K8s ConfigMap
+- [ ] **KSERV-11**: Prediction API response schema backward-compatible with pre-KServe format
+- [ ] **KSERV-12**: A/B model testing uses KServe canary traffic splitting (percentTraffic)
+- [ ] **KSERV-13**: Legacy model-serving.yaml Deployment removed
+- [ ] **KSERV-14**: deploy-all.sh updated with MinIO + KServe deployment steps
+- [ ] **KSERV-15**: E2E flow validated: train → MinIO → KServe → predict → drift → retrain
+
+---
+
 ## v2 Requirements (Deferred)
 
-- OAuth / multi-user authentication
+- OAuth / multi-user authentication & watchlists
+- User alerts system (price/prediction/drift notifications)
 - Cloud deployment (AWS/GCP/Azure)
 - Non-S&P 500 universes (crypto, international equities)
-- Real-time WebSocket streaming to frontend
-- Live trading / order execution integration
+- Sentiment / alternative data (news API + FinBERT)
+- Sector-level model training (separate model suites per GICS sector)
+- Portfolio optimization (Markowitz mean-variance, risk-parity)
 - Deep learning models (LSTM, Transformer)
+- KFP containerized pipeline components (replace plain K8s CronJobs)
+- Live trading / order execution integration
+- Canary deployment with Istio traffic splitting
 
 ## Out of Scope
 
@@ -233,4 +356,60 @@
 
 | Phase | Requirements Covered |
 |-------|---------------------|
-| TBD — see ROADMAP.md | |
+| 1 | INFRA-03, INFRA-06, INFRA-09 |
+| 2 | INFRA-01, INFRA-02, INFRA-04, INFRA-05 |
+| 3 | API-01–04 |
+| 4 | DB-01–07 |
+| 5 | KAFKA-01–05 |
+| 6 | INGEST-01–03, INGEST-06 |
+| 7 | API-05–06 |
+| 8 | INGEST-04–05 |
+| 9 | CONS-01–07 |
+| 10 | FEAT-01–14 |
+| 11 | FEAT-15–21 |
+| 12 | MODEL-01–06, MODEL-19–21 |
+| 13 | MODEL-07–12, MODEL-16–18 |
+| 14 | MODEL-13–15 |
+| 15 | EVAL-01–10 |
+| 16 | EVAL-11–12 |
+| 17 | KF-01–04 |
+| 18 | KF-05–08 |
+| 19 | KF-09–12 |
+| 20 | KF-13–15 |
+| 21 | DRIFT-01–05 |
+| 22 | DRIFT-06–07 |
+| 23 | API-07–10 |
+| 24 | API-11–12 |
+| 25 | FE-01–06 |
+| 26 | FMOD-01–06 |
+| 27 | FFOR-01–06 |
+| 28 | FDASH-01–08 |
+| 29 | FDRFT-01–05 |
+| 30 | TEST-01–05 |
+| 31 | LIVE-01–05 |
+| 32 | LIVE-06–09 |
+| 33 | DEPLOY-01–02 |
+| 34 | DEPLOY-03–08 |
+| 35 | DBHARD-01–03 |
+| 36 | DBHARD-06–07 |
+| 37 | MON-01–03 |
+| 38 | MON-04–08 |
+| 39 | MON-09–10 |
+| 40 | DBHARD-04–05 |
+| 41 | DBHARD-08 |
+| 42 | ADVML-01–02 |
+| 43 | ADVML-03–06 |
+| 44 | ADVML-07–08 |
+| 45 | FENH-01–03 |
+| 46 | FENH-04–05 |
+| 47 | PROD-01–03 |
+| 48 | PROD-04–05 |
+| 49 | PROD-06–08 |
+| 50 | FENH-06–07 |
+| 51 | OBJST-01–04 |
+| 52 | OBJST-05–08 |
+| 53 | OBJST-09–12 |
+| 54 | KSERV-01–04 |
+| 55 | KSERV-05–08 |
+| 56 | KSERV-09–12 |
+| 57 | KSERV-13–15 |

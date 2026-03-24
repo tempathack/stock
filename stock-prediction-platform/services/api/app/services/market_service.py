@@ -7,26 +7,23 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from sqlalchemy import text
+
+from app.models.database import get_async_session, get_engine
 
 logger = logging.getLogger(__name__)
 
 
-def get_market_overview(db_url: str | None = None) -> list[dict]:
+async def get_market_overview() -> list[dict]:
     """Return market overview data for all tracked stocks.
 
-    Reads from PostgreSQL when *db_url* is provided.  Returns empty list when
-    the database is unavailable.
+    Uses async SQLAlchemy session from the connection pool.
+    Returns empty list when the database is unavailable.
     """
-    if not db_url:
+    if get_engine() is None:
         return []
 
-    try:
-        import psycopg2  # noqa: F811
-    except ImportError:
-        logger.warning("psycopg2 not available — returning empty overview")
-        return []
-
-    query = """
+    query = text("""
         SELECT s.ticker, s.company_name, s.sector, s.market_cap,
                d.close AS last_close,
                CASE WHEN d.open > 0
@@ -41,33 +38,30 @@ def get_market_overview(db_url: str | None = None) -> list[dict]:
         ) d ON TRUE
         WHERE s.is_active = true
         ORDER BY s.market_cap DESC NULLS LAST
-    """
+    """)
 
     try:
-        with psycopg2.connect(db_url) as conn:
-            with conn.cursor() as cur:
-                cur.execute(query)
-                cols = [desc[0] for desc in cur.description]
-                rows = cur.fetchall()
-        return [dict(zip(cols, row)) for row in rows]
+        async with get_async_session() as session:
+            result = await session.execute(query)
+            rows = result.mappings().all()
+        return [dict(row) for row in rows]
     except Exception:
         logger.exception("Failed to fetch market overview from DB")
         return []
 
 
-def get_ticker_indicators(
+async def get_ticker_indicators(
     ticker: str,
     ohlcv_df: pd.DataFrame | None = None,
-    db_url: str | None = None,
     lookback: int = 250,
 ) -> dict[str, Any] | None:
     """Compute technical indicators for a single ticker.
 
-    Accepts either a pre-loaded *ohlcv_df* or fetches from DB via *db_url*.
+    Accepts either a pre-loaded *ohlcv_df* or fetches from DB via async session.
     Returns ``None`` when no data is available.
     """
-    if ohlcv_df is None and db_url:
-        ohlcv_df = _load_ohlcv_from_db(ticker, db_url, lookback)
+    if ohlcv_df is None and get_engine() is not None:
+        ohlcv_df = await _load_ohlcv_from_db(ticker, lookback)
 
     if ohlcv_df is None or ohlcv_df.empty:
         return None
@@ -113,31 +107,26 @@ def get_ticker_indicators(
     }
 
 
-def _load_ohlcv_from_db(
-    ticker: str, db_url: str, lookback: int,
+async def _load_ohlcv_from_db(
+    ticker: str, lookback: int,
 ) -> pd.DataFrame | None:
-    """Load recent OHLCV bars from PostgreSQL."""
-    try:
-        import psycopg2
-    except ImportError:
-        return None
-
-    query = """
+    """Load recent OHLCV bars from PostgreSQL via async session."""
+    query = text("""
         SELECT date, open, high, low, close, volume
         FROM ohlcv_daily
-        WHERE ticker = %s
+        WHERE ticker = :ticker
         ORDER BY date DESC
-        LIMIT %s
-    """
+        LIMIT :lookback
+    """)
     try:
-        with psycopg2.connect(db_url) as conn:
-            with conn.cursor() as cur:
-                cur.execute(query, (ticker.upper(), lookback))
-                cols = [desc[0] for desc in cur.description]
-                rows = cur.fetchall()
+        async with get_async_session() as session:
+            result = await session.execute(
+                query, {"ticker": ticker.upper(), "lookback": lookback},
+            )
+            rows = result.mappings().all()
         if not rows:
             return None
-        df = pd.DataFrame(rows, columns=cols)
+        df = pd.DataFrame([dict(r) for r in rows])
         df = df.sort_values("date").reset_index(drop=True)
         return df
     except Exception:

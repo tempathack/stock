@@ -2,17 +2,15 @@
 
 from __future__ import annotations
 
-import json
 import logging
 import pickle
-import shutil
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 from sklearn.pipeline import Pipeline
 
 from ml.models.model_configs import TrainingResult
+from ml.models.storage_backends import StorageBackend, create_storage_backend
 
 if TYPE_CHECKING:
     from ml.evaluation.ranking import WinnerResult
@@ -21,19 +19,30 @@ logger = logging.getLogger(__name__)
 
 
 class ModelRegistry:
-    """File-based model registry for artifact persistence and retrieval.
+    """Model registry for artifact persistence and retrieval.
+
+    Uses a pluggable :class:`StorageBackend` for I/O.  When no *backend* is
+    provided, one is created automatically via :func:`create_storage_backend`
+    based on the ``STORAGE_BACKEND`` environment variable (``local`` or ``s3``).
 
     Storage layout::
 
-        {base_dir}/{model_name}_{scaler_variant}/v{version}/
+        {model_name}_{scaler_variant}/v{version}/
             pipeline.pkl
             metadata.json
             features.json
     """
 
-    def __init__(self, base_dir: str = "model_registry") -> None:
-        self._base = Path(base_dir)
-        self._base.mkdir(parents=True, exist_ok=True)
+    def __init__(
+        self,
+        base_dir: str = "model_registry",
+        backend: StorageBackend | None = None,
+    ) -> None:
+        self._base_dir = base_dir
+        if backend is not None:
+            self._backend = backend
+        else:
+            self._backend = create_storage_backend(base_dir=base_dir)
 
     # ------------------------------------------------------------------
     # Save
@@ -50,22 +59,13 @@ class ModelRegistry:
     ) -> str:
         """Persist a trained pipeline, metadata, and feature list.
 
-        Returns the path to the version directory.
+        Returns the logical version key (e.g. ``"ridge_standard/v1"``).
         """
         model_key = f"{result.model_name}_{result.scaler_variant}"
-        model_dir = self._base / model_key
 
         if version is None:
-            version = self._next_version(model_dir)
+            version = self._next_version(model_key)
 
-        ver_dir = model_dir / f"v{version}"
-        ver_dir.mkdir(parents=True, exist_ok=True)
-
-        # pipeline
-        with open(ver_dir / "pipeline.pkl", "wb") as f:
-            pickle.dump(pipeline, f)
-
-        # metadata
         metadata = {
             "model_name": result.model_name,
             "scaler_variant": result.scaler_variant,
@@ -78,15 +78,16 @@ class ModelRegistry:
             "saved_at": datetime.now(timezone.utc).isoformat(),
             "version": version,
         }
-        with open(ver_dir / "metadata.json", "w") as f:
-            json.dump(metadata, f, indent=2, default=str)
 
-        # features
-        with open(ver_dir / "features.json", "w") as f:
-            json.dump(feature_names, f, indent=2)
+        ver_key = f"{model_key}/v{version}"
+        self._backend.write_bytes(
+            f"{ver_key}/pipeline.pkl", pickle.dumps(pipeline),
+        )
+        self._backend.write_json(f"{ver_key}/metadata.json", metadata)
+        self._backend.write_json(f"{ver_key}/features.json", feature_names)
 
-        logger.info("Saved %s v%d → %s", model_key, version, ver_dir)
-        return str(ver_dir)
+        logger.info("Saved %s v%d → %s", model_key, version, ver_key)
+        return ver_key
 
     def save_winner(
         self,
@@ -118,33 +119,29 @@ class ModelRegistry:
         Raises ``FileNotFoundError`` if the model or version does not exist.
         """
         model_key = f"{model_name}_{scaler_variant}"
-        model_dir = self._base / model_key
-
-        if not model_dir.exists():
-            raise FileNotFoundError(f"Model {model_key} not found in registry.")
 
         if version is None:
-            version = self._latest_version(model_dir)
+            version = self._latest_version(model_key)
 
-        ver_dir = model_dir / f"v{version}"
-        if not ver_dir.exists():
-            raise FileNotFoundError(f"Version v{version} not found for {model_key}.")
+        ver_key = f"{model_key}/v{version}"
 
-        with open(ver_dir / "pipeline.pkl", "rb") as f:
-            pipeline = pickle.load(f)  # noqa: S301
+        if not self._backend.exists(f"{ver_key}/metadata.json"):
+            raise FileNotFoundError(
+                f"Model {model_key} v{version} not found in registry.",
+            )
 
-        with open(ver_dir / "metadata.json") as f:
-            metadata = json.load(f)
-
-        with open(ver_dir / "features.json") as f:
-            feature_names = json.load(f)
+        pipeline = pickle.loads(  # noqa: S301
+            self._backend.read_bytes(f"{ver_key}/pipeline.pkl"),
+        )
+        metadata = self._backend.read_json(f"{ver_key}/metadata.json")
+        feature_names = self._backend.read_json(f"{ver_key}/features.json")
 
         return {
             "pipeline": pipeline,
             "metadata": metadata,
             "feature_names": feature_names,
             "version": version,
-            "path": str(ver_dir),
+            "path": ver_key,
         }
 
     # ------------------------------------------------------------------
@@ -154,38 +151,29 @@ class ModelRegistry:
     def list_models(self) -> list[dict]:
         """Return metadata summaries for every model version, sorted by OOS RMSE."""
         entries: list[dict] = []
-        if not self._base.exists():
-            return entries
+        all_keys = self._backend.list_keys("")
+        meta_keys = [k for k in all_keys if k.endswith("/metadata.json")]
 
-        for model_dir in sorted(self._base.iterdir()):
-            if not model_dir.is_dir():
-                continue
-            for ver_dir in sorted(model_dir.iterdir()):
-                meta_path = ver_dir / "metadata.json"
-                if not meta_path.exists():
-                    continue
-                with open(meta_path) as f:
-                    meta = json.load(f)
-                entries.append(
-                    {
-                        "model_name": meta.get("model_name"),
-                        "scaler_variant": meta.get("scaler_variant"),
-                        "version": meta.get("version"),
-                        "is_winner": meta.get("is_winner", False),
-                        "oos_rmse": meta.get("oos_metrics", {}).get("rmse"),
-                        "path": str(ver_dir),
-                    }
-                )
+        for mk in meta_keys:
+            meta = self._backend.read_json(mk)
+            ver_prefix = mk.rsplit("/metadata.json", 1)[0]
+            entries.append(
+                {
+                    "model_name": meta.get("model_name"),
+                    "scaler_variant": meta.get("scaler_variant"),
+                    "version": meta.get("version"),
+                    "is_winner": meta.get("is_winner", False),
+                    "oos_rmse": meta.get("oos_metrics", {}).get("rmse"),
+                    "path": ver_prefix,
+                }
+            )
 
         entries.sort(key=lambda e: e.get("oos_rmse") or float("inf"))
         return entries
 
     def get_winner(self) -> dict | None:
         """Return the latest model version flagged as winner, or ``None``."""
-        winners: list[dict] = []
-        for entry in self.list_models():
-            if entry.get("is_winner"):
-                winners.append(entry)
+        winners = [e for e in self.list_models() if e.get("is_winner")]
         if not winners:
             return None
         # Return most recently saved winner (highest version for its model key)
@@ -206,72 +194,52 @@ class ModelRegistry:
         Raises ``FileNotFoundError`` if the model or version does not exist.
         """
         model_key = f"{model_name}_{scaler_variant}"
-        ver_dir = self._base / model_key / f"v{version}"
-        meta_path = ver_dir / "metadata.json"
+        meta_key = f"{model_key}/v{version}/metadata.json"
 
-        if not meta_path.exists():
+        if not self._backend.exists(meta_key):
             raise FileNotFoundError(
-                f"Model {model_key} v{version} not found in registry."
+                f"Model {model_key} v{version} not found in registry.",
             )
 
-        with open(meta_path) as f:
-            metadata = json.load(f)
-
+        metadata = self._backend.read_json(meta_key)
         metadata["is_active"] = True
-
-        with open(meta_path, "w") as f:
-            json.dump(metadata, f, indent=2, default=str)
-
+        self._backend.write_json(meta_key, metadata)
         logger.info("Activated %s v%d.", model_key, version)
 
     def deactivate_all(self) -> int:
         """Set ``is_active=False`` for all model versions. Returns count deactivated."""
         count = 0
-        if not self._base.exists():
-            return count
+        all_keys = self._backend.list_keys("")
+        meta_keys = [k for k in all_keys if k.endswith("/metadata.json")]
 
-        for model_dir in self._base.iterdir():
-            if not model_dir.is_dir():
-                continue
-            for ver_dir in model_dir.iterdir():
-                meta_path = ver_dir / "metadata.json"
-                if not meta_path.exists():
-                    continue
-                with open(meta_path) as f:
-                    metadata = json.load(f)
-                if metadata.get("is_active", False):
-                    metadata["is_active"] = False
-                    with open(meta_path, "w") as f:
-                        json.dump(metadata, f, indent=2, default=str)
-                    count += 1
+        for mk in meta_keys:
+            data = self._backend.read_json(mk)
+            if data.get("is_active", False):
+                data["is_active"] = False
+                self._backend.write_json(mk, data)
+                count += 1
 
         logger.info("Deactivated %d model version(s).", count)
         return count
 
     def get_active_model(self) -> dict | None:
         """Return metadata for the currently active model, or ``None``."""
-        if not self._base.exists():
-            return None
+        all_keys = self._backend.list_keys("")
+        meta_keys = sorted(k for k in all_keys if k.endswith("/metadata.json"))
 
-        for model_dir in sorted(self._base.iterdir()):
-            if not model_dir.is_dir():
-                continue
-            for ver_dir in sorted(model_dir.iterdir()):
-                meta_path = ver_dir / "metadata.json"
-                if not meta_path.exists():
-                    continue
-                with open(meta_path) as f:
-                    metadata = json.load(f)
-                if metadata.get("is_active", False):
-                    return {
-                        "model_name": metadata.get("model_name"),
-                        "scaler_variant": metadata.get("scaler_variant"),
-                        "version": metadata.get("version"),
-                        "is_active": True,
-                        "is_winner": metadata.get("is_winner", False),
-                        "oos_rmse": metadata.get("oos_metrics", {}).get("rmse"),
-                        "path": str(ver_dir),
-                    }
+        for mk in meta_keys:
+            data = self._backend.read_json(mk)
+            if data.get("is_active", False):
+                ver_prefix = mk.rsplit("/metadata.json", 1)[0]
+                return {
+                    "model_name": data.get("model_name"),
+                    "scaler_variant": data.get("scaler_variant"),
+                    "version": data.get("version"),
+                    "is_active": True,
+                    "is_winner": data.get("is_winner", False),
+                    "oos_rmse": data.get("oos_metrics", {}).get("rmse"),
+                    "path": ver_prefix,
+                }
 
         return None
 
@@ -287,48 +255,42 @@ class ModelRegistry:
     ) -> bool:
         """Delete a specific version or all versions of a model."""
         model_key = f"{model_name}_{scaler_variant}"
-        model_dir = self._base / model_key
-
-        if not model_dir.exists():
-            return False
 
         if version is not None:
-            ver_dir = model_dir / f"v{version}"
-            if not ver_dir.exists():
-                return False
-            shutil.rmtree(ver_dir)
-            # Clean up empty parent
-            if not any(model_dir.iterdir()):
-                model_dir.rmdir()
-            return True
+            prefix = f"{model_key}/v{version}/"
+        else:
+            prefix = f"{model_key}/"
 
-        shutil.rmtree(model_dir)
+        keys = self._backend.list_keys(prefix)
+        if not keys:
+            return False
+
+        for k in keys:
+            self._backend.delete(k)
         return True
 
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
 
-    @staticmethod
-    def _next_version(model_dir: Path) -> int:
+    def _next_version(self, model_key: str) -> int:
         """Return the next auto-incremented version number."""
-        if not model_dir.exists():
-            return 1
-        existing = [
-            int(d.name[1:])
-            for d in model_dir.iterdir()
-            if d.is_dir() and d.name.startswith("v") and d.name[1:].isdigit()
-        ]
-        return max(existing, default=0) + 1
+        keys = self._backend.list_keys(f"{model_key}/")
+        versions: set[int] = set()
+        for k in keys:
+            for part in k.split("/"):
+                if part.startswith("v") and part[1:].isdigit():
+                    versions.add(int(part[1:]))
+        return max(versions, default=0) + 1
 
-    @staticmethod
-    def _latest_version(model_dir: Path) -> int:
+    def _latest_version(self, model_key: str) -> int:
         """Return the highest existing version number."""
-        existing = [
-            int(d.name[1:])
-            for d in model_dir.iterdir()
-            if d.is_dir() and d.name.startswith("v") and d.name[1:].isdigit()
-        ]
-        if not existing:
-            raise FileNotFoundError(f"No versions found in {model_dir}")
-        return max(existing)
+        keys = self._backend.list_keys(f"{model_key}/")
+        versions: set[int] = set()
+        for k in keys:
+            for part in k.split("/"):
+                if part.startswith("v") and part[1:].isdigit():
+                    versions.add(int(part[1:]))
+        if not versions:
+            raise FileNotFoundError(f"No versions found for {model_key}.")
+        return max(versions)

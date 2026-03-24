@@ -11,6 +11,7 @@ from sklearn.preprocessing import StandardScaler
 from ml.evaluation.ranking import RankedModel, WinnerResult
 from ml.models.model_configs import TrainingResult
 from ml.models.registry import ModelRegistry
+from ml.models.storage_backends import LocalStorageBackend, S3StorageBackend
 
 
 # ---------------------------------------------------------------------------
@@ -18,9 +19,14 @@ from ml.models.registry import ModelRegistry
 # ---------------------------------------------------------------------------
 
 
-@pytest.fixture
-def registry(tmp_path) -> ModelRegistry:
-    return ModelRegistry(base_dir=str(tmp_path / "registry"))
+@pytest.fixture(params=["local", "s3"])
+def registry(request, tmp_path, mock_s3) -> ModelRegistry:
+    """ModelRegistry parametrized to run against local and S3 backends."""
+    if request.param == "local":
+        backend = LocalStorageBackend(base_dir=str(tmp_path / "registry"))
+        return ModelRegistry(backend=backend)
+    backend = S3StorageBackend(bucket="model-artifacts")
+    return ModelRegistry(backend=backend)
 
 
 @pytest.fixture
@@ -59,20 +65,13 @@ def sample_features() -> list[str]:
 class TestSaveModel:
     def test_save_creates_files(self, registry, sample_result, sample_pipeline, sample_features):
         path = registry.save_model(sample_result, sample_pipeline, sample_features)
-        from pathlib import Path
-
-        p = Path(path)
-        assert (p / "pipeline.pkl").exists()
-        assert (p / "metadata.json").exists()
-        assert (p / "features.json").exists()
+        assert registry._backend.exists(f"{path}/pipeline.pkl")
+        assert registry._backend.exists(f"{path}/metadata.json")
+        assert registry._backend.exists(f"{path}/features.json")
 
     def test_metadata_contents(self, registry, sample_result, sample_pipeline, sample_features):
-        import json
-        from pathlib import Path
-
         path = registry.save_model(sample_result, sample_pipeline, sample_features, rank=1, is_winner=True)
-        with open(Path(path) / "metadata.json") as f:
-            meta = json.load(f)
+        meta = registry._backend.read_json(f"{path}/metadata.json")
         assert meta["model_name"] == "ridge"
         assert meta["scaler_variant"] == "standard"
         assert meta["is_winner"] is True
@@ -81,12 +80,8 @@ class TestSaveModel:
         assert meta["oos_metrics"]["rmse"] == 1.0
 
     def test_features_contents(self, registry, sample_result, sample_pipeline, sample_features):
-        import json
-        from pathlib import Path
-
         path = registry.save_model(sample_result, sample_pipeline, sample_features)
-        with open(Path(path) / "features.json") as f:
-            loaded = json.load(f)
+        loaded = registry._backend.read_json(f"{path}/features.json")
         assert loaded == sample_features
 
     def test_auto_version_increment(self, registry, sample_result, sample_pipeline, sample_features):
@@ -230,13 +225,9 @@ class TestSaveWinner:
         assert winner["is_winner"] is True
 
     def test_save_winner_sets_rank(self, registry, sample_result, sample_pipeline, sample_features):
-        import json
-        from pathlib import Path
-
         wr = self._make_winner_result(sample_result)
         path = registry.save_winner(wr, sample_pipeline, sample_features)
-        with open(Path(path) / "metadata.json") as f:
-            meta = json.load(f)
+        meta = registry._backend.read_json(f"{path}/metadata.json")
         assert meta["rank"] == 1
 
 
@@ -260,14 +251,10 @@ class TestActivation:
         )
 
     def test_activate_model(self, registry, sample_pipeline, sample_features):
-        import json
-        from pathlib import Path
-
         result = self._make_result("ridge", "standard", 1.0)
         path = registry.save_model(result, sample_pipeline, sample_features)
         registry.activate_model("ridge", "standard", 1)
-        with open(Path(path) / "metadata.json") as f:
-            meta = json.load(f)
+        meta = registry._backend.read_json(f"{path}/metadata.json")
         assert meta["is_active"] is True
 
     def test_activate_nonexistent_raises(self, registry):
@@ -275,9 +262,6 @@ class TestActivation:
             registry.activate_model("nonexistent", "standard", 1)
 
     def test_deactivate_all(self, registry, sample_pipeline, sample_features):
-        import json
-        from pathlib import Path
-
         r1 = self._make_result("ridge", "standard", 1.0)
         r2 = self._make_result("lasso", "standard", 1.5)
         r3 = self._make_result("rf", "robust", 2.0)
@@ -289,13 +273,11 @@ class TestActivation:
         assert count == 1
         # All metadata should have is_active=False
         for entry in registry.list_models():
-            with open(Path(entry["path"]) / "metadata.json") as f:
-                meta = json.load(f)
+            meta = registry._backend.read_json(f"{entry['path']}/metadata.json")
             assert meta.get("is_active", False) is False
 
-    def test_deactivate_all_empty_registry(self, tmp_path):
-        reg = ModelRegistry(base_dir=str(tmp_path / "empty_reg"))
-        assert reg.deactivate_all() == 0
+    def test_deactivate_all_empty_registry(self, registry):
+        assert registry.deactivate_all() == 0
 
     def test_get_active_model(self, registry, sample_pipeline, sample_features):
         result = self._make_result("ridge", "standard", 1.0)

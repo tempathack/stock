@@ -4,8 +4,6 @@
 -- IMPORTANT: CREATE EXTENSION is required here because the K8s ConfigMap
 -- volume mount at /docker-entrypoint-initdb.d replaces the image's built-in
 -- 000_install_timescaledb.sh script. Without this line, TimescaleDB is never enabled.
---
--- DEV NOTE: Database: stockdb | User: stockuser | Password: devpassword123 (dev-only)
 
 BEGIN;
 
@@ -32,12 +30,14 @@ CREATE TABLE IF NOT EXISTS stocks (
 -- 2. model_registry — ML model catalog (no FK deps)
 -- ============================================================
 CREATE TABLE IF NOT EXISTS model_registry (
-    model_id     SERIAL       PRIMARY KEY,
-    model_name   VARCHAR(100) NOT NULL,
-    version      VARCHAR(50)  NOT NULL,
-    metrics_json JSONB        NOT NULL,
-    trained_at   TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
-    is_active    BOOLEAN      NOT NULL DEFAULT false
+    model_id       SERIAL        PRIMARY KEY,
+    model_name     VARCHAR(100)  NOT NULL,
+    version        VARCHAR(50)   NOT NULL,
+    metrics_json   JSONB         NOT NULL,
+    trained_at     TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    is_active      BOOLEAN       NOT NULL DEFAULT false,
+    traffic_weight NUMERIC(5,4)  NOT NULL DEFAULT 0.0,
+    CONSTRAINT chk_traffic_weight_range CHECK (traffic_weight >= 0.0 AND traffic_weight <= 1.0)
 );
 
 -- ============================================================
@@ -127,6 +127,26 @@ CREATE INDEX IF NOT EXISTS idx_predictions_date          ON predictions (predict
 CREATE INDEX IF NOT EXISTS idx_drift_logs_drift_type     ON drift_logs (drift_type);
 CREATE INDEX IF NOT EXISTS idx_drift_logs_detected_at    ON drift_logs (detected_at);
 CREATE INDEX IF NOT EXISTS idx_model_registry_is_active  ON model_registry (is_active);
+CREATE INDEX IF NOT EXISTS idx_model_registry_traffic_weight ON model_registry(traffic_weight) WHERE traffic_weight > 0;
+
+-- ============================================================
+-- 7. ab_test_assignments — A/B model test tracking (FK -> stocks, model_registry)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS ab_test_assignments (
+    id              BIGSERIAL     PRIMARY KEY,
+    ticker          VARCHAR(10)   NOT NULL REFERENCES stocks(ticker),
+    model_id        INTEGER       NOT NULL REFERENCES model_registry(model_id),
+    model_name      VARCHAR(100)  NOT NULL,
+    predicted_price NUMERIC(12,4) NOT NULL,
+    actual_price    NUMERIC(12,4),
+    horizon_days    INTEGER       NOT NULL DEFAULT 7,
+    assigned_at     TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+    evaluated_at    TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_ab_test_model_id    ON ab_test_assignments(model_id);
+CREATE INDEX IF NOT EXISTS idx_ab_test_ticker      ON ab_test_assignments(ticker);
+CREATE INDEX IF NOT EXISTS idx_ab_test_assigned_at ON ab_test_assignments(assigned_at);
 
 -- ============================================================
 -- Auto-update updated_at on stocks row modification

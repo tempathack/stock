@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: daily-drift
+  namespace: ml
+  labels:
+    app: daily-drift
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: ml-drift
+spec:
+  schedule: "0 22 * * 1-5"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 300
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 1800
+      template:
+        metadata:
+          labels:
+            app: daily-drift
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: drift-check
+              image: stock-ml-pipeline:latest
+              imagePullPolicy: Never
+              command: ["python", "-m", "ml.drift.trigger"]
+              args:
+                - "--auto-retrain"
+                - "--registry-dir"
+                - "$(MODEL_REGISTRY_DIR)"
+                - "--serving-dir"
+                - "$(SERVING_DIR)"
+                - "--drift-log-dir"
+                - "$(DRIFT_LOG_DIR)"
+                - "--skip-shap"
+              envFrom:
+                - configMapRef:
+                    name: ml-pipeline-config
+                - configMapRef:
+                    name: minio-config
+                - secretRef:
+                    name: minio-secrets
+              env:
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: DATABASE_URL_WRITER
+                - name: STORAGE_BACKEND
+                  value: "s3"
+              resources:
+                requests:
+                  cpu: "200m"
+                  memory: "512Mi"
+                limits:
+                  cpu: "1000m"
+                  memory: "1Gi"

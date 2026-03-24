@@ -37,7 +37,7 @@ class DBSettings:
         default_factory=lambda: os.environ.get("POSTGRES_USER", "stockuser")
     )
     password: str = field(
-        default_factory=lambda: os.environ.get("POSTGRES_PASSWORD", "devpassword123")
+        default_factory=lambda: os.environ.get("POSTGRES_PASSWORD", "")
     )
 
     @classmethod

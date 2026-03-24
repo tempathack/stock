@@ -2,16 +2,33 @@
 
 Validates the full 11-step training pipeline produces a deployable model,
 serves it correctly, and generates valid predictions using synthetic data.
+Also validates KServe serving flow integration (Phase 57).
 """
 
 from __future__ import annotations
 
 import json
 import pickle
+import subprocess
 from pathlib import Path
 
 import numpy as np
 import pytest
+
+try:
+    import boto3
+    from botocore.client import Config as BotoConfig
+
+    HAS_BOTO3 = True
+except ImportError:
+    HAS_BOTO3 = False
+
+try:
+    import httpx
+
+    HAS_HTTPX = True
+except ImportError:
+    HAS_HTTPX = False
 
 
 pytestmark = pytest.mark.slow
@@ -188,3 +205,136 @@ class TestPipelineToServing:
         assert runs_dir.exists()
         run_files = list(runs_dir.glob("pipeline_run_*.json"))
         assert len(run_files) >= 1
+
+
+# =============================================================================
+# Phase 57: KServe Serving Flow Integration Tests
+# =============================================================================
+# These tests validate the KServe-based serving architecture against a live
+# Minikube cluster. They require: running cluster, deploy-all.sh executed,
+# and a trained model in MinIO.
+
+
+def _kubectl(*args: str) -> subprocess.CompletedProcess:
+    """Run a kubectl command and return the CompletedProcess."""
+    return subprocess.run(
+        ["kubectl", *args],
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+
+
+@pytest.mark.integration
+class TestKServeServingFlow:
+    """Validate KServe InferenceService replaces legacy PVC-based serving."""
+
+    def test_kserve_inference_service_exists(self):
+        """Verify KServe InferenceService resource exists and is Ready."""
+        result = _kubectl(
+            "get", "inferenceservice", "stock-model-serving",
+            "-n", "ml", "-o", "jsonpath={.status.conditions[?(@.type=='Ready')].status}",
+        )
+        assert result.returncode == 0, f"InferenceService not found: {result.stderr}"
+        assert result.stdout.strip() == "True", (
+            f"InferenceService not Ready: {result.stdout}"
+        )
+
+    def test_kserve_predictor_pod_running(self):
+        """Verify KServe predictor pod is in Running state."""
+        result = _kubectl(
+            "get", "pods", "-n", "ml",
+            "-l", "serving.kserve.io/inferenceservice=stock-model-serving",
+            "-o", "jsonpath={.items[0].status.phase}",
+        )
+        assert result.returncode == 0, f"No predictor pods found: {result.stderr}"
+        assert result.stdout.strip() == "Running", (
+            f"Predictor pod not Running: {result.stdout}"
+        )
+
+    @pytest.mark.skipif(not HAS_BOTO3, reason="boto3 not installed")
+    def test_model_artifact_in_minio(self):
+        """Verify model artifact exists in MinIO serving bucket."""
+        # Read MinIO credentials from K8s secret
+        cred_result = _kubectl(
+            "get", "secret", "minio-secrets", "-n", "storage",
+            "-o", "jsonpath={.data.MINIO_ROOT_USER}",
+        )
+        if cred_result.returncode != 0:
+            pytest.skip("MinIO secrets not available")
+
+        import base64
+
+        user_result = _kubectl(
+            "get", "secret", "minio-secrets", "-n", "storage",
+            "-o", "jsonpath={.data.MINIO_ROOT_USER}",
+        )
+        pwd_result = _kubectl(
+            "get", "secret", "minio-secrets", "-n", "storage",
+            "-o", "jsonpath={.data.MINIO_ROOT_PASSWORD}",
+        )
+        access_key = base64.b64decode(user_result.stdout.strip()).decode()
+        secret_key = base64.b64decode(pwd_result.stdout.strip()).decode()
+
+        # Get MinIO endpoint via minikube service URL or port-forward
+        ep_result = _kubectl(
+            "get", "svc", "minio", "-n", "storage",
+            "-o", "jsonpath={.spec.clusterIP}",
+        )
+        minio_ip = ep_result.stdout.strip()
+        endpoint_url = f"http://{minio_ip}:9000"
+
+        s3 = boto3.client(
+            "s3",
+            endpoint_url=endpoint_url,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_key,
+            config=BotoConfig(signature_version="s3v4"),
+        )
+        objects = s3.list_objects_v2(
+            Bucket="model-artifacts",
+            Prefix="serving/active/",
+        )
+        keys = [obj["Key"] for obj in objects.get("Contents", [])]
+        assert any("model-settings.json" in k for k in keys), (
+            f"model-settings.json not found in MinIO serving/active/: {keys}"
+        )
+
+    @pytest.mark.skipif(not HAS_HTTPX, reason="httpx not installed")
+    def test_predict_endpoint_uses_kserve(self):
+        """Verify /predict/{ticker} returns valid prediction via KServe."""
+        # Get API service endpoint
+        svc_result = _kubectl(
+            "get", "svc", "stock-api", "-n", "ingestion",
+            "-o", "jsonpath={.spec.clusterIP}",
+        )
+        if svc_result.returncode != 0:
+            pytest.skip("stock-api service not available")
+
+        api_ip = svc_result.stdout.strip()
+        response = httpx.get(f"http://{api_ip}:8000/predict/AAPL", timeout=30)
+        assert response.status_code == 200, (
+            f"Predict endpoint failed: {response.status_code} {response.text}"
+        )
+        data = response.json()
+        assert "predicted_price" in data
+        assert isinstance(data["predicted_price"], (int, float))
+        assert data["predicted_price"] > 0
+
+    def test_legacy_serving_deployment_absent(self):
+        """Verify legacy model-serving Deployment no longer exists."""
+        result = _kubectl(
+            "get", "deployment", "model-serving", "-n", "ml",
+        )
+        assert result.returncode != 0, (
+            "Legacy model-serving Deployment still exists — should have been removed"
+        )
+
+    def test_legacy_canary_deployment_absent(self):
+        """Verify legacy model-serving-canary Deployment no longer exists."""
+        result = _kubectl(
+            "get", "deployment", "model-serving-canary", "-n", "ml",
+        )
+        assert result.returncode != 0, (
+            "Legacy model-serving-canary Deployment still exists — should have been removed"
+        )

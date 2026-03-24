@@ -76,6 +76,33 @@ structlog.configure(
 )
 
 
+def configure_uvicorn_logging() -> None:
+    """Route uvicorn's access and error loggers through structlog JSON formatting.
+
+    Call this once during application startup (lifespan) so that uvicorn startup
+    messages and any residual access log lines are emitted as valid JSON matching
+    the application log schema.
+    """
+    formatter = structlog.stdlib.ProcessorFormatter(
+        processors=[
+            structlog.stdlib.add_log_level,
+            _add_service_name,
+            structlog.processors.TimeStamper(fmt="iso"),
+            _ensure_context_defaults,
+            _rename_event_to_message,
+            structlog.processors.JSONRenderer(),
+        ],
+    )
+
+    for logger_name in ("uvicorn", "uvicorn.error", "uvicorn.access"):
+        uvi_logger = logging.getLogger(logger_name)
+        uvi_logger.handlers.clear()
+        handler = logging.StreamHandler()
+        handler.setFormatter(formatter)
+        uvi_logger.addHandler(handler)
+        uvi_logger.propagate = False
+
+
 def get_logger(name: str | None = None) -> structlog.stdlib.BoundLogger:
     """Return a structlog logger instance.
 

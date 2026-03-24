@@ -1,0 +1,31 @@
+# =============================================================================
+# cert-manager Installation — Required for KServe Webhook TLS
+# =============================================================================
+# KServe requires cert-manager to generate TLS certificates for its webhooks.
+# This file documents the installation commands; actual install uses upstream
+# release manifest applied directly via kubectl.
+#
+# Version: v1.16.2 (stable, compatible with KServe 0.14)
+#
+# ━━━━━━━━━━ INSTALL ━━━━━━━━━━
+#
+# kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
+#
+# ━━━━━━━━━━ WAIT FOR READINESS ━━━━━━━━━━
+#
+# kubectl wait --for=condition=Available deployment/cert-manager -n cert-manager --timeout=120s
+# kubectl wait --for=condition=Available deployment/cert-manager-webhook -n cert-manager --timeout=120s
+# kubectl wait --for=condition=Available deployment/cert-manager-cainjector -n cert-manager --timeout=120s
+#
+# ━━━━━━━━━━ VERIFICATION ━━━━━━━━━━
+#
+# kubectl get pods -n cert-manager
+#   Expected: 3 pods Running (cert-manager, cert-manager-webhook, cert-manager-cainjector)
+#
+# kubectl get crd certificates.cert-manager.io
+#   Expected: CRD exists
+#
+# ━━━━━━━━━━ NOTES ━━━━━━━━━━
+#
+# - cert-manager creates its own 'cert-manager' namespace
+# - Uninstall: kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml

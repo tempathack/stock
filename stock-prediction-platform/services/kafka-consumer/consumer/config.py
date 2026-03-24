@@ -23,8 +23,8 @@ class ConsumerSettings(BaseSettings):
     BATCH_SIZE: int = 100
     BATCH_TIMEOUT_MS: int = 5000
 
-    # Database
-    DATABASE_URL: str = "postgresql://stockuser:devpassword123@localhost:5432/stockdb"
+    # Database — injected by K8s Secret (stock-platform-secrets) in production
+    DATABASE_URL: str = ""
 
     # Logging
     LOG_LEVEL: str = "INFO"

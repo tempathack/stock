@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time as _time
 from datetime import datetime
 
 import psycopg2
@@ -16,6 +17,7 @@ from tenacity import (
 
 from consumer.config import settings
 from consumer.logging import get_logger
+from consumer.metrics import batch_write_duration_seconds
 
 logger = get_logger(__name__)
 
@@ -69,7 +71,11 @@ class BatchWriter:
                 (r["ticker"], r["timestamp"], r["open"], r["high"], r["low"], r["close"], r["volume"])
                 for r in records
             ]
+            start = _time.monotonic()
             self._execute_upsert(_INTRADAY_UPSERT_SQL, values, conn)
+            batch_write_duration_seconds.labels(table="ohlcv_intraday").observe(
+                _time.monotonic() - start
+            )
         except Exception as exc:
             conn.rollback()
             self._dead_letter(records, exc)
@@ -96,7 +102,11 @@ class BatchWriter:
                 )
                 for r in records
             ]
+            start = _time.monotonic()
             self._execute_upsert(_DAILY_UPSERT_SQL, values, conn)
+            batch_write_duration_seconds.labels(table="ohlcv_daily").observe(
+                _time.monotonic() - start
+            )
         except Exception as exc:
             conn.rollback()
             self._dead_letter(records, exc)

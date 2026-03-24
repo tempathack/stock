@@ -1,0 +1,51 @@
+# =============================================================================
+# KServe Installation — RawDeployment Mode (no Knative/Istio)
+# =============================================================================
+# Installs KServe controller, CRDs, and built-in ClusterServingRuntimes.
+# RawDeployment mode is used to avoid Knative Serving + Istio overhead on Minikube.
+#
+# Version: v0.14.1 (latest stable, supports RawDeployment natively)
+#
+# ━━━━━━━━━━ STEP 1: INSTALL KSERVE CRDs + CONTROLLER ━━━━━━━━━━
+#
+# kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.14.1/kserve.yaml
+#
+# This creates the 'kserve' namespace and deploys kserve-controller-manager.
+#
+# Wait for controller:
+# kubectl wait --for=condition=Available deployment/kserve-controller-manager -n kserve --timeout=180s
+#
+# ━━━━━━━━━━ STEP 2: INSTALL BUILT-IN CLUSTER SERVING RUNTIMES ━━━━━━━━━━
+#
+# kubectl apply -f https://github.com/kserve/kserve/releases/download/v0.14.1/kserve-cluster-resources.yaml
+#
+# Installs built-in ClusterServingRuntimes:
+#   - kserve-lgbserver (LightGBM)
+#   - kserve-mlserver (MLServer — sklearn, xgboost, lightgbm via Seldon)
+#   - kserve-paddleserver (PaddlePaddle)
+#   - kserve-pmmlserver (PMML)
+#   - kserve-sklearnserver (sklearn — native KServe)
+#   - kserve-tensorflow-serving (TensorFlow)
+#   - kserve-torchserve (PyTorch)
+#   - kserve-tritonserver (NVIDIA Triton)
+#   - kserve-xgbserver (XGBoost)
+#
+# ━━━━━━━━━━ STEP 3: CONFIGURE RAWDEPLOYMENT MODE ━━━━━━━━━━
+#
+# kubectl patch configmap/inferenceservice-config -n kserve --type=merge \
+#   -p '{"data":{"deploy":"{\"defaultDeploymentMode\":\"RawDeployment\"}"}}'
+#
+# ━━━━━━━━━━ VERIFICATION ━━━━━━━━━━
+#
+# kubectl get crd inferenceservices.serving.kserve.io
+# kubectl get crd servingruntimes.serving.kserve.io
+# kubectl get crd clusterservingruntimes.serving.kserve.io
+# kubectl get pods -n kserve — kserve-controller-manager Running
+# kubectl get clusterservingruntimes — lists built-in runtimes
+#
+# ━━━━━━━━━━ NOTES ━━━━━━━━━━
+#
+# - RawDeployment mode: KServe creates standard K8s Deployments + Services
+#   (no Knative Serving, no Istio ingress gateway)
+# - KServe creates its own 'kserve' namespace (do not add to namespaces.yaml)
+# - Requires cert-manager to be installed first (see cert-manager.yaml)

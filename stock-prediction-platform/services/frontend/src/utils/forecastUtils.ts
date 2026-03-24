@@ -45,6 +45,7 @@ export function joinForecastData(
       model_name: pred.model_name,
       prediction_date: pred.prediction_date,
       predicted_date: pred.predicted_date,
+      horizon_days: pred.horizon_days ?? null,
     };
   });
 }

@@ -15,16 +15,27 @@ spec:
     metadata:
       labels:
         app: kafka-consumer
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: kafka-consumer
           image: stock-kafka-consumer:latest
           imagePullPolicy: Never
+          ports:
+            - containerPort: 9090
+              name: metrics
           envFrom:
             - configMapRef:
                 name: processing-config
-            - secretRef:
-                name: stock-platform-secrets
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: stock-platform-secrets
+                  key: DATABASE_URL_WRITER
           resources:
             requests:
               cpu: "200m"
@@ -33,12 +44,14 @@ spec:
               cpu: "1000m"
               memory: "1Gi"
           livenessProbe:
-            exec:
-              command: ["python", "-c", "import sys; sys.exit(0)"]
+            httpGet:
+              path: /metrics
+              port: 9090
             initialDelaySeconds: 30
             periodSeconds: 30
           readinessProbe:
-            exec:
-              command: ["python", "-c", "import sys; sys.exit(0)"]
+            httpGet:
+              path: /metrics
+              port: 9090
             initialDelaySeconds: 10
             periodSeconds: 10

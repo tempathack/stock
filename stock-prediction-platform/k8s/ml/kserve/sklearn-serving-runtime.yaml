@@ -1,0 +1,42 @@
+# Custom ClusterServingRuntime for sklearn models
+# Uses Seldon MLServer with V2/Open Inference Protocol
+# Pinned image for reproducibility; resource limits sized for our pipeline.pkl models
+apiVersion: serving.kserve.io/v1alpha1
+kind: ClusterServingRuntime
+metadata:
+  name: stock-sklearn-mlserver
+  labels:
+    app: kserve
+    app.kubernetes.io/part-of: stock-prediction-platform
+  annotations:
+    description: "Sklearn model serving via Seldon MLServer for stock-prediction-platform"
+spec:
+  supportedModelFormats:
+    - name: sklearn
+      version: "1"
+      autoSelect: true
+      priority: 2
+  protocolVersions:
+    - v2
+  multiModel: false
+  containers:
+    - name: mlserver
+      image: docker.io/seldonio/mlserver:1.6.1-slim
+      env:
+        - name: MLSERVER_MODEL_IMPLEMENTATION
+          value: mlserver_sklearn.SKLearnModel
+        - name: MLSERVER_HTTP_PORT
+          value: "8080"
+        - name: MLSERVER_GRPC_PORT
+          value: "8081"
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+      ports:
+        - containerPort: 8080
+          name: h2c
+          protocol: TCP

@@ -9,6 +9,7 @@ from confluent_kafka import Consumer, KafkaError
 from consumer.config import settings
 from consumer.db_writer import BatchWriter
 from consumer.logging import get_logger, setup_logging
+from consumer.metrics import consumer_lag, start_metrics_server
 from consumer.processor import MessageProcessor
 
 logger = get_logger(__name__)
@@ -35,6 +36,10 @@ def run_consumer(consumer=None, writer=None, processor=None) -> None:
 
     signal.signal(signal.SIGTERM, _shutdown_handler)
     signal.signal(signal.SIGINT, _shutdown_handler)
+
+    # Start Prometheus metrics server
+    start_metrics_server(9090)
+    logger.info("metrics_server_started", port=9090)
 
     if consumer is None:
         consumer = Consumer({
@@ -66,6 +71,7 @@ def run_consumer(consumer=None, writer=None, processor=None) -> None:
                 if processor.should_flush():
                     processor.flush()
                     consumer.commit(asynchronous=False)
+                    _update_consumer_lag(consumer)
                 continue
 
             if msg.error():
@@ -79,6 +85,7 @@ def run_consumer(consumer=None, writer=None, processor=None) -> None:
             if processor.should_flush():
                 processor.flush()
                 consumer.commit(asynchronous=False)
+                _update_consumer_lag(consumer)
 
     except Exception:
         logger.exception("consumer_fatal_error")
@@ -94,6 +101,24 @@ def run_consumer(consumer=None, writer=None, processor=None) -> None:
         consumer.close()
         writer.close()
         logger.info("consumer_stopped")
+
+
+def _update_consumer_lag(kafka_consumer) -> None:
+    """Update consumer_lag gauge from current partition assignments."""
+    try:
+        partitions = kafka_consumer.assignment()
+        for tp in partitions:
+            _, high = kafka_consumer.get_watermark_offsets(tp)
+            committed_list = kafka_consumer.committed([tp])
+            offset = (
+                committed_list[0].offset
+                if committed_list[0] and committed_list[0].offset >= 0
+                else 0
+            )
+            lag = max(0, high - offset)
+            consumer_lag.labels(topic=tp.topic, partition=str(tp.partition)).set(lag)
+    except Exception:
+        pass  # Partition not yet assigned or broker unavailable
 
 
 if __name__ == "__main__":

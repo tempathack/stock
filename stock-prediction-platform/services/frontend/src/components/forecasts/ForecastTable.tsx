@@ -90,45 +90,114 @@ export default function ForecastTable({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border bg-bg-surface">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-border bg-bg-card/50">
-            <th className="w-10 px-2 py-3 text-center">
-              <span className="sr-only">Compare</span>
-            </th>
-            {COLUMNS.map((col) => (
-              <th
-                key={col.key}
-                className={`cursor-pointer select-none whitespace-nowrap px-3 py-3 text-xs font-medium uppercase tracking-wider text-text-secondary hover:text-text-primary ${
-                  col.hideOnSm ? "hidden sm:table-cell" : ""
-                }`}
-                onClick={() => toggleSort(col.key)}
-              >
-                {col.label}
-                {sortKey === col.key && (
-                  <span className="ml-1">{sortDir === "asc" ? "↑" : "↓"}</span>
-                )}
+    <>
+      {/* Desktop table */}
+      <div className="hidden overflow-x-auto rounded-lg border border-border bg-bg-surface sm:block">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="border-b border-border bg-bg-card/50">
+              <th className="w-10 px-2 py-3 text-center">
+                <span className="sr-only">Compare</span>
               </th>
-            ))}
-            <th className="px-3 py-3 text-xs font-medium uppercase tracking-wider text-text-secondary">
-              Trend
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {sorted.map((row) => {
-            const isSelected = row.ticker === selectedTicker;
-            const isCompare = comparisonTickers.includes(row.ticker);
-            return (
-              <tr
-                key={row.ticker}
-                onClick={() => onSelectTicker(row.ticker)}
-                className={`cursor-pointer border-b border-border/50 transition-colors hover:bg-bg-card/40 ${
-                  isSelected ? "border-l-2 border-l-accent bg-accent/10" : ""
-                } ${isCompare && !isSelected ? "border-l-2 border-l-accent/50" : ""}`}
-              >
-                <td className="px-2 py-2 text-center">
+              {COLUMNS.map((col) => (
+                <th
+                  key={col.key}
+                  className={`cursor-pointer select-none whitespace-nowrap px-3 py-3 text-xs font-medium uppercase tracking-wider text-text-secondary hover:text-text-primary ${
+                    col.hideOnSm ? "hidden sm:table-cell" : ""
+                  }`}
+                  onClick={() => toggleSort(col.key)}
+                >
+                  {col.label}
+                  {sortKey === col.key && (
+                    <span className="ml-1">{sortDir === "asc" ? "↑" : "↓"}</span>
+                  )}
+                </th>
+              ))}
+              <th className="px-3 py-3 text-xs font-medium uppercase tracking-wider text-text-secondary">
+                Trend
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map((row) => {
+              const isSelected = row.ticker === selectedTicker;
+              const isCompare = comparisonTickers.includes(row.ticker);
+              return (
+                <tr
+                  key={row.ticker}
+                  onClick={() => onSelectTicker(row.ticker)}
+                  className={`cursor-pointer border-b border-border/50 transition-colors hover:bg-bg-card/40 ${
+                    isSelected ? "border-l-2 border-l-accent bg-accent/10" : ""
+                  } ${isCompare && !isSelected ? "border-l-2 border-l-accent/50" : ""}`}
+                >
+                  <td className="px-2 py-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={isCompare}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        onToggleCompare(row.ticker);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      className="accent-accent"
+                    />
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2 font-semibold text-accent">
+                    {row.ticker}
+                  </td>
+                  <td className="hidden max-w-[180px] truncate px-3 py-2 text-text-secondary sm:table-cell">
+                    {row.company_name ?? "—"}
+                  </td>
+                  <td className="hidden whitespace-nowrap px-3 py-2 text-text-secondary sm:table-cell">
+                    {row.sector ?? "—"}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2 font-mono">
+                    {fmt(row.current_price, 2, "$")}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2 font-mono">
+                    {fmt(row.predicted_price, 2, "$")}
+                  </td>
+                  <td
+                    className={`whitespace-nowrap px-3 py-2 font-mono font-semibold ${pctClass(row.expected_return_pct)}`}
+                  >
+                    {row.expected_return_pct > 0 ? "+" : ""}
+                    {row.expected_return_pct.toFixed(2)}%
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2 font-mono text-text-secondary">
+                    {fmt(row.confidence, 2)}
+                  </td>
+                  <td
+                    className={`whitespace-nowrap px-3 py-2 font-mono text-xs ${pctClass(row.daily_change_pct)}`}
+                  >
+                    {row.daily_change_pct != null
+                      ? `${row.daily_change_pct > 0 ? "+" : ""}${row.daily_change_pct.toFixed(2)}%`
+                      : "—"}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2">{trendBadge(row.trend)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile card layout */}
+      <div className="space-y-2 sm:hidden">
+        {sorted.map((row) => {
+          const isSelected = row.ticker === selectedTicker;
+          const isCompare = comparisonTickers.includes(row.ticker);
+          return (
+            <div
+              key={row.ticker}
+              onClick={() => onSelectTicker(row.ticker)}
+              className={`cursor-pointer rounded-lg border border-border bg-bg-surface p-3 transition-colors hover:bg-bg-card/40 ${
+                isSelected ? "border-l-2 border-l-accent bg-accent/10" : ""
+              } ${isCompare && !isSelected ? "border-l-2 border-l-accent/50" : ""}`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-accent">{row.ticker}</span>
+                <div className="flex items-center gap-2">
+                  {trendBadge(row.trend)}
                   <input
                     type="checkbox"
                     checked={isCompare}
@@ -139,44 +208,45 @@ export default function ForecastTable({
                     onClick={(e) => e.stopPropagation()}
                     className="accent-accent"
                   />
-                </td>
-                <td className="whitespace-nowrap px-3 py-2 font-semibold text-accent">
-                  {row.ticker}
-                </td>
-                <td className="hidden max-w-[180px] truncate px-3 py-2 text-text-secondary sm:table-cell">
-                  {row.company_name ?? "—"}
-                </td>
-                <td className="hidden whitespace-nowrap px-3 py-2 text-text-secondary sm:table-cell">
-                  {row.sector ?? "—"}
-                </td>
-                <td className="whitespace-nowrap px-3 py-2 font-mono">
-                  {fmt(row.current_price, 2, "$")}
-                </td>
-                <td className="whitespace-nowrap px-3 py-2 font-mono">
-                  {fmt(row.predicted_price, 2, "$")}
-                </td>
-                <td
-                  className={`whitespace-nowrap px-3 py-2 font-mono font-semibold ${pctClass(row.expected_return_pct)}`}
-                >
-                  {row.expected_return_pct > 0 ? "+" : ""}
-                  {row.expected_return_pct.toFixed(2)}%
-                </td>
-                <td className="whitespace-nowrap px-3 py-2 font-mono text-text-secondary">
-                  {fmt(row.confidence, 2)}
-                </td>
-                <td
-                  className={`whitespace-nowrap px-3 py-2 font-mono text-xs ${pctClass(row.daily_change_pct)}`}
+                </div>
+              </div>
+              <p className="truncate text-xs text-text-secondary">
+                {row.company_name ?? "—"}
+              </p>
+              <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+                <div>
+                  <span className="text-text-secondary">Price: </span>
+                  <span className="font-mono">{fmt(row.current_price, 2, "$")}</span>
+                </div>
+                <div>
+                  <span className="text-text-secondary">Predicted: </span>
+                  <span className="font-mono">{fmt(row.predicted_price, 2, "$")}</span>
+                </div>
+                <div>
+                  <span className="text-text-secondary">Return: </span>
+                  <span className={`font-mono font-semibold ${pctClass(row.expected_return_pct)}`}>
+                    {row.expected_return_pct > 0 ? "+" : ""}
+                    {row.expected_return_pct.toFixed(2)}%
+                  </span>
+                </div>
+                <div>
+                  <span className="text-text-secondary">Conf: </span>
+                  <span className="font-mono">{fmt(row.confidence, 2)}</span>
+                </div>
+              </div>
+              <div className="mt-1">
+                <span
+                  className={`font-mono text-xs ${pctClass(row.daily_change_pct)}`}
                 >
                   {row.daily_change_pct != null
-                    ? `${row.daily_change_pct > 0 ? "+" : ""}${row.daily_change_pct.toFixed(2)}%`
-                    : "—"}
-                </td>
-                <td className="whitespace-nowrap px-3 py-2">{trendBadge(row.trend)}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                    ? `Daily: ${row.daily_change_pct > 0 ? "+" : ""}${row.daily_change_pct.toFixed(2)}%`
+                    : ""}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }

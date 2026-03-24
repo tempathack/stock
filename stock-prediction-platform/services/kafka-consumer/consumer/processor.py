@@ -7,6 +7,7 @@ import time
 
 from consumer.db_writer import BatchWriter
 from consumer.logging import get_logger
+from consumer.metrics import messages_consumed_total
 
 logger = get_logger(__name__)
 
@@ -24,6 +25,7 @@ class MessageProcessor:
     def add_message(self, msg) -> None:
         """Deserialize a Kafka message and add to the batch buffer."""
         record = json.loads(msg.value().decode("utf-8"))
+        messages_consumed_total.labels(topic=msg.topic()).inc()
         self._buffer.append(record)
         logger.debug(
             "message_added",

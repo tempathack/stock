@@ -17,6 +17,23 @@ def _add_service_name(
     return event_dict
 
 
+def _rename_event_to_message(
+    logger: Any, method: str, event_dict: dict[str, Any]
+) -> dict[str, Any]:
+    """Rename structlog's 'event' key to 'message' for consistent output."""
+    event_dict["message"] = event_dict.pop("event")
+    return event_dict
+
+
+def _ensure_context_defaults(
+    logger: Any, method: str, event_dict: dict[str, Any]
+) -> dict[str, Any]:
+    """Ensure request_id and trace_id always appear, defaulting to empty string."""
+    event_dict.setdefault("request_id", "")
+    event_dict.setdefault("trace_id", "")
+    return event_dict
+
+
 def setup_logging(log_level: str = "INFO") -> None:
     """Configure structlog for JSON logging."""
     structlog.configure(
@@ -28,6 +45,8 @@ def setup_logging(log_level: str = "INFO") -> None:
             structlog.processors.StackInfoRenderer(),
             structlog.processors.format_exc_info,
             structlog.processors.UnicodeDecoder(),
+            _ensure_context_defaults,
+            _rename_event_to_message,
             structlog.processors.JSONRenderer(),
         ],
         wrapper_class=structlog.stdlib.BoundLogger,

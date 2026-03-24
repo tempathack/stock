@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-artifacts-pvc
+  namespace: ml
+  labels:
+    app: ml-pipeline
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: ml-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 5Gi

@@ -38,10 +38,44 @@ class Settings(BaseSettings):
     # Group 5 — Ingestion (Phase 6+)
     TICKER_SYMBOLS: str = "AAPL,MSFT,GOOGL,AMZN,NVDA,META,TSLA,BRK-B,JPM,JNJ,V,PG,UNH,HD,MA,BAC,XOM,PFE,ABBV,CVX"
 
+    # Group 7 — WebSocket (Phase 45+)
+    WS_PRICE_INTERVAL: float = 5.0
+    WS_MARKET_RECHECK_INTERVAL: float = 60.0
+
+    # Group 8 — Redis (Phase 47+)
+    REDIS_URL: Optional[str] = None
+
+    # Group 9 — Rate Limiting (Phase 48+)
+    RATE_LIMIT_GLOBAL: str = "100/minute"
+    RATE_LIMIT_PREDICT: str = "30/minute"
+    RATE_LIMIT_INGEST: str = "10/minute"
+
+    # Group 10 — Health Checks (Phase 48+)
+    MODEL_FRESHNESS_THRESHOLD_DAYS: int = 7
+    PREDICTION_STALENESS_HOURS: int = 24
+
+    # Group 11 — A/B Testing (Phase 49+)
+    AB_TESTING_ENABLED: bool = False
+    AB_LOG_ASSIGNMENTS: bool = True
+
+    # Group 12 — KServe Inference (Phase 56+)
+    KSERVE_INFERENCE_URL: Optional[str] = None
+    KSERVE_MODEL_NAME: str = "stock-model-serving"
+    KSERVE_TIMEOUT_SECONDS: float = 30.0
+    KSERVE_ENABLED: bool = False
+    KSERVE_CANARY_URL: Optional[str] = None
+
     # Group 6 — ML / Model Serving (Phase 23+)
     MODEL_REGISTRY_DIR: str = "model_registry"
     DRIFT_LOG_DIR: str = "drift_logs"
     SERVING_DIR: str = "/models/active"
+    DEFAULT_HORIZON: int = 7
+    AVAILABLE_HORIZONS: str = "1,7,30"
+
+    @property
+    def available_horizons_list(self) -> list[int]:
+        """Parse AVAILABLE_HORIZONS into a list of ints."""
+        return [int(h.strip()) for h in self.AVAILABLE_HORIZONS.split(",") if h.strip()]
 
 
 settings = Settings()

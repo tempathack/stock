@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: unknown
-stopped_at: Planning Phase 30
-last_updated: "2026-03-22T13:30:00.000Z"
+milestone: v1.1
+milestone_name: production-ready
+status: complete
+stopped_at: Completed Phase 49
+last_updated: "2026-03-24T00:00:00.000Z"
 progress:
-  total_phases: 30
-  completed_phases: 29
-  total_plans: 51
-  completed_plans: 46
+  total_phases: 50
+  completed_phases: 49
+  total_plans: 94
+  completed_plans: 87
 ---
 
 # STATE.md — Project Memory
@@ -19,14 +19,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 25 — React App Bootstrap & Navigation
+**Current focus:** Milestone v1.1 complete — all 50 phases done
 
 ## Current Status
 
-- **Active phase:** 30
-- **Phase name:** Integration Testing & Seed Data
-- **Phase plans:** 0/5 complete
-- **Overall progress:** 29 / 30 phases complete
+- **Active phase:** v1.1 complete
+- **Phase name:** Milestone v1.1 Production-Ready Complete
+- **Phase plans:** 50/50 phases complete
+- **Overall progress:** 50 / 50 phases complete
 
 ## Phase Completion Log
 
@@ -61,7 +61,27 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 27 | Frontend — /forecasts Page | Complete | 2026-03-21 |
 | 28 | Frontend — /dashboard Page | Complete | 2026-03-22 |
 | 29 | Frontend — /drift Page | Complete | 2026-03-22 |
-| 30 | Integration Testing & Seed Data | Planned (0/5 plans) | — |
+| 30 | Integration Testing & Seed Data | Complete (5/5 plans) | 2026-03-23 |
+| 31 | Live Model Inference API | Complete (3/3 plans) | 2026-03-23 |
+| 32 | Frontend Live Data Integration | Complete (2/2 plans) | 2026-03-23 |
+| 33 | ML Pipeline Container & Config | Complete (2/2 plans) | 2026-03-23 |
+| 34 | K8s ML CronJobs & Model Serving | Complete (3/3 plans) | 2026-03-23 |
+| 35 | Alembic Migration System | Complete (2/2 plans) | 2026-03-23 |
+| 36 | Secrets Management & DB RBAC | Complete (2/2 plans) | 2026-03-23 |
+| 37 | Prometheus Metrics Instrumentation | Complete (2/2 plans) | 2026-03-23 |
+| 38 | Grafana Dashboards & Alerting | Complete (3/3 plans) | 2026-03-23 |
+| 39 | Structured Logging & Aggregation | Complete (2/2 plans) | 2026-03-23 |
+| 40 | SQLAlchemy Connection Pooling | Complete (2/2 plans) | 2026-03-23 |
+| 41 | Database Backup Strategy | Complete (1/1 plans) | 2026-03-23 |
+| 42 | Ensemble Stacking | Complete (2/2 plans) | 2026-03-23 |
+| 43 | Multi-Horizon Predictions | Complete (3/3 plans) | 2026-03-24 |
+| 44 | Feature Store | Complete (2/2 plans) | 2026-03-24 |
+| 45 | WebSocket Live Prices | Complete (2/2 plans) | 2026-03-24 |
+| 46 | Backtesting UI | Complete (2/2 plans) | 2026-03-24 |
+| 47 | Redis Caching Layer | Complete (2/2 plans) | 2026-03-24 |
+| 48 | Rate Limiting & Deep Health Checks | Complete (2/2 plans) | 2026-03-24 |
+| 49 | A/B Model Testing | Complete (2/2 plans) | 2026-03-24 |
+| 50 | Export & Mobile Responsive | Complete (2/2 plans) | 2026-03-24 |
 
 ## Decisions
 
@@ -148,6 +168,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 18]: generate_cv_report() produces JSON comparison of fold metrics across all models
 - [Phase 18]: evaluate_models() wraps rank_models() + generates RankedModel list for downstream components
 - [Phase 18]: generate_comparison_report() produces JSON model comparison with metrics, ranking, and stability
+- [Phase 30]: Completed integration testing and seed data — all 5 plans executed successfully
+- [Phase 31–50 Planning]: Phases 31–50 designed as v1.1 milestone; 4 waves (Foundation, Observability, Features, Hardening)
+- [Phase 31–50 Planning]: Plain K8s CronJobs for ML training/drift (Phase 33–34); KFP containerization deferred to v2
+- [Phase 31–50 Planning]: Phase 31 adds live inference with raw psycopg2 (matching market_service.py); SQLAlchemy migration deferred to Phase 40
+- [Phase 31–50 Planning]: User auth, watchlists, alerts, sentiment data, sector models, portfolio optimization deferred to v2
+- [Phase 31–50 Planning]: 7 new requirement domains added: LIVE-, DEPLOY-, MON-, DBHARD-, ADVML-, FENH-, PROD-
 - [Phase 19]: KF-09 (explainability) and KF-10/KF-11 (winner selection + persistence) already complete from Phases 15-16 — no changes needed
 - [Phase 19]: Three new ModelRegistry methods: activate_model(), deactivate_all(), get_active_model() for is_active tracking
 - [Phase 19]: is_active is distinct from is_winner — a model can be winner but not yet deployed (pre-deployment) or active but not latest winner (between retrain cycles)

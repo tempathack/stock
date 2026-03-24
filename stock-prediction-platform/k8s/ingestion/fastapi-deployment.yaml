@@ -15,6 +15,10 @@ spec:
     metadata:
       labels:
         app: stock-api
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: stock-api
@@ -30,6 +34,16 @@ spec:
               value: "stock-api"
             - name: APP_VERSION
               value: "1.0.0"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: stock-platform-secrets
+                  key: DATABASE_URL_READONLY
+            - name: DATABASE_URL_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: stock-platform-secrets
+                  key: DATABASE_URL
           resources:
             requests:
               cpu: "250m"

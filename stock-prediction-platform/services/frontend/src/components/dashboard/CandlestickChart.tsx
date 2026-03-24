@@ -9,11 +9,12 @@ import {
   CartesianGrid,
   Cell,
 } from "recharts";
-import type { CandlePoint } from "@/api";
+import type { CandlePoint, WebSocketPriceUpdate } from "@/api";
 
 interface CandlestickChartProps {
   candles: CandlePoint[];
   ticker: string;
+  livePrice?: WebSocketPriceUpdate | null;
 }
 
 const tooltipStyle = {
@@ -120,19 +121,37 @@ function CandleShape(props: Record<string, unknown>) {
 export default function CandlestickChart({
   candles,
   ticker,
+  livePrice,
 }: CandlestickChartProps) {
-  const chartData = useMemo<CandleBarData[]>(
-    () =>
-      candles.map((c) => ({
-        ...c,
-        bodyRange: [
-          Math.min(c.open, c.close),
-          Math.max(c.open, c.close),
-        ] as [number, number],
-        isUp: c.close >= c.open,
-      })),
-    [candles],
-  );
+  const chartData = useMemo<CandleBarData[]>(() => {
+    const data = candles.map((c) => ({
+      ...c,
+      bodyRange: [
+        Math.min(c.open, c.close),
+        Math.max(c.open, c.close),
+      ] as [number, number],
+      isUp: c.close >= c.open,
+    }));
+
+    // Update last candle with live price
+    if (livePrice && data.length > 0) {
+      const idx = data.length - 1;
+      const src = data[idx]!;
+      const close = livePrice.price;
+      const high = Math.max(src.high, close);
+      const low = Math.min(src.low, close);
+      data[idx] = {
+        ...src,
+        close,
+        high,
+        low,
+        bodyRange: [Math.min(src.open, close), Math.max(src.open, close)],
+        isUp: close >= src.open,
+      };
+    }
+
+    return data;
+  }, [candles, livePrice]);
 
   const yDomain = useMemo<[number, number]>(() => {
     if (chartData.length === 0) return [0, 1];
@@ -158,6 +177,13 @@ export default function CandlestickChart({
     <div className="rounded-lg border border-border bg-bg-surface p-4">
       <h3 className="mb-1 text-sm font-medium text-text-primary">
         {ticker} — Intraday
+        {livePrice && (
+          <span
+            className="ml-2 inline-block h-2 w-2 rounded-full bg-green-500"
+            style={{ animation: "pulse 1.5s ease-in-out infinite" }}
+            title="Live data active"
+          />
+        )}
       </h3>
       <p className="mb-3 text-xs text-text-secondary">{dateLabel}</p>
       <ResponsiveContainer width="100%" height={320}>

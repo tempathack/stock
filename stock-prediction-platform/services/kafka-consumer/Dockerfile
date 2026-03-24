@@ -24,4 +24,6 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV SERVICE_NAME=kafka-consumer
 
+EXPOSE 9090
+
 CMD ["python", "-m", "consumer.main"]

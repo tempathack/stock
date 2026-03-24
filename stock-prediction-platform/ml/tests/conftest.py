@@ -50,3 +50,55 @@ def sample_ohlcv_df() -> pd.DataFrame:
         },
         index=dates,
     )
+
+
+# ---------------------------------------------------------------------------
+# S3 / MinIO mock fixtures (moto)
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture
+def mock_s3(monkeypatch):
+    """Set up moto S3 mock with ``model-artifacts`` and ``drift-logs`` buckets.
+
+    Sets the required environment variables so that
+    :class:`~ml.models.storage_backends.S3StorageBackend` and
+    :class:`~ml.models.s3_storage.S3Storage` can be constructed
+    without real AWS / MinIO credentials.
+    """
+    import boto3
+    from moto import mock_aws
+
+    monkeypatch.setenv("STORAGE_BACKEND", "s3")
+    monkeypatch.setenv("AWS_ACCESS_KEY_ID", "testing")
+    monkeypatch.setenv("AWS_SECRET_ACCESS_KEY", "testing")
+    monkeypatch.setenv("AWS_DEFAULT_REGION", "us-east-1")
+    monkeypatch.setenv("MINIO_ROOT_USER", "testing")
+    monkeypatch.setenv("MINIO_ROOT_PASSWORD", "testing")
+    monkeypatch.setenv("MINIO_BUCKET_MODELS", "model-artifacts")
+    monkeypatch.setenv("MINIO_BUCKET_DRIFT", "drift-logs")
+    monkeypatch.delenv("MINIO_ENDPOINT", raising=False)
+
+    with mock_aws():
+        client = boto3.client("s3", region_name="us-east-1")
+        client.create_bucket(Bucket="model-artifacts")
+        client.create_bucket(Bucket="drift-logs")
+        yield
+
+
+@pytest.fixture
+def s3_backend(mock_s3):
+    """Return an :class:`S3StorageBackend` connected to the moto mock."""
+    from ml.models.storage_backends import S3StorageBackend
+
+    return S3StorageBackend(bucket="model-artifacts")
+
+
+@pytest.fixture
+def s3_registry(mock_s3):
+    """Return a :class:`ModelRegistry` using the S3 backend against moto mock."""
+    from ml.models.registry import ModelRegistry
+    from ml.models.storage_backends import S3StorageBackend
+
+    backend = S3StorageBackend(bucket="model-artifacts")
+    return ModelRegistry(backend=backend)

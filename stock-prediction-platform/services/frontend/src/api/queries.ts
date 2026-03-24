@@ -8,18 +8,29 @@ import type {
   DriftStatusResponse,
   MarketOverviewResponse,
   TickerIndicatorsResponse,
+  RollingPerformanceResponse,
+  RetrainStatusResponse,
+  AvailableHorizonsResponse,
+  BacktestResponse,
 } from "./types";
 
 /* ── query key constants ───────────────────────────────── */
 
 export const queryKeys = {
   health: ["health"] as const,
-  prediction: (ticker: string) => ["prediction", ticker] as const,
-  bulkPredictions: ["predictions", "bulk"] as const,
+  prediction: (ticker: string, horizon?: number) =>
+    ["prediction", ticker, horizon ?? "default"] as const,
+  bulkPredictions: (horizon?: number) =>
+    ["predictions", "bulk", horizon ?? "default"] as const,
+  horizons: ["predict", "horizons"] as const,
   modelComparison: ["models", "comparison"] as const,
   modelDrift: ["models", "drift"] as const,
   marketOverview: ["market", "overview"] as const,
   tickerIndicators: (ticker: string) => ["market", "indicators", ticker] as const,
+  rollingPerformance: (days: number) => ["models", "drift", "rolling-performance", days] as const,
+  retrainStatus: ["models", "retrain-status"] as const,
+  backtest: (ticker: string, start?: string, end?: string, horizon?: number) =>
+    ["backtest", ticker, start, end, horizon] as const,
 };
 
 /* ── query hooks ───────────────────────────────────────── */
@@ -36,12 +47,14 @@ export function useHealthCheck() {
   });
 }
 
-export function usePrediction(ticker: string) {
+export function usePrediction(ticker: string, horizon?: number) {
   return useQuery({
-    queryKey: queryKeys.prediction(ticker),
+    queryKey: queryKeys.prediction(ticker, horizon),
     queryFn: async () => {
+      const params = horizon != null ? { params: { horizon } } : {};
       const { data } = await apiClient.get<PredictionResponse>(
         `/predict/${encodeURIComponent(ticker)}`,
+        params,
       );
       return data;
     },
@@ -49,13 +62,30 @@ export function usePrediction(ticker: string) {
   });
 }
 
-export function useBulkPredictions() {
+export function useBulkPredictions(horizon?: number) {
   return useQuery({
-    queryKey: queryKeys.bulkPredictions,
+    queryKey: queryKeys.bulkPredictions(horizon),
     queryFn: async () => {
-      const { data } = await apiClient.get<BulkPredictionResponse>("/predict/bulk");
+      const params = horizon != null ? { params: { horizon } } : {};
+      const { data } = await apiClient.get<BulkPredictionResponse>(
+        "/predict/bulk",
+        params,
+      );
       return data;
     },
+  });
+}
+
+export function useAvailableHorizons() {
+  return useQuery({
+    queryKey: queryKeys.horizons,
+    queryFn: async () => {
+      const { data } = await apiClient.get<AvailableHorizonsResponse>(
+        "/predict/horizons",
+      );
+      return data;
+    },
+    staleTime: 5 * 60_000,
   });
 }
 
@@ -96,6 +126,54 @@ export function useTickerIndicators(ticker: string) {
     queryFn: async () => {
       const { data } = await apiClient.get<TickerIndicatorsResponse>(
         `/market/indicators/${encodeURIComponent(ticker)}`,
+      );
+      return data;
+    },
+    enabled: !!ticker,
+  });
+}
+
+export function useRollingPerformance(days = 30) {
+  return useQuery({
+    queryKey: queryKeys.rollingPerformance(days),
+    queryFn: async () => {
+      const { data } = await apiClient.get<RollingPerformanceResponse>(
+        "/models/drift/rolling-performance",
+        { params: { days } },
+      );
+      return data;
+    },
+  });
+}
+
+export function useRetrainStatus() {
+  return useQuery({
+    queryKey: queryKeys.retrainStatus,
+    queryFn: async () => {
+      const { data } = await apiClient.get<RetrainStatusResponse>(
+        "/models/retrain-status",
+      );
+      return data;
+    },
+  });
+}
+
+export function useBacktest(
+  ticker: string,
+  start?: string,
+  end?: string,
+  horizon?: number,
+) {
+  return useQuery({
+    queryKey: queryKeys.backtest(ticker, start, end, horizon),
+    queryFn: async () => {
+      const params: Record<string, string | number> = {};
+      if (start) params.start = start;
+      if (end) params.end = end;
+      if (horizon != null) params.horizon = horizon;
+      const { data } = await apiClient.get<BacktestResponse>(
+        `/backtest/${encodeURIComponent(ticker)}`,
+        { params },
       );
       return data;
     },

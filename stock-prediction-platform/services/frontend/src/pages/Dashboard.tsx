@@ -12,17 +12,32 @@ import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
 import { buildTreemapData, deriveStockMetrics } from "@/utils/dashboardUtils";
 import { generateMockMarketOverview, generateMockIntradayCandles } from "@/utils/mockDashboardData";
 import { generateMockIndicatorSeries } from "@/utils/mockIndicatorData";
+import useWebSocket from "@/hooks/useWebSocket";
+import type { WebSocketStatus } from "@/api";
+
+const STATUS_COLORS: Record<WebSocketStatus, string> = {
+  connected: "bg-green-500",
+  connecting: "bg-yellow-500",
+  disconnected: "bg-red-500",
+  error: "bg-red-500",
+};
 
 export default function Dashboard() {
   const marketQuery = useMarketOverview();
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [showTA, setShowTA] = useState(false);
 
+  // WebSocket live prices
+  const wsUrl = `${(import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/^http/, "ws")}/ws/prices`;
+  const { status: wsStatus, prices: livePrices } = useWebSocket(wsUrl);
+  const livePrice = selectedTicker ? livePrices.get(selectedTicker) ?? null : null;
+
   const indicatorQuery = useTickerIndicators(selectedTicker ?? "");
   const predictionQuery = usePrediction(selectedTicker ?? "");
 
-  // Build treemap data — fall back to mock when API unavailable
-  const stocks = marketQuery.data?.stocks ?? generateMockMarketOverview();
+  // Build treemap data — mock only on error (not while loading)
+  const stocks = marketQuery.data?.stocks
+    ?? (marketQuery.isError ? generateMockMarketOverview() : []);
   const treemapData = useMemo(() => buildTreemapData(stocks), [stocks]);
 
   // Derive metric card data for selected stock
@@ -30,9 +45,9 @@ export default function Dashboard() {
 
   const indicatorSeries = useMemo(() => {
     if (indicatorQuery.data?.series?.length) return indicatorQuery.data.series;
-    if (selectedTicker) return generateMockIndicatorSeries(selectedTicker);
+    if (selectedTicker && indicatorQuery.isError) return generateMockIndicatorSeries(selectedTicker);
     return [];
-  }, [indicatorQuery.data, selectedTicker]);
+  }, [indicatorQuery.data, indicatorQuery.isError, selectedTicker]);
 
   const metrics = useMemo(() => {
     if (!selectedStock) return null;
@@ -58,7 +73,15 @@ export default function Dashboard() {
     <>
       <PageHeader
         title="Market Dashboard"
-        subtitle="Real-time S&P 500 overview and stock analysis"
+        subtitle={
+          <span className="inline-flex items-center gap-2">
+            Real-time S&amp;P 500 overview and stock analysis
+            <span
+              className={`inline-block h-2 w-2 rounded-full ${STATUS_COLORS[wsStatus]}`}
+              title={`WebSocket: ${wsStatus}`}
+            />
+          </span>
+        }
       />
 
       {/* ── Treemap ── */}
@@ -90,7 +113,7 @@ export default function Dashboard() {
             </button>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
-            <CandlestickChart candles={intradayCandles} ticker={selectedTicker} />
+            <CandlestickChart candles={intradayCandles} ticker={selectedTicker} livePrice={livePrice} />
             <HistoricalChart
               series={indicatorSeries}
               ticker={selectedTicker}

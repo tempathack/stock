@@ -8,19 +8,21 @@ import {
   RetrainStatusPanel,
   FeatureDistributionChart,
 } from "@/components/drift";
-import { useModelDrift, useModelComparison } from "@/api";
-import type { ActiveModelInfo } from "@/api";
+import { useModelDrift, useModelComparison, useRollingPerformance, useRetrainStatus } from "@/api";
+import type { ActiveModelInfo, RetrainStatus } from "@/api";
 import { generateMockDriftData } from "@/utils/mockDriftData";
 
 export default function Drift() {
   const driftQuery = useModelDrift();
   const modelsQuery = useModelComparison();
+  const rollingPerfQuery = useRollingPerformance();
+  const retrainQuery = useRetrainStatus();
 
   const mockData = useMemo(() => generateMockDriftData(), []);
 
   const activeModel: ActiveModelInfo | null = useMemo(() => {
     const active = modelsQuery.data?.models.find((m) => m.is_active);
-    if (!active) return mockData.activeModel;
+    if (!active) return modelsQuery.isError ? mockData.activeModel : null;
     return {
       modelName: active.model_name,
       scalerVariant: active.scaler_variant,
@@ -31,14 +33,52 @@ export default function Drift() {
       oosMae: (active.oos_metrics?.mae as number) ?? null,
       oosDirectionalAccuracy: (active.oos_metrics?.directional_accuracy as number) ?? null,
     };
-  }, [modelsQuery.data, mockData]);
+  }, [modelsQuery.data, modelsQuery.isError, mockData]);
 
-  const events = driftQuery.data?.events ?? mockData.events;
-  const rollingPerformance = mockData.rollingPerformance;
-  const retrainStatus = mockData.retrainStatus;
+  const events = driftQuery.data?.events
+    ?? (driftQuery.isError ? mockData.events : []);
+
+  const rollingPerformance = useMemo(() => {
+    if (rollingPerfQuery.data?.entries?.length) {
+      return rollingPerfQuery.data.entries.map((e) => ({
+        date: e.date,
+        rmse: e.rmse,
+        mae: e.mae,
+        directionalAccuracy: e.directional_accuracy,
+      }));
+    }
+    if (rollingPerfQuery.isError) return mockData.rollingPerformance;
+    return [];
+  }, [rollingPerfQuery.data, rollingPerfQuery.isError, mockData]);
+
+  const retrainStatus = useMemo<RetrainStatus>(() => {
+    if (retrainQuery.data?.model_name) {
+      const d = retrainQuery.data;
+      return {
+        lastRetrainDate: d.trained_at,
+        isRetraining: false,
+        oldModel: d.previous_model
+          ? { name: d.previous_model, rmse: 0, mae: 0 }
+          : null,
+        newModel: d.model_name
+          ? {
+              name: d.model_name,
+              rmse: (d.oos_metrics?.oos_rmse as number) ?? 0,
+              mae: (d.oos_metrics?.oos_mae as number) ?? 0,
+            }
+          : null,
+        improvementPct: null,
+      };
+    }
+    if (retrainQuery.isError) return mockData.retrainStatus;
+    return mockData.retrainStatus;
+  }, [retrainQuery.data, retrainQuery.isError, mockData]);
+
   const featureDistributions = mockData.featureDistributions;
 
-  if (driftQuery.isLoading && modelsQuery.isLoading) return <LoadingSpinner />;
+  const isAllLoading = driftQuery.isLoading && modelsQuery.isLoading
+    && rollingPerfQuery.isLoading && retrainQuery.isLoading;
+  if (isAllLoading) return <LoadingSpinner />;
   if (driftQuery.isError && !driftQuery.data) {
     return (
       <ErrorFallback

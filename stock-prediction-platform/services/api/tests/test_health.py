@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from unittest.mock import patch
+
 from fastapi.testclient import TestClient
 
 from app.config import settings
@@ -17,14 +19,15 @@ def test_health_returns_200() -> None:
 
 
 def test_health_response_shape() -> None:
-    """Response JSON has exactly keys: service, version, status."""
+    """Response JSON has expected keys: service, version, status, db_pool, redis_status."""
     response = client.get("/health")
     data = response.json()
-    assert set(data.keys()) == {"service", "version", "status"}
+    assert {"service", "version", "status", "db_pool", "redis_status"} == set(data.keys())
 
 
-def test_health_response_values() -> None:
-    """Response values match expected defaults."""
+@patch("app.routers.health.check_db", return_value={"status": "ok"})
+def test_health_response_values(mock_db) -> None:
+    """Response values match expected defaults when DB is reachable."""
     response = client.get("/health")
     data = response.json()
     assert data["service"] == "stock-api"

@@ -1,0 +1,47 @@
+###############################################################################
+# KServe InferenceService — Canary Model Serving
+# Phase 55: Canary variant for A/B model testing
+#
+# Mirrors the primary InferenceService but points to canary model artifacts.
+# Used by Phase 49 A/B testing to route a percentage of traffic to a
+# challenger model. Scale canary replicas up when running A/B experiments.
+#
+# V2 Inference Protocol endpoints (after deployment):
+#   POST /v2/models/stock-model-serving-canary/infer
+#   GET  /v2/models/stock-model-serving-canary/ready
+#
+# Internal service DNS (RawDeployment mode):
+#   stock-model-serving-canary-predictor.ml.svc.cluster.local:80
+###############################################################################
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: stock-model-serving-canary
+  namespace: ml
+  labels:
+    app: kserve
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: model-inference
+    variant: canary
+  annotations:
+    description: "Canary KServe InferenceService for A/B model testing"
+    sidecar.istio.io/inject: "false"
+spec:
+  predictor:
+    serviceAccountName: kserve-s3-sa
+    minReplicas: 0
+    maxReplicas: 2
+    model:
+      modelFormat:
+        name: sklearn
+        version: "1"
+      runtime: stock-sklearn-mlserver
+      protocolVersion: v2
+      storageUri: "s3://model-artifacts/serving/canary"
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"

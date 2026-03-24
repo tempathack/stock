@@ -1,0 +1,45 @@
+###############################################################################
+# KServe InferenceService — Primary Model Serving
+# Phase 55: Replaces legacy uvicorn model-serving Deployment
+#
+# V2 Inference Protocol endpoints (after deployment):
+#   POST /v2/models/stock-model-serving/infer   — prediction
+#   GET  /v2/models/stock-model-serving/ready    — readiness
+#   GET  /v2/models/stock-model-serving          — model metadata
+#   GET  /v2/health/ready                         — server health
+#
+# Internal service DNS (RawDeployment mode):
+#   stock-model-serving-predictor.ml.svc.cluster.local:80
+###############################################################################
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: stock-model-serving
+  namespace: ml
+  labels:
+    app: kserve
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: model-inference
+    variant: primary
+  annotations:
+    description: "Primary KServe InferenceService for stock prediction sklearn models"
+    sidecar.istio.io/inject: "false"
+spec:
+  predictor:
+    serviceAccountName: kserve-s3-sa
+    minReplicas: 1
+    maxReplicas: 3
+    model:
+      modelFormat:
+        name: sklearn
+        version: "1"
+      runtime: stock-sklearn-mlserver
+      protocolVersion: v2
+      storageUri: "s3://model-artifacts/serving/active"
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"

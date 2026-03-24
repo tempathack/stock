@@ -32,3 +32,10 @@ metadata:
   name: frontend
   labels:
     app.kubernetes.io/part-of: stock-prediction-platform
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    app.kubernetes.io/part-of: stock-prediction-platform

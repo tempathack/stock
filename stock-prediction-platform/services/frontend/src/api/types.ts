@@ -13,6 +13,7 @@ export interface PredictionResponse {
   predicted_price: number;
   model_name: string;
   confidence: number | null;
+  horizon_days?: number | null;
 }
 
 export interface BulkPredictionResponse {
@@ -20,7 +21,15 @@ export interface BulkPredictionResponse {
   model_name: string | null;
   generated_at: string | null;
   count: number;
+  horizon_days?: number | null;
 }
+
+export interface AvailableHorizonsResponse {
+  horizons: number[];
+  default: number;
+}
+
+export type HorizonOption = 1 | 7 | 30;
 
 export interface ModelComparisonEntry {
   model_name: string;
@@ -54,6 +63,33 @@ export interface DriftStatusResponse {
   any_recent_drift: boolean;
   latest_event: DriftEventEntry | null;
   count: number;
+}
+
+/* ── Rolling Performance & Retrain Status (Phase 32) ─── */
+
+export interface RollingPerfEntry {
+  date: string;
+  rmse: number | null;
+  mae: number | null;
+  directional_accuracy: number | null;
+  n_predictions: number;
+}
+
+export interface RollingPerformanceResponse {
+  entries: RollingPerfEntry[];
+  model_name: string | null;
+  period_days: number;
+  count: number;
+}
+
+export interface RetrainStatusResponse {
+  model_name: string | null;
+  version: string | null;
+  trained_at: string | null;
+  is_active: boolean;
+  oos_metrics: Record<string, unknown>;
+  previous_model: string | null;
+  previous_trained_at: string | null;
 }
 
 export interface MarketOverviewEntry {
@@ -151,6 +187,7 @@ export interface ForecastRow {
   model_name: string;
   prediction_date: string;
   predicted_date: string;
+  horizon_days?: number | null;
 }
 
 export interface ForecastFiltersState {
@@ -160,6 +197,22 @@ export interface ForecastFiltersState {
   minConfidence: number | null;
   search: string;
 }
+
+/* ── WebSocket types (Phase 45) ──────────────────── */
+
+export interface WebSocketPriceUpdate {
+  ticker: string;
+  price: number;
+  change_pct: number;
+  volume: number;
+  timestamp: string;
+}
+
+export type WebSocketMessage =
+  | { type: "price_update"; prices: WebSocketPriceUpdate[] }
+  | { type: "market_closed"; next_open: string };
+
+export type WebSocketStatus = "connecting" | "connected" | "disconnected" | "error";
 
 /* ── Dashboard page types (Phase 28) ─────────────── */
 
@@ -254,4 +307,33 @@ export interface DriftPageData {
   rollingPerformance: RollingPerformancePoint[];
   retrainStatus: RetrainStatus;
   featureDistributions: FeatureDistribution[];
+}
+
+/* ── Backtest types (Phase 46) ───────────────────── */
+
+export interface BacktestDataPoint {
+  date: string;
+  actual_price: number;
+  predicted_price: number;
+  error: number;
+  error_pct: number;
+}
+
+export interface BacktestMetrics {
+  rmse: number;
+  mae: number;
+  mape: number;
+  directional_accuracy: number;
+  r2: number;
+  total_points: number;
+}
+
+export interface BacktestResponse {
+  ticker: string;
+  model_name: string;
+  horizon: number;
+  start_date: string;
+  end_date: string;
+  metrics: BacktestMetrics;
+  series: BacktestDataPoint[];
 }

@@ -4,6 +4,7 @@ pydantic==2.7.1
 pydantic-settings==2.2.1
 sqlalchemy==2.0.30
 asyncpg==0.29.0
+psycopg2-binary==2.9.9
 alembic==1.13.1
 confluent-kafka==2.4.0
 yfinance==0.2.38
@@ -21,3 +22,6 @@ structlog==24.2.0
 python-json-logger==2.0.7
 prometheus-fastapi-instrumentator==7.0.0
 psutil==5.9.8
+websockets>=12.0
+pytz>=2024.1
+redis>=5.0.0

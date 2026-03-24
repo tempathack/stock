@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -79,11 +80,10 @@ def _append_retraining_log(
     reason: str,
     registry_dir: str,
 ) -> None:
-    """Append a JSON record to ``{registry_dir}/runs/retraining_log.jsonl``."""
-    runs_dir = Path(registry_dir) / "runs"
-    runs_dir.mkdir(parents=True, exist_ok=True)
-    log_path = runs_dir / "retraining_log.jsonl"
+    """Append a JSON record to ``{registry_dir}/runs/retraining_log.jsonl``.
 
+    Uses S3 when ``STORAGE_BACKEND=s3``, otherwise local filesystem.
+    """
     winner_name = None
     if result.winner_info:
         winner_name = result.winner_info.get("winner_name")
@@ -96,9 +96,28 @@ def _append_retraining_log(
         "pipeline_version": result.pipeline_version,
         "winner": winner_name,
     }
+    line = json.dumps(record) + "\n"
+
+    if os.environ.get("STORAGE_BACKEND", "local").lower() == "s3":
+        from ml.models.s3_storage import S3Storage
+
+        s3 = S3Storage.from_env()
+        bucket = os.environ.get("MINIO_BUCKET_MODELS", "model-artifacts")
+        key = f"{registry_dir}/runs/retraining_log.jsonl"
+
+        existing = b""
+        if s3.object_exists(bucket, key):
+            existing = s3.download_bytes(bucket, key)
+        s3.upload_bytes(existing + line.encode(), bucket, key)
+        logger.info("Appended retraining log entry → s3://%s/%s", bucket, key)
+        return
+
+    runs_dir = Path(registry_dir) / "runs"
+    runs_dir.mkdir(parents=True, exist_ok=True)
+    log_path = runs_dir / "retraining_log.jsonl"
 
     with open(log_path, "a") as f:
-        f.write(json.dumps(record) + "\n")
+        f.write(line)
 
     logger.info("Appended retraining log entry → %s", log_path)
 

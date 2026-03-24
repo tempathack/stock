@@ -1,7 +1,8 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
 import type { TreemapSectorGroup } from "@/api";
 import { changePctToColor } from "@/utils/dashboardUtils";
+import MobileMarketList from "./MobileMarketList";
 
 interface MarketTreemapProps {
   data: TreemapSectorGroup[];
@@ -144,12 +145,37 @@ function TreemapTooltipContent({
   );
 }
 
+function useIsMobile(breakpoint = 640) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false,
+  );
+  useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    setIsMobile(mql.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 export default function MarketTreemap({
   data,
   selectedTicker,
   onSelectTicker,
   height = 480,
 }: MarketTreemapProps) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <MobileMarketList
+        data={data}
+        selectedTicker={selectedTicker}
+        onSelectTicker={onSelectTicker}
+      />
+    );
+  }
   // Flatten sector groups into Recharts-compatible nested format
   const treemapData = useMemo(() => {
     return data.map((group) => ({

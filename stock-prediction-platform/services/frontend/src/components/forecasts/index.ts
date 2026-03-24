@@ -4,3 +4,4 @@ export { default as StockComparisonPanel } from "./StockComparisonPanel";
 export { default as StockDetailChart } from "./StockDetailChart";
 export { default as IndicatorOverlayCharts } from "./IndicatorOverlayCharts";
 export { default as StockShapPanel } from "./StockShapPanel";
+export { default as HorizonToggle } from "./HorizonToggle";

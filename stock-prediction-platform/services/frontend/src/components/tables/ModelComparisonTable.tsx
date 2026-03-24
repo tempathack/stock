@@ -110,8 +110,8 @@ export default function ModelComparisonTable({ models, onSelectModel }: ModelCom
         className="w-full max-w-xs rounded-md border border-border bg-bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent focus:outline-none"
       />
 
-      {/* Table */}
-      <div className="overflow-x-auto rounded-lg border border-border">
+      {/* Desktop table */}
+      <div className="hidden overflow-x-auto rounded-lg border border-border sm:block">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="sticky top-0 bg-bg-card text-xs uppercase tracking-wide text-text-secondary">
@@ -170,6 +170,61 @@ export default function ModelComparisonTable({ models, onSelectModel }: ModelCom
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile card layout */}
+      <div className="space-y-2 sm:hidden">
+        {sorted.length === 0 && (
+          <div className="rounded-lg border border-border bg-bg-surface p-8 text-center text-text-secondary">
+            No models found
+          </div>
+        )}
+        {sorted.map((model) => (
+          <div
+            key={`m-${model.model_name}-${model.scaler_variant}-${model.version}`}
+            onClick={() => onSelectModel?.(model)}
+            className={`cursor-pointer rounded-lg border border-border bg-bg-surface p-3 transition-colors hover:bg-bg-card/30 ${
+              model.is_winner
+                ? "border-l-4 border-l-accent bg-accent/5"
+                : ""
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {model.is_winner && (
+                  <span className="text-xs text-accent">★</span>
+                )}
+                <span className="font-medium text-text-primary">
+                  {model.model_name}
+                </span>
+              </div>
+              <span
+                className={`inline-block h-2 w-2 rounded-full ${
+                  model.is_active ? "bg-profit" : "bg-text-secondary/40"
+                }`}
+              />
+            </div>
+            <p className="text-xs text-text-secondary">{model.scaler_variant}</p>
+            <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              <div>
+                <span className="text-text-secondary">RMSE: </span>
+                <span className="font-mono">{fmt(model.oos_metrics.rmse, 6)}</span>
+              </div>
+              <div>
+                <span className="text-text-secondary">MAE: </span>
+                <span className="font-mono">{fmt(model.oos_metrics.mae, 6)}</span>
+              </div>
+              <div>
+                <span className="text-text-secondary">R²: </span>
+                <span className="font-mono">{fmt(model.oos_metrics.r2, 4)}</span>
+              </div>
+              <div>
+                <span className="text-text-secondary">Dir. Acc: </span>
+                <span className="font-mono">{pct(model.oos_metrics.directional_accuracy, 2)}</span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kserve-s3-sa
+  namespace: ml
+  labels:
+    app: kserve
+    app.kubernetes.io/part-of: stock-prediction-platform
+  annotations:
+    serving.kserve.io/s3-secret: kserve-s3-credentials

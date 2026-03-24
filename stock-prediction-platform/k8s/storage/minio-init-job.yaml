@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-init-buckets
+  namespace: storage
+  labels:
+    app: minio
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: minio-init
+spec:
+  backoffLimit: 4
+  ttlSecondsAfterFinished: 300
+  template:
+    metadata:
+      labels:
+        app: minio
+        app.kubernetes.io/component: minio-init
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-for-minio
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for MinIO to become ready..."
+              until wget -qO- http://minio.storage.svc.cluster.local:9000/minio/health/ready >/dev/null 2>&1; do
+                echo "MinIO not ready yet, retrying in 5s..."
+                sleep 5
+              done
+              echo "MinIO is ready"
+      containers:
+        - name: mc-init
+          image: minio/mc:RELEASE.2024-06-12T14-34-03Z
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: MINIO_ROOT_USER
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: MINIO_ROOT_PASSWORD
+            - name: MINIO_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_ENDPOINT
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              echo "Configuring MinIO client..."
+              mc alias set local "$MINIO_ENDPOINT" "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
+              echo "Creating buckets..."
+              mc mb --ignore-existing local/model-artifacts
+              mc mb --ignore-existing local/drift-logs
+              echo "Verifying buckets..."
+              mc ls local/
+              echo "MinIO bucket initialization complete"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"

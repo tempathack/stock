@@ -1,0 +1,95 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgresql-backup
+  namespace: storage
+  labels:
+    app: postgresql-backup
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: backup
+spec:
+  schedule: "0 4 * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 300
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 1800
+      template:
+        metadata:
+          labels:
+            app: postgresql-backup
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: pg-backup
+              image: timescale/timescaledb:latest-pg15
+              imagePullPolicy: Never
+              command: ["/bin/bash", "-c"]
+              args:
+                - |
+                  set -euo pipefail
+
+                  BACKUP_DIR=/backups
+                  TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+                  BACKUP_FILE="stockdb_${TIMESTAMP}.dump"
+
+                  echo "Starting backup: ${BACKUP_FILE}"
+
+                  if pg_dump -Fc \
+                    -h postgresql.storage.svc.cluster.local \
+                    -p 5432 \
+                    -U stockuser \
+                    -d stockdb \
+                    -f "${BACKUP_DIR}/${BACKUP_FILE}"; then
+                    BACKUP_SIZE=$(du -h "${BACKUP_DIR}/${BACKUP_FILE}" | cut -f1)
+                    echo "Backup complete: ${BACKUP_FILE} (${BACKUP_SIZE})"
+                  else
+                    echo "ERROR: pg_dump failed"
+                    exit 1
+                  fi
+
+                  # Retention: keep 7 daily + 4 weekly (Sunday) backups
+                  echo "Running retention cleanup..."
+                  REMOVED=0
+                  for f in $(find "${BACKUP_DIR}" -name "stockdb_*.dump" -mtime +7); do
+                    DOW=$(date -r "$f" +%u)
+                    if [ "$DOW" != "7" ]; then
+                      echo "Removing old daily backup: $(basename $f)"
+                      rm -f "$f"
+                      REMOVED=$((REMOVED + 1))
+                    else
+                      # Sunday backup — check if older than 28 days
+                      if [ "$(find "$f" -mtime +28 -print)" ]; then
+                        echo "Removing old weekly backup: $(basename $f)"
+                        rm -f "$f"
+                        REMOVED=$((REMOVED + 1))
+                      fi
+                    fi
+                  done
+                  echo "Retention complete: ${REMOVED} backup(s) removed"
+
+                  echo "Remaining backups:"
+                  ls -lh ${BACKUP_DIR}/
+              env:
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: POSTGRES_PASSWORD
+              volumeMounts:
+                - name: backup-data
+                  mountPath: /backups
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "512Mi"
+          volumes:
+            - name: backup-data
+              persistentVolumeClaim:
+                claimName: postgresql-backup-pvc

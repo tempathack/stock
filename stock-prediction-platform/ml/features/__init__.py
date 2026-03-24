@@ -9,6 +9,7 @@ from ml.features.lag_features import (
     drop_incomplete_rows,
     generate_target,
 )
+from ml.features.store import compute_and_store, read_features
 from ml.features.transformations import SCALER_VARIANTS, build_scaler_pipeline
 
 __all__ = [
@@ -19,4 +20,6 @@ __all__ = [
     "drop_incomplete_rows",
     "build_scaler_pipeline",
     "SCALER_VARIANTS",
+    "compute_and_store",
+    "read_features",
 ]

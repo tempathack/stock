@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -62,7 +62,7 @@ SAMPLE_INDICATORS = {
 class TestMarketOverview:
     """Tests for GET /market/overview."""
 
-    @patch("app.routers.market.get_market_overview")
+    @patch("app.routers.market.get_market_overview", new_callable=AsyncMock)
     def test_returns_overview(self, mock_get):
         mock_get.return_value = SAMPLE_OVERVIEW
         resp = client.get("/market/overview")
@@ -72,7 +72,7 @@ class TestMarketOverview:
         assert data["stocks"][0]["ticker"] == "AAPL"
         assert data["stocks"][0]["sector"] == "Technology"
 
-    @patch("app.routers.market.get_market_overview")
+    @patch("app.routers.market.get_market_overview", new_callable=AsyncMock)
     def test_empty_when_no_db(self, mock_get):
         mock_get.return_value = []
         resp = client.get("/market/overview")
@@ -81,7 +81,7 @@ class TestMarketOverview:
         assert data["count"] == 0
         assert data["stocks"] == []
 
-    @patch("app.routers.market.get_market_overview")
+    @patch("app.routers.market.get_market_overview", new_callable=AsyncMock)
     def test_response_schema(self, mock_get):
         mock_get.return_value = SAMPLE_OVERVIEW
         resp = client.get("/market/overview")
@@ -97,7 +97,7 @@ class TestMarketOverview:
 class TestMarketIndicators:
     """Tests for GET /market/indicators/{ticker}."""
 
-    @patch("app.routers.market.get_ticker_indicators")
+    @patch("app.routers.market.get_ticker_indicators", new_callable=AsyncMock)
     def test_returns_indicators(self, mock_get):
         mock_get.return_value = SAMPLE_INDICATORS
         resp = client.get("/market/indicators/AAPL")
@@ -107,14 +107,14 @@ class TestMarketIndicators:
         assert data["count"] == 2
         assert data["latest"]["rsi_14"] == 55.3
 
-    @patch("app.routers.market.get_ticker_indicators")
+    @patch("app.routers.market.get_ticker_indicators", new_callable=AsyncMock)
     def test_ticker_not_found(self, mock_get):
         mock_get.return_value = None
         resp = client.get("/market/indicators/ZZZZ")
         assert resp.status_code == 404
         assert "ZZZZ" in resp.json()["detail"]
 
-    @patch("app.routers.market.get_ticker_indicators")
+    @patch("app.routers.market.get_ticker_indicators", new_callable=AsyncMock)
     def test_series_returned(self, mock_get):
         mock_get.return_value = SAMPLE_INDICATORS
         resp = client.get("/market/indicators/AAPL")
@@ -122,7 +122,7 @@ class TestMarketIndicators:
         assert len(data["series"]) == 2
         assert data["series"][-1]["close"] == 175.5
 
-    @patch("app.routers.market.get_ticker_indicators")
+    @patch("app.routers.market.get_ticker_indicators", new_callable=AsyncMock)
     def test_response_schema(self, mock_get):
         mock_get.return_value = SAMPLE_INDICATORS
         resp = client.get("/market/indicators/AAPL")
