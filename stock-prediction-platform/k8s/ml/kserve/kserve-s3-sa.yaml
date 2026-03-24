@@ -8,3 +8,5 @@ metadata:
     app.kubernetes.io/part-of: stock-prediction-platform
   annotations:
     serving.kserve.io/s3-secret: kserve-s3-credentials
+secrets:
+  - name: kserve-s3-credentials

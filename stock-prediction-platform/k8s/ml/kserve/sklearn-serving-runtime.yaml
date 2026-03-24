@@ -20,8 +20,8 @@ spec:
     - v2
   multiModel: false
   containers:
-    - name: mlserver
-      image: docker.io/seldonio/mlserver:1.6.1-slim
+    - name: kserve-container
+      image: docker.io/seldonio/mlserver:1.6.1
       env:
         - name: MLSERVER_MODEL_IMPLEMENTATION
           value: mlserver_sklearn.SKLearnModel

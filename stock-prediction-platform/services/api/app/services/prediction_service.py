@@ -301,8 +301,11 @@ async def _kserve_inference(
     # Compute features
     try:
         from ml.features.indicators import compute_all_indicators
+        from ml.features.lag_features import compute_lag_features, compute_rolling_stats
 
         enriched = compute_all_indicators(ohlcv_df.copy())
+        enriched = compute_lag_features(enriched)
+        enriched = compute_rolling_stats(enriched)
     except Exception:
         logger.exception("Failed to compute indicators for %s", ticker)
         return None
@@ -351,6 +354,11 @@ async def _kserve_inference(
 
     # Build response (same schema as legacy path)
     last_close = float(ohlcv_df["close"].iloc[-1])
+    # Model predicts a percentage return (e.g. 0.05 means +5%).
+    # Convert to absolute price: predicted_abs = last_close * (1 + predicted_return).
+    if abs(predicted_price) < 10.0:
+        # Raw output looks like a return (< 10x multiplier), convert to absolute
+        predicted_price = last_close * (1.0 + predicted_price)
     confidence = max(0.0, min(1.0, 1.0 - abs(predicted_price - last_close) / last_close))
     h = horizon or 7
     predicted_date = date.today() + timedelta(days=h)
@@ -549,6 +557,11 @@ async def _load_ohlcv_for_inference(
             return None
         df = pd.DataFrame([dict(r) for r in rows])
         df = df.sort_values("date").reset_index(drop=True)
+        # Cast NUMERIC columns from decimal.Decimal to float64 for arithmetic ops
+        numeric_cols = ["open", "high", "low", "close", "adj_close", "volume", "vwap"]
+        for col in numeric_cols:
+            if col in df.columns:
+                df[col] = df[col].astype(float)
         return df
     except Exception:
         logger.exception("Failed to load OHLCV for %s", ticker)

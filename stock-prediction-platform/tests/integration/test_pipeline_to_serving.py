@@ -276,13 +276,16 @@ class TestKServeServingFlow:
         access_key = base64.b64decode(user_result.stdout.strip()).decode()
         secret_key = base64.b64decode(pwd_result.stdout.strip()).decode()
 
-        # Get MinIO endpoint via minikube service URL or port-forward
-        ep_result = _kubectl(
-            "get", "svc", "minio", "-n", "storage",
-            "-o", "jsonpath={.spec.clusterIP}",
-        )
-        minio_ip = ep_result.stdout.strip()
-        endpoint_url = f"http://{minio_ip}:9000"
+        # Get MinIO endpoint via env override (for port-forward), cluster IP, or minikube service
+        import os as _os
+        endpoint_url = _os.environ.get("MINIO_ENDPOINT_URL")
+        if not endpoint_url:
+            ep_result = _kubectl(
+                "get", "svc", "minio", "-n", "storage",
+                "-o", "jsonpath={.spec.clusterIP}",
+            )
+            minio_ip = ep_result.stdout.strip()
+            endpoint_url = f"http://{minio_ip}:9000"
 
         s3 = boto3.client(
             "s3",
@@ -311,8 +314,9 @@ class TestKServeServingFlow:
         if svc_result.returncode != 0:
             pytest.skip("stock-api service not available")
 
-        api_ip = svc_result.stdout.strip()
-        response = httpx.get(f"http://{api_ip}:8000/predict/AAPL", timeout=30)
+        import os as _os
+        api_base = _os.environ.get("API_BASE_URL") or f"http://{svc_result.stdout.strip()}:8000"
+        response = httpx.get(f"{api_base}/predict/AAPL", timeout=30)
         assert response.status_code == 200, (
             f"Predict endpoint failed: {response.status_code} {response.text}"
         )
