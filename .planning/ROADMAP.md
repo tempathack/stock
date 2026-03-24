@@ -1208,7 +1208,7 @@ Plans:
 **Goal:** Fix two docker-compose runtime crashes: kafka-consumer hardcoded K8s broker default and ml-pipeline ValueError when TICKERS not provided via CLI.
 **Requirements**: FIX-KAFKA, FIX-ML
 **Depends on:** Phase 57
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 58-01-PLAN.md — Fix ConsumerSettings broker default, inject env vars in docker-compose, fix __main__ TICKERS env fallback

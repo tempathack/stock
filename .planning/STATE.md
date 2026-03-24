@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: production-ready
-status: complete
-stopped_at: Completed Phase 49
-last_updated: "2026-03-24T00:00:00.000Z"
+milestone_name: Phases — Production-Ready
+status: unknown
+stopped_at: Completed 58-01-PLAN.md
+last_updated: "2026-03-24T13:21:23.918Z"
 progress:
-  total_phases: 50
-  completed_phases: 49
-  total_plans: 94
-  completed_plans: 87
+  total_phases: 59
+  completed_phases: 12
+  total_plans: 126
+  completed_plans: 26
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Milestone v1.1 complete — all 50 phases done
+**Current focus:** Phase 58 — fix-docker-compose-runtime-kafka-consumer-configurable-broker-ml-pipeline-entrypoint-fix
 
 ## Current Status
 
@@ -214,12 +214,19 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 24]: NaN/inf → None sanitization for JSON serialization of indicator values
 - [Phase 24]: Added repo root to services/api/tests/conftest.py sys.path so ml.* imports work from API test directory
 - [Phase 24]: 14 new tests (7 router + 7 service), all passing
+- [Phase 58]: Changed KAFKA_BOOTSTRAP_SERVERS default to kafka:9092 — K8s ConfigMap overrides at runtime, no K8s regression
+- [Phase 58]: Used tickers_str = args.tickers or os.environ.get('TICKERS') in __main__ — minimal diff, preserves CLI-arg precedence
 
 ## Last Session
 
-- **Stopped at:** Planning Phase 30 — Integration Testing & Seed Data
+- **Stopped at:** Completed 58-01-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
 
 (Add notes here as work progresses)
+
+### Roadmap Evolution
+
+- Phase 58 added: Fix docker-compose runtime: kafka-consumer configurable broker + ml-pipeline entrypoint fix
+- Phase 59 added: Minikube E2E validation: start cluster, deploy full stack, run ingest-train-serve flow
