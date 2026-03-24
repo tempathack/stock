@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 59-01-PLAN.md
-last_updated: "2026-03-24T14:21:44.719Z"
+stopped_at: Completed 59-03-PLAN.md (awaiting human-verify checkpoint)
+last_updated: "2026-03-24T22:44:39.425Z"
 progress:
   total_phases: 59
   completed_phases: 12
   total_plans: 130
-  completed_plans: 27
+  completed_plans: 28
 ---
 
 # STATE.md — Project Memory
@@ -218,10 +218,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 58]: Used tickers_str = args.tickers or os.environ.get('TICKERS') in __main__ — minimal diff, preserves CLI-arg precedence
 - [Phase 59]: SKIP_KSERVE_WAIT=true env var guards Phase 55 kubectl wait — backward-compatible, default false
 - [Phase 59]: stock-api Docker build added before Phase 3 FastAPI kubectl apply — matches kafka-consumer/ml-pipeline pattern
+- [Phase 59]: KServe ClusterServingRuntime container must be named 'kserve-container' not 'mlserver'
+- [Phase 59]: API Docker build context must be project root to include ml/features for KServe inference
+- [Phase 59]: Model predicts percentage return; convert to abs price via last_close * (1 + return)
 
 ## Last Session
 
-- **Stopped at:** Completed 59-01-PLAN.md
+- **Stopped at:** Completed 59-03-PLAN.md (awaiting human-verify checkpoint)
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
