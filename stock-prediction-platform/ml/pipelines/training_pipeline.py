@@ -452,7 +452,8 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    tickers = args.tickers.split(",") if args.tickers else None
+    tickers_str = args.tickers or os.environ.get("TICKERS")
+    tickers = tickers_str.split(",") if tickers_str else None
     horizons_list = (
         [int(h.strip()) for h in args.horizons.split(",")]
         if args.horizons

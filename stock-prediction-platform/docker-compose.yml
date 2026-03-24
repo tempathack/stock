@@ -69,10 +69,11 @@ services:
       dockerfile: ml/Dockerfile
     image: stock-ml-pipeline:latest
     environment:
-      - DATABASE_URL=postgresql://stockuser:${POSTGRES_PASSWORD}@postgres:5432/stockdb
+      - DATABASE_URL=postgresql://stockuser:${POSTGRES_PASSWORD:-stockpassword}@postgres:5432/stockdb
       - MODEL_REGISTRY_DIR=/data/model_registry
       - SERVING_DIR=/data/models/active
       - DRIFT_LOG_DIR=/data/drift_logs
+      - TICKERS=AAPL,MSFT,GOOGL,AMZN,NVDA,META,TSLA,BRK-B,JPM,JNJ,V,PG,UNH,HD,MA,BAC,XOM,PFE,ABBV,CVX
     depends_on:
       - postgres
 

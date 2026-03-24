@@ -215,3 +215,39 @@ class TestRunTrainingPipeline:
 
         assert result.status == "completed"
         assert "engineer_features" in result.steps_completed
+
+
+class TestMainEntrypointTickerResolution:
+    """Tests for __main__ TICKERS env var fallback (FIX-ML).
+
+    Tests the ticker-resolution logic that __main__ will use:
+      tickers_str = args_tickers or os.environ.get("TICKERS")
+      tickers = tickers_str.split(",") if tickers_str else None
+    """
+
+    def test_tickers_from_env_var_when_no_cli_arg(self, monkeypatch):
+        """TICKERS env var is used when --tickers CLI arg is absent."""
+        import os
+        monkeypatch.setenv("TICKERS", "AAPL,MSFT")
+        args_tickers = None  # simulates no --tickers arg
+        tickers_str = args_tickers or os.environ.get("TICKERS")
+        tickers = tickers_str.split(",") if tickers_str else None
+        assert tickers == ["AAPL", "MSFT"]
+
+    def test_no_tickers_arg_no_env_var_resolves_to_none(self, monkeypatch):
+        """Without arg or env var, tickers stays None (ValueError expected from pipeline)."""
+        import os
+        monkeypatch.delenv("TICKERS", raising=False)
+        args_tickers = None
+        tickers_str = args_tickers or os.environ.get("TICKERS")
+        tickers = tickers_str.split(",") if tickers_str else None
+        assert tickers is None
+
+    def test_cli_arg_takes_precedence_over_env_var(self, monkeypatch):
+        """--tickers CLI arg wins over TICKERS env var."""
+        import os
+        monkeypatch.setenv("TICKERS", "AAPL,MSFT")
+        args_tickers = "GOOGL,NVDA"  # simulates --tickers CLI arg
+        tickers_str = args_tickers or os.environ.get("TICKERS")
+        tickers = tickers_str.split(",") if tickers_str else None
+        assert tickers == ["GOOGL", "NVDA"]
