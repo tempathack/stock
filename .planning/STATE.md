@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 58-01-PLAN.md
-last_updated: "2026-03-24T14:02:34.159Z"
+stopped_at: Completed 59-01-PLAN.md
+last_updated: "2026-03-24T14:21:44.719Z"
 progress:
   total_phases: 59
   completed_phases: 12
-  total_plans: 126
-  completed_plans: 26
+  total_plans: 130
+  completed_plans: 27
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 58 — fix-docker-compose-runtime-kafka-consumer-configurable-broker-ml-pipeline-entrypoint-fix
+**Current focus:** Phase 59 — minikube-e2e-validation-start-cluster-deploy-full-stack-run-ingest-train-serve-flow
 
 ## Current Status
 
@@ -216,10 +216,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 24]: 14 new tests (7 router + 7 service), all passing
 - [Phase 58]: Changed KAFKA_BOOTSTRAP_SERVERS default to kafka:9092 — K8s ConfigMap overrides at runtime, no K8s regression
 - [Phase 58]: Used tickers_str = args.tickers or os.environ.get('TICKERS') in __main__ — minimal diff, preserves CLI-arg precedence
+- [Phase 59]: SKIP_KSERVE_WAIT=true env var guards Phase 55 kubectl wait — backward-compatible, default false
+- [Phase 59]: stock-api Docker build added before Phase 3 FastAPI kubectl apply — matches kafka-consumer/ml-pipeline pattern
 
 ## Last Session
 
-- **Stopped at:** Completed 58-01-PLAN.md
+- **Stopped at:** Completed 59-01-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes

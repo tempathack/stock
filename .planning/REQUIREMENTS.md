@@ -325,7 +325,7 @@
 - [ ] **KSERV-12**: A/B model testing uses KServe canary traffic splitting (percentTraffic)
 - [ ] **KSERV-13**: Legacy model-serving.yaml Deployment removed
 - [ ] **KSERV-14**: deploy-all.sh updated with MinIO + KServe deployment steps
-- [ ] **KSERV-15**: E2E flow validated: train → MinIO → KServe → predict → drift → retrain
+- [x] **KSERV-15**: E2E flow validated: train → MinIO → KServe → predict → drift → retrain
 
 ---
 
