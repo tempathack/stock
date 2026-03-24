@@ -27,6 +27,12 @@ echo "=== Stock Prediction Platform - Deploy All ==="
 echo "[Phase 2] Applying namespaces..."
 kubectl apply -f "$PROJECT_ROOT/k8s/namespaces.yaml"
 
+# --- Phase 3: Build stock-api Docker image ---
+echo "[Phase 3] Building stock-api Docker image..."
+eval $(minikube docker-env)
+docker build -t stock-api:latest "$PROJECT_ROOT/services/api/"
+echo "[Phase 3] stock-api:latest built"
+
 # --- Phase 3: FastAPI Base Service ---
 echo "[Phase 3] Deploying FastAPI service..."
 kubectl apply -f "$PROJECT_ROOT/k8s/ingestion/configmap.yaml"
@@ -119,6 +125,11 @@ kubectl get configmap minio-config -n storage -o yaml \
 
 echo "[Phase 51] ✓ MinIO deployed with model-artifacts and drift-logs buckets"
 
+# --- Phase 47: Redis Caching Layer ---
+echo "[Phase 47] Deploying Redis..."
+kubectl apply -f "$PROJECT_ROOT/k8s/storage/redis-deployment.yaml"
+echo "[Phase 47] Redis deployed"
+
 # --- Phase 54: KServe Installation & Configuration ---
 echo "[Phase 54] Installing cert-manager..."
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
@@ -159,7 +170,13 @@ echo "[Phase 55] Deploying KServe InferenceService (canary)..."
 kubectl apply -f "$PROJECT_ROOT/k8s/ml/kserve/kserve-inference-service-canary.yaml"
 
 echo "[Phase 55] Waiting for primary InferenceService to be ready..."
-kubectl wait --for=condition=Ready inferenceservice/stock-model-serving -n ml --timeout=300s
+if [ "${SKIP_KSERVE_WAIT:-false}" = "true" ]; then
+  echo "[Phase 55] SKIP_KSERVE_WAIT=true — skipping InferenceService wait (no model artifact yet)"
+  echo "[Phase 55] Run: kubectl wait --for=condition=Ready inferenceservice/stock-model-serving -n ml --timeout=600s"
+  echo "[Phase 55] after placing a model artifact in s3://model-artifacts/serving/active/"
+else
+  kubectl wait --for=condition=Ready inferenceservice/stock-model-serving -n ml --timeout=300s
+fi
 
 echo "[Phase 55] Verifying KServe predictor pod..."
 kubectl get inferenceservice -n ml
