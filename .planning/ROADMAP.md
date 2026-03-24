@@ -1215,13 +1215,16 @@ Plans:
 
 ### Phase 59: Minikube E2E validation: start cluster, deploy full stack, run ingest-train-serve flow
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Start Minikube cluster, deploy full stack, run ingest-train-KServe serve E2E flow, close all Phase 57 human_verification gaps.
+**Requirements**: KSERV-15
 **Depends on:** Phase 58
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 59 to break down)
+- [ ] 59-01-PLAN.md — Pre-flight: create secrets from examples, patch deploy-all.sh (stock-api build + Redis + conditional KServe wait)
+- [ ] 59-02-PLAN.md — Cluster bootstrap: setup-minikube.sh + deploy-all.sh SKIP_KSERVE_WAIT=true, human verification
+- [ ] 59-03-PLAN.md — Data + training: seed DB, trigger training, verify MinIO artifact, KServe Ready, /predict/AAPL E2E
+- [ ] 59-04-PLAN.md — Drift + frontend: trigger drift CronJob, verify drift_logs, frontend /forecasts and /drift human verification
 
 ---
 
