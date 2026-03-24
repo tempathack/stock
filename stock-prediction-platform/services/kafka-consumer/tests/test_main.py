@@ -335,3 +335,29 @@ class TestGracefulShutdown:
         main_module._running = True
         main_module._shutdown_handler(signal.SIGTERM, None)
         assert main_module._running is False
+
+
+class TestConsumerSettingsDefaults:
+    """Tests for ConsumerSettings env var defaults (FIX-KAFKA)."""
+
+    def test_default_kafka_broker_is_docker_compose_name(self, monkeypatch):
+        """Default must be kafka:9092 — the docker-compose service name."""
+        monkeypatch.delenv("KAFKA_BOOTSTRAP_SERVERS", raising=False)
+        # Re-instantiate to pick up cleared env
+        from consumer.config import ConsumerSettings
+        s = ConsumerSettings()
+        assert s.KAFKA_BOOTSTRAP_SERVERS == "kafka:9092"
+
+    def test_kafka_broker_overridable_by_env(self, monkeypatch):
+        """Env var takes priority over code default."""
+        monkeypatch.setenv("KAFKA_BOOTSTRAP_SERVERS", "broker-host:9092")
+        from consumer.config import ConsumerSettings
+        s = ConsumerSettings()
+        assert s.KAFKA_BOOTSTRAP_SERVERS == "broker-host:9092"
+
+    def test_database_url_default_is_empty(self, monkeypatch):
+        """DATABASE_URL empty string default is unchanged."""
+        monkeypatch.delenv("DATABASE_URL", raising=False)
+        from consumer.config import ConsumerSettings
+        s = ConsumerSettings()
+        assert s.DATABASE_URL == ""

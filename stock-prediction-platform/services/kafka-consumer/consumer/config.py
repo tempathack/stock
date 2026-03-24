@@ -14,7 +14,7 @@ class ConsumerSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     # Kafka
-    KAFKA_BOOTSTRAP_SERVERS: str = "kafka-kafka-bootstrap.storage.svc.cluster.local:9092"
+    KAFKA_BOOTSTRAP_SERVERS: str = "kafka:9092"
     KAFKA_GROUP_ID: str = "stock-consumer-group"
     INTRADAY_TOPIC: str = "intraday-data"
     HISTORICAL_TOPIC: str = "historical-data"
