@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 61-01-PLAN.md — Playwright infra + 5 stub specs all passing
-last_updated: "2026-03-25T12:44:16.760Z"
+stopped_at: Completed 61-02-PLAN.md — Dashboard + navigation E2E tests, 8/8 passing
+last_updated: "2026-03-25T13:01:47.441Z"
 progress:
   total_phases: 62
   completed_phases: 13
   total_plans: 142
-  completed_plans: 32
+  completed_plans: 33
 ---
 
 # STATE.md — Project Memory
@@ -232,10 +232,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 61]: Drift page heading is 'Drift Monitoring' not 'Drift Monitor' — spec corrected to match actual PageHeader title
 - [Phase 61]: backtest.spec.ts uses http://localhost:8000/backtest/** (specific origin) to avoid intercepting Vite source module http://localhost:3000/src/pages/Backtest.tsx
 - [Phase 61]: fixture_ prefix in model_name fields distinguishes E2E fixture data from mock fallback values
+- [Phase 61]: Playwright LIFO route matching: routes registered LAST match FIRST; broad catch-alls must be registered before specific routes so specific ones win (predict/** before predict/bulk**)
+- [Phase 61]: Serial mode for dashboard.spec.ts: 8 parallel browser instances overwhelm single Vite dev server; test.describe.configure({ mode: 'serial' }) required
 
 ## Last Session
 
-- **Stopped at:** Completed 61-01-PLAN.md — Playwright infra + 5 stub specs all passing
+- **Stopped at:** Completed 61-02-PLAN.md — Dashboard + navigation E2E tests, 8/8 passing
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
