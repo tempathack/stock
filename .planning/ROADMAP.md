@@ -29,7 +29,7 @@
 | 18 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 19 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 20 | 2/2 | Complete   | 2026-03-25 | 2 |
-| 21 | 2/2 | Complete   | 2026-03-25 | 2 |
+| 21 | 2/2 | Complete    | 2026-03-25 | 2 |
 | 22 | Drift Auto-Retrain Trigger | Trigger Kubeflow on drift, redeploy, regen predictions | DRIFT-06–07 | 1 |
 | 23 | FastAPI Prediction & Model Endpoints | /predict/{ticker}, /predict/bulk, /models/* | API-07–10 | 1 |
 | 24 | FastAPI Market Endpoints | /market/overview, /market/indicators/{ticker} | API-11–12 | 1 |
