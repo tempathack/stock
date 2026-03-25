@@ -91,6 +91,53 @@ def test_trigger_intraday_custom_base_url(mock_post):
     assert call_url == "http://custom:9090/ingest/intraday"
 
 
+@patch("app.jobs.trigger_intraday.httpx.post")
+def test_trigger_intraday_posts_correct_url(mock_post):
+    """Posts to /ingest/intraday path."""
+    mock_resp = httpx.Response(
+        200,
+        json=_SUCCESS_BODY,
+        request=httpx.Request("POST", "http://test/ingest/intraday"),
+    )
+    mock_post.return_value = mock_resp
+    trigger_intraday_main()
+    call_url = mock_post.call_args[0][0]
+    assert "/ingest/intraday" in call_url
+
+
+@patch("app.jobs.trigger_intraday.httpx.post")
+def test_trigger_intraday_uses_timeout(mock_post):
+    """Passes REQUEST_TIMEOUT as timeout kwarg to httpx.post."""
+    mock_resp = httpx.Response(
+        200,
+        json=_SUCCESS_BODY,
+        request=httpx.Request("POST", "http://test/ingest/intraday"),
+    )
+    mock_post.return_value = mock_resp
+    trigger_intraday_main()
+    _, kwargs = mock_post.call_args
+    assert "timeout" in kwargs
+
+
+@patch("app.jobs.trigger_intraday.httpx.post")
+def test_trigger_intraday_zero_records(mock_post):
+    """Returns 0 even when zero records fetched (valid market-closed response)."""
+    mock_resp = httpx.Response(
+        200,
+        json={"status": "completed", "records_fetched": 0, "records_produced": 0},
+        request=httpx.Request("POST", "http://test/ingest/intraday"),
+    )
+    mock_post.return_value = mock_resp
+    assert trigger_intraday_main() == 0
+
+
+@patch("app.jobs.trigger_intraday.httpx.post")
+def test_trigger_intraday_read_error(mock_post):
+    """Returns 1 on httpx.ReadError (connection dropped mid-response)."""
+    mock_post.side_effect = httpx.ReadError("Connection dropped")
+    assert trigger_intraday_main() == 1
+
+
 # -----------------------------------------------------------------------
 # trigger_historical
 # -----------------------------------------------------------------------
@@ -135,4 +182,68 @@ def test_trigger_historical_timeout(mock_post):
     """Returns exit code 1 on request timeout."""
     mock_post.side_effect = httpx.ReadTimeout("Read timed out")
 
+    assert trigger_historical_main() == 1
+
+
+@patch.dict("os.environ", {"API_BASE_URL": "http://custom:9090"})
+@patch("app.jobs.trigger_historical.API_BASE_URL", "http://custom:9090")
+@patch("app.jobs.trigger_historical.httpx.post")
+def test_trigger_historical_custom_base_url(mock_post):
+    """Respects API_BASE_URL override."""
+    mock_resp = httpx.Response(
+        200,
+        json=_HISTORICAL_SUCCESS_BODY,
+        request=httpx.Request("POST", "http://custom:9090/ingest/historical"),
+    )
+    mock_post.return_value = mock_resp
+    trigger_historical_main()
+    call_url = mock_post.call_args[0][0]
+    assert call_url == "http://custom:9090/ingest/historical"
+
+
+@patch("app.jobs.trigger_historical.httpx.post")
+def test_trigger_historical_posts_correct_url(mock_post):
+    """Posts to /ingest/historical path (not /intraday)."""
+    mock_resp = httpx.Response(
+        200,
+        json=_HISTORICAL_SUCCESS_BODY,
+        request=httpx.Request("POST", "http://test/ingest/historical"),
+    )
+    mock_post.return_value = mock_resp
+    trigger_historical_main()
+    call_url = mock_post.call_args[0][0]
+    assert "/ingest/historical" in call_url
+    assert "intraday" not in call_url
+
+
+@patch("app.jobs.trigger_historical.httpx.post")
+def test_trigger_historical_uses_timeout(mock_post):
+    """Passes REQUEST_TIMEOUT as timeout kwarg to httpx.post."""
+    mock_resp = httpx.Response(
+        200,
+        json=_HISTORICAL_SUCCESS_BODY,
+        request=httpx.Request("POST", "http://test/ingest/historical"),
+    )
+    mock_post.return_value = mock_resp
+    trigger_historical_main()
+    _, kwargs = mock_post.call_args
+    assert "timeout" in kwargs
+
+
+@patch("app.jobs.trigger_historical.httpx.post")
+def test_trigger_historical_zero_records(mock_post):
+    """Returns 0 even when zero records returned."""
+    mock_resp = httpx.Response(
+        200,
+        json={"status": "completed", "records_fetched": 0, "records_produced": 0},
+        request=httpx.Request("POST", "http://test/ingest/historical"),
+    )
+    mock_post.return_value = mock_resp
+    assert trigger_historical_main() == 0
+
+
+@patch("app.jobs.trigger_historical.httpx.post")
+def test_trigger_historical_read_error(mock_post):
+    """Returns 1 on httpx.ReadError."""
+    mock_post.side_effect = httpx.ReadError("Connection dropped")
     assert trigger_historical_main() == 1
