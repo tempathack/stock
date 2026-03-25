@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 61-03-PLAN.md — Forecasts page E2E tests, 7/7 passing
-last_updated: "2026-03-25T13:06:20.880Z"
+stopped_at: Completed 61-04-PLAN.md — Models and Drift page E2E tests, 12/12 passing
+last_updated: "2026-03-25T13:13:17.949Z"
 progress:
   total_phases: 62
   completed_phases: 13
   total_plans: 142
-  completed_plans: 34
+  completed_plans: 35
 ---
 
 # STATE.md — Project Memory
@@ -236,10 +236,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 61]: Serial mode for dashboard.spec.ts: 8 parallel browser instances overwhelm single Vite dev server; test.describe.configure({ mode: 'serial' }) required
 - [Phase 61]: fixture_stacking_ensemble_meta_ridge asserted via StockShapPanel after row click — ForecastTable does not render model_name column
 - [Phase 61]: Use .first() on getByText for tickers that appear in both desktop table td and mobile card span
+- [Phase 61]: DriftTimeline renders label 'Data' from DRIFT_TYPE_STYLES map not raw 'data_drift' — assert on rendered label
+- [Phase 61]: Serial mode required for models.spec.ts (same pattern as dashboard.spec.ts) — parallel overload of Vite dev server when multiple specs run together
 
 ## Last Session
 
-- **Stopped at:** Completed 61-03-PLAN.md — Forecasts page E2E tests, 7/7 passing
+- **Stopped at:** Completed 61-04-PLAN.md — Models and Drift page E2E tests, 12/12 passing
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
