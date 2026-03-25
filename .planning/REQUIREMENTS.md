@@ -149,11 +149,11 @@
 
 ### Drift Detection
 
-- [ ] **DRIFT-01**: Data drift detector using KS-test and PSI on feature distributions
-- [ ] **DRIFT-02**: Prediction drift detector (rolling prediction error threshold)
-- [ ] **DRIFT-03**: Concept drift detector (recent vs. historical model performance)
-- [ ] **DRIFT-04**: Daily drift check job (triggered after ingestion)
-- [ ] **DRIFT-05**: Drift events logged to drift_logs table with type, severity, details
+- [x] **DRIFT-01**: Data drift detector using KS-test and PSI on feature distributions
+- [x] **DRIFT-02**: Prediction drift detector (rolling prediction error threshold)
+- [x] **DRIFT-03**: Concept drift detector (recent vs. historical model performance)
+- [x] **DRIFT-04**: Daily drift check job (triggered after ingestion)
+- [x] **DRIFT-05**: Drift events logged to drift_logs table with type, severity, details
 - [ ] **DRIFT-06**: Auto-trigger Kubeflow retraining pipeline on drift detection
 - [ ] **DRIFT-07**: Post-retrain: new winner selected, deployed, predictions regenerated
 

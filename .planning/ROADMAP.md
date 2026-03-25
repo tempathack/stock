@@ -29,7 +29,7 @@
 | 18 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 19 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 20 | 2/2 | Complete   | 2026-03-25 | 2 |
-| 21 | Drift Detection System | All 3 drift types, daily check, drift_logs | DRIFT-01–05 | 2 |
+| 21 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 22 | Drift Auto-Retrain Trigger | Trigger Kubeflow on drift, redeploy, regen predictions | DRIFT-06–07 | 1 |
 | 23 | FastAPI Prediction & Model Endpoints | /predict/{ticker}, /predict/bulk, /models/* | API-07–10 | 1 |
 | 24 | FastAPI Market Endpoints | /market/overview, /market/indicators/{ticker} | API-11–12 | 1 |
@@ -480,7 +480,7 @@ Plans:
 3. GET /models/comparison returns ranked model table with all 6 metrics
 4. GET /models/drift returns current drift status, last check time, and any active alerts
 
-**Plans:** 0/1 plans complete
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 23-01-PLAN.md — Prediction & Model Endpoints (schemas, service, routers, tests) — pre-implemented, verify
