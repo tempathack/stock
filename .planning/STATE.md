@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 61-04-PLAN.md — Models and Drift page E2E tests, 12/12 passing
-last_updated: "2026-03-25T13:13:17.949Z"
+stopped_at: Completed 61-05-PLAN.md — Backtest page E2E tests, 7/7 passing, full 34-test suite green
+last_updated: "2026-03-25T13:31:59.129Z"
 progress:
   total_phases: 62
-  completed_phases: 13
+  completed_phases: 14
   total_plans: 142
-  completed_plans: 35
+  completed_plans: 36
 ---
 
 # STATE.md — Project Memory
@@ -238,10 +238,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 61]: Use .first() on getByText for tickers that appear in both desktop table td and mobile card span
 - [Phase 61]: DriftTimeline renders label 'Data' from DRIFT_TYPE_STYLES map not raw 'data_drift' — assert on rendered label
 - [Phase 61]: Serial mode required for models.spec.ts (same pattern as dashboard.spec.ts) — parallel overload of Vite dev server when multiple specs run together
+- [Phase 61]: backtest.spec.ts uses http://localhost:8000/backtest/** (specific origin) to avoid Vite source module interception
+- [Phase 61]: All 5 spec files now use serial mode — forecasts.spec.ts was missing it, causing full suite TimeoutError
 
 ## Last Session
 
-- **Stopped at:** Completed 61-04-PLAN.md — Models and Drift page E2E tests, 12/12 passing
+- **Stopped at:** Completed 61-05-PLAN.md — Backtest page E2E tests, 7/7 passing, full 34-test suite green
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
