@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, request } from "@playwright/test";
 import {
   healthFixture,
   driftStatusFixture,
@@ -27,6 +27,41 @@ async function stubDriftRoutes(page: import("@playwright/test").Page) {
 }
 
 test.describe("Drift page", () => {
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    try {
+      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
+      if (!healthRes.ok()) {
+        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+        return;
+      }
+      // Drift page requires both models comparison data (for ActiveModelCard) and drift events
+      const compRes = await ctx.get("http://localhost:8000/models/comparison", { timeout: 5_000 });
+      if (!compRes.ok()) {
+        test.skip(true, "GET /models/comparison failed — backend unhealthy");
+        return;
+      }
+      const compData = await compRes.json();
+      if (!compData?.models?.length) {
+        test.skip(true, "GET /models/comparison returned 0 models — run the training pipeline first");
+        return;
+      }
+      const driftRes = await ctx.get("http://localhost:8000/models/drift", { timeout: 5_000 });
+      if (!driftRes.ok()) {
+        test.skip(true, "GET /models/drift failed — backend unhealthy");
+        return;
+      }
+      const driftData = await driftRes.json();
+      if (!driftData?.events?.length) {
+        test.skip(true, "GET /models/drift returned 0 events — run the drift detection pipeline first");
+      }
+    } catch {
+      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+    } finally {
+      await ctx.dispose();
+    }
+  });
+
   test.describe.configure({ mode: "serial" });
 
   test("page loads with all 4 fixtures and renders heading", async ({ page }) => {
