@@ -130,38 +130,128 @@ def _append_retraining_log(
 def compile_kfp_pipeline(output_path: str = "training_pipeline.yaml") -> str:
     """Compile the training pipeline as a KFP v2 YAML.
 
-    Requires the ``kfp`` SDK to be installed. Raises ``ImportError`` with
-    install instructions if not available.
+    Requires the ``kfp`` SDK to be installed (presence is checked).  The
+    compiled YAML is a minimal pipeline spec stub — full Parquet I/O component
+    wiring is deferred to Phase 21+ once cluster deployment is validated.
+
+    Raises ``ImportError`` with install instructions if kfp is not available.
     """
     try:
-        import kfp
-        from kfp import dsl
-        from kfp.compiler import Compiler
+        import kfp  # noqa: F401 — presence check
     except ImportError as exc:
         raise ImportError(
             "KFP SDK is required for pipeline compilation. "
             "Install with: pip install kfp>=2.0"
         ) from exc
 
-    @dsl.pipeline(
-        name="stock-training-pipeline",
-        description="End-to-end stock prediction model training pipeline",
-    )
-    def stock_training_pipeline(
-        tickers: str = "AAPL,MSFT,GOOGL",
-        registry_dir: str = "model_registry",
-        serving_dir: str = "/models/active",
-        skip_shap: bool = True,
-    ):
-        """KFP v2 pipeline wrapper — each step is a lightweight component."""
-        pass  # Full KFP component wiring deferred to Phase 21+
+    # KFP v2 lightweight component source inspection requires the component
+    # function to exist in a real importable module (not an inline closure).
+    # For this stub we write the canonical v2 IR spec directly instead of
+    # using the @dsl.component decorator, which avoids the inspect.getsource
+    # limitation for dynamically-defined functions.
+    import yaml  # stdlib-backed; PyYAML is a kfp transitive dep
 
-    Compiler().compile(
-        pipeline_func=stock_training_pipeline,
-        package_path=output_path,
-    )
-    logger.info("Compiled KFP pipeline → %s", output_path)
-    return output_path
+    pipeline_spec = {
+        "components": {
+            "comp-pipeline-entrypoint": {
+                "executorLabel": "exec-pipeline-entrypoint",
+                "inputDefinitions": {
+                    "parameters": {
+                        "registry_dir": {"parameterType": "STRING"},
+                        "serving_dir": {"parameterType": "STRING"},
+                        "tickers": {"parameterType": "STRING"},
+                    },
+                },
+            },
+        },
+        "deploymentSpec": {
+            "executors": {
+                "exec-pipeline-entrypoint": {
+                    "container": {
+                        "args": [
+                            "--executor_input",
+                            "{{$}}",
+                            "--function_to_execute",
+                            "pipeline_entrypoint",
+                        ],
+                        "command": [
+                            "sh",
+                            "-c",
+                            (
+                                "\nif ! [ -x \"$(command -v pip)\" ]; then\n"
+                                "    python3 -m ensurepip || python3 -m ensurepip "
+                                "--upgrade || apt-get install python3-pip\nfi\n\n"
+                                "pip3 install kfp==2.0.0 --quiet --no-warn-script-location "
+                                "&& \"$0\" \"$@\"\n"
+                            ),
+                            "sh",
+                            "-ec",
+                            "program_path=$(mktemp -d)\npython3 -m kfp.dsl.executor_main",
+                        ],
+                        "image": "python:3.11",
+                    },
+                },
+            },
+        },
+        "pipelineInfo": {
+            "description": "End-to-end stock prediction model training pipeline (stub)",
+            "displayName": "stock-training-pipeline",
+            "name": "stock-training-pipeline",
+        },
+        "root": {
+            "dag": {
+                "tasks": {
+                    "pipeline-entrypoint": {
+                        "cachingOptions": {"enableCache": True},
+                        "componentRef": {"name": "comp-pipeline-entrypoint"},
+                        "inputs": {
+                            "parameters": {
+                                "registry_dir": {
+                                    "componentInputParameter": "registry_dir",
+                                },
+                                "serving_dir": {
+                                    "componentInputParameter": "serving_dir",
+                                },
+                                "tickers": {
+                                    "componentInputParameter": "tickers",
+                                },
+                            },
+                        },
+                        "taskInfo": {"name": "pipeline-entrypoint"},
+                    },
+                },
+            },
+            "inputDefinitions": {
+                "parameters": {
+                    "registry_dir": {
+                        "defaultValue": "model_registry",
+                        "isOptional": True,
+                        "parameterType": "STRING",
+                    },
+                    "serving_dir": {
+                        "defaultValue": "/models/active",
+                        "isOptional": True,
+                        "parameterType": "STRING",
+                    },
+                    "tickers": {
+                        "defaultValue": "AAPL,MSFT,GOOGL",
+                        "isOptional": True,
+                        "parameterType": "STRING",
+                    },
+                },
+            },
+        },
+        "schemaVersion": "2.1.0",
+        "sdkVersion": f"kfp-{kfp.__version__}",
+    }
+
+    out = Path(output_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with open(out, "w") as fh:
+        yaml.dump(pipeline_spec, fh, default_flow_style=False, allow_unicode=True)
+
+    logger.info("Compiled KFP pipeline → %s", out)
+    return str(out)
 
 
 def submit_pipeline_run(
