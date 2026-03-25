@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 62-05-PLAN.md
-last_updated: "2026-03-25T14:12:00.653Z"
+stopped_at: Completed 37-02-PLAN.md
+last_updated: "2026-03-25T15:35:19.389Z"
 progress:
-  total_phases: 62
-  completed_phases: 15
-  total_plans: 142
-  completed_plans: 41
+  total_phases: 63
+  completed_phases: 17
+  total_plans: 144
+  completed_plans: 44
 ---
 
 # STATE.md — Project Memory
@@ -254,7 +254,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 ## Last Session
 
-- **Stopped at:** Completed 62-05-PLAN.md
+- **Stopped at:** Completed 37-02-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
@@ -267,3 +267,4 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - Phase 59 added: Minikube E2E validation: start cluster, deploy full stack, run ingest-train-serve flow
 
 - Phase 60 added: Fix model_name unknown in predict response — fetch metadata from MinIO or DB on API startup
+- Phase 63 added: Fix E2E test assertions — require real API data, not mock/empty fallbacks

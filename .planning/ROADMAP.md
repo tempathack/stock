@@ -45,7 +45,7 @@
 | 34 | K8s ML CronJobs & Model Serving | Training/drift CronJobs, PVC, deploy-all.sh | DEPLOY-03–08 | 3 |
 | 35 | Alembic Migration System | Schema versioning with initial migration | DBHARD-01–03 | 2 |
 | 36 | Secrets Management & DB RBAC | K8s Secrets, remove hardcoded creds, DB roles | DBHARD-06–07 | 2 |
-| 37 | Prometheus Metrics Instrumentation | /metrics on FastAPI + Kafka consumer | MON-01–03 | 2 |
+| 37 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 38 | Grafana Dashboards & Alerting | Monitoring namespace, dashboards, alert rules | MON-04–08 | 3 |
 | 39 | Structured Logging & Aggregation | structlog JSON + Loki centralized logs | MON-09–10 | 2 |
 | 40 | SQLAlchemy Connection Pooling | Async engine, session factory, migrate services | DBHARD-04–05 | 2 |
@@ -776,7 +776,7 @@ Plans:
 3. Kafka consumer exposes /metrics on port 9090 with messages_consumed_total, batch_write_duration
 4. Kafka consumer K8s deployment has prometheus.io/scrape annotations
 
-**Plans:** 2/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 37-01-PLAN.md — Wire prometheus-fastapi-instrumentator + custom prediction metric counters/histograms
@@ -1264,6 +1264,16 @@ Plans:
 - [ ] 62-03-PLAN.md — Prometheus tests: homepage, query editor executes `up` and returns results, Targets page shows expected job labels, Alerts page accessible
 - [ ] 62-04-PLAN.md — MinIO Console tests: login, model-artifacts bucket exists, drift-logs bucket exists, bucket navigation, object upload/list assertions
 - [ ] 62-05-PLAN.md — Kubeflow Pipelines tests (homepage + pipelines/experiments list) + Kubernetes Dashboard tests (cluster overview, namespace list, pod list) + npm script wiring
+
+### Phase 63: Fix E2E test assertions — require real API data, not mock/empty fallbacks
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 62
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 63 to break down)
 
 ---
 

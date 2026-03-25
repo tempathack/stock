@@ -240,9 +240,9 @@
 
 ### Monitoring & Observability
 
-- [ ] **MON-01**: FastAPI /metrics endpoint via prometheus-fastapi-instrumentator
-- [ ] **MON-02**: Custom Prometheus metrics: prediction_requests_total, prediction_latency_seconds, model_inference_errors_total
-- [ ] **MON-03**: Kafka consumer /metrics on port 9090 (messages_consumed_total, batch_write_duration, consumer_lag)
+- [x] **MON-01**: FastAPI /metrics endpoint via prometheus-fastapi-instrumentator
+- [x] **MON-02**: Custom Prometheus metrics: prediction_requests_total, prediction_latency_seconds, model_inference_errors_total
+- [x] **MON-03**: Kafka consumer /metrics on port 9090 (messages_consumed_total, batch_write_duration, consumer_lag)
 - [ ] **MON-04**: Prometheus server deployed in monitoring namespace
 - [ ] **MON-05**: Grafana deployed with provisioned datasources and dashboards
 - [ ] **MON-06**: API Health dashboard (request rate, latency p50/p95/p99, error rate)
