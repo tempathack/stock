@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 60-01-PLAN.md
-last_updated: "2026-03-25T08:32:10.650Z"
+stopped_at: "Checkpoint: Task 2 human-verify in 60-02-PLAN.md — awaiting /predict/AAPL verification"
+last_updated: "2026-03-25T09:10:20.498Z"
 progress:
   total_phases: 60
-  completed_phases: 12
+  completed_phases: 13
   total_plans: 132
-  completed_plans: 30
+  completed_plans: 31
 ---
 
 # STATE.md — Project Memory
@@ -225,10 +225,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 60]: boto3 sync call wrapped in asyncio.to_thread() — boto3 not async-native; thread pool avoids blocking event loop
 - [Phase 60]: os.environ used in _sync_fetch_from_minio (runs in thread pool, cannot use FastAPI DI); value matches Settings.MINIO_SERVING_PREFIX default
 - [Phase 60]: Model metadata is cosmetic — graceful degradation on MinIO+DB failure logs WARNING, API always starts
+- [Phase 60]: minio-secrets copied from storage to ingestion namespace — K8s secretRef cannot reference cross-namespace Secrets
+- [Phase 60]: Stock-api image rebuilt in minikube Docker context to include Plan 01 model_metadata_cache.py — pre-Plan-01 image was running
 
 ## Last Session
 
-- **Stopped at:** Completed 60-01-PLAN.md
+- **Stopped at:** Checkpoint: Task 2 human-verify in 60-02-PLAN.md — awaiting /predict/AAPL verification
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
