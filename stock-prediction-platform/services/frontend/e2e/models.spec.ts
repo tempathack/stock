@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, request } from "@playwright/test";
 import { healthFixture, modelComparisonFixture } from "./fixtures/api";
 
 // Helper: stub all Models page routes
@@ -10,6 +10,30 @@ async function stubModelsRoutes(page: import("@playwright/test").Page) {
 }
 
 test.describe("Models page", () => {
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    try {
+      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
+      if (!healthRes.ok()) {
+        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+        return;
+      }
+      const compRes = await ctx.get("http://localhost:8000/models/comparison", { timeout: 5_000 });
+      if (!compRes.ok()) {
+        test.skip(true, "GET /models/comparison failed — backend unhealthy");
+        return;
+      }
+      const data = await compRes.json();
+      if (!data?.models?.length) {
+        test.skip(true, "GET /models/comparison returned 0 models — run the training pipeline first");
+      }
+    } catch {
+      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+    } finally {
+      await ctx.dispose();
+    }
+  });
+
   test.describe.configure({ mode: "serial" });
 
   test("page loads and renders winner card with fixture model name", async ({ page }) => {
