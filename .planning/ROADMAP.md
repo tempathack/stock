@@ -1242,7 +1242,7 @@ Plans:
 **Goal:** Install Playwright in the frontend, write real E2E tests for all 5 pages (Dashboard, Forecasts, Models, Drift, Backtest) using `page.route()` API interceptors with fixture data matching exact API response schemas — zero tolerance for frontend mock-fallback paths passing tests.
 **Requirements**: TEST-PW-01, TEST-PW-02, TEST-PW-03, TEST-PW-04, TEST-PW-05
 **Depends on:** Phase 60
-**Plans:** 2/5 plans executed
+**Plans:** 3/5 plans executed
 
 Plans:
 - [ ] 61-01-PLAN.md — Playwright install, playwright.config.ts, package.json scripts, shared API fixture factories (types match types.ts schemas exactly)
@@ -1330,4 +1330,4 @@ Plans:
 | KSERV-05–08 | 55 |
 | KSERV-09–12 | 56 |
 | KSERV-13–15 | 57 |
-| TEST-PW-01–05 | 61 | 2/5 | In Progress|  | 
+| TEST-PW-01–05 | 61 | 3/5 | In Progress|  | 

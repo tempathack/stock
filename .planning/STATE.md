@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 61-02-PLAN.md — Dashboard + navigation E2E tests, 8/8 passing
-last_updated: "2026-03-25T13:01:47.441Z"
+stopped_at: Completed 61-03-PLAN.md — Forecasts page E2E tests, 7/7 passing
+last_updated: "2026-03-25T13:06:20.880Z"
 progress:
   total_phases: 62
   completed_phases: 13
   total_plans: 142
-  completed_plans: 33
+  completed_plans: 34
 ---
 
 # STATE.md — Project Memory
@@ -234,10 +234,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 61]: fixture_ prefix in model_name fields distinguishes E2E fixture data from mock fallback values
 - [Phase 61]: Playwright LIFO route matching: routes registered LAST match FIRST; broad catch-alls must be registered before specific routes so specific ones win (predict/** before predict/bulk**)
 - [Phase 61]: Serial mode for dashboard.spec.ts: 8 parallel browser instances overwhelm single Vite dev server; test.describe.configure({ mode: 'serial' }) required
+- [Phase 61]: fixture_stacking_ensemble_meta_ridge asserted via StockShapPanel after row click — ForecastTable does not render model_name column
+- [Phase 61]: Use .first() on getByText for tickers that appear in both desktop table td and mobile card span
 
 ## Last Session
 
-- **Stopped at:** Completed 61-02-PLAN.md — Dashboard + navigation E2E tests, 8/8 passing
+- **Stopped at:** Completed 61-03-PLAN.md — Forecasts page E2E tests, 7/7 passing
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
