@@ -139,10 +139,10 @@
 - [x] **KF-06**: cross_validation component (container)
 - [ ] **KF-07**: evaluation component (container)
 - [ ] **KF-08**: model_comparison component (container)
-- [ ] **KF-09**: explainability component (container) — SHAP
-- [ ] **KF-10**: winner_selection component (container)
-- [ ] **KF-11**: model_persistence component (container) — saves to registry
-- [ ] **KF-12**: deployment component (container) — deploys winner as serving endpoint
+- [x] **KF-09**: explainability component (container) — SHAP
+- [x] **KF-10**: winner_selection component (container)
+- [x] **KF-11**: model_persistence component (container) — saves to registry
+- [x] **KF-12**: deployment component (container) — deploys winner as serving endpoint
 - [ ] **KF-13**: Full pipeline definition (training_pipeline.py)
 - [ ] **KF-14**: Pipeline is reproducible and versioned
 - [ ] **KF-15**: Pipeline can be triggered manually or by drift detection

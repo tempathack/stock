@@ -27,7 +27,7 @@
 | 16 | SHAP Explainability | SHAP values for top 5 models, store summary | EVAL-11–12 | 1 |
 | 17 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 18 | 2/2 | Complete   | 2026-03-25 | 2 |
-| 19 | Kubeflow Pipeline — Selection & Deploy | explainability, winner_selection, persistence, deployment | KF-09–12 | 2 |
+| 19 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 20 | Kubeflow Pipeline — Definition & Trigger | Full pipeline definition, versioning, triggers | KF-13–15 | 2 |
 | 21 | Drift Detection System | All 3 drift types, daily check, drift_logs | DRIFT-01–05 | 2 |
 | 22 | Drift Auto-Retrain Trigger | Trigger Kubeflow on drift, redeploy, regen predictions | DRIFT-06–07 | 1 |
@@ -413,7 +413,7 @@ Plans:
 3. model_persistence component saves artifact + scaler + feature list to artifact path
 4. deployment component deploys winner model as live serving endpoint in ml namespace
 
-**Plans:** 2/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 19-01-PLAN.md — Registry activation methods (activate, deactivate, get_active) + deployment component (deployer.py) + tests
