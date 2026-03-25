@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | — Pending |
 
 ---
-*Last updated: 2026-03-19 — Phase 5 complete (Kafka via Strimzi live in Minikube, KRaft mode)*
+*Last updated: 2026-03-25 — Phase 61 complete (Playwright E2E tests: 34 tests across 5 pages, all passing with fixture sentinel values, zero mock-fallback leakage)*
