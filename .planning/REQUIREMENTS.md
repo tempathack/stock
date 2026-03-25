@@ -131,10 +131,10 @@
 
 ### Kubeflow Pipeline
 
-- [ ] **KF-01**: Kubeflow Pipelines installed in ml namespace
-- [ ] **KF-02**: data_loading component (container) — loads from PostgreSQL
-- [ ] **KF-03**: feature_engineering component (container)
-- [ ] **KF-04**: label_generation component (container)
+- [x] **KF-01**: Kubeflow Pipelines installed in ml namespace
+- [x] **KF-02**: data_loading component (container) — loads from PostgreSQL
+- [x] **KF-03**: feature_engineering component (container)
+- [x] **KF-04**: label_generation component (container)
 - [ ] **KF-05**: train_models component (container) — parallel model training
 - [ ] **KF-06**: cross_validation component (container)
 - [ ] **KF-07**: evaluation component (container)

@@ -25,7 +25,7 @@
 | 14 | Distance & Neural Models | Train KNN, SVR, MLP | MODEL-13–15 | 2 |
 | 15 | Evaluation Framework | All metrics, model ranking, winner selection | EVAL-01–10 | 3 |
 | 16 | SHAP Explainability | SHAP values for top 5 models, store summary | EVAL-11–12 | 1 |
-| 17 | Kubeflow Pipeline — Data & Features | data_loading, feature_engineering, label_generation | KF-01–04 | 2 |
+| 17 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 18 | Kubeflow Pipeline — Training & Eval | train_models, cross_validation, evaluation, comparison | KF-05–08 | 2 |
 | 19 | Kubeflow Pipeline — Selection & Deploy | explainability, winner_selection, persistence, deployment | KF-09–12 | 2 |
 | 20 | Kubeflow Pipeline — Definition & Trigger | Full pipeline definition, versioning, triggers | KF-13–15 | 2 |
@@ -373,7 +373,7 @@ Plans:
 3. feature_engineering component applies all indicators and lag features correctly
 4. label_generation component produces t+7 targets with no leakage
 
-**Plans:** 2/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 17-01-PLAN.md — Data loading component + KFP scaffold + tests
