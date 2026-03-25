@@ -4,6 +4,9 @@
   "parallelization": true,
   "commit_docs": true,
   "model_profile": "balanced",
+  "model_overrides": {
+    "gsd-planner": "sonnet"
+  },
   "workflow": {
     "research": true,
     "plan_check": true,

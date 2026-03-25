@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 60-02-PLAN.md — Phase 60 fully complete; /predict/{ticker} returns model_name=stacking_ensemble_meta_ridge
-last_updated: "2026-03-25T09:22:49.723Z"
+stopped_at: Completed 61-01-PLAN.md — Playwright infra + 5 stub specs all passing
+last_updated: "2026-03-25T12:44:16.760Z"
 progress:
-  total_phases: 60
+  total_phases: 62
   completed_phases: 13
-  total_plans: 132
-  completed_plans: 31
+  total_plans: 142
+  completed_plans: 32
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 60 — fix-model-name-unknown-in-predict-response-fetch-metadata-from-minio-or-db-on-api-startup
+**Current focus:** Phase 61 — playwright-e2e-tests-full-frontend-coverage
 
 ## Current Status
 
@@ -229,10 +229,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 60]: Stock-api image rebuilt in minikube Docker context to include Plan 01 model_metadata_cache.py — pre-Plan-01 image was running
 - [Phase 60]: minio-secrets copied from storage to ingestion namespace — K8s secretRef cannot reference cross-namespace Secrets
 - [Phase 60]: ConfigMap carries MINIO_ENDPOINT/BUCKET/PREFIX; secretRef injects MINIO_ROOT_USER and MINIO_ROOT_PASSWORD matching boto3 env var names
+- [Phase 61]: Drift page heading is 'Drift Monitoring' not 'Drift Monitor' — spec corrected to match actual PageHeader title
+- [Phase 61]: backtest.spec.ts uses http://localhost:8000/backtest/** (specific origin) to avoid intercepting Vite source module http://localhost:3000/src/pages/Backtest.tsx
+- [Phase 61]: fixture_ prefix in model_name fields distinguishes E2E fixture data from mock fallback values
 
 ## Last Session
 
-- **Stopped at:** Completed 60-02-PLAN.md — Phase 60 fully complete; /predict/{ticker} returns model_name=stacking_ensemble_meta_ridge
+- **Stopped at:** Completed 61-01-PLAN.md — Playwright infra + 5 stub specs all passing
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
