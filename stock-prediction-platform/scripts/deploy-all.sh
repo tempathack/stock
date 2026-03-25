@@ -245,6 +245,63 @@ kubectl apply -f "$PROJECT_ROOT/k8s/ml/cronjob-feature-store.yaml"
 
 echo "[Phase 34] ✓ ML pipeline deployed (model serving via KServe)"
 
+# --- Phase 20: Kubeflow Pipelines ---
+echo "[Phase 20] Installing Kubeflow Pipelines (standalone, v2.3.0)..."
+export PIPELINE_VERSION=2.3.0
+kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources?ref=$PIPELINE_VERSION" \
+    --server-side --force-conflicts
+kubectl wait --for condition=established --timeout=60s crd/applications.app.k8s.io
+kubectl apply -k "github.com/kubeflow/pipelines/manifests/kustomize/env/platform-agnostic?ref=$PIPELINE_VERSION" \
+    --server-side --force-conflicts
+
+echo "[Phase 20] Waiting for KFP API server to be ready..."
+kubectl wait --for=condition=Available deployment/ml-pipeline \
+    -n kubeflow --timeout=300s
+kubectl wait --for=condition=Available deployment/ml-pipeline-ui \
+    -n kubeflow --timeout=300s
+
+echo "[Phase 20] Applying KFP install reference ConfigMap..."
+kubectl apply -f "$PROJECT_ROOT/k8s/ml/kubeflow/kfp-standalone.yaml"
+
+# --- Phase 20: Compile KFP pipeline YAML ---
+echo "[Phase 20] Compiling KFP pipeline (in-cluster Job)..."
+kubectl delete job compile-kfp-pipeline -n ml --ignore-not-found
+kubectl apply -f "$PROJECT_ROOT/k8s/ml/kubeflow/compile-pipeline-job.yaml"
+
+echo "[Phase 20] Waiting for compile job to complete (up to 120s)..."
+if kubectl wait --for=condition=complete job/compile-kfp-pipeline \
+       -n ml --timeout=120s 2>/dev/null; then
+  COMPILE_POD=$(kubectl get pod -l job-name=compile-kfp-pipeline -n ml \
+      -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
+  if [ -n "$COMPILE_POD" ]; then
+    echo "[Phase 20] Retrieving compiled pipeline YAML from pod $COMPILE_POD ..."
+    kubectl cp "ml/${COMPILE_POD}:/pipelines/training_pipeline.yaml" \
+        /tmp/training_pipeline.yaml 2>/dev/null \
+        && echo "[Phase 20] Compiled YAML saved to /tmp/training_pipeline.yaml" \
+        || echo "[Phase 20] WARNING: kubectl cp failed; retrieve manually."
+  fi
+  echo "[Phase 20] ✓ KFP pipeline compiled successfully"
+  echo "[Phase 20]   To submit a pipeline run:"
+  echo "[Phase 20]     kubectl port-forward svc/ml-pipeline-ui 8888:80 -n kubeflow &"
+  echo "[Phase 20]     $SCRIPT_DIR/submit-pipeline.sh"
+else
+  echo "[Phase 20] WARNING: compile job did not complete within 120s."
+  echo "[Phase 20]   Check logs: kubectl logs -l job-name=compile-kfp-pipeline -n ml"
+  echo "[Phase 20]   Once ready, submit with: $SCRIPT_DIR/submit-pipeline.sh"
+fi
+
+# NOTE: Uploading the pipeline to the KFP UI and creating a run requires the
+# KFP Python SDK client (kfp >= 2.0) on the machine running this script.
+# Use scripts/submit-pipeline.sh for that step — it handles both one-shot
+# runs and recurring runs via cron.  Example:
+#
+#   PIPELINE_YAML=/tmp/training_pipeline.yaml \
+#   EXPERIMENT_NAME=stock-prediction          \
+#   ./scripts/submit-pipeline.sh
+#
+#   # Recurring daily at 02:00 UTC:
+#   RECURRING=true CRON="0 2 * * *" ./scripts/submit-pipeline.sh
+
 # --- Phase 25: React Frontend ---
 echo "[Phase 25] Building frontend Docker image..."
 eval $(minikube docker-env)

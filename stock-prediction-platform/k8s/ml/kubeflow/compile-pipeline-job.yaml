@@ -1,0 +1,131 @@
+# compile-pipeline-job.yaml
+#
+# One-shot Kubernetes Job that compiles the KFP v2 pipeline YAML using the
+# drift_pipeline.py --compile-only entrypoint (which calls compile_kfp_pipeline()
+# from training_pipeline.py) and writes the result to a shared volume.
+#
+# The compiled YAML is stored in an emptyDir volume at /pipelines so that a
+# subsequent submit-pipeline.sh call (run outside the cluster via port-forward)
+# can upload the file to the KFP API server.
+#
+# Usage:
+#   kubectl delete job compile-kfp-pipeline -n ml --ignore-not-found
+#   kubectl apply  -f k8s/ml/kubeflow/compile-pipeline-job.yaml
+#   kubectl wait  --for=condition=complete job/compile-kfp-pipeline -n ml --timeout=120s
+#
+# Retrieve the compiled YAML from the completed pod:
+#   POD=$(kubectl get pod -l job-name=compile-kfp-pipeline -n ml \
+#             -o jsonpath='{.items[0].metadata.name}')
+#   kubectl cp ml/${POD}:/pipelines/training_pipeline.yaml /tmp/training_pipeline.yaml
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: compile-kfp-pipeline
+  namespace: ml
+  labels:
+    app.kubernetes.io/name: compile-kfp-pipeline
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: pipeline-compiler
+spec:
+  # Do not keep completed pods around indefinitely — clean up after 10 minutes.
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: compile-kfp-pipeline
+        job-name: compile-kfp-pipeline
+    spec:
+      restartPolicy: OnFailure
+
+      # -----------------------------------------------------------------------
+      # Init container: install the kfp SDK so the main container can compile.
+      # The ML image ships with the project source but kfp is an optional dep.
+      # -----------------------------------------------------------------------
+      initContainers:
+        - name: install-kfp-sdk
+          image: stock-ml-pipeline:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - pip
+            - install
+            - --quiet
+            - --target=/kfp-packages
+            - "kfp>=2.0,<3"
+            - "PyYAML>=6.0"
+          volumeMounts:
+            - name: kfp-packages
+              mountPath: /kfp-packages
+
+      containers:
+        - name: compiler
+          image: stock-ml-pipeline:latest
+          imagePullPolicy: IfNotPresent
+
+          # drift_pipeline.py exposes --compile-only which calls
+          # compile_kfp_pipeline(output_path) from training_pipeline.py.
+          command:
+            - python
+            - -m
+            - ml.pipelines.drift_pipeline
+            - --compile-only
+
+          env:
+            # Point compile_kfp_pipeline() at the shared volume so the YAML is
+            # written where we can later kubectl cp it out.
+            - name: KFP_COMPILE_OUTPUT
+              value: /pipelines/training_pipeline.yaml
+
+          # Override the default output path via sys.argv — drift_pipeline's
+          # compile_kfp_pipeline() defaults to "training_pipeline.yaml"; we
+          # patch the path via the env var or by calling the function directly.
+          # The compile-only branch calls compile_kfp_pipeline() without args,
+          # so we pre-create a wrapper that respects KFP_COMPILE_OUTPUT.
+          # Simpler: just override the entrypoint to pass the path explicitly.
+          command:
+            - python
+            - -c
+            - |
+              import os, logging
+              logging.basicConfig(level=logging.INFO)
+              from ml.pipelines.drift_pipeline import compile_kfp_pipeline
+              out = os.environ.get("KFP_COMPILE_OUTPUT", "/pipelines/training_pipeline.yaml")
+              path = compile_kfp_pipeline(output_path=out)
+              print(f"Compiled pipeline YAML written to: {path}")
+
+          volumeMounts:
+            - name: pipelines
+              mountPath: /pipelines
+            - name: kfp-packages
+              mountPath: /kfp-packages
+
+          # Make the installed kfp SDK importable.
+          env:
+            - name: PYTHONPATH
+              value: /kfp-packages
+            - name: KFP_COMPILE_OUTPUT
+              value: /pipelines/training_pipeline.yaml
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+      volumes:
+        # kfp-packages: populated by the init container and shared with compiler.
+        - name: kfp-packages
+          emptyDir: {}
+        # pipelines: where the compiled YAML is written.
+        # Switch from emptyDir to a PVC if you need the artifact to survive
+        # pod termination and want to avoid kubectl cp:
+        #
+        #   - name: pipelines
+        #     persistentVolumeClaim:
+        #       claimName: kfp-pipeline-artifacts
+        #
+        - name: pipelines
+          emptyDir: {}
