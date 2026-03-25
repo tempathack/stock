@@ -21,3 +21,6 @@ data:
   KSERVE_TIMEOUT_SECONDS: "30"
   KSERVE_ENABLED: "true"
   KSERVE_CANARY_URL: "http://stock-model-serving-canary-predictor.ml.svc.cluster.local:80"
+  MINIO_ENDPOINT: "http://minio.storage.svc.cluster.local:9000"
+  MINIO_BUCKET_MODELS: "model-artifacts"
+  MINIO_SERVING_PREFIX: "serving/active"

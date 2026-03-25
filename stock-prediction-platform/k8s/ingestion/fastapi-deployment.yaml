@@ -29,6 +29,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: ingestion-config
+            - secretRef:
+                name: minio-secrets
           env:
             - name: SERVICE_NAME
               value: "stock-api"
