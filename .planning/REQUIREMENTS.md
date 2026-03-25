@@ -143,9 +143,9 @@
 - [x] **KF-10**: winner_selection component (container)
 - [x] **KF-11**: model_persistence component (container) — saves to registry
 - [x] **KF-12**: deployment component (container) — deploys winner as serving endpoint
-- [ ] **KF-13**: Full pipeline definition (training_pipeline.py)
-- [ ] **KF-14**: Pipeline is reproducible and versioned
-- [ ] **KF-15**: Pipeline can be triggered manually or by drift detection
+- [x] **KF-13**: Full pipeline definition (training_pipeline.py)
+- [x] **KF-14**: Pipeline is reproducible and versioned
+- [x] **KF-15**: Pipeline can be triggered manually or by drift detection
 
 ### Drift Detection
 

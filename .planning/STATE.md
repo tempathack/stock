@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 19-02-PLAN.md
-last_updated: "2026-03-25T16:07:33.092Z"
+stopped_at: Completed 20-02-PLAN.md
+last_updated: "2026-03-25T16:13:51.553Z"
 progress:
   total_phases: 63
-  completed_phases: 22
+  completed_phases: 23
   total_plans: 144
-  completed_plans: 54
+  completed_plans: 56
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 19 — kubeflow-selection-deploy
+**Current focus:** Phase 20 — Kubeflow Pipeline — Full Definition & Trigger
 
 ## Current Status
 
@@ -260,10 +260,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 18]: generate_cv_report() is purely additive — existing evaluate_models() and generate_comparison_report() untouched
 - [Phase 19]: is_active distinct from is_winner — model can win without being deployed, or be active between retrain cycles
 - [Phase 19]: deploy_winner_model() supports local and S3 backends via STORAGE_BACKEND env var; serving dir cleared via shutil.rmtree for idempotency
+- [Phase 20]: compile_kfp_pipeline() writes KFP v2.1.0 IR YAML directly — avoids @dsl.component inspect.getsource failure for inline closures
 
 ## Last Session
 
-- **Stopped at:** Completed 19-02-PLAN.md
+- **Stopped at:** Completed 20-02-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes

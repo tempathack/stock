@@ -28,7 +28,7 @@
 | 17 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 18 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 19 | 2/2 | Complete   | 2026-03-25 | 2 |
-| 20 | Kubeflow Pipeline — Definition & Trigger | Full pipeline definition, versioning, triggers | KF-13–15 | 2 |
+| 20 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 21 | Drift Detection System | All 3 drift types, daily check, drift_logs | DRIFT-01–05 | 2 |
 | 22 | Drift Auto-Retrain Trigger | Trigger Kubeflow on drift, redeploy, regen predictions | DRIFT-06–07 | 1 |
 | 23 | FastAPI Prediction & Model Endpoints | /predict/{ticker}, /predict/bulk, /models/* | API-07–10 | 1 |
@@ -433,7 +433,7 @@ Plans:
 3. Pipeline can be triggered manually via Kubeflow UI or API call
 4. drift_pipeline.py trigger invokes the training pipeline programmatically
 
-**Plans:** 0/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 20-01-PLAN.md — Parquet serialisation + training pipeline orchestrator + versioning + tests
