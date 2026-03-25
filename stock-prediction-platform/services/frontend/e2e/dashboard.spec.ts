@@ -44,6 +44,9 @@ async function stubAllRoutes(page: import("@playwright/test").Page) {
   await page.route("http://localhost:8000/backtest/**", (route) => route.fulfill({ json: backtestFixture() }));
 }
 
+// Serial mode: Vite dev server handles one browser at a time for stability
+test.describe.configure({ mode: "serial" });
+
 test.describe("Navigation", () => {
   test("sidebar link to Forecasts navigates to /forecasts", async ({ page }) => {
     await stubAllRoutes(page);
@@ -80,6 +83,7 @@ test.describe("Navigation", () => {
 });
 
 test.describe("Dashboard page", () => {
+
   test.beforeEach(async ({ page }) => {
     // Suppress WebSocket connection errors (expected: dev server has no WS endpoint)
     page.on("websocket", (ws) => {
