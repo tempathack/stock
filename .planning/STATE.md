@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 59-03-PLAN.md (awaiting human-verify checkpoint)
-last_updated: "2026-03-24T22:44:39.425Z"
+stopped_at: Completed 59-04-PLAN.md
+last_updated: "2026-03-25T01:11:15.774Z"
 progress:
   total_phases: 59
   completed_phases: 12
   total_plans: 130
-  completed_plans: 28
+  completed_plans: 29
 ---
 
 # STATE.md — Project Memory
@@ -221,10 +221,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 59]: KServe ClusterServingRuntime container must be named 'kserve-container' not 'mlserver'
 - [Phase 59]: API Docker build context must be project root to include ml/features for KServe inference
 - [Phase 59]: Model predicts percentage return; convert to abs price via last_close * (1 + return)
+- [Phase 59]: cronjob-drift.yaml was missing TICKERS, POSTGRES_PASSWORD, POSTGRES_USER env vars — added to fix drift job execution
 
 ## Last Session
 
-- **Stopped at:** Completed 59-03-PLAN.md (awaiting human-verify checkpoint)
+- **Stopped at:** Completed 59-04-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
