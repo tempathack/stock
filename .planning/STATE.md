@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 62-01-PLAN.md
-last_updated: "2026-03-25T14:04:47.404Z"
+stopped_at: Completed 62-04-PLAN.md
+last_updated: "2026-03-25T14:07:15.202Z"
 progress:
   total_phases: 62
   completed_phases: 14
   total_plans: 142
-  completed_plans: 37
+  completed_plans: 40
 ---
 
 # STATE.md — Project Memory
@@ -243,10 +243,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 62]: No webServer block in playwright.infra.config.ts — infra services are already running via kubectl port-forward
 - [Phase 62]: No baseURL in playwright.infra.config.ts — each spec sets its own origin via named URL exports from auth.ts
 - [Phase 62]: K8S_DASHBOARD_TOKEN references KUBERNETES_DASHBOARD_TOKEN env var with no hardcoded default — must be supplied externally
+- [Phase 62]: grafana.spec.ts dashboard navigation uses getByText by title (not UID) to avoid fragility; panels use .or() for version tolerance; beforeAll probe uses Playwright request API
+- [Phase 62]: CodeMirror 6 input handled via .cm-content.click() + keyboard.type() — page.fill() unreliable on CodeMirror editors
+- [Phase 62]: Alert tests assert rule names (HighDriftSeverity, HighAPIErrorRate, HighConsumerLag) not alert state — state depends on live metrics
 
 ## Last Session
 
-- **Stopped at:** Completed 62-01-PLAN.md
+- **Stopped at:** Completed 62-04-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
