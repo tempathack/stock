@@ -1237,6 +1237,34 @@ Plans:
 - [ ] 60-01-PLAN.md — model_metadata_cache.py (MinIO+DB startup load), boto3 dep, lifespan wire, inference functions updated
 - [ ] 60-02-PLAN.md — K8s ConfigMap MINIO vars + minio-secrets secretRef + human E2E verify
 
+### Phase 61: Playwright E2E tests — full frontend feature coverage
+
+**Goal:** Install Playwright in the frontend, write real E2E tests for all 5 pages (Dashboard, Forecasts, Models, Drift, Backtest) using `page.route()` API interceptors with fixture data matching exact API response schemas — zero tolerance for frontend mock-fallback paths passing tests.
+**Requirements**: TEST-PW-01, TEST-PW-02, TEST-PW-03, TEST-PW-04, TEST-PW-05
+**Depends on:** Phase 60
+**Plans:** 5 plans
+
+Plans:
+- [ ] 61-01-PLAN.md — Playwright install, playwright.config.ts, package.json scripts, shared API fixture factories (types match types.ts schemas exactly)
+- [ ] 61-02-PLAN.md — Navigation + Dashboard page tests (sidebar links, treemap click→select, metric cards, TA panel toggle, close detail)
+- [ ] 61-03-PLAN.md — Forecasts page tests (horizon toggle, filter controls, table rows, search, comparison panel, detail section open/close, export buttons)
+- [ ] 61-04-PLAN.md — Models page tests (winner card, table click→detail panel, SHAP bar + beeswarm charts, fold performance chart, export buttons) + Drift page tests (ActiveModelCard, RetrainStatusPanel, RollingPerformanceChart, DriftTimeline, FeatureDistributionChart)
+- [ ] 61-05-PLAN.md — Backtest page tests (ticker select, date inputs, horizon select, Run Backtest → chart + metrics summary, export buttons) + CI npm script wiring
+
+### Phase 62: Playwright E2E tests — infra UI coverage (Grafana, Prometheus, MinIO, Kubeflow, K8s Dashboard)
+
+**Goal:** Write Playwright E2E tests for every non-React UI exposed by deploy-all.sh: Grafana login + 3 dashboards + 2 datasources, Prometheus query execution + targets + alerts, MinIO Console login + bucket existence + object navigation, Kubeflow Pipelines UI navigation, and Kubernetes Dashboard cluster overview. Tests hit the live deployed stack — no route interceptors, no mocks.
+**Requirements**: TEST-INFRA-01, TEST-INFRA-02, TEST-INFRA-03, TEST-INFRA-04, TEST-INFRA-05
+**Depends on:** Phase 61
+**Plans:** 5 plans
+
+Plans:
+- [ ] 62-01-PLAN.md — Infra Playwright config (playwright.infra.config.ts, multi-project setup for ports 3000/9090/9001/8888/8001, env var credentials, shared auth helpers)
+- [ ] 62-02-PLAN.md — Grafana tests: login, datasource health (Prometheus + Loki), all 3 dashboards load with panels rendered (HTTP Overview, Prediction Volume, Consumer Metrics)
+- [ ] 62-03-PLAN.md — Prometheus tests: homepage, query editor executes `up` and returns results, Targets page shows expected job labels, Alerts page accessible
+- [ ] 62-04-PLAN.md — MinIO Console tests: login, model-artifacts bucket exists, drift-logs bucket exists, bucket navigation, object upload/list assertions
+- [ ] 62-05-PLAN.md — Kubeflow Pipelines tests (homepage + pipelines/experiments list) + Kubernetes Dashboard tests (cluster overview, namespace list, pod list) + npm script wiring
+
 ---
 
 ## Requirement Traceability
@@ -1302,4 +1330,5 @@ Plans:
 | KSERV-05–08 | 55 |
 | KSERV-09–12 | 56 |
 | KSERV-13–15 | 57 |
-phase 
+| TEST-PW-01–05 | 61 |
+| TEST-INFRA-01–05 | 62 | 
