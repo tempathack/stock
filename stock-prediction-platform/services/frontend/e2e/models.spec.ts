@@ -10,6 +10,8 @@ async function stubModelsRoutes(page: import("@playwright/test").Page) {
 }
 
 test.describe("Models page", () => {
+  test.describe.configure({ mode: "serial" });
+
   test("page loads and renders winner card with fixture model name", async ({ page }) => {
     await stubModelsRoutes(page);
     await page.goto("/models");
