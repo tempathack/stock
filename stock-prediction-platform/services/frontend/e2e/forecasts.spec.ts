@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, request } from "@playwright/test";
 import {
   healthFixture,
   marketOverviewFixture,
@@ -28,6 +28,30 @@ async function stubForecastsRoutes(
 }
 
 test.describe("Forecasts page", () => {
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    try {
+      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
+      if (!healthRes.ok()) {
+        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+        return;
+      }
+      const bulkRes = await ctx.get("http://localhost:8000/predict/bulk", { timeout: 5_000 });
+      if (!bulkRes.ok()) {
+        test.skip(true, "GET /predict/bulk failed — backend unhealthy or no trained model");
+        return;
+      }
+      const data = await bulkRes.json();
+      if (!data?.predictions?.length) {
+        test.skip(true, "GET /predict/bulk returned 0 predictions — run the training pipeline and ensure model is deployed");
+      }
+    } catch {
+      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+    } finally {
+      await ctx.dispose();
+    }
+  });
+
   test.describe.configure({ mode: "serial" });
 
   test("page loads and shows fixture model name in table", async ({ page }) => {
