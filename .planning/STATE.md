@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 62 context gathered
-last_updated: "2026-03-25T13:44:32.171Z"
+stopped_at: Completed 62-01-PLAN.md
+last_updated: "2026-03-25T14:04:47.404Z"
 progress:
   total_phases: 62
   completed_phases: 14
   total_plans: 142
-  completed_plans: 36
+  completed_plans: 37
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 61 — playwright-e2e-tests-full-frontend-coverage
+**Current focus:** Phase 62 — playwright-e2e-infra-grafana-prometheus-minio-kubeflow-k8s-dashboard
 
 ## Current Status
 
@@ -240,10 +240,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 61]: Serial mode required for models.spec.ts (same pattern as dashboard.spec.ts) — parallel overload of Vite dev server when multiple specs run together
 - [Phase 61]: backtest.spec.ts uses http://localhost:8000/backtest/** (specific origin) to avoid Vite source module interception
 - [Phase 61]: All 5 spec files now use serial mode — forecasts.spec.ts was missing it, causing full suite TimeoutError
+- [Phase 62]: No webServer block in playwright.infra.config.ts — infra services are already running via kubectl port-forward
+- [Phase 62]: No baseURL in playwright.infra.config.ts — each spec sets its own origin via named URL exports from auth.ts
+- [Phase 62]: K8S_DASHBOARD_TOKEN references KUBERNETES_DASHBOARD_TOKEN env var with no hardcoded default — must be supplied externally
 
 ## Last Session
 
-- **Stopped at:** Phase 62 context gathered
+- **Stopped at:** Completed 62-01-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes

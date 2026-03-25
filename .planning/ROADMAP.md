@@ -1256,7 +1256,7 @@ Plans:
 **Goal:** Write Playwright E2E tests for every non-React UI exposed by deploy-all.sh: Grafana login + 3 dashboards + 2 datasources, Prometheus query execution + targets + alerts, MinIO Console login + bucket existence + object navigation, Kubeflow Pipelines UI navigation, and Kubernetes Dashboard cluster overview. Tests hit the live deployed stack — no route interceptors, no mocks.
 **Requirements**: TEST-INFRA-01, TEST-INFRA-02, TEST-INFRA-03, TEST-INFRA-04, TEST-INFRA-05
 **Depends on:** Phase 61
-**Plans:** 5 plans
+**Plans:** 1/5 plans executed
 
 Plans:
 - [ ] 62-01-PLAN.md — Infra Playwright config (playwright.infra.config.ts, multi-project setup for ports 3000/9090/9001/8888/8001, env var credentials, shared auth helpers)
