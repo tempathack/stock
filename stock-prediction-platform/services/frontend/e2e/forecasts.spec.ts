@@ -28,6 +28,8 @@ async function stubForecastsRoutes(
 }
 
 test.describe("Forecasts page", () => {
+  test.describe.configure({ mode: "serial" });
+
   test("page loads and shows fixture model name in table", async ({ page }) => {
     await stubForecastsRoutes(page);
     await page.goto("/forecasts");
