@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 62-03-PLAN.md
-last_updated: "2026-03-25T14:07:18.507Z"
+stopped_at: Completed 62-05-PLAN.md
+last_updated: "2026-03-25T14:08:13.452Z"
 progress:
   total_phases: 62
-  completed_phases: 14
+  completed_phases: 15
   total_plans: 142
-  completed_plans: 40
+  completed_plans: 41
 ---
 
 # STATE.md — Project Memory
@@ -248,10 +248,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 62]: Alert tests assert rule names (HighDriftSeverity, HighAPIErrorRate, HighConsumerLag) not alert state — state depends on live metrics
 - [Phase 62]: Probe checks status >= 500 (not !res.ok()) — MinIO redirects / to /login (302) which is reachable but not 'ok'
 - [Phase 62]: Bucket navigation test clicks bucket row by text — avoids hardcoded /browser/{name} URL anti-pattern
+- [Phase 62]: Hash-router navigation uses DOM waits not waitForURL — KFP uses /#/ routing; waitForURL does not fire on hash changes
+- [Phase 62]: Two-stage skip for K8s Dashboard: missing token skips first (before HTTP probe) — ordering matters for UX
+- [Phase 62]: K8s Dashboard skip messages embed exact kubectl commands (port-forward, create token, proxy) for operator self-service
 
 ## Last Session
 
-- **Stopped at:** Completed 62-03-PLAN.md
+- **Stopped at:** Completed 62-05-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
