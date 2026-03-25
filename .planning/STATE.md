@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 62-04-PLAN.md
-last_updated: "2026-03-25T14:07:15.202Z"
+stopped_at: Completed 62-03-PLAN.md
+last_updated: "2026-03-25T14:07:18.507Z"
 progress:
   total_phases: 62
   completed_phases: 14
@@ -246,10 +246,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 62]: grafana.spec.ts dashboard navigation uses getByText by title (not UID) to avoid fragility; panels use .or() for version tolerance; beforeAll probe uses Playwright request API
 - [Phase 62]: CodeMirror 6 input handled via .cm-content.click() + keyboard.type() — page.fill() unreliable on CodeMirror editors
 - [Phase 62]: Alert tests assert rule names (HighDriftSeverity, HighAPIErrorRate, HighConsumerLag) not alert state — state depends on live metrics
+- [Phase 62]: Probe checks status >= 500 (not !res.ok()) — MinIO redirects / to /login (302) which is reachable but not 'ok'
+- [Phase 62]: Bucket navigation test clicks bucket row by text — avoids hardcoded /browser/{name} URL anti-pattern
 
 ## Last Session
 
-- **Stopped at:** Completed 62-04-PLAN.md
+- **Stopped at:** Completed 62-03-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
