@@ -267,6 +267,11 @@ kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/prometheus-configmap.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/prometheus-deployment.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/prometheus-service.yaml"
 
+echo "[Phase 38] Deploying Alertmanager..."
+kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/alertmanager-configmap.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/alertmanager-deployment.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/alertmanager-service.yaml"
+
 echo "[Phase 38] Deploying Grafana..."
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-datasource-configmap.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboards-configmap.yaml"
@@ -278,6 +283,8 @@ kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-service.yaml"
 
 echo "[Phase 38] Waiting for Prometheus..."
 kubectl rollout status deployment/prometheus -n monitoring --timeout=120s
+echo "[Phase 38] Waiting for Alertmanager..."
+kubectl rollout status deployment/alertmanager -n monitoring --timeout=120s
 echo "[Phase 38] Waiting for Grafana..."
 kubectl rollout status deployment/grafana -n monitoring --timeout=120s
 echo "[Phase 38] ✓ Monitoring stack deployed"
@@ -308,3 +315,87 @@ kubectl rollout status deployment/grafana -n monitoring --timeout=120s
 echo "[Phase 39] ✓ Loki + Promtail log aggregation deployed"
 
 echo "=== Deployment complete ==="
+
+# =============================================================================
+# Port-forwarding — expose all UIs on localhost
+# =============================================================================
+echo ""
+echo "=== Setting up port-forwarding ==="
+
+# Kill any stale port-forwards on our ports to avoid bind conflicts
+for port in 8080 8000 3000 9090 9001 3100; do
+  pkill -f "kubectl port-forward.*:${port}" 2>/dev/null || true
+done
+sleep 1
+
+# Wait for pods before forwarding
+echo "Waiting for pods to be ready..."
+kubectl wait --for=condition=ready pod -l app=frontend    -n frontend   --timeout=120s 2>/dev/null || echo "WARNING: frontend pod not ready yet"
+kubectl wait --for=condition=ready pod -l app=stock-api   -n ingestion  --timeout=120s 2>/dev/null || echo "WARNING: stock-api pod not ready yet"
+kubectl wait --for=condition=ready pod -l app=grafana     -n monitoring --timeout=120s 2>/dev/null || echo "WARNING: grafana pod not ready yet"
+kubectl wait --for=condition=ready pod -l app=prometheus  -n monitoring --timeout=120s 2>/dev/null || echo "WARNING: prometheus pod not ready yet"
+kubectl wait --for=condition=ready pod -l app=minio       -n storage    --timeout=120s 2>/dev/null || echo "WARNING: minio pod not ready yet"
+kubectl wait --for=condition=ready pod -l app=loki        -n monitoring --timeout=120s 2>/dev/null || echo "WARNING: loki pod not ready yet"
+
+# Start port-forwards in background, log output to /tmp
+kubectl port-forward svc/frontend   8080:80   -n frontend   >/tmp/pf-frontend.log   2>&1 & echo $! >/tmp/pf-frontend.pid
+kubectl port-forward svc/stock-api  8000:8000 -n ingestion  >/tmp/pf-stock-api.log  2>&1 & echo $! >/tmp/pf-stock-api.pid
+kubectl port-forward svc/grafana    3000:3000 -n monitoring >/tmp/pf-grafana.log    2>&1 & echo $! >/tmp/pf-grafana.pid
+kubectl port-forward svc/prometheus 9090:9090 -n monitoring >/tmp/pf-prometheus.log 2>&1 & echo $! >/tmp/pf-prometheus.pid
+kubectl port-forward svc/minio      9001:9001 -n storage    >/tmp/pf-minio.log      2>&1 & echo $! >/tmp/pf-minio.pid
+kubectl port-forward svc/loki       3100:3100 -n monitoring >/tmp/pf-loki.log       2>&1 & echo $! >/tmp/pf-loki.pid
+
+# Kubernetes dashboard runs through kubectl proxy (not a standard svc port-forward)
+pkill -f "kubectl proxy" 2>/dev/null || true
+kubectl proxy --port=8001 >/tmp/pf-k8s-dashboard.log 2>&1 & echo $! >/tmp/pf-k8s-dashboard.pid
+
+# Kubeflow Pipelines UI
+kubectl port-forward svc/ml-pipeline-ui 8888:80 -n kubeflow >/tmp/pf-kubeflow.log 2>&1 & echo $! >/tmp/pf-kubeflow.pid
+
+sleep 2
+
+# =============================================================================
+# Link summary
+# =============================================================================
+RESET='\033[0m'
+BOLD='\033[1m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+YELLOW='\033[1;33m'
+MAGENTA='\033[0;35m'
+BLUE='\033[0;34m'
+WHITE='\033[1;37m'
+DIM='\033[2m'
+
+echo ""
+echo -e "${BOLD}┌─────────────────────────────────────────────────────────────┐${RESET}"
+echo -e "${BOLD}│           Stock Prediction Platform  —  Access Links         │${RESET}"
+echo -e "${BOLD}└─────────────────────────────────────────────────────────────┘${RESET}"
+echo ""
+echo -e "  ${GREEN}${BOLD}React Dashboard${RESET}       ${DIM}──>${RESET}  ${GREEN}http://localhost:8080${RESET}"
+echo -e "  ${DIM}                           /forecasts  /drift  /models  /dashboard${RESET}"
+echo ""
+echo -e "  ${CYAN}${BOLD}Stock API (FastAPI)${RESET}   ${DIM}──>${RESET}  ${CYAN}http://localhost:8000/docs${RESET}"
+echo -e "  ${DIM}                           Swagger UI — /predict/{ticker}  /health${RESET}"
+echo ""
+echo -e "  ${YELLOW}${BOLD}Grafana${RESET}               ${DIM}──>${RESET}  ${YELLOW}http://localhost:3000${RESET}  ${DIM}(admin / admin)${RESET}"
+echo -e "  ${DIM}                           ML performance, API health, Kafka dashboards${RESET}"
+echo ""
+echo -e "  ${MAGENTA}${BOLD}Prometheus${RESET}            ${DIM}──>${RESET}  ${MAGENTA}http://localhost:9090${RESET}"
+echo -e "  ${DIM}                           Raw metrics explorer & alerting rules${RESET}"
+echo ""
+echo -e "  ${BLUE}${BOLD}MinIO Console${RESET}         ${DIM}──>${RESET}  ${BLUE}http://localhost:9001${RESET}"
+echo -e "  ${DIM}                           S3 browser — model-artifacts / drift-logs buckets${RESET}"
+echo ""
+echo -e "  ${WHITE}${BOLD}Loki (log query API)${RESET}  ${DIM}──>${RESET}  ${WHITE}http://localhost:3100/metrics${RESET}"
+echo -e "  ${DIM}                           Query logs via Grafana Explore (not a standalone UI)${RESET}"
+echo ""
+echo -e "  \033[0;33m${BOLD}Kubeflow Pipelines${RESET}    ${DIM}──>${RESET}  \033[0;33mhttp://localhost:8888${RESET}"
+echo -e "  ${DIM}                           Pipeline runs, experiments, artifacts${RESET}"
+echo ""
+echo -e "  \033[0;32m${BOLD}Kubernetes Dashboard${RESET}  ${DIM}──>${RESET}  \033[0;32mhttp://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/${RESET}"
+echo -e "  ${DIM}                           Cluster overview — pods, deployments, logs${RESET}"
+echo ""
+echo -e "  ${DIM}Port-forward PIDs saved to /tmp/pf-*.pid${RESET}"
+echo -e "  ${DIM}Stop all forwards:  pkill -f 'kubectl port-forward'${RESET}"
+echo ""
