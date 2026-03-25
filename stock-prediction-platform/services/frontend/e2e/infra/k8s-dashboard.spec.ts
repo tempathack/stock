@@ -20,25 +20,26 @@ test.beforeAll(async () => {
   const ctx = await request.newContext();
   try {
     const res = await ctx.get(K8S_DASHBOARD_URL, { timeout: 5_000 });
-    // 503 from kubectl proxy means the dashboard service is not deployed
-    if (res.status() === 503) {
+    // Non-200 means the dashboard is not reachable
+    if (!res.ok()) {
       test.skip(
         true,
-        `Kubernetes Dashboard service not found at ${K8S_DASHBOARD_URL} — dashboard may not be installed. Install with: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml`
+        `Kubernetes Dashboard service not found at ${K8S_DASHBOARD_URL} — ensure port-forward is running: kubectl port-forward -n kubernetes-dashboard pod/<dashboard-pod> 8443:9090`
       );
     }
   } catch {
     test.skip(
       true,
-      `Kubernetes Dashboard not reachable at ${K8S_DASHBOARD_URL} — ensure kubectl proxy is running: kubectl proxy --port=8001`
+      `Kubernetes Dashboard not reachable at ${K8S_DASHBOARD_URL} — run: kubectl port-forward -n kubernetes-dashboard pod/<dashboard-pod> 8443:9090`
     );
   } finally {
     await ctx.dispose();
   }
 });
 
-// Serial mode — live service
+// Serial mode — live service; longer timeout for kubectl proxy latency
 test.describe.configure({ mode: "serial" });
+test.setTimeout(90_000);
 
 // ── Token login and cluster overview ─────────────────────────────────────────
 test.describe("Kubernetes Dashboard", () => {
@@ -59,7 +60,7 @@ test.describe("Kubernetes Dashboard", () => {
     await loginK8sDashboard(page, K8S_DASHBOARD_TOKEN!);
     // Navigate to workloads section (either by sidebar click or URL)
     // Use text-based nav — CSS class selectors vary by dashboard version
-    const workloadsLink = page.getByRole("link", { name: /workloads/i });
+    const workloadsLink = page.getByRole("link", { name: /workloads/i }).first();
     if (await workloadsLink.isVisible({ timeout: 5_000 })) {
       await workloadsLink.click();
     }

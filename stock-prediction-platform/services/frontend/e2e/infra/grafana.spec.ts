@@ -27,7 +27,7 @@ test.describe("Grafana login", () => {
   test("logs in with admin credentials and lands on home", async ({ page }) => {
     await page.goto(`${GRAFANA_URL}/login`);
     await page.getByLabel("Email or username").fill("admin");
-    await page.getByLabel("Password").fill("admin");
+    await page.locator('input[name="password"]').fill("admin");
     await page.getByRole("button", { name: "Log in" }).click();
     await page.waitForURL(`${GRAFANA_URL}/**`, { timeout: 10_000 });
     // Assert logged-in state — Grafana 10.x shows "Welcome to Grafana" or home dashboard
@@ -38,17 +38,41 @@ test.describe("Grafana login", () => {
 });
 
 // ── Datasources ───────────────────────────────────────────────────────────────
+// Datasource existence is verified via the Grafana REST API (more reliable than
+// navigating the connections/datasources UI, which redirects based on Grafana version).
 test.describe("Grafana datasources", () => {
-  test("Prometheus datasource is configured", async ({ page }) => {
-    await loginGrafana(page);
-    await page.goto(`${GRAFANA_URL}/connections/datasources`);
-    await expect(page.getByText("Prometheus")).toBeVisible({ timeout: 10_000 });
+  test("Prometheus datasource is configured", async () => {
+    const ctx = await request.newContext();
+    try {
+      const res = await ctx.get(`${GRAFANA_URL}/api/datasources`, {
+        headers: {
+          Authorization:
+            "Basic " + Buffer.from(`admin:admin`).toString("base64"),
+        },
+      });
+      expect(res.ok()).toBeTruthy();
+      const ds: Array<{ name: string; type: string }> = await res.json();
+      expect(ds.some((d) => d.type === "prometheus")).toBeTruthy();
+    } finally {
+      await ctx.dispose();
+    }
   });
 
-  test("Loki datasource is configured", async ({ page }) => {
-    await loginGrafana(page);
-    await page.goto(`${GRAFANA_URL}/connections/datasources`);
-    await expect(page.getByText("Loki")).toBeVisible({ timeout: 10_000 });
+  test("Loki datasource is configured", async () => {
+    const ctx = await request.newContext();
+    try {
+      const res = await ctx.get(`${GRAFANA_URL}/api/datasources`, {
+        headers: {
+          Authorization:
+            "Basic " + Buffer.from(`admin:admin`).toString("base64"),
+        },
+      });
+      expect(res.ok()).toBeTruthy();
+      const ds: Array<{ name: string; type: string }> = await res.json();
+      expect(ds.some((d) => d.type === "loki")).toBeTruthy();
+    } finally {
+      await ctx.dispose();
+    }
   });
 });
 

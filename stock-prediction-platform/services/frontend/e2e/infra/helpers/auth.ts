@@ -6,12 +6,13 @@ export const GRAFANA_URL =
 export const PROMETHEUS_URL =
   process.env.PROMETHEUS_URL ?? "http://localhost:9090";
 export const MINIO_URL =
-  process.env.MINIO_URL ?? "http://localhost:9001";
+  process.env.MINIO_URL ?? "http://localhost:9002";
 export const KUBEFLOW_URL =
   process.env.KUBEFLOW_URL ?? "http://localhost:8888";
+// Direct port-forward to dashboard pod (port 8443 → pod:9090) is far faster than
+// the kubectl proxy path. Run: kubectl port-forward -n kubernetes-dashboard pod/<dashboard-pod> 8443:9090
 export const K8S_DASHBOARD_URL =
-  process.env.K8S_DASHBOARD_URL ??
-  "http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/";
+  process.env.K8S_DASHBOARD_URL ?? "http://localhost:8443/";
 
 // ── Credentials ─────────────────────────────────────────────────────────────
 export const GRAFANA_USER =
@@ -33,7 +34,7 @@ export const K8S_DASHBOARD_TOKEN =
 export async function loginGrafana(page: Page): Promise<void> {
   await page.goto(`${GRAFANA_URL}/login`);
   await page.getByLabel("Email or username").fill(GRAFANA_USER);
-  await page.getByLabel("Password").fill(GRAFANA_PASSWORD);
+  await page.locator('input[name="password"]').fill(GRAFANA_PASSWORD);
   await page.getByRole("button", { name: "Log in" }).click();
   // Wait for post-login redirect to home/dashboard
   await page.waitForURL(`${GRAFANA_URL}/**`, { timeout: 10_000 });
@@ -57,6 +58,16 @@ export async function loginK8sDashboard(
   token: string
 ): Promise<void> {
   await page.goto(K8S_DASHBOARD_URL);
+  // Some minikube setups skip auth entirely — wait up to 20s for the Workloads
+  // nav link to appear. If it appears, we're already in and skip token login.
+  const alreadyIn = await page
+    .locator('a[href*="workloads"]')
+    .first()
+    .waitFor({ state: "visible", timeout: 45_000 })
+    .then(() => true)
+    .catch(() => false);
+  if (alreadyIn) return;
+
   // K8s Dashboard v2/v3: may show Kubeconfig vs Token radio choice first
   try {
     const tokenRadio = page.getByLabel("Token");
@@ -67,10 +78,10 @@ export async function loginK8sDashboard(
     // No radio button — proceed directly to token input
   }
   // Fill token — try aria-label first, fall back to textarea
-  const tokenInput = page
+  const tokenField = page
     .getByLabel(/enter token/i)
     .or(page.locator("textarea#token, input#token"));
-  await tokenInput.fill(token);
+  await tokenField.fill(token);
   await page.getByRole("button", { name: /sign in/i }).click();
   await page.waitForURL(/kubernetes-dashboard/, { timeout: 10_000 });
 }

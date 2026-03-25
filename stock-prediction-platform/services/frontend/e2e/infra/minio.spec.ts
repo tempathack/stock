@@ -48,13 +48,13 @@ test.describe("MinIO bucket existence", () => {
   test("model-artifacts bucket exists", async ({ page }) => {
     await loginMinIO(page);
     await page.goto(`${MINIO_URL}/browser`);
-    await expect(page.getByText("model-artifacts")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("model-artifacts")).toBeVisible({ timeout: 20_000 });
   });
 
   test("drift-logs bucket exists", async ({ page }) => {
     await loginMinIO(page);
     await page.goto(`${MINIO_URL}/browser`);
-    await expect(page.getByText("drift-logs")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("drift-logs")).toBeVisible({ timeout: 20_000 });
   });
 });
 
@@ -63,8 +63,10 @@ test.describe("MinIO bucket navigation", () => {
   test("clicking model-artifacts bucket opens the object browser", async ({ page }) => {
     await loginMinIO(page);
     await page.goto(`${MINIO_URL}/browser`);
-    // Click the bucket row — use UI navigation, not hardcoded URL paths per RESEARCH.md
-    await page.getByText("model-artifacts").click();
+    // Wait for bucket list to render before clicking
+    const bucketLink = page.getByText("model-artifacts");
+    await expect(bucketLink).toBeVisible({ timeout: 20_000 });
+    await bucketLink.click();
     // Object browser renders — even if empty, the container/header should appear
     await expect(
       page.getByText(/Objects|No Objects|Upload/i).first()

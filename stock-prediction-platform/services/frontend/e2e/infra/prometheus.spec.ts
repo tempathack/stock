@@ -35,9 +35,9 @@ test.describe("Prometheus query execution", () => {
 
   test("Prometheus homepage loads", async ({ page }) => {
     await page.goto(`${PROMETHEUS_URL}/`);
-    // Prometheus 2.x redirects / to /graph
+    // Prometheus redirects / to /graph — wait for the Execute button rendered by the React SPA
     await expect(
-      page.getByText(/Prometheus|Expression/).first()
+      page.getByRole("button", { name: /execute/i })
     ).toBeVisible({ timeout: 10_000 });
   });
 });
@@ -46,7 +46,8 @@ test.describe("Prometheus query execution", () => {
 test.describe("Prometheus targets", () => {
   test("targets page shows kubernetes-pods scrape job", async ({ page }) => {
     await page.goto(`${PROMETHEUS_URL}/targets`);
-    await expect(page.getByText("kubernetes-pods")).toBeVisible({ timeout: 10_000 });
+    // Use the visible pool anchor link rather than the hidden dropdown button
+    await expect(page.getByRole("link", { name: /kubernetes-pods/ }).first()).toBeVisible({ timeout: 10_000 });
   });
 });
 
