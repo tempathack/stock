@@ -16,6 +16,7 @@ from app.middleware import RequestContextMiddleware
 from app.models.database import dispose_engine, init_engine
 from app.rate_limit import RateLimitMiddleware
 from app.routers import backtest, health, ingest, market, models, predict, ws
+from app.services.model_metadata_cache import load_active_model_metadata
 from app.services.price_feed import price_feed_loop
 from app.utils.logging import configure_uvicorn_logging, get_logger
 
@@ -50,6 +51,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     if settings.REDIS_URL:
         init_redis(settings.REDIS_URL)
         logger.info("redis cache enabled")
+
+    # Load active model metadata (MinIO preferred, DB fallback)
+    await load_active_model_metadata()
+    logger.info("model metadata cache loaded")
 
     # Start WebSocket price feed background task
     tickers = [t.strip() for t in settings.TICKER_SYMBOLS.split(",") if t.strip()]

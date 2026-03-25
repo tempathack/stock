@@ -275,18 +275,20 @@ async def _kserve_inference(
         with open(features_path) as f:
             feature_names = json.load(f)
 
-    # Model name for response
-    model_display = "unknown"
+    # Model name for response — use startup cache (MinIO/DB loaded at lifespan)
+    from app.services.model_metadata_cache import get_active_model_metadata
     if ab_model is not None:
         model_display = ab_model["model_name"]
     else:
-        metadata_path = base_srv / "metadata.json"
-        if metadata_path.exists():
-            with open(metadata_path) as f:
-                meta = json.load(f)
-                model_display = meta.get("model_name", "unknown")
-                if meta.get("scaler_variant"):
-                    model_display = f"{meta['model_name']}_{meta['scaler_variant']}"
+        cached = get_active_model_metadata()
+        model_name_str = cached.get("model_name")
+        scaler = cached.get("scaler_variant")
+        if model_name_str and scaler:
+            model_display = f"{model_name_str}_{scaler}"
+        elif model_name_str:
+            model_display = model_name_str
+        else:
+            model_display = "unknown"  # only if startup cache load failed
 
     # Load OHLCV data
     ohlcv_df = await _load_ohlcv_for_inference(ticker, lookback=250)
@@ -437,16 +439,20 @@ async def _legacy_inference(
         with open(features_path) as f:
             feature_names = json.load(f)
 
-    # Load model metadata for response
-    model_name = "unknown"
+    # Load model metadata for response — use startup cache
+    from app.services.model_metadata_cache import get_active_model_metadata
     if ab_model is not None:
         model_name = ab_model["model_name"]
-    elif metadata_path.exists():
-        with open(metadata_path) as f:
-            meta = json.load(f)
-            model_name = meta.get("model_name", "unknown")
-            if meta.get("scaler_variant"):
-                model_name = f"{meta['model_name']}_{meta['scaler_variant']}"
+    else:
+        cached = get_active_model_metadata()
+        model_name_str = cached.get("model_name")
+        scaler = cached.get("scaler_variant")
+        if model_name_str and scaler:
+            model_name = f"{model_name_str}_{scaler}"
+        elif model_name_str:
+            model_name = model_name_str
+        else:
+            model_name = "unknown"  # only if startup cache load failed
 
     # Step 2: Fetch OHLCV data from DB
     ohlcv_df = await _load_ohlcv_for_inference(ticker, lookback=250)

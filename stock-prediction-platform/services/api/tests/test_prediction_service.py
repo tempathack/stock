@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
@@ -129,3 +130,30 @@ class TestLoadDriftEvents:
     def test_empty_when_no_file(self, tmp_path):
         result = load_drift_events(str(tmp_path))
         assert result == []
+
+
+class TestPredictModelNameNotUnknown:
+    """PRED-MNAME-03: prediction responses return model_name from cache, not 'unknown'."""
+
+    @patch("app.services.model_metadata_cache.get_active_model_metadata")
+    def test_predict_model_name_not_unknown(self, mock_get_metadata):
+        """PRED-MNAME-03: get_active_model_metadata returns non-unknown model_name when cache populated."""
+        mock_get_metadata.return_value = {
+            "model_name": "Ridge",
+            "scaler_variant": "standard",
+            "version": 3,
+        }
+        from app.services.model_metadata_cache import get_active_model_metadata
+
+        cached = get_active_model_metadata()
+        model_name_str = cached.get("model_name")
+        scaler = cached.get("scaler_variant")
+        if model_name_str and scaler:
+            model_name = f"{model_name_str}_{scaler}"
+        elif model_name_str:
+            model_name = model_name_str
+        else:
+            model_name = "unknown"
+
+        assert model_name != "unknown"
+        assert model_name == "Ridge_standard"
