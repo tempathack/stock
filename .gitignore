@@ -10,3 +10,7 @@ catboost_info/
 # K8s Secrets — never commit real credentials
 **/secrets.yaml
 **/minio-secrets.yaml
+
+# Playwright test output
+playwright-report/
+test-results/
