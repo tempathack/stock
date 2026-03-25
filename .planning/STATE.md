@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 37-02-PLAN.md
-last_updated: "2026-03-25T15:35:19.389Z"
+stopped_at: Completed 08-01-PLAN.md
+last_updated: "2026-03-25T15:35:32.793Z"
 progress:
   total_phases: 63
   completed_phases: 17
@@ -251,10 +251,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 62]: Hash-router navigation uses DOM waits not waitForURL — KFP uses /#/ routing; waitForURL does not fire on hash changes
 - [Phase 62]: Two-stage skip for K8s Dashboard: missing token skips first (before HTTP probe) — ordering matters for UX
 - [Phase 62]: K8s Dashboard skip messages embed exact kubectl commands (port-forward, create token, proxy) for operator self-service
+- [Phase 08]: timeZone America/New_York on intraday CronJob aligns schedule with NYSE hours; historical CronJob uses UTC default for weekly quiet-window run
 
 ## Last Session
 
-- **Stopped at:** Completed 37-02-PLAN.md
+- **Stopped at:** Completed 08-01-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes

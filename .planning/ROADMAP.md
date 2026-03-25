@@ -16,7 +16,7 @@
 | 5 | Kafka via Strimzi | Strimzi operator, broker, both topics | KAFKA-01–05 | 2 |
 | 6 | Yahoo Finance Ingestion Service | OHLCV fetch, validation, Kafka prodlluce | INGEST-01–03, INGEST-06 | 2 |
 | 7 | FastAPI Ingestion Endpoints | /ingest/intraday and /ingest/historical wired | API-05, API-06 | 1 |
-| 8 | K8s CronJobs for Ingestion | Scheduled intraday + historical CronJobs | INGEST-04, INGEST-05 | 1 |
+| 8 | 1/1 | Complete   | 2026-03-25 | 1 |
 | 9 | Kafka Consumers — Batch Writer | Consume topics, upsert to PostgreSQL | CONS-01–07 | 2 |
 | 10 | Technical Indicators | All momentum/trend/volatility/volume indicators | FEAT-01–14 | 4 |
 | 11 | Lag Features & Transformers | Lag features, rolling stats, scaler pipelines | FEAT-15–21 | 2 |
@@ -236,7 +236,7 @@ Plans:
 3. All volatility indicators (Bollinger, ATR, Rolling Vol) computed correctly
 4. All volume indicators (OBV, VWAP, Vol SMA, A/D) and return/log-return features computed correctly
 
-**Plans:** 0/4 plans executed
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 10-01-PLAN.md — Momentum indicators (RSI, MACD, Stochastic) + test infrastructure
