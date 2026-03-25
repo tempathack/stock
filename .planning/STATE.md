@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 59-04-PLAN.md
-last_updated: "2026-03-25T01:13:58.507Z"
+stopped_at: Completed 60-01-PLAN.md
+last_updated: "2026-03-25T08:32:10.650Z"
 progress:
-  total_phases: 59
+  total_phases: 60
   completed_phases: 12
-  total_plans: 130
-  completed_plans: 29
+  total_plans: 132
+  completed_plans: 30
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 59 — minikube-e2e-validation-start-cluster-deploy-full-stack-run-ingest-train-serve-flow
+**Current focus:** Phase 60 — fix-model-name-unknown-in-predict-response-fetch-metadata-from-minio-or-db-on-api-startup
 
 ## Current Status
 
@@ -222,10 +222,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 59]: API Docker build context must be project root to include ml/features for KServe inference
 - [Phase 59]: Model predicts percentage return; convert to abs price via last_close * (1 + return)
 - [Phase 59]: cronjob-drift.yaml was missing TICKERS, POSTGRES_PASSWORD, POSTGRES_USER env vars — added to fix drift job execution
+- [Phase 60]: boto3 sync call wrapped in asyncio.to_thread() — boto3 not async-native; thread pool avoids blocking event loop
+- [Phase 60]: os.environ used in _sync_fetch_from_minio (runs in thread pool, cannot use FastAPI DI); value matches Settings.MINIO_SERVING_PREFIX default
+- [Phase 60]: Model metadata is cosmetic — graceful degradation on MinIO+DB failure logs WARNING, API always starts
 
 ## Last Session
 
-- **Stopped at:** Completed 59-04-PLAN.md
+- **Stopped at:** Completed 60-01-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
@@ -236,3 +239,5 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 - Phase 58 added: Fix docker-compose runtime: kafka-consumer configurable broker + ml-pipeline entrypoint fix
 - Phase 59 added: Minikube E2E validation: start cluster, deploy full stack, run ingest-train-serve flow
+
+- Phase 60 added: Fix model_name unknown in predict response — fetch metadata from MinIO or DB on API startup
