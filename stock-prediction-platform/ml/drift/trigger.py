@@ -240,12 +240,9 @@ if __name__ == "__main__":
     parser.add_argument("--skip-shap", action="store_true")
     args = parser.parse_args()
 
-    if not args.auto_retrain:
-        parser.print_help()
-        sys.exit(0)
-
     try:
-        tickers = args.tickers.split(",") if args.tickers else None
+        _tickers_str = args.tickers or os.environ.get("TICKERS")
+        tickers = _tickers_str.split(",") if _tickers_str else ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "JPM", "JNJ", "V"]
 
         from ml.pipelines.components.data_loader import load_data
         from ml.pipelines.components.feature_engineer import engineer_features
@@ -288,7 +285,7 @@ if __name__ == "__main__":
             registry_dir=args.registry_dir,
             serving_dir=args.serving_dir,
             log_dir=args.drift_log_dir,
-            auto_retrain=True,
+            auto_retrain=args.auto_retrain,
             regenerate_predictions=True,
             skip_shap=args.skip_shap,
         )
