@@ -243,11 +243,11 @@
 - [x] **MON-01**: FastAPI /metrics endpoint via prometheus-fastapi-instrumentator
 - [x] **MON-02**: Custom Prometheus metrics: prediction_requests_total, prediction_latency_seconds, model_inference_errors_total
 - [x] **MON-03**: Kafka consumer /metrics on port 9090 (messages_consumed_total, batch_write_duration, consumer_lag)
-- [ ] **MON-04**: Prometheus server deployed in monitoring namespace
-- [ ] **MON-05**: Grafana deployed with provisioned datasources and dashboards
-- [ ] **MON-06**: API Health dashboard (request rate, latency p50/p95/p99, error rate)
-- [ ] **MON-07**: ML Performance dashboard (model RMSE over time, retraining frequency, drift events)
-- [ ] **MON-08**: Alert rules: drift severity high → Slack, API error rate > 5%, Kafka consumer lag > 1000
+- [x] **MON-04**: Prometheus server deployed in monitoring namespace
+- [x] **MON-05**: Grafana deployed with provisioned datasources and dashboards
+- [x] **MON-06**: API Health dashboard (request rate, latency p50/p95/p99, error rate)
+- [x] **MON-07**: ML Performance dashboard (model RMSE over time, retraining frequency, drift events)
+- [x] **MON-08**: Alert rules: drift severity high → Slack, API error rate > 5%, Kafka consumer lag > 1000
 - [ ] **MON-09**: structlog JSON output configured for FastAPI and Kafka consumer
 - [ ] **MON-10**: Centralized log aggregation via Loki + Promtail with Grafana datasource
 

@@ -46,7 +46,7 @@
 | 35 | Alembic Migration System | Schema versioning with initial migration | DBHARD-01–03 | 2 |
 | 36 | Secrets Management & DB RBAC | K8s Secrets, remove hardcoded creds, DB roles | DBHARD-06–07 | 2 |
 | 37 | 2/2 | Complete   | 2026-03-25 | 2 |
-| 38 | Grafana Dashboards & Alerting | Monitoring namespace, dashboards, alert rules | MON-04–08 | 3 |
+| 38 | 3/3 | Complete   | 2026-03-25 | 3 |
 | 39 | Structured Logging & Aggregation | structlog JSON + Loki centralized logs | MON-09–10 | 2 |
 | 40 | SQLAlchemy Connection Pooling | Async engine, session factory, migrate services | DBHARD-04–05 | 2 |
 | 41 | Database Backup Strategy | Daily pg_dump CronJob with retention | DBHARD-08 | 1 |
@@ -797,7 +797,7 @@ Plans:
 4. ML Performance dashboard shows model RMSE trend and drift events timeline
 5. At least one alert rule fires (testable via synthetic drift event)
 
-**Plans:** 3/3 plans
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 38-01-PLAN.md — Create k8s/monitoring/ manifests (namespace, Prometheus deployment, Grafana deployment)
