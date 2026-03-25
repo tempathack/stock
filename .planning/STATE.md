@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 38-03-PLAN.md
-last_updated: "2026-03-25T15:39:29.086Z"
+stopped_at: Completed 63-01-PLAN.md
+last_updated: "2026-03-25T15:40:15.148Z"
 progress:
   total_phases: 63
-  completed_phases: 19
+  completed_phases: 20
   total_plans: 144
-  completed_plans: 49
+  completed_plans: 50
 ---
 
 # STATE.md — Project Memory
@@ -252,10 +252,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 62]: Two-stage skip for K8s Dashboard: missing token skips first (before HTTP probe) — ordering matters for UX
 - [Phase 62]: K8s Dashboard skip messages embed exact kubectl commands (port-forward, create token, proxy) for operator self-service
 - [Phase 08]: timeZone America/New_York on intraday CronJob aligns schedule with NYSE hours; historical CronJob uses UTC default for weekly quiet-window run
+- [Phase 63]: beforeAll blocks placed inside each test.describe block so test.skip() scopes correctly to that suite
+- [Phase 63]: dashboard.spec.ts gets 2 beforeAll blocks (Navigation + Dashboard page) — both describe blocks navigate and need live data
+- [Phase 63]: drift.spec.ts guards both /models/comparison and /models/drift — ActiveModelCard needs comparison data, DriftTimeline needs drift events
 
 ## Last Session
 
-- **Stopped at:** Completed 38-03-PLAN.md
+- **Stopped at:** Completed 63-01-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
