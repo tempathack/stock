@@ -1226,6 +1226,17 @@ Plans:
 - [ ] 59-03-PLAN.md — Data + training: seed DB, trigger training, verify MinIO artifact, KServe Ready, /predict/AAPL E2E
 - [ ] 59-04-PLAN.md — Drift + frontend: trigger drift CronJob, verify drift_logs, frontend /forecasts and /drift human verification
 
+### Phase 60: Fix model_name unknown in predict response: fetch metadata from MinIO or DB on API startup
+
+**Goal:** Eliminate "unknown" model_name in /predict responses by loading serving_config.json from MinIO (or DB fallback) at API startup via a module-level cache
+**Requirements**: PRED-MNAME-01, PRED-MNAME-02, PRED-MNAME-03, PRED-MNAME-04, PRED-MNAME-05
+**Depends on:** Phase 59
+**Plans:** 2 plans
+
+Plans:
+- [ ] 60-01-PLAN.md — model_metadata_cache.py (MinIO+DB startup load), boto3 dep, lifespan wire, inference functions updated
+- [ ] 60-02-PLAN.md — K8s ConfigMap MINIO vars + minio-secrets secretRef + human E2E verify
+
 ---
 
 ## Requirement Traceability
