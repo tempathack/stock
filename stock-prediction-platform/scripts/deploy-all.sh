@@ -30,7 +30,7 @@ kubectl apply -f "$PROJECT_ROOT/k8s/namespaces.yaml"
 # --- Phase 3: Build stock-api Docker image ---
 echo "[Phase 3] Building stock-api Docker image..."
 eval $(minikube docker-env)
-docker build -t stock-api:latest "$PROJECT_ROOT/services/api/"
+docker build -t stock-api:latest -f "$PROJECT_ROOT/services/api/Dockerfile" "$PROJECT_ROOT"
 echo "[Phase 3] stock-api:latest built"
 
 # --- Phase 3: FastAPI Base Service ---
@@ -44,15 +44,13 @@ echo "[Phase 36] Applying K8s Secrets..."
 if [ -f "$PROJECT_ROOT/k8s/storage/secrets.yaml" ]; then
     kubectl apply -f "$PROJECT_ROOT/k8s/storage/secrets.yaml"
     # Copy secret to namespaces that need database access
-    kubectl get secret stock-platform-secrets -n storage -o yaml \
-        | sed 's/namespace: storage/namespace: ingestion/' \
-        | kubectl apply -f -
-    kubectl get secret stock-platform-secrets -n storage -o yaml \
-        | sed 's/namespace: storage/namespace: processing/' \
-        | kubectl apply -f -
-    kubectl get secret stock-platform-secrets -n storage -o yaml \
-        | sed 's/namespace: storage/namespace: ml/' \
-        | kubectl apply -f -
+    # Use delete+create (idempotent) to avoid resourceVersion conflicts with kubectl apply via pipe
+    for ns in ingestion processing ml; do
+        kubectl delete secret stock-platform-secrets -n "$ns" --ignore-not-found
+        kubectl get secret stock-platform-secrets -n storage -o json \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); d['metadata']={k:v for k,v in d['metadata'].items() if k in ('name','labels','annotations')}; d['metadata']['namespace']='$ns'; d['metadata'].pop('annotations',None); print(json.dumps(d))" \
+            | kubectl create -f -
+    done
     echo "[Phase 36] Secrets applied to storage, ingestion, processing, ml namespaces"
 else
     echo "WARNING: k8s/storage/secrets.yaml not found. Copy from secrets.yaml.example and fill in values."
@@ -113,15 +111,18 @@ kubectl wait --for=condition=ready pod -l app=minio -n storage --timeout=120s
 echo "[Phase 51] Initializing MinIO buckets..."
 kubectl delete job minio-init-buckets -n storage --ignore-not-found
 kubectl apply -f "$PROJECT_ROOT/k8s/storage/minio-init-job.yaml"
-kubectl wait --for=condition=complete job/minio-init-buckets -n storage --timeout=60s
+kubectl wait --for=condition=complete job/minio-init-buckets -n storage --timeout=120s
 
 # Copy MinIO secrets and config to ml namespace
-kubectl get secret minio-secrets -n storage -o yaml \
-    | sed 's/namespace: storage/namespace: ml/' \
-    | kubectl apply -f -
-kubectl get configmap minio-config -n storage -o yaml \
-    | sed 's/namespace: storage/namespace: ml/' \
-    | kubectl apply -f -
+# Use delete+create (idempotent) to avoid resourceVersion conflicts with kubectl apply via pipe
+kubectl delete secret minio-secrets -n ml --ignore-not-found
+kubectl get secret minio-secrets -n storage -o json \
+    | python3 -c "import sys,json; d=json.load(sys.stdin); d['metadata']={k:v for k,v in d['metadata'].items() if k in ('name','labels')}; d['metadata']['namespace']='ml'; print(json.dumps(d))" \
+    | kubectl create -f -
+kubectl delete configmap minio-config -n ml --ignore-not-found
+kubectl get configmap minio-config -n storage -o json \
+    | python3 -c "import sys,json; d=json.load(sys.stdin); d['metadata']={k:v for k,v in d['metadata'].items() if k in ('name','labels')}; d['metadata']['namespace']='ml'; print(json.dumps(d))" \
+    | kubectl create -f -
 
 echo "[Phase 51] ✓ MinIO deployed with model-artifacts and drift-logs buckets"
 
