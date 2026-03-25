@@ -65,6 +65,9 @@ class Settings(BaseSettings):
     KSERVE_ENABLED: bool = False
     KSERVE_CANARY_URL: Optional[str] = None
 
+    # Group 13 — MinIO / Model Metadata (Phase 60+)
+    MINIO_SERVING_PREFIX: str = "serving/active"
+
     # Group 6 — ML / Model Serving (Phase 23+)
     MODEL_REGISTRY_DIR: str = "model_registry"
     DRIFT_LOG_DIR: str = "drift_logs"
