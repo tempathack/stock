@@ -26,7 +26,7 @@
 | 15 | Evaluation Framework | All metrics, model ranking, winner selection | EVAL-01–10 | 3 |
 | 16 | SHAP Explainability | SHAP values for top 5 models, store summary | EVAL-11–12 | 1 |
 | 17 | 2/2 | Complete   | 2026-03-25 | 2 |
-| 18 | Kubeflow Pipeline — Training & Eval | train_models, cross_validation, evaluation, comparison | KF-05–08 | 2 |
+| 18 | 2/2 | Complete   | 2026-03-25 | 2 |
 | 19 | Kubeflow Pipeline — Selection & Deploy | explainability, winner_selection, persistence, deployment | KF-09–12 | 2 |
 | 20 | Kubeflow Pipeline — Definition & Trigger | Full pipeline definition, versioning, triggers | KF-13–15 | 2 |
 | 21 | Drift Detection System | All 3 drift types, daily check, drift_logs | DRIFT-01–05 | 2 |
@@ -393,7 +393,7 @@ Plans:
 3. evaluation component outputs all 6 metrics per model
 4. model_comparison component ranks models and outputs winner candidate
 
-**Plans:** 2/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 18-01-PLAN.md — Data preparation (prepare_training_data) + training orchestration (train_all_models_pipeline) + tests

@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 63-01-PLAN.md
-last_updated: "2026-03-25T15:40:15.148Z"
+stopped_at: Completed 18-02-PLAN.md
+last_updated: "2026-03-25T15:57:02.755Z"
 progress:
   total_phases: 63
-  completed_phases: 20
+  completed_phases: 21
   total_plans: 144
-  completed_plans: 50
+  completed_plans: 52
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 62 — playwright-e2e-infra-grafana-prometheus-minio-kubeflow-k8s-dashboard
+**Current focus:** Phase 18 — Kubeflow Pipeline — Training & Eval Components
 
 ## Current Status
 
@@ -255,10 +255,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 63]: beforeAll blocks placed inside each test.describe block so test.skip() scopes correctly to that suite
 - [Phase 63]: dashboard.spec.ts gets 2 beforeAll blocks (Navigation + Dashboard page) — both describe blocks navigate and need live data
 - [Phase 63]: drift.spec.ts guards both /models/comparison and /models/drift — ActiveModelCard needs comparison data, DriftTimeline needs drift events
+- [Phase 18]: prepare_training_data() uses pd.concat().sort_index() for temporal ordering across multi-ticker DataFrames
+- [Phase 18]: train_all_models_pipeline() delegates to train_all_models() then reconstructs fitted Pipelines via best_params
+- [Phase 18]: generate_cv_report() is purely additive — existing evaluate_models() and generate_comparison_report() untouched
 
 ## Last Session
 
-- **Stopped at:** Completed 63-01-PLAN.md
+- **Stopped at:** Completed 18-02-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes

@@ -135,8 +135,8 @@
 - [x] **KF-02**: data_loading component (container) — loads from PostgreSQL
 - [x] **KF-03**: feature_engineering component (container)
 - [x] **KF-04**: label_generation component (container)
-- [ ] **KF-05**: train_models component (container) — parallel model training
-- [ ] **KF-06**: cross_validation component (container)
+- [x] **KF-05**: train_models component (container) — parallel model training
+- [x] **KF-06**: cross_validation component (container)
 - [ ] **KF-07**: evaluation component (container)
 - [ ] **KF-08**: model_comparison component (container)
 - [ ] **KF-09**: explainability component (container) — SHAP
