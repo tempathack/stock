@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, request } from "@playwright/test";
 import {
   healthFixture,
   marketOverviewFixture,
@@ -48,6 +48,30 @@ async function stubAllRoutes(page: import("@playwright/test").Page) {
 test.describe.configure({ mode: "serial" });
 
 test.describe("Navigation", () => {
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    try {
+      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
+      if (!healthRes.ok()) {
+        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+        return;
+      }
+      const overviewRes = await ctx.get("http://localhost:8000/market/overview", { timeout: 5_000 });
+      if (!overviewRes.ok()) {
+        test.skip(true, "GET /market/overview failed — backend unhealthy");
+        return;
+      }
+      const data = await overviewRes.json();
+      if (!data?.stocks?.length) {
+        test.skip(true, "GET /market/overview returned 0 stocks — run seed data script first: stock-prediction-platform/scripts/seed-data.sh");
+      }
+    } catch {
+      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+    } finally {
+      await ctx.dispose();
+    }
+  });
+
   test("sidebar link to Forecasts navigates to /forecasts", async ({ page }) => {
     await stubAllRoutes(page);
     await page.goto("/dashboard");
@@ -83,6 +107,29 @@ test.describe("Navigation", () => {
 });
 
 test.describe("Dashboard page", () => {
+  test.beforeAll(async () => {
+    const ctx = await request.newContext();
+    try {
+      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
+      if (!healthRes.ok()) {
+        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+        return;
+      }
+      const overviewRes = await ctx.get("http://localhost:8000/market/overview", { timeout: 5_000 });
+      if (!overviewRes.ok()) {
+        test.skip(true, "GET /market/overview failed — backend unhealthy");
+        return;
+      }
+      const data = await overviewRes.json();
+      if (!data?.stocks?.length) {
+        test.skip(true, "GET /market/overview returned 0 stocks — run seed data script first: stock-prediction-platform/scripts/seed-data.sh");
+      }
+    } catch {
+      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
+    } finally {
+      await ctx.dispose();
+    }
+  });
 
   test.beforeEach(async ({ page }) => {
     // Suppress WebSocket connection errors (expected: dev server has no WS endpoint)
