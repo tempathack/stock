@@ -154,8 +154,8 @@
 - [x] **DRIFT-03**: Concept drift detector (recent vs. historical model performance)
 - [x] **DRIFT-04**: Daily drift check job (triggered after ingestion)
 - [x] **DRIFT-05**: Drift events logged to drift_logs table with type, severity, details
-- [ ] **DRIFT-06**: Auto-trigger Kubeflow retraining pipeline on drift detection
-- [ ] **DRIFT-07**: Post-retrain: new winner selected, deployed, predictions regenerated
+- [x] **DRIFT-06**: Auto-trigger Kubeflow retraining pipeline on drift detection
+- [x] **DRIFT-07**: Post-retrain: new winner selected, deployed, predictions regenerated
 
 ### React Frontend — Shared
 

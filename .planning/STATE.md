@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 21-02-PLAN.md
-last_updated: "2026-03-25T16:23:13.947Z"
+stopped_at: Completed 22-01-PLAN.md
+last_updated: "2026-03-25T16:25:46.483Z"
 progress:
   total_phases: 63
-  completed_phases: 24
+  completed_phases: 25
   total_plans: 144
-  completed_plans: 58
+  completed_plans: 59
 ---
 
 # STATE.md — Project Memory
@@ -263,10 +263,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 20]: compile_kfp_pipeline() writes KFP v2.1.0 IR YAML directly — avoids @dsl.component inspect.getsource failure for inline closures
 - [Phase 21]: DataDriftDetector uses KS-test + hand-rolled PSI; severity based on fraction of features drifted
 - [Phase 21]: DriftLogger file backend always available; DB gated behind psycopg2 for importability
+- [Phase 22]: evaluate_and_trigger() extended with regenerate_predictions parameter for post-retrain prediction refresh
+- [Phase 22]: predictor.py generates predictions from active serving directory (pipeline.pkl + features.json + metadata.json)
+- [Phase 22]: save_predictions() writes latest.json to registry predictions/ folder
+- [Phase 22]: 7 new predictor tests + 9 trigger tests updated, 43 drift-related tests pass in ~10s
 
 ## Last Session
 
-- **Stopped at:** Completed 21-02-PLAN.md
+- **Stopped at:** Completed 22-01-PLAN.md
 - **Timestamp:** 2026-03-22T13:30:00Z
 
 ## Notes
