@@ -66,6 +66,7 @@ class TestPredictTicker:
         assert set(data.keys()) == {
             "ticker", "prediction_date", "predicted_date",
             "predicted_price", "model_name", "confidence", "horizon_days",
+            "assigned_model_id",
         }
 
 

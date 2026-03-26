@@ -13,7 +13,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import SsidChartIcon from "@mui/icons-material/SsidChart";
-import { useHealthCheck } from "@/api";
+import { useK8sHealth } from "@/api";
 
 const DRAWER_WIDTH = 220;
 
@@ -27,8 +27,7 @@ const navItems = [
 
 export default function Sidebar() {
   const location = useLocation();
-  const { data: health } = useHealthCheck();
-  const apiOnline = health?.status === "healthy";
+  const { data: k8s } = useK8sHealth();
 
   return (
     <Drawer
@@ -89,19 +88,37 @@ export default function Sidebar() {
       </List>
 
       <Divider sx={{ borderColor: 'rgba(0,188,212,0.12)' }} />
-      <Box sx={{ px: 2, py: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Box
-          sx={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            bgcolor: apiOnline ? 'success.main' : 'error.main',
-          }}
-        />
-        <Typography variant="caption" color="text.secondary">
-          API {apiOnline ? 'Connected' : 'Offline'}
-        </Typography>
-      </Box>
+
+      {/* K8s health mini-panel — only shown when kubectl is reachable */}
+      {k8s?.available && k8s.running_pods != null && (
+        <Box sx={{ px: 2, py: 1, borderBottom: '1px solid rgba(0,188,212,0.12)' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+            <Box
+              sx={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                bgcolor: 'success.main',
+                flexShrink: 0,
+              }}
+            />
+            <Typography variant="caption" color="text.secondary" noWrap>
+              {k8s.running_pods} pods running
+            </Typography>
+          </Box>
+          {k8s.namespaces && k8s.namespaces.length > 0 && (
+            <Typography
+              variant="caption"
+              color="text.disabled"
+              sx={{ fontSize: '0.6rem', display: 'block', mt: 0.25 }}
+              noWrap
+            >
+              {k8s.namespaces.slice(0, 4).join(', ')}
+              {k8s.namespaces.length > 4 ? '…' : ''}
+            </Typography>
+          )}
+        </Box>
+      )}
     </Drawer>
   );
 }

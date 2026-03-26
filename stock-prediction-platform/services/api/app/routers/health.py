@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import subprocess
 from typing import Any
 
 from fastapi import APIRouter
@@ -54,6 +56,14 @@ class DeepHealthResponse(BaseModel):
     components: dict[str, ComponentCheck]
     db_pool: PoolStatus | None = None
     redis_status: str | None = None
+
+
+class K8sHealthResponse(BaseModel):
+    """Response for Kubernetes cluster health (optional, graceful fallback)."""
+
+    available: bool
+    running_pods: int | None = None
+    namespaces: list[str] = []
 
 
 router = APIRouter()
@@ -118,3 +128,39 @@ async def health_deep() -> DeepHealthResponse:
         db_pool=PoolStatus(**pool) if pool else None,
         redis_status=redis_status,
     )
+
+
+@router.get("/health/k8s", response_model=K8sHealthResponse)
+async def health_k8s() -> K8sHealthResponse:
+    """Return Kubernetes cluster health by querying kubectl.
+
+    Returns ``available: false`` gracefully when kubectl is not installed or
+    the API server is unreachable — this is an optional informational endpoint.
+    """
+    try:
+        result = subprocess.run(
+            [
+                "kubectl",
+                "get",
+                "pods",
+                "-A",
+                "--field-selector=status.phase=Running",
+                "-o",
+                "json",
+            ],
+            capture_output=True,
+            timeout=5,
+            text=True,
+        )
+        if result.returncode != 0:
+            return K8sHealthResponse(available=False)
+        data = json.loads(result.stdout)
+        pods = data.get("items", [])
+        namespaces = sorted({p["metadata"]["namespace"] for p in pods})
+        return K8sHealthResponse(
+            available=True,
+            running_pods=len(pods),
+            namespaces=namespaces,
+        )
+    except Exception:
+        return K8sHealthResponse(available=False)

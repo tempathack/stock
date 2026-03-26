@@ -4,6 +4,20 @@ export interface HealthResponse {
   service: string;
   version: string;
   status: string;
+  redis_status?: string | null;
+  db_pool?: {
+    pool_size: number;
+    checked_in: number;
+    checked_out: number;
+    overflow: number;
+    invalid: string;
+  } | null;
+}
+
+export interface K8sHealthResponse {
+  available: boolean;
+  running_pods?: number | null;
+  namespaces?: string[];
 }
 
 export interface PredictionResponse {

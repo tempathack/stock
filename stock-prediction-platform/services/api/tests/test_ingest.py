@@ -37,7 +37,7 @@ def _fake_records(n: int = 3, mode: str = "intraday") -> list[dict]:
 @patch("app.routers.ingest.OHLCVProducer")
 @patch("app.routers.ingest.YahooFinanceService")
 def test_ingest_intraday_success(mock_yf_cls, mock_prod_cls):
-    """POST /ingest/intraday returns 200 with correct response shape."""
+    """POST /ingest/intraday returns 200 accepted immediately (background task)."""
     mock_svc = MagicMock()
     mock_svc.tickers = ["AAPL", "MSFT"]
     mock_svc.fetch_intraday.return_value = _fake_records(3, "intraday")
@@ -50,11 +50,10 @@ def test_ingest_intraday_success(mock_yf_cls, mock_prod_cls):
     response = client.post("/ingest/intraday")
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "completed"
+    # Background-task pattern: immediate "accepted" response with 0 counts
+    assert data["status"] == "accepted"
     assert data["mode"] == "intraday"
     assert data["tickers_requested"] == 2
-    assert data["records_fetched"] == 3
-    assert data["records_produced"] == 3
 
 
 @patch("app.routers.ingest.OHLCVProducer")
@@ -101,7 +100,7 @@ def test_ingest_intraday_zero_records(mock_yf_cls, mock_prod_cls):
 @patch("app.routers.ingest.OHLCVProducer")
 @patch("app.routers.ingest.YahooFinanceService")
 def test_ingest_historical_success(mock_yf_cls, mock_prod_cls):
-    """POST /ingest/historical returns 200 with correct response shape."""
+    """POST /ingest/historical returns 200 accepted immediately (background task)."""
     mock_svc = MagicMock()
     mock_svc.tickers = ["AAPL"]
     mock_svc.fetch_historical.return_value = _fake_records(5, "historical")
@@ -114,10 +113,8 @@ def test_ingest_historical_success(mock_yf_cls, mock_prod_cls):
     response = client.post("/ingest/historical")
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "completed"
+    assert data["status"] == "accepted"
     assert data["mode"] == "historical"
-    assert data["records_fetched"] == 5
-    assert data["records_produced"] == 5
 
 
 @patch("app.routers.ingest.OHLCVProducer")
@@ -143,29 +140,30 @@ def test_ingest_historical_with_custom_tickers(mock_yf_cls, mock_prod_cls):
 
 
 @patch("app.routers.ingest.YahooFinanceService")
-def test_ingest_intraday_yf_failure_returns_502(mock_yf_cls):
-    """Yahoo Finance exception returns HTTP 502 with detail."""
+def test_ingest_intraday_yf_failure_accepted(mock_yf_cls):
+    """Yahoo Finance fetch failure is handled in background task — endpoint still returns 200."""
     mock_svc = MagicMock()
     mock_svc.tickers = ["AAPL"]
     mock_svc.fetch_intraday.side_effect = ConnectionError("Yahoo Finance unreachable")
     mock_yf_cls.return_value = mock_svc
 
     response = client.post("/ingest/intraday")
-    assert response.status_code == 502
-    assert "Yahoo Finance fetch failed" in response.json()["detail"]
+    # Background task swallows the error; endpoint always returns "accepted"
+    assert response.status_code == 200
+    assert response.json()["status"] == "accepted"
 
 
 @patch("app.routers.ingest.YahooFinanceService")
-def test_ingest_historical_yf_failure_returns_502(mock_yf_cls):
-    """Yahoo Finance exception on historical also returns HTTP 502."""
+def test_ingest_historical_yf_failure_accepted(mock_yf_cls):
+    """Yahoo Finance fetch failure in historical is handled in background task."""
     mock_svc = MagicMock()
     mock_svc.tickers = ["AAPL"]
     mock_svc.fetch_historical.side_effect = RuntimeError("API down")
     mock_yf_cls.return_value = mock_svc
 
     response = client.post("/ingest/historical")
-    assert response.status_code == 502
-    assert "Yahoo Finance fetch failed" in response.json()["detail"]
+    assert response.status_code == 200
+    assert response.json()["status"] == "accepted"
 
 
 # ---------------------------------------------------------------------------
@@ -175,8 +173,8 @@ def test_ingest_historical_yf_failure_returns_502(mock_yf_cls):
 
 @patch("app.routers.ingest.OHLCVProducer")
 @patch("app.routers.ingest.YahooFinanceService")
-def test_ingest_intraday_kafka_failure_returns_502(mock_yf_cls, mock_prod_cls):
-    """Kafka produce failure returns HTTP 502 with detail."""
+def test_ingest_intraday_kafka_failure_accepted(mock_yf_cls, mock_prod_cls):
+    """Kafka produce failure is handled in background task — endpoint still returns 200."""
     mock_svc = MagicMock()
     mock_svc.tickers = ["AAPL"]
     mock_svc.fetch_intraday.return_value = _fake_records(1, "intraday")
@@ -187,14 +185,14 @@ def test_ingest_intraday_kafka_failure_returns_502(mock_yf_cls, mock_prod_cls):
     mock_prod_cls.return_value = mock_prod
 
     response = client.post("/ingest/intraday")
-    assert response.status_code == 502
-    assert "Kafka produce failed" in response.json()["detail"]
+    assert response.status_code == 200
+    assert response.json()["status"] == "accepted"
 
 
 @patch("app.routers.ingest.OHLCVProducer")
 @patch("app.routers.ingest.YahooFinanceService")
-def test_ingest_historical_kafka_failure_returns_502(mock_yf_cls, mock_prod_cls):
-    """Kafka produce failure on historical returns HTTP 502."""
+def test_ingest_historical_kafka_failure_accepted(mock_yf_cls, mock_prod_cls):
+    """Kafka produce failure in historical is handled in background task."""
     mock_svc = MagicMock()
     mock_svc.tickers = ["AAPL"]
     mock_svc.fetch_historical.return_value = _fake_records(1, "historical")
@@ -205,8 +203,8 @@ def test_ingest_historical_kafka_failure_returns_502(mock_yf_cls, mock_prod_cls)
     mock_prod_cls.return_value = mock_prod
 
     response = client.post("/ingest/historical")
-    assert response.status_code == 502
-    assert "Kafka produce failed" in response.json()["detail"]
+    assert response.status_code == 200
+    assert response.json()["status"] == "accepted"
 
 
 # ---------------------------------------------------------------------------

@@ -125,6 +125,31 @@ test.describe("Dashboard page", () => {
     await expect(page.getByRole("heading", { name: /Backtest/i })).toBeVisible({ timeout: 10_000 });
   });
 
+  test("AppBar shows connection status chips", async ({ page }) => {
+    test.setTimeout(20_000);
+    await page.goto("/dashboard");
+    await expect(page.getByRole("heading", { name: "Market Dashboard" })).toBeVisible();
+
+    // AppBar has API, Kafka, and DB status chips
+    await expect(page.getByText("API").first()).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("Kafka")).toBeVisible();
+    await expect(page.getByText("DB")).toBeVisible();
+  });
+
+  test("price ticker strip is visible", async ({ page }) => {
+    test.setTimeout(20_000);
+    await page.goto("/dashboard");
+    await expect(page.getByRole("heading", { name: "Market Dashboard" })).toBeVisible();
+
+    // Ticker strip appears after market data loads
+    const strip = page.getByTestId("price-ticker-strip");
+    await expect(strip).toBeVisible({ timeout: 15_000 });
+
+    // At least one ticker symbol should be in the strip
+    const stripText = await strip.textContent();
+    expect(stripText).toMatch(/[A-Z]{2,5}/);
+  });
+
   test("close button hides detail section", async ({ page }) => {
     test.setTimeout(20_000);
     await page.goto("/dashboard");

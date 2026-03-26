@@ -13,6 +13,7 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
+import type { MarketOverviewEntry } from "@/api";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import { PageHeader } from "@/components/layout";
@@ -37,6 +38,66 @@ const WS_STATUS_COLOR: Record<WebSocketStatus, "success" | "warning" | "error"> 
   disconnected: "error",
   error: "error",
 };
+
+function PriceTickerStrip({ stocks }: { stocks: MarketOverviewEntry[] }) {
+  const top10 = useMemo(
+    () =>
+      [...stocks]
+        .filter((s) => s.market_cap != null && s.last_close != null)
+        .sort((a, b) => (b.market_cap ?? 0) - (a.market_cap ?? 0))
+        .slice(0, 10),
+    [stocks],
+  );
+
+  if (top10.length === 0) return null;
+
+  const items = top10.map((s) => {
+    const chg = s.daily_change_pct ?? 0;
+    const color = chg >= 0 ? "#4caf50" : "#f44336";
+    const sign = chg >= 0 ? "+" : "";
+    return (
+      <Box
+        key={s.ticker}
+        component="span"
+        sx={{ mr: 4, display: "inline-block", whiteSpace: "nowrap" }}
+      >
+        <Box component="strong" sx={{ color: "primary.main", mr: 0.5 }}>
+          {s.ticker}
+        </Box>
+        <Box component="span" sx={{ color: "text.primary", mr: 0.5 }}>
+          ${s.last_close!.toFixed(2)}
+        </Box>
+        <Box component="span" sx={{ color }}>
+          {sign}{chg.toFixed(2)}%
+        </Box>
+      </Box>
+    );
+  });
+
+  return (
+    <Box
+      data-testid="price-ticker-strip"
+      sx={{
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        borderBottom: "1px solid rgba(0,188,212,0.2)",
+        py: 0.5,
+        mb: 2,
+        bgcolor: "background.paper",
+        borderRadius: 1,
+      }}
+    >
+      <Box
+        sx={{
+          display: "inline-block",
+          animation: "scroll-left 30s linear infinite",
+        }}
+      >
+        {items}
+      </Box>
+    </Box>
+  );
+}
 
 export default function Dashboard() {
   const marketQuery = useMarketOverview();
@@ -100,6 +161,9 @@ export default function Dashboard() {
           </Box>
         }
       />
+
+      {/* ── Price Ticker Strip ── */}
+      <PriceTickerStrip stocks={stocks} />
 
       {/* ── Treemap ── */}
       <Paper sx={{ p: 2, mb: 3 }}>

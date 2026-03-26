@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "./client";
 import type {
   HealthResponse,
+  K8sHealthResponse,
   PredictionResponse,
   BulkPredictionResponse,
   ModelComparisonResponse,
@@ -18,6 +19,7 @@ import type {
 
 export const queryKeys = {
   health: ["health"] as const,
+  healthK8s: ["health", "k8s"] as const,
   prediction: (ticker: string, horizon?: number) =>
     ["prediction", ticker, horizon ?? "default"] as const,
   bulkPredictions: (horizon?: number) =>
@@ -40,6 +42,18 @@ export function useHealthCheck() {
     queryKey: queryKeys.health,
     queryFn: async () => {
       const { data } = await apiClient.get<HealthResponse>("/health");
+      return data;
+    },
+    retry: false,
+    refetchInterval: 30_000,
+  });
+}
+
+export function useK8sHealth() {
+  return useQuery({
+    queryKey: queryKeys.healthK8s,
+    queryFn: async () => {
+      const { data } = await apiClient.get<K8sHealthResponse>("/health/k8s");
       return data;
     },
     retry: false,

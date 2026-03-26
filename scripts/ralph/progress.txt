@@ -266,3 +266,43 @@ Started: 2026-03-26
   - `ToggleButtonGroup onChange` in v7: `(_, v: T | null)` — always check for null before calling onChange
   - `TextField slotProps.input.startAdornment` is the v7 API (not `InputProps.startAdornment`)
 ---
+
+## 2026-03-27 - UI-003: Replace Drift and Backtest pages with MUI — add real-time status indicators
+- Installed `@mui/lab` v7.0.1-beta.23; Timeline + LoadingButton confirmed available
+- Rewrote `components/drift/ActiveModelCard.tsx`: Card with `borderLeft` color strip (success=active, warning=stale), CircularProgress chip for retraining state, Tooltip on metric pills
+- Rewrote `components/drift/DriftTimeline.tsx`: @mui/lab Timeline with TimelineDot severity colors, Chip for type/severity/drifted badges
+- Rewrote `components/drift/RetrainStatusPanel.tsx`: Card, Grid two-column with Divider, CircularProgress retraining chip
+- Rewrote `components/drift/FeatureDistributionChart.tsx`: MUI Accordion (collapsed by default), Grid for feature cards
+- Updated `components/drift/RollingPerformanceChart.tsx`: removed Tailwind outer wrapper, uses Paper elevation=0
+- Updated `pages/Drift.tsx`: Container, Typography h4, Alert for high-severity events, LinearProgress
+- Rewrote `components/backtest/BacktestMetricsSummary.tsx`: MUI Card tiles with borderTop accent color, Tooltip on each
+- Rewrote `pages/Backtest.tsx`: Paper control panel, Autocomplete for ticker, TextField type=date with slotProps shrink, LoadingButton, ButtonGroup export
+- Updated `components/backtest/BacktestChart.tsx`: removed Tailwind wrapper div, uses Typography for title
+- **Global polish**: Removed ALL remaining Tailwind classNames from 15 additional components (forecasts/, dashboard/, charts/, ui/)
+- `grep -r 'className="[a-z]' src/pages/ src/components/` returns 0 results — full MUI migration complete
+- **Learnings for future iterations:**
+  - @mui/lab v7 beta has Timeline (Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot, TimelineOppositeContent) and LoadingButton — use individual imports from `@mui/lab/Timeline` etc.
+  - `Select` value in MUI v7: use string values for MenuItem and `as string` cast in onChange to avoid type comparison errors with mixed number/string types
+  - `slotProps={{ inputLabel: { shrink: true } }}` is the MUI v7 API for date TextField label shrink (not InputLabelProps)
+  - `TimelineDot color` accepts: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'grey' | 'inherit'
+  - For `Accordion` in MUI v7, use `defaultExpanded={false}` (default) — no need to specify explicitly
+---
+
+## 2026-03-27 - UI-004: Add real-time connection status bar, live price ticker, and K8s health panel
+- Added `/health/k8s` endpoint to `services/api/app/routers/health.py`: runs `kubectl get pods -A` via subprocess, returns `{available, running_pods, namespaces}`; graceful fallback when kubectl unavailable
+- Added `K8sHealthResponse` to `src/api/types.ts`; extended `HealthResponse` with optional `redis_status` and `db_pool` fields
+- Added `useK8sHealth` hook to `src/api/queries.ts`; changed `useHealthCheck` `refetchInterval` from 60s → 30s
+- Rewrote `Layout.tsx`: added `ConnectionStatusBar` (MUI AppBar, static position) with API/Kafka/DB `Chip` status indicators and live clock timestamp; layout restructured as flex column (AppBar + scrollable main)
+- Updated `Sidebar.tsx`: added K8s health mini-panel in footer — shows pod count + first 4 namespaces (only visible when kubectl reachable)
+- Updated `Dashboard.tsx`: added `PriceTickerStrip` component — takes top 10 stocks by market_cap, renders CSS-animated horizontal scroll with ticker symbol, price, and change%; `data-testid="price-ticker-strip"`
+- Added `@keyframes scroll-left` to `src/styles/globals.css`
+- Added 2 Playwright assertions to `e2e/dashboard.spec.ts`: AppBar chips visible (API/Kafka/DB), ticker strip visible with ≥1 ticker
+- Fixed pre-existing test failures in `test_ingest.py` (background-task pattern → "accepted" status, 0 records) and `test_predict.py` (added `assigned_model_id` to expected response keys)
+- 80 Playwright tests listed (up from 78); TypeScript 0 errors; build succeeds; 151 backend tests pass
+- **Learnings for future iterations:**
+  - `ConnectionStatusBar` in Layout uses both `useHealthCheck` and `useModelDrift` — react-query deduplicates these fetches across components
+  - Kafka status inferred from drift data freshness (`latest_event.timestamp` age > 1h → warning); not a direct Kafka health check
+  - `AppBar position="static"` in a flex column avoids fixed-position overlap issues; no need for `mt: 8` padding on main content
+  - `subprocess.run` in FastAPI endpoint is acceptable for optional info endpoints (kubectl) — always wrap in try/except with `timeout=5`
+  - Backend background-task pattern changes response semantics: tests should check "accepted" + 0 counts; error assertions change from 502 to 200
+---
