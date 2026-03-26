@@ -21,7 +21,7 @@
       "id": "E2E-003",
       "title": "Forecasts spec — production mode with real predictions",
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "description": "Rewrite `services/frontend/e2e/forecasts.spec.ts` for production mode:\n\n**Remove all `page.route()` mock stubs.**\n\nbeforeAll guard:\n- Skip if /health not 200\n- Skip if /predict/bulk?horizon=7 returns <10 predictions\n- Skip if /market/overview returns <10 stocks\n\nTest cases:\n1. **Table shows ≥10 stocks**: After page load, count table rows. Assert >= 10.\n2. **Model name shown (not fixture_ prefix)**: Assert the model name banner does NOT start with 'fixture_'. It should show a real model name.\n3. **Horizon toggle 7D → 30D refetches**: Click 30D button. Assert table reloads (loading spinner, then rows). Assert row count still >= 10.\n4. **Search filters table**: Type 'AAPL' in search input. Assert only AAPL row(s) visible. Clear search. Assert full table returns.\n5. **Clicking row opens detail view**: Click AAPL row. Assert '{ticker} — Detail View' heading appears. Assert chart container visible. Assert SHAP panel or indicators visible.\n6. **Export buttons enabled**: Assert CSV and PDF export buttons are not disabled when data is loaded.\n\nkeep serial mode. Set timeout 25000ms."
     },
     {

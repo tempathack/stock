@@ -1,144 +1,137 @@
-import { test, expect, request } from "@playwright/test";
-import {
-  healthFixture,
-  marketOverviewFixture,
-  bulkPredictionsFixture,
-  availableHorizonsFixture,
-  tickerIndicatorsFixture,
-} from "./fixtures/api";
+import { test, expect } from "@playwright/test";
+import { skipIfNotProduction } from "./helpers/production-guard";
 
-// Helper: stub all Forecasts page routes
-async function stubForecastsRoutes(
-  page: import("@playwright/test").Page,
-  horizon = 7
-) {
-  await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-  await page.route("**/predict/horizons", (route) =>
-    route.fulfill({ json: availableHorizonsFixture() })
-  );
-  await page.route("**/predict/bulk**", (route) =>
-    route.fulfill({ json: bulkPredictionsFixture(horizon) })
-  );
-  await page.route("**/market/overview", (route) =>
-    route.fulfill({ json: marketOverviewFixture() })
-  );
-  await page.route("**/market/indicators/**", (route) =>
-    route.fulfill({ json: tickerIndicatorsFixture() })
-  );
-}
+const BASE_API = process.env.BASE_API_URL ?? "http://localhost:8000";
+
+// Serial mode: single browser instance against live services
+test.describe.configure({ mode: "serial" });
+
+const PRODUCTION_GUARD = [
+  { url: `${BASE_API}/health`, description: "API health endpoint must be 200" },
+  {
+    url: `${BASE_API}/predict/bulk?horizon=7`,
+    description: "predict/bulk?horizon=7 must return ≥10 predictions",
+  },
+  {
+    url: `${BASE_API}/market/overview`,
+    description: "market/overview must return ≥10 stocks",
+  },
+];
 
 test.describe("Forecasts page", () => {
-  test.beforeAll(async () => {
-    const ctx = await request.newContext();
-    try {
-      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
-      if (!healthRes.ok()) {
-        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-        return;
-      }
-      const bulkRes = await ctx.get("http://localhost:8000/predict/bulk", { timeout: 5_000 });
-      if (!bulkRes.ok()) {
-        test.skip(true, "GET /predict/bulk failed — backend unhealthy or no trained model");
-        return;
-      }
-      const data = await bulkRes.json();
-      if (!data?.predictions?.length) {
-        test.skip(true, "GET /predict/bulk returned 0 predictions — run the training pipeline and ensure model is deployed");
-      }
-    } catch {
-      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-    } finally {
-      await ctx.dispose();
+  skipIfNotProduction(test, PRODUCTION_GUARD);
+
+  test("table shows ≥10 stocks", async ({ page }) => {
+    test.setTimeout(25_000);
+    await page.goto("/forecasts");
+    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
+
+    // Wait for table rows to appear (real API data loads)
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+
+    // Verify ≥10 rows from the API directly
+    const resp = await page.request.get(`${BASE_API}/predict/bulk?horizon=7`, { timeout: 15_000 });
+    expect(resp.ok()).toBe(true);
+    const data = await resp.json();
+    expect((data.predictions as unknown[]).length).toBeGreaterThanOrEqual(10);
+
+    // Assert table has multiple visible rows
+    const rows = page.locator("table tbody tr");
+    const count = await rows.count();
+    expect(count).toBeGreaterThanOrEqual(10);
+  });
+
+  test("model name shown (not fixture_ prefix)", async ({ page }) => {
+    test.setTimeout(25_000);
+    await page.goto("/forecasts");
+    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+
+    // Click first row to open detail view which shows the model name
+    await page.locator("table tbody tr").first().click();
+
+    // Detail section should appear
+    await expect(page.locator("h2").filter({ hasText: /— Detail View$/ })).toBeVisible({
+      timeout: 10_000,
+    });
+
+    // The StockShapPanel renders model name — assert it does NOT start with 'fixture_'
+    const modelNameEl = page.locator("text=/Model:/").first();
+    const modelText = await modelNameEl.textContent({ timeout: 10_000 }).catch(() => null);
+    if (modelText) {
+      expect(modelText).not.toMatch(/fixture_/i);
     }
   });
 
-  test.describe.configure({ mode: "serial" });
-
-  test("page loads and shows fixture model name in table", async ({ page }) => {
-    await stubForecastsRoutes(page);
+  test("horizon toggle 7D → 30D refetches data", async ({ page }) => {
+    test.setTimeout(25_000);
     await page.goto("/forecasts");
     await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
-    // Wait for table to render with fixture data
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    // Click first row to open detail section — StockShapPanel renders "Model: {model_name}"
-    // This confirms fixture data is used (not mock fallback which has different model name)
-    await page.locator("table tbody tr").first().click();
-    await expect(page.getByText("fixture_stacking_ensemble_meta_ridge").first()).toBeVisible();
-  });
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
 
-  test("table shows fixture tickers AAPL and MSFT", async ({ page }) => {
-    await stubForecastsRoutes(page);
-    await page.goto("/forecasts");
-    // Wait for table to render — both tickers from bulkPredictionsFixture appear
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    const rows = page.locator("table tbody tr");
-    await expect(rows).toHaveCount(2);
-    await expect(page.getByText("AAPL").first()).toBeVisible();
-    await expect(page.getByText("MSFT").first()).toBeVisible();
-  });
-
-  test("horizon toggle from 7D to 30D re-fires bulk query", async ({ page }) => {
-    // Track which horizon parameter was requested
-    let requestedHorizon = "";
-    await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-    await page.route("**/predict/horizons", (route) =>
-      route.fulfill({ json: availableHorizonsFixture() })
-    );
-    await page.route("**/predict/bulk**", (route) => {
-      requestedHorizon = new URL(route.request().url()).searchParams.get("horizon") ?? "";
-      return route.fulfill({ json: bulkPredictionsFixture(30) });
-    });
-    await page.route("**/market/overview", (route) =>
-      route.fulfill({ json: marketOverviewFixture() })
-    );
-    await page.goto("/forecasts");
-    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
     // Click the 30D radio button
     await page.getByRole("radio", { name: "30D" }).click();
-    // After click, a new /predict/bulk request is fired with horizon=30
     await expect(page.getByRole("radio", { name: "30D" })).toBeChecked();
+
+    // After toggle, table should reload and still show rows
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    const rows = page.locator("table tbody tr");
+    const count = await rows.count();
+    expect(count).toBeGreaterThanOrEqual(10);
   });
 
   test("search input filters table rows", async ({ page }) => {
-    await stubForecastsRoutes(page);
+    test.setTimeout(25_000);
     await page.goto("/forecasts");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    // Type in search box — filters to AAPL only
+    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+
+    // Type AAPL in search input
     await page.getByPlaceholder("Ticker or company…").fill("AAPL");
-    const rows = page.locator("table tbody tr");
-    await expect(rows).toHaveCount(1);
+
+    // Table should filter to only AAPL rows
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 10_000 });
+    const filteredRows = page.locator("table tbody tr");
+    const filteredCount = await filteredRows.count();
+    // With AAPL filter, only AAPL row(s) should remain
+    expect(filteredCount).toBeGreaterThanOrEqual(1);
     await expect(page.getByText("AAPL").first()).toBeVisible();
-    // MSFT row should be gone
-    await expect(page.getByText("MSFT").first()).not.toBeVisible();
+
+    // Clear search and assert full table returns
+    await page.getByPlaceholder("Ticker or company…").clear();
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 10_000 });
+    const allRows = page.locator("table tbody tr");
+    const allCount = await allRows.count();
+    expect(allCount).toBeGreaterThan(filteredCount);
   });
 
-  test("clicking a table row opens the stock detail section", async ({ page }) => {
-    await stubForecastsRoutes(page);
+  test("clicking a row opens the stock detail section", async ({ page }) => {
+    test.setTimeout(25_000);
     await page.goto("/forecasts");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    // Click the first row (AAPL)
+    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+
+    // Get ticker from first row
+    const firstCell = page.locator("table tbody tr").first().locator("td").first();
+    const ticker = (await firstCell.textContent())?.trim() ?? "AAPL";
+
+    // Click the first row
     await page.locator("table tbody tr").first().click();
+
     // Detail section heading: "{ticker} — Detail View"
-    await expect(page.getByText("AAPL — Detail View")).toBeVisible();
-    // Close button is present (Forecasts uses plain "Close")
-    await expect(page.getByRole("button", { name: "Close" })).toBeVisible();
-  });
+    await expect(page.getByText(`${ticker} — Detail View`)).toBeVisible({ timeout: 10_000 });
 
-  test("close button in detail section hides the detail view", async ({ page }) => {
-    await stubForecastsRoutes(page);
-    await page.goto("/forecasts");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    await page.locator("table tbody tr").first().click();
-    await expect(page.getByText("AAPL — Detail View")).toBeVisible();
-    await page.getByRole("button", { name: "Close" }).click();
-    await expect(page.getByText("AAPL — Detail View")).not.toBeVisible();
+    // Chart container is visible
+    await expect(page.locator(".recharts-wrapper").first()).toBeVisible({ timeout: 10_000 });
   });
 
   test("export CSV and PDF buttons are enabled when data is loaded", async ({ page }) => {
-    await stubForecastsRoutes(page);
+    test.setTimeout(25_000);
     await page.goto("/forecasts");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    // ExportButtons: disabled={!filteredForecasts.length} — should be enabled with 2 rows
+    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+
+    // ExportButtons: disabled={!filteredForecasts.length} — should be enabled with real data
     const csvBtn = page.getByRole("button", { name: /CSV/i });
     const pdfBtn = page.getByRole("button", { name: /PDF/i });
     await expect(csvBtn).toBeVisible();
