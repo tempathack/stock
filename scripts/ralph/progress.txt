@@ -90,3 +90,15 @@ Started: 2026-03-26
   - SHAP feature count: when no data-testid on items, check section textContent length as proxy for ≥3 features
   - `test.skip()` inside an if-block (e.g., skip if <2 models) works correctly in serial mode
 ---
+
+## 2026-03-26 - E2E-007: Grafana spec — verify panels contain real metric data
+- Expanded `services/frontend/e2e/infra/grafana.spec.ts` with 2 new test suites (6 new tests)
+- **"Dashboard panel data"** suite (4 tests): navigates to each of the 3 dashboards (API Health, ML Performance, Kafka & Infrastructure), waits for `.panel-container:not(.panel-container--transparent)` to render, asserts panelCount > 0, checks key panels (Request Rate/Error Rate, Predictions/Inference, Consumer Lag/Messages) for 'No data' text; uses `test.fixme()` when panels are empty (not a failure); also runs a proxied PromQL `up` query via `/api/datasources/proxy/{id}/api/v1/query` and asserts kubernetes-pods targets UP
+- **"Alert rules configured"** suite (1 test): calls `/api/ruler/grafana/api/v1/rules`, flattens all rule groups, checks grafana_alert.title contains HighDriftSeverity, HighAPIErrorRate, HighConsumerLag; uses `test.fixme()` when rules not configured yet
+- All new suites use graceful `test.fixme()` not `test.fail()` for missing data — infra not bootstrapped is expected
+- **Learnings for future iterations:**
+  - Datasource proxy URL pattern: `/api/datasources/proxy/{numericId}/api/v1/query` (not uid-based)
+  - Grafana Ruler API returns a map of namespace→ruleGroups; flatten with `Object.values(map).flat()`
+  - `rule.grafana_alert.title` is the field holding the alert name (not `rule.name`)
+  - `.panel-container--transparent` are spacer/text panels — filter them out to count real data panels
+---
