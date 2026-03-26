@@ -84,7 +84,7 @@
       "id": "E2E-012",
       "title": "Add production test npm scripts and verify CI compatibility",
       "priority": 12,
-      "passes": false,
+      "passes": true,
       "description": "Update `services/frontend/package.json` to add production test commands:\n\n```json\n\"test:e2e\": \"playwright test --config=playwright.config.ts\",\n\"test:e2e:prod\": \"playwright test --config=playwright.production.config.ts\",\n\"test:infra\": \"playwright test --config=playwright.infra.config.ts\",\n\"test:all\": \"npm run test:e2e && npm run test:infra\"\n```\n\nAlso verify that all 5 main spec files (dashboard, models, forecasts, drift, backtest) have been updated from previous stories and run the production config successfully:\n\n```bash\ncd stock-prediction-platform/services/frontend\nnpx playwright test --config=playwright.production.config.ts --list\n```\n\nThis should list all tests without errors. Fix any import errors, missing helpers, or config issues.\n\nAlso ensure the original fixture-based tests still work (for CI use without a running cluster):\n```bash\nnpx playwright test --config=playwright.config.ts --list\n```\nBoth configs should list tests without TypeScript errors.\n\nRun a quick smoke test of the fixture-based suite to confirm nothing was accidentally broken by the production mode changes:\n```bash\nnpx playwright test --config=playwright.config.ts --dry-run\n```\n\nCommit all changes from E2E-001 through E2E-012 if not already committed per-story."
     },
     {

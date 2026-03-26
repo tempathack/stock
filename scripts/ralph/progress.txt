@@ -157,3 +157,16 @@ Started: 2026-03-26
   - Use separate request.newContext() for each API-only test (no page/browser needed) — dispose in finally
   - test.fixme() with boolean true + message works correctly for conditional graceful degradation
 ---
+
+## 2026-03-26 - E2E-012: Add production test npm scripts and verify CI compatibility
+- Updated `services/frontend/package.json` scripts:
+  - `test:e2e` now explicitly uses `--config=playwright.config.ts`
+  - Added `test:e2e:prod`: `playwright test --config=playwright.production.config.ts`
+  - Updated `test:infra` to use `=` syntax: `--config=playwright.infra.config.ts`
+  - Added `test:all`: `npm run test:e2e && npm run test:infra`
+- Verified both configs list 70 tests without TypeScript/import errors
+- TypeScript compiles with 0 errors; `npm run build` succeeds
+- **Learnings for future iterations:**
+  - Both `playwright.config.ts` and `playwright.production.config.ts` include infra specs (70 tests total, 10 files each)
+  - `--dry-run` flag not available in this Playwright version; `--list` is the equivalent check
+---
