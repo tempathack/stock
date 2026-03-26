@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Box, Typography, Divider } from "@mui/material";
 
 interface PageHeaderProps {
   title: string;
@@ -7,11 +8,16 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, subtitle }: PageHeaderProps) {
   return (
-    <div className="mb-6 border-b border-border pb-4">
-      <h1 className="text-2xl font-bold text-text-primary">{title}</h1>
+    <Box sx={{ mb: 3 }}>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
+        {title}
+      </Typography>
       {subtitle && (
-        <p className="mt-1 text-sm text-text-secondary">{subtitle}</p>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          {subtitle}
+        </Typography>
       )}
-    </div>
+      <Divider sx={{ mt: 2 }} />
+    </Box>
   );
 }

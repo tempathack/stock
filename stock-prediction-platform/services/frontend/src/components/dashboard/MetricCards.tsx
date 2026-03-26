@@ -1,3 +1,4 @@
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import type { StockMetrics } from "@/api";
 import { formatMarketCap } from "@/utils/dashboardUtils";
 
@@ -13,7 +14,7 @@ interface CardItem {
 
 export default function MetricCards({ metrics }: MetricCardsProps) {
   const priceColor =
-    metrics.dailyChangePct >= 0 ? "text-profit" : "text-loss";
+    metrics.dailyChangePct >= 0 ? "success.main" : "error.main";
   const changeSign = metrics.dailyChangePct >= 0 ? "+" : "";
 
   const cards: CardItem[] = [
@@ -49,30 +50,43 @@ export default function MetricCards({ metrics }: MetricCardsProps) {
   ];
 
   return (
-    <div>
-      <div className="mb-3">
-        <h3 className="text-xl font-bold text-text-primary">
+    <Box>
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="h6" fontWeight={700}>
           {metrics.companyName}
-        </h3>
-        <p className="text-sm text-text-secondary">{metrics.sector}</p>
-      </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {metrics.sector}
+        </Typography>
+      </Box>
+      <Grid container spacing={2}>
         {cards.map((card) => (
-          <div
-            key={card.label}
-            className="rounded-lg border border-border bg-bg-card p-4"
-          >
-            <p className="text-xs uppercase tracking-wider text-text-secondary">
-              {card.label}
-            </p>
-            <p
-              className={`mt-1 text-lg font-semibold ${card.color ?? "text-text-primary"}`}
-            >
-              {card.value}
-            </p>
-          </div>
+          <Grid size={{ xs: 6, sm: 4, lg: 2 }} key={card.label}>
+            <Card>
+              <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ textTransform: "uppercase", letterSpacing: "0.05em" }}
+                >
+                  {card.label}
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: card.color ?? "text.primary",
+                    fontFamily: "monospace",
+                    mt: 0.5,
+                    fontSize: "1rem",
+                  }}
+                >
+                  {card.value}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 }

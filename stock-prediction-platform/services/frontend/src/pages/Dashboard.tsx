@@ -1,6 +1,22 @@
 import { useState, useMemo } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Chip,
+  Container,
+  Drawer,
+  Grid,
+  Paper,
+  Skeleton,
+  Typography,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CloseIcon from "@mui/icons-material/Close";
 import { PageHeader } from "@/components/layout";
-import { LoadingSpinner, ErrorFallback } from "@/components/ui";
+import { ErrorFallback } from "@/components/ui";
 import {
   MarketTreemap,
   MetricCards,
@@ -15,11 +31,11 @@ import { generateMockIndicatorSeries } from "@/utils/mockIndicatorData";
 import useWebSocket from "@/hooks/useWebSocket";
 import type { WebSocketStatus } from "@/api";
 
-const STATUS_COLORS: Record<WebSocketStatus, string> = {
-  connected: "bg-green-500",
-  connecting: "bg-yellow-500",
-  disconnected: "bg-red-500",
-  error: "bg-red-500",
+const WS_STATUS_COLOR: Record<WebSocketStatus, "success" | "warning" | "error"> = {
+  connected: "success",
+  connecting: "warning",
+  disconnected: "error",
+  error: "error",
 };
 
 export default function Dashboard() {
@@ -59,7 +75,6 @@ export default function Dashboard() {
     return generateMockIntradayCandles(selectedTicker, selectedStock?.last_close ?? undefined);
   }, [selectedTicker, selectedStock]);
 
-  if (marketQuery.isLoading) return <LoadingSpinner />;
   if (marketQuery.isError && !marketQuery.data) {
     return (
       <ErrorFallback
@@ -70,71 +85,100 @@ export default function Dashboard() {
   }
 
   return (
-    <>
+    <Container maxWidth="xl">
       <PageHeader
         title="Market Dashboard"
         subtitle={
-          <span className="inline-flex items-center gap-2">
+          <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 1 }}>
             Real-time S&amp;P 500 overview and stock analysis
-            <span
-              className={`inline-block h-2 w-2 rounded-full ${STATUS_COLORS[wsStatus]}`}
-              title={`WebSocket: ${wsStatus}`}
+            <Chip
+              size="small"
+              label={`WS: ${wsStatus}`}
+              color={WS_STATUS_COLOR[wsStatus]}
+              sx={{ fontSize: "0.65rem", height: 18 }}
             />
-          </span>
+          </Box>
         }
       />
 
       {/* ── Treemap ── */}
-      <MarketTreemap
-        data={treemapData}
-        selectedTicker={selectedTicker}
-        onSelectTicker={setSelectedTicker}
-      />
+      <Paper sx={{ p: 2, mb: 3 }}>
+        {marketQuery.isLoading ? (
+          <Skeleton variant="rectangular" height={400} />
+        ) : (
+          <MarketTreemap
+            data={treemapData}
+            selectedTicker={selectedTicker}
+            onSelectTicker={setSelectedTicker}
+          />
+        )}
+      </Paper>
 
-      {/* ── Metric Cards (visible when stock selected) ── */}
-      {metrics && (
-        <div className="mt-6">
-          <MetricCards metrics={metrics} />
-        </div>
-      )}
+      {/* ── Stock Detail Drawer ── */}
+      <Drawer
+        anchor="right"
+        open={!!selectedTicker}
+        onClose={() => setSelectedTicker(null)}
+        PaperProps={{ sx: { width: { xs: "100%", sm: 480 }, p: 3, bgcolor: "background.default" } }}
+      >
+        {selectedTicker && (
+          <Box sx={{ height: "100%", overflow: "auto" }}>
+            {/* Header */}
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+              <Typography variant="h6" fontWeight={700}>
+                {selectedTicker} — Detail View
+              </Typography>
+              <Button
+                size="small"
+                startIcon={<CloseIcon />}
+                onClick={() => setSelectedTicker(null)}
+                variant="outlined"
+              >
+                Close
+              </Button>
+            </Box>
 
-      {/* ── Stock Detail Section ── */}
-      {selectedTicker && (
-        <div className="mt-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-text-primary">
-              {selectedTicker} — Detail View
-            </h2>
-            <button
-              onClick={() => setSelectedTicker(null)}
-              className="rounded-lg border border-border bg-bg-card px-3 py-1 text-sm text-text-secondary hover:text-text-primary transition-colors"
+            {/* Metric Cards */}
+            {metrics && (
+              <Box sx={{ mb: 3 }}>
+                <MetricCards metrics={metrics} />
+              </Box>
+            )}
+
+            {/* Charts */}
+            <Grid container spacing={2} sx={{ mb: 2 }}>
+              <Grid size={{ xs: 12 }}>
+                <CandlestickChart
+                  candles={intradayCandles}
+                  ticker={selectedTicker}
+                  livePrice={livePrice}
+                />
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <HistoricalChart
+                  series={indicatorSeries}
+                  ticker={selectedTicker}
+                  predictedPrice={predictionQuery.data?.predicted_price ?? null}
+                  predictedDate={predictionQuery.data?.predicted_date ?? null}
+                />
+              </Grid>
+            </Grid>
+
+            {/* TA Panel Accordion */}
+            <Accordion
+              expanded={showTA}
+              onChange={(_, expanded) => setShowTA(expanded)}
             >
-              ✕ Close
-            </button>
-          </div>
-          <div className="grid gap-4 lg:grid-cols-2">
-            <CandlestickChart candles={intradayCandles} ticker={selectedTicker} livePrice={livePrice} />
-            <HistoricalChart
-              series={indicatorSeries}
-              ticker={selectedTicker}
-              predictedPrice={predictionQuery.data?.predicted_price ?? null}
-              predictedDate={predictionQuery.data?.predicted_date ?? null}
-            />
-          </div>
-
-          {/* ── TA Panel Toggle ── */}
-          <button
-            onClick={() => setShowTA((prev) => !prev)}
-            className="rounded-lg border border-border bg-bg-card px-4 py-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            {showTA ? "Hide" : "Show"} Technical Indicators
-          </button>
-
-          {showTA && (
-            <DashboardTAPanel series={indicatorSeries} ticker={selectedTicker} />
-          )}
-        </div>
-      )}
-    </>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="body2">Technical Indicators</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <DashboardTAPanel series={indicatorSeries} ticker={selectedTicker} />
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        )}
+      </Drawer>
+    </Container>
   );
 }

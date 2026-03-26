@@ -244,3 +244,25 @@ Started: 2026-03-26
   - Active state detection: use `location.pathname === to` (useLocation hook) rather than NavLink's isActive callback — more reliable with MUI ListItemButton
   - CssBaseline from MUI resets margin/padding — ensure body background is set via MUI theme (background.default) not Tailwind globals
 ---
+
+## 2026-03-26 - UI-002: Replace all page components with MUI — Dashboard, Forecasts, Models
+- Replaced `ExportButtons` with MUI `ButtonGroup` + `Button` with FileDownload/PictureAsPdf icons
+- Replaced `HorizonToggle` with MUI `ToggleButtonGroup` + `ToggleButton`
+- Replaced `PageHeader` with MUI `Typography h4` + `Divider`
+- Replaced `MetricCards` with MUI `Card`/`CardContent`/`Grid` (MUI v7 Grid size prop syntax)
+- Replaced `WinnerCard` with `Card sx={{ border: '2px solid', borderColor: 'primary.main' }}` + `Chip label="Winner" color="primary"`
+- Replaced `ForecastFilters` with MUI `TextField`, `Select`, `Slider` in `Paper`
+- Replaced `ForecastTable` with `DataGrid` from @mui/x-data-grid — built-in sorting/pagination, Chip for trend
+- Replaced `ModelComparisonTable` with `DataGrid` — winning row via `getRowClassName` + `winner-row` CSS class
+- Replaced `ShapBarChart` (Recharts) with MUI `BarChart layout="horizontal"` from @mui/x-charts
+- Replaced `ModelDetailPanel` with MUI `Paper`/`Grid`/`Typography`/`Chip`
+- Updated `Dashboard.tsx`: MUI Container, Paper treemap wrapper, Skeleton loading, right Drawer (480px) for stock detail, Accordion for TA panel
+- Updated `Forecasts.tsx`: MUI layout, right Drawer for stock detail section
+- Updated `Models.tsx`: MUI Container, Paper, two-column Grid for metrics panel
+- **Learnings for future iterations:**
+  - MUI v7 Grid uses `size={{ xs: 6, sm: 4 }}` (not `item xs={6}` — that's MUI v5 syntax)
+  - `@mui/x-charts BarChart dataset` prop requires `Record<string, unknown>[]` — cast with `as unknown as Record<string, unknown>[]`
+  - `DataGrid` `valueGetter` in v7 takes `(_value, row)` signature (not just `(params)`)
+  - `ToggleButtonGroup onChange` in v7: `(_, v: T | null)` — always check for null before calling onChange
+  - `TextField slotProps.input.startAdornment` is the v7 API (not `InputProps.startAdornment`)
+---

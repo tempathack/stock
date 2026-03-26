@@ -1,6 +1,15 @@
 import { useState, useMemo } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Drawer,
+  Grid,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { PageHeader } from "@/components/layout";
-import { LoadingSpinner, ErrorFallback, ExportButtons } from "@/components/ui";
+import { ErrorFallback, ExportButtons } from "@/components/ui";
 import {
   ForecastFilters,
   ForecastTable,
@@ -48,41 +57,45 @@ function StockDetailSection({
   }, [indicatorQuery.data, indicatorQuery.isError, ticker]);
 
   return (
-    <div className="mt-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-text-primary">
+    <Box sx={{ height: "100%", overflow: "auto", p: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+        <Typography variant="h6" fontWeight={700}>
           {ticker} — Detail View
-        </h2>
-        <button
+        </Typography>
+        <Button
+          size="small"
+          startIcon={<CloseIcon />}
           onClick={onClose}
-          className="rounded bg-bg-card px-3 py-1 text-sm text-text-secondary transition-colors hover:bg-border hover:text-text-primary"
+          variant="outlined"
         >
           Close
-        </button>
-      </div>
+        </Button>
+      </Box>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+      <Grid container spacing={3}>
         {/* Left: Price chart + indicator overlays */}
-        <div className="space-y-4">
-          <StockDetailChart
-            ticker={ticker}
-            series={series}
-            predictedPrice={forecastRow?.predicted_price ?? 0}
-            predictedDate={forecastRow?.predicted_date ?? ""}
-            currentPrice={forecastRow?.current_price ?? null}
-          />
-          <IndicatorOverlayCharts series={series} />
-        </div>
+        <Grid size={{ xs: 12, xl: 6 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <StockDetailChart
+              ticker={ticker}
+              series={series}
+              predictedPrice={forecastRow?.predicted_price ?? 0}
+              predictedDate={forecastRow?.predicted_date ?? ""}
+              currentPrice={forecastRow?.current_price ?? null}
+            />
+            <IndicatorOverlayCharts series={series} />
+          </Box>
+        </Grid>
 
         {/* Right: SHAP panel */}
-        <div>
+        <Grid size={{ xs: 12, xl: 6 }}>
           <StockShapPanel
             ticker={ticker}
             modelName={forecastRow?.model_name ?? "Unknown"}
           />
-        </div>
-      </div>
-    </div>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 
@@ -120,27 +133,12 @@ export default function Forecasts() {
   const filteredRows = useMemo(() => {
     return allRows.filter((row) => {
       if (filters.sector && row.sector !== filters.sector) return false;
-      if (
-        filters.minReturn != null &&
-        row.expected_return_pct < filters.minReturn
-      )
-        return false;
-      if (
-        filters.maxReturn != null &&
-        row.expected_return_pct > filters.maxReturn
-      )
-        return false;
-      if (
-        filters.minConfidence != null &&
-        (row.confidence ?? 0) < filters.minConfidence
-      )
-        return false;
+      if (filters.minReturn != null && row.expected_return_pct < filters.minReturn) return false;
+      if (filters.maxReturn != null && row.expected_return_pct > filters.maxReturn) return false;
+      if (filters.minConfidence != null && (row.confidence ?? 0) < filters.minConfidence) return false;
       if (filters.search) {
         const q = filters.search.toLowerCase();
-        if (
-          !row.ticker.toLowerCase().includes(q) &&
-          !row.company_name?.toLowerCase().includes(q)
-        ) {
+        if (!row.ticker.toLowerCase().includes(q) && !row.company_name?.toLowerCase().includes(q)) {
           return false;
         }
       }
@@ -150,9 +148,7 @@ export default function Forecasts() {
 
   const handleToggleCompare = (ticker: string) => {
     setComparisonTickers((prev) =>
-      prev.includes(ticker)
-        ? prev.filter((t) => t !== ticker)
-        : [...prev, ticker],
+      prev.includes(ticker) ? prev.filter((t) => t !== ticker) : [...prev, ticker],
     );
   };
 
@@ -163,7 +159,7 @@ export default function Forecasts() {
     marketQuery.refetch();
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return null;
   if (isError)
     return (
       <ErrorFallback
@@ -177,14 +173,16 @@ export default function Forecasts() {
       ? allRows.find((r) => r.ticker === selectedTicker) ?? null
       : null;
 
+  const today = new Date().toISOString().slice(0, 10);
+
   return (
-    <>
+    <Container maxWidth="xl">
       <PageHeader
         title="Stock Forecasts"
         subtitle={`${horizon}-day price predictions for S&P 500 tickers`}
       />
 
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+      <Box sx={{ mb: 2, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
         <HorizonToggle
           horizons={availableHorizons}
           selected={horizon}
@@ -194,7 +192,6 @@ export default function Forecasts() {
         <ExportButtons
           disabled={filteredRows.length === 0}
           onExportCsv={() => {
-            const today = new Date().toISOString().slice(0, 10);
             const headers = ["Ticker", "Company", "Sector", "Current Price", "Predicted Price", "Return %", "Confidence", "Daily Change %", "Trend"];
             const rows = filteredRows.map((r) => [
               r.ticker,
@@ -210,7 +207,6 @@ export default function Forecasts() {
             exportToCsv(`forecasts_${horizon}d_${today}.csv`, headers, rows);
           }}
           onExportPdf={() => {
-            const today = new Date().toISOString().slice(0, 10);
             const headers = ["Ticker", "Company", "Sector", "Current Price", "Predicted Price", "Return %", "Confidence", "Daily Change %", "Trend"];
             const rows = filteredRows.map((r) => [
               r.ticker,
@@ -225,30 +221,30 @@ export default function Forecasts() {
             ]);
             exportTableToPdf(
               `forecasts_${horizon}d_${today}.pdf`,
-              `Stock Forecasts \u2014 ${horizon}d Predictions`,
+              `Stock Forecasts — ${horizon}d Predictions`,
               headers,
               rows,
               [`Generated: ${today}`, `Horizon: ${horizon} days`, `Rows: ${filteredRows.length}`],
             );
           }}
         />
-      </div>
+      </Box>
 
-      <ForecastFilters
-        filters={filters}
-        onFilterChange={setFilters}
-        sectors={sectors}
-      />
-
-      <div className="mt-4">
-        <ForecastTable
-          rows={filteredRows}
-          selectedTicker={selectedTicker}
-          comparisonTickers={comparisonTickers}
-          onSelectTicker={setSelectedTicker}
-          onToggleCompare={handleToggleCompare}
+      <Box sx={{ mb: 2 }}>
+        <ForecastFilters
+          filters={filters}
+          onFilterChange={setFilters}
+          sectors={sectors}
         />
-      </div>
+      </Box>
+
+      <ForecastTable
+        rows={filteredRows}
+        selectedTicker={selectedTicker}
+        comparisonTickers={comparisonTickers}
+        onSelectTicker={setSelectedTicker}
+        onToggleCompare={handleToggleCompare}
+      />
 
       {/* Comparison Panel */}
       <StockComparisonPanel
@@ -258,14 +254,23 @@ export default function Forecasts() {
         onSelectDetail={setSelectedTicker}
       />
 
-      {/* Detail Section */}
-      {selectedTicker && (
-        <StockDetailSection
-          ticker={selectedTicker}
-          forecastRow={selectedRow}
-          onClose={() => setSelectedTicker(null)}
-        />
-      )}
-    </>
+      {/* Detail Drawer */}
+      <Drawer
+        anchor="right"
+        open={!!selectedTicker}
+        onClose={() => setSelectedTicker(null)}
+        PaperProps={{
+          sx: { width: { xs: "100%", md: "60vw", xl: 900 }, bgcolor: "background.default" },
+        }}
+      >
+        {selectedTicker && (
+          <StockDetailSection
+            ticker={selectedTicker}
+            forecastRow={selectedRow}
+            onClose={() => setSelectedTicker(null)}
+          />
+        )}
+      </Drawer>
+    </Container>
   );
 }

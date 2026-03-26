@@ -1,3 +1,5 @@
+import { Box, Card, CardContent, Chip, Grid, Typography } from "@mui/material";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import type { ModelComparisonEntry } from "@/api";
 
 interface WinnerCardProps {
@@ -12,47 +14,85 @@ function fmt(value: unknown, decimals: number): string {
 export default function WinnerCard({ winner }: WinnerCardProps) {
   if (!winner) {
     return (
-      <div className="rounded-lg border border-dashed border-border bg-bg-surface p-6 text-center text-text-secondary">
-        No winner model selected
-      </div>
+      <Card sx={{ border: "1px dashed", borderColor: "divider" }}>
+        <CardContent>
+          <Typography color="text.secondary" align="center">
+            No winner model selected
+          </Typography>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="rounded-lg border-l-4 border-accent bg-bg-card p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        {/* Left — title */}
-        <div>
-          <span className="inline-block rounded bg-accent/20 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-accent">
-            🏆 Winner
-          </span>
-          <h3 className="mt-1 text-xl font-bold text-accent">{winner.model_name}</h3>
-        </div>
+    <Card sx={{ border: "2px solid", borderColor: "primary.main" }}>
+      <CardContent>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "flex-start" },
+            gap: 2,
+          }}
+        >
+          {/* Left — title */}
+          <Box>
+            <Chip
+              icon={<EmojiEventsIcon />}
+              label="Winner"
+              color="primary"
+              size="small"
+            />
+            <Typography
+              variant="h5"
+              sx={{ mt: 1, color: "primary.main", fontWeight: 700 }}
+            >
+              {winner.model_name}
+            </Typography>
+          </Box>
 
-        {/* Right — key metrics */}
-        <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
-          <div>
-            <span className="text-text-secondary">OOS RMSE</span>
-            <p className="font-mono font-medium text-text-primary">{fmt(winner.oos_metrics.rmse, 6)}</p>
-          </div>
-          <div>
-            <span className="text-text-secondary">OOS R²</span>
-            <p className="font-mono font-medium text-text-primary">{fmt(winner.oos_metrics.r2, 4)}</p>
-          </div>
-          <div>
-            <span className="text-text-secondary">Fold Stability</span>
-            <p className="font-mono font-medium text-text-primary">{fmt(winner.fold_stability, 4)}</p>
-          </div>
-          <div>
-            <span className="text-text-secondary">Scaler</span>
-            <p className="font-medium capitalize text-text-primary">{winner.scaler_variant}</p>
-          </div>
-        </div>
-      </div>
+          {/* Right — key metrics */}
+          <Grid container spacing={2} sx={{ maxWidth: 320 }}>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="caption" color="text.secondary">
+                OOS RMSE
+              </Typography>
+              <Typography variant="body2" sx={{ fontFamily: "monospace", fontWeight: 500 }}>
+                {fmt(winner.oos_metrics.rmse, 6)}
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="caption" color="text.secondary">
+                OOS R²
+              </Typography>
+              <Typography variant="body2" sx={{ fontFamily: "monospace", fontWeight: 500 }}>
+                {fmt(winner.oos_metrics.r2, 4)}
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="caption" color="text.secondary">
+                Fold Stability
+              </Typography>
+              <Typography variant="body2" sx={{ fontFamily: "monospace", fontWeight: 500 }}>
+                {fmt(winner.fold_stability, 4)}
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="caption" color="text.secondary">
+                Scaler
+              </Typography>
+              <Typography variant="body2" sx={{ fontWeight: 500, textTransform: "capitalize" }}>
+                {winner.scaler_variant}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
 
-      <p className="mt-4 text-xs text-text-secondary">
-        Selected based on lowest OOS RMSE with stable cross-validation performance
-      </p>
-    </div>
+        <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: "block" }}>
+          Selected based on lowest OOS RMSE with stable cross-validation performance
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }

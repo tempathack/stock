@@ -1,25 +1,12 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import type { GridColDef, GridRowParams } from "@mui/x-data-grid";
+import { Box, Chip, TextField } from "@mui/material";
 import type { ModelComparisonEntry } from "@/api";
 
 interface ModelComparisonTableProps {
   models: ModelComparisonEntry[];
   onSelectModel?: (model: ModelComparisonEntry) => void;
-}
-
-type SortField =
-  | "model_name"
-  | "oos_rmse"
-  | "oos_mae"
-  | "oos_r2"
-  | "oos_mape"
-  | "directional_accuracy"
-  | "fold_stability";
-
-type SortDir = "asc" | "desc";
-
-function num(v: unknown): number {
-  const n = Number(v);
-  return Number.isFinite(n) ? n : Infinity;
 }
 
 function fmt(value: unknown, decimals: number): string {
@@ -32,200 +19,157 @@ function pct(value: unknown, decimals: number): string {
   return Number.isFinite(n) ? `${(n * 100).toFixed(decimals)}%` : "—";
 }
 
-const COLUMNS: {
-  label: string;
-  field: SortField;
-  render: (m: ModelComparisonEntry) => string;
-  mono?: boolean;
-}[] = [
-  { label: "Model Name", field: "model_name", render: (m) => m.model_name },
-  { label: "Scaler", field: "model_name", render: (m) => m.scaler_variant },
-  { label: "OOS RMSE", field: "oos_rmse", render: (m) => fmt(m.oos_metrics.rmse, 6), mono: true },
-  { label: "OOS MAE", field: "oos_mae", render: (m) => fmt(m.oos_metrics.mae, 6), mono: true },
-  { label: "OOS R²", field: "oos_r2", render: (m) => fmt(m.oos_metrics.r2, 4), mono: true },
-  { label: "OOS MAPE", field: "oos_mape", render: (m) => pct(m.oos_metrics.mape, 2), mono: true },
-  { label: "Dir. Accuracy", field: "directional_accuracy", render: (m) => pct(m.oos_metrics.directional_accuracy, 2), mono: true },
-  { label: "Fold Stability", field: "fold_stability", render: (m) => fmt(m.fold_stability, 4), mono: true },
-];
-
-function getSortValue(m: ModelComparisonEntry, field: SortField): number | string {
-  switch (field) {
-    case "model_name":
-      return m.model_name.toLowerCase();
-    case "oos_rmse":
-      return num(m.oos_metrics.rmse);
-    case "oos_mae":
-      return num(m.oos_metrics.mae);
-    case "oos_r2":
-      return num(m.oos_metrics.r2);
-    case "oos_mape":
-      return num(m.oos_metrics.mape);
-    case "directional_accuracy":
-      return num(m.oos_metrics.directional_accuracy);
-    case "fold_stability":
-      return num(m.fold_stability);
-  }
-}
-
-export default function ModelComparisonTable({ models, onSelectModel }: ModelComparisonTableProps) {
-  const [sortField, setSortField] = useState<SortField>("oos_rmse");
-  const [sortDir, setSortDir] = useState<SortDir>("asc");
+export default function ModelComparisonTable({
+  models,
+  onSelectModel,
+}: ModelComparisonTableProps) {
   const [filter, setFilter] = useState("");
 
-  const sorted = useMemo(() => {
-    const filtered = models.filter((m) =>
-      m.model_name.toLowerCase().includes(filter.toLowerCase()),
-    );
+  const filtered = models.filter((m) =>
+    m.model_name.toLowerCase().includes(filter.toLowerCase()),
+  );
 
-    return [...filtered].sort((a, b) => {
-      const va = getSortValue(a, sortField);
-      const vb = getSortValue(b, sortField);
-      const cmp = va < vb ? -1 : va > vb ? 1 : 0;
-      return sortDir === "asc" ? cmp : -cmp;
-    });
-  }, [models, sortField, sortDir, filter]);
+  const columns: GridColDef[] = [
+    {
+      field: "model_name",
+      headerName: "Model Name",
+      flex: 1,
+      minWidth: 180,
+      renderCell: (params) => {
+        const row = params.row as ModelComparisonEntry;
+        return (
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {row.is_winner && (
+              <Box component="span" sx={{ color: "primary.main", fontSize: "0.75rem" }}>
+                ★
+              </Box>
+            )}
+            <Box component="span" sx={{ fontWeight: row.is_winner ? 700 : 400 }}>
+              {params.value}
+            </Box>
+          </Box>
+        );
+      },
+    },
+    { field: "scaler_variant", headerName: "Scaler", width: 110 },
+    {
+      field: "oos_rmse",
+      headerName: "OOS RMSE",
+      width: 110,
+      valueGetter: (_value, row: ModelComparisonEntry) => row.oos_metrics?.rmse,
+      renderCell: (params) => (
+        <Box sx={{ fontFamily: "monospace" }}>{fmt(params.value, 6)}</Box>
+      ),
+    },
+    {
+      field: "oos_mae",
+      headerName: "OOS MAE",
+      width: 110,
+      valueGetter: (_value, row: ModelComparisonEntry) => row.oos_metrics?.mae,
+      renderCell: (params) => (
+        <Box sx={{ fontFamily: "monospace" }}>{fmt(params.value, 6)}</Box>
+      ),
+    },
+    {
+      field: "oos_r2",
+      headerName: "OOS R²",
+      width: 90,
+      valueGetter: (_value, row: ModelComparisonEntry) => row.oos_metrics?.r2,
+      renderCell: (params) => (
+        <Box sx={{ fontFamily: "monospace" }}>{fmt(params.value, 4)}</Box>
+      ),
+    },
+    {
+      field: "oos_mape",
+      headerName: "OOS MAPE",
+      width: 100,
+      valueGetter: (_value, row: ModelComparisonEntry) => row.oos_metrics?.mape,
+      renderCell: (params) => (
+        <Box sx={{ fontFamily: "monospace" }}>{pct(params.value, 2)}</Box>
+      ),
+    },
+    {
+      field: "directional_accuracy",
+      headerName: "Dir. Accuracy",
+      width: 120,
+      valueGetter: (_value, row: ModelComparisonEntry) =>
+        row.oos_metrics?.directional_accuracy,
+      renderCell: (params) => (
+        <Box sx={{ fontFamily: "monospace" }}>{pct(params.value, 2)}</Box>
+      ),
+    },
+    {
+      field: "fold_stability",
+      headerName: "Fold Stability",
+      width: 120,
+      renderCell: (params) => (
+        <Box sx={{ fontFamily: "monospace" }}>{fmt(params.value, 4)}</Box>
+      ),
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 90,
+      sortable: false,
+      renderCell: (params) => {
+        const row = params.row as ModelComparisonEntry;
+        return row.is_active ? (
+          <Chip label="Active" color="success" size="small" />
+        ) : (
+          <Chip label="Inactive" size="small" />
+        );
+      },
+    },
+  ];
 
-  function toggleSort(field: SortField) {
-    if (sortField === field) {
-      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-    } else {
-      setSortField(field);
-      setSortDir("asc");
-    }
-  }
-
-  function sortIndicator(field: SortField) {
-    if (sortField !== field) return <span className="ml-1 text-text-secondary/40">↕</span>;
-    return <span className="ml-1 text-accent">{sortDir === "asc" ? "▲" : "▼"}</span>;
-  }
+  const getRowId = (row: ModelComparisonEntry) =>
+    `${row.model_name}-${row.scaler_variant}-${row.version ?? ""}`;
 
   return (
-    <div className="space-y-3">
-      {/* Filter */}
-      <input
-        type="text"
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <TextField
+        size="small"
+        sx={{ maxWidth: 320 }}
+        placeholder="Filter by model name…"
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
-        placeholder="Filter by model name…"
-        className="w-full max-w-xs rounded-md border border-border bg-bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent focus:outline-none"
+        label="Search models"
       />
-
-      {/* Desktop table */}
-      <div className="hidden overflow-x-auto rounded-lg border border-border sm:block">
-        <table className="w-full text-left text-sm">
-          <thead>
-            <tr className="sticky top-0 bg-bg-card text-xs uppercase tracking-wide text-text-secondary">
-              {COLUMNS.map((col) => (
-                <th
-                  key={col.label}
-                  className="cursor-pointer whitespace-nowrap px-4 py-3 font-medium hover:text-text-primary"
-                  onClick={() => toggleSort(col.field)}
-                >
-                  {col.label}
-                  {sortIndicator(col.field)}
-                </th>
-              ))}
-              <th className="px-4 py-3 font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sorted.length === 0 && (
-              <tr>
-                <td colSpan={COLUMNS.length + 1} className="px-4 py-8 text-center text-text-secondary">
-                  No models found
-                </td>
-              </tr>
-            )}
-            {sorted.map((model) => (
-              <tr
-                key={`${model.model_name}-${model.scaler_variant}-${model.version}`}
-                onClick={() => onSelectModel?.(model)}
-                className={`cursor-pointer border-t border-border transition-colors hover:bg-bg-card/30 ${
-                  model.is_winner
-                    ? "border-l-4 border-l-accent bg-accent/5"
-                    : "even:bg-bg-surface odd:bg-bg-primary"
-                }`}
-              >
-                {COLUMNS.map((col, i) => (
-                  <td
-                    key={col.label}
-                    className={`whitespace-nowrap px-4 py-3 ${col.mono ? "font-mono" : ""} ${
-                      i === 0 ? "font-medium text-text-primary" : "text-text-secondary"
-                    }`}
-                  >
-                    {i === 0 && model.is_winner && (
-                      <span className="mr-2 text-xs text-accent">★</span>
-                    )}
-                    {col.render(model)}
-                  </td>
-                ))}
-                <td className="px-4 py-3">
-                  <span
-                    className={`inline-block h-2 w-2 rounded-full ${
-                      model.is_active ? "bg-profit" : "bg-text-secondary/40"
-                    }`}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Mobile card layout */}
-      <div className="space-y-2 sm:hidden">
-        {sorted.length === 0 && (
-          <div className="rounded-lg border border-border bg-bg-surface p-8 text-center text-text-secondary">
-            No models found
-          </div>
-        )}
-        {sorted.map((model) => (
-          <div
-            key={`m-${model.model_name}-${model.scaler_variant}-${model.version}`}
-            onClick={() => onSelectModel?.(model)}
-            className={`cursor-pointer rounded-lg border border-border bg-bg-surface p-3 transition-colors hover:bg-bg-card/30 ${
-              model.is_winner
-                ? "border-l-4 border-l-accent bg-accent/5"
-                : ""
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {model.is_winner && (
-                  <span className="text-xs text-accent">★</span>
-                )}
-                <span className="font-medium text-text-primary">
-                  {model.model_name}
-                </span>
-              </div>
-              <span
-                className={`inline-block h-2 w-2 rounded-full ${
-                  model.is_active ? "bg-profit" : "bg-text-secondary/40"
-                }`}
-              />
-            </div>
-            <p className="text-xs text-text-secondary">{model.scaler_variant}</p>
-            <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-              <div>
-                <span className="text-text-secondary">RMSE: </span>
-                <span className="font-mono">{fmt(model.oos_metrics.rmse, 6)}</span>
-              </div>
-              <div>
-                <span className="text-text-secondary">MAE: </span>
-                <span className="font-mono">{fmt(model.oos_metrics.mae, 6)}</span>
-              </div>
-              <div>
-                <span className="text-text-secondary">R²: </span>
-                <span className="font-mono">{fmt(model.oos_metrics.r2, 4)}</span>
-              </div>
-              <div>
-                <span className="text-text-secondary">Dir. Acc: </span>
-                <span className="font-mono">{pct(model.oos_metrics.directional_accuracy, 2)}</span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+      <DataGrid
+        rows={filtered}
+        columns={columns}
+        getRowId={getRowId}
+        onRowClick={(params: GridRowParams) =>
+          onSelectModel?.(params.row as ModelComparisonEntry)
+        }
+        initialState={{
+          pagination: { paginationModel: { pageSize: 25 } },
+          sorting: { sortModel: [{ field: "oos_rmse", sort: "asc" }] },
+        }}
+        pageSizeOptions={[25, 50]}
+        getRowClassName={(params) => {
+          const row = params.row as ModelComparisonEntry;
+          return row.is_winner ? "winner-row" : "";
+        }}
+        sx={{
+          "& .MuiDataGrid-row": { cursor: "pointer" },
+          "& .winner-row": {
+            borderLeft: "4px solid",
+            borderLeftColor: "primary.main",
+            backgroundColor: "rgba(0, 188, 212, 0.05)",
+          },
+          "& .MuiDataGrid-columnHeader": {
+            backgroundColor: "background.paper",
+            color: "text.secondary",
+            fontWeight: 700,
+            textTransform: "uppercase",
+            fontSize: "0.7rem",
+            letterSpacing: "0.05em",
+          },
+        }}
+        autoHeight
+        disableColumnMenu
+      />
+    </Box>
   );
 }

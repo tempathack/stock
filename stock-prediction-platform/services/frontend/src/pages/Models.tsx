@@ -1,6 +1,14 @@
 import { useState, useMemo, useEffect } from "react";
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { PageHeader } from "@/components/layout";
-import { LoadingSpinner, ErrorFallback, ExportButtons } from "@/components/ui";
+import { ErrorFallback, ExportButtons } from "@/components/ui";
 import { ModelComparisonTable, WinnerCard, ModelDetailPanel } from "@/components/tables";
 import { ShapBarChart, ShapBeeswarmPlot, FoldPerformanceChart } from "@/components/charts";
 import { useModelComparison } from "@/api";
@@ -25,38 +33,48 @@ export default function Models() {
     [selectedModel],
   );
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return null;
   if (isError) return <ErrorFallback message="Failed to load model data" onRetry={refetch} />;
 
   if (!data?.models.length) {
     return (
-      <>
+      <Container maxWidth="xl">
         <PageHeader
           title="Model Comparison"
           subtitle="Compare ML model performance across evaluation metrics"
         />
-        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-bg-surface p-16">
-          <p className="text-lg text-text-secondary">No models trained yet</p>
-          <p className="mt-2 text-sm text-text-secondary">
+        <Paper
+          sx={{
+            p: 8,
+            textAlign: "center",
+            border: "2px dashed",
+            borderColor: "divider",
+          }}
+        >
+          <Typography variant="h6" color="text.secondary">
+            No models trained yet
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
             Run the training pipeline to see model comparison data.
-          </p>
-        </div>
-      </>
+          </Typography>
+        </Paper>
+      </Container>
     );
   }
 
+  const today = new Date().toISOString().slice(0, 10);
+
   return (
-    <>
+    <Container maxWidth="xl">
       <PageHeader
         title="Model Comparison"
         subtitle="Compare ML model performance across evaluation metrics"
       />
 
-      <div className="mb-4 flex justify-end">
+      <Box sx={{ mb: 2, display: "flex", justifyContent: "flex-end" }}>
         <ExportButtons
           disabled={!data?.models.length}
           onExportCsv={() => {
-            const today = new Date().toISOString().slice(0, 10);
             const headers = ["Model Name", "Scaler", "OOS RMSE", "OOS MAE", "OOS R²", "OOS MAPE", "Dir. Accuracy", "Fold Stability", "Winner", "Active"];
             const rows = data.models.map((m) => [
               m.model_name,
@@ -73,7 +91,6 @@ export default function Models() {
             exportToCsv(`models_comparison_${today}.csv`, headers, rows);
           }}
           onExportPdf={() => {
-            const today = new Date().toISOString().slice(0, 10);
             const headers = ["Model Name", "Scaler", "OOS RMSE", "OOS MAE", "OOS R²", "OOS MAPE", "Dir. Accuracy", "Fold Stability", "Winner", "Active"];
             const rows = data.models.map((m) => [
               m.model_name,
@@ -100,40 +117,94 @@ export default function Models() {
             );
           }}
         />
-      </div>
+      </Box>
 
       {/* Winner Card */}
       <WinnerCard winner={data.winner ?? null} />
 
       {/* Model Comparison Table */}
-      <div className="mt-6">
+      <Box sx={{ mt: 3 }}>
         <ModelComparisonTable models={data.models} onSelectModel={setSelectedModel} />
-      </div>
+      </Box>
 
-      {/* Model Detail Panel */}
+      {/* Model Detail Panel — two-column in-sample vs out-of-sample */}
       {selectedModel && (
-        <div className="mt-6">
-          <ModelDetailPanel model={selectedModel} />
-        </div>
+        <Box sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <ModelDetailPanel model={selectedModel} />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <Paper sx={{ p: 2, height: "100%" }}>
+                <Typography variant="subtitle2" fontWeight={700} gutterBottom>
+                  In-Sample vs Out-of-Sample Metrics
+                </Typography>
+                <Divider sx={{ mb: 1 }} />
+                <Box sx={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                  {/* OOS metrics highlighted */}
+                  {Object.entries(selectedModel.oos_metrics ?? {}).map(([key, value]) => {
+                    const n = Number(value);
+                    return (
+                      <Box key={key}>
+                        <Typography variant="caption" color="text.secondary" sx={{ textTransform: "uppercase" }}>
+                          {key}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontFamily: "monospace",
+                            fontWeight: 600,
+                            color:
+                              (key === "r2" || key === "directional_accuracy") && Number.isFinite(n)
+                                ? n > 0.8 ? "success.main" : n > 0.5 ? "warning.main" : "error.main"
+                                : "text.primary",
+                          }}
+                        >
+                          {Number.isFinite(n) ? n.toFixed(4) : "—"}
+                        </Typography>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Box>
       )}
 
       {/* Charts Section */}
       {selectedModel && detail ? (
-        <section className="mt-8 space-y-6">
-          <h2 className="text-lg font-semibold text-text-primary">
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
             Detailed Analysis — {selectedModel.model_name}
-          </h2>
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-            <ShapBarChart data={detail.shap_importance} />
-            <ShapBeeswarmPlot data={detail.shap_beeswarm} />
-          </div>
-          <FoldPerformanceChart data={detail.fold_metrics} modelName={selectedModel.model_name} />
-        </section>
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, xl: 6 }}>
+              <ShapBarChart data={detail.shap_importance} />
+            </Grid>
+            <Grid size={{ xs: 12, xl: 6 }}>
+              <ShapBeeswarmPlot data={detail.shap_beeswarm} />
+            </Grid>
+          </Grid>
+          <Box sx={{ mt: 3 }}>
+            <FoldPerformanceChart data={detail.fold_metrics} modelName={selectedModel.model_name} />
+          </Box>
+        </Box>
       ) : (
-        <div className="mt-8 rounded-lg border border-dashed border-border bg-bg-surface p-8 text-center text-text-secondary">
-          Click a model row to see detailed analysis
-        </div>
+        <Paper
+          sx={{
+            mt: 4,
+            p: 4,
+            textAlign: "center",
+            border: "1px dashed",
+            borderColor: "divider",
+          }}
+        >
+          <Typography color="text.secondary">
+            Click a model row to see detailed analysis
+          </Typography>
+        </Paper>
       )}
-    </>
+    </Container>
   );
 }

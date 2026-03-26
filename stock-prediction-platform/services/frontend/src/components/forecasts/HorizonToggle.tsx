@@ -1,3 +1,5 @@
+import { ToggleButtonGroup, ToggleButton } from "@mui/material";
+
 interface HorizonToggleProps {
   horizons: number[];
   selected: number;
@@ -12,32 +14,22 @@ export function HorizonToggle({
   loading = false,
 }: HorizonToggleProps) {
   return (
-    <div
-      role="radiogroup"
+    <ToggleButtonGroup
+      exclusive
+      value={selected}
+      onChange={(_, v: number | null) => {
+        if (v !== null) onChange(v);
+      }}
+      disabled={loading}
+      size="small"
       aria-label="Prediction horizon"
-      className={`inline-flex gap-1 rounded-lg bg-bg-card p-1 ${
-        loading ? "pointer-events-none opacity-50" : ""
-      }`}
     >
-      {horizons.map((h) => {
-        const isSelected = h === selected;
-        return (
-          <button
-            key={h}
-            role="radio"
-            aria-checked={isSelected}
-            onClick={() => onChange(h)}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-              isSelected
-                ? "bg-accent text-white"
-                : "text-text-secondary hover:bg-border hover:text-text-primary"
-            }`}
-          >
-            {h}D
-          </button>
-        );
-      })}
-    </div>
+      {horizons.map((h) => (
+        <ToggleButton key={h} value={h}>
+          {h}D
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
   );
 }
 

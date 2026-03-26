@@ -1,3 +1,11 @@
+import {
+  Box,
+  Chip,
+  Divider,
+  Grid,
+  Paper,
+  Typography,
+} from "@mui/material";
 import type { ModelComparisonEntry } from "@/api";
 
 interface ModelDetailPanelProps {
@@ -10,18 +18,17 @@ function fmt(value: unknown, decimals: number): string {
 }
 
 function stabilityColor(val: number | null): string {
-  if (val === null) return "text-text-secondary";
-  if (val < 0.01) return "text-profit";
-  if (val < 0.05) return "text-warning";
-  return "text-loss";
+  if (val === null) return "text.secondary";
+  if (val < 0.01) return "success.main";
+  if (val < 0.05) return "warning.main";
+  return "error.main";
 }
 
 function metricColor(key: string, value: number): string {
   if (key === "r2" || key === "directional_accuracy") {
-    return value > 0.8 ? "text-profit" : value > 0.5 ? "text-warning" : "text-loss";
+    return value > 0.8 ? "success.main" : value > 0.5 ? "warning.main" : "error.main";
   }
-  // Lower is better for RMSE, MAE, MAPE
-  return "text-text-primary";
+  return "text.primary";
 }
 
 export default function ModelDetailPanel({ model }: ModelDetailPanelProps) {
@@ -29,79 +36,120 @@ export default function ModelDetailPanel({ model }: ModelDetailPanelProps) {
   const metrics = model.oos_metrics ?? {};
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
+    <Paper sx={{ p: 2 }}>
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <h3 className="text-lg font-bold text-text-primary">{model.model_name}</h3>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flexWrap: "wrap" }}>
+        <Typography variant="h6" fontWeight={700}>
+          {model.model_name}
+        </Typography>
         {model.version != null && (
-          <span className="rounded bg-bg-card px-2 py-0.5 text-xs font-medium text-text-secondary">
-            v{model.version}
-          </span>
+          <Chip label={`v${model.version}`} size="small" variant="outlined" />
         )}
-        <span
-          className={`inline-block h-2 w-2 rounded-full ${
-            model.is_active ? "bg-profit" : "bg-text-secondary/40"
-          }`}
+        <Chip
+          label={model.is_active ? "Active" : "Inactive"}
+          color={model.is_active ? "success" : "default"}
+          size="small"
         />
-        <span className="text-xs text-text-secondary">{model.is_active ? "Active" : "Inactive"}</span>
-      </div>
+      </Box>
 
       {/* Metadata grid */}
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div>
-          <span className="text-xs text-text-secondary">Scaler</span>
-          <p className="font-medium capitalize text-text-primary">{model.scaler_variant}</p>
-        </div>
-        <div>
-          <span className="text-xs text-text-secondary">Saved At</span>
-          <p className="font-medium text-text-primary">
+      <Grid container spacing={2} sx={{ mt: 1 }}>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Typography variant="caption" color="text.secondary">
+            Scaler
+          </Typography>
+          <Typography variant="body2" sx={{ fontWeight: 500, textTransform: "capitalize" }}>
+            {model.scaler_variant}
+          </Typography>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Typography variant="caption" color="text.secondary">
+            Saved At
+          </Typography>
+          <Typography variant="body2" fontWeight={500}>
             {model.saved_at ? new Date(model.saved_at).toLocaleString() : "—"}
-          </p>
-        </div>
-        <div>
-          <span className="text-xs text-text-secondary">Fold Stability</span>
-          <p className={`font-mono font-medium ${stabilityColor(model.fold_stability)}`}>
+          </Typography>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Typography variant="caption" color="text.secondary">
+            Fold Stability
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontFamily: "monospace",
+              fontWeight: 500,
+              color: stabilityColor(model.fold_stability),
+            }}
+          >
             {fmt(model.fold_stability, 4)}
-          </p>
-        </div>
-      </div>
+          </Typography>
+        </Grid>
+      </Grid>
 
       {/* Hyperparameters */}
       {Object.keys(params).length > 0 && (
-        <div className="mt-4">
-          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-text-secondary">Hyperparameters</h4>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-1 sm:grid-cols-3 lg:grid-cols-4">
+        <Box sx={{ mt: 2 }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}
+          >
+            Hyperparameters
+          </Typography>
+          <Divider sx={{ my: 0.5 }} />
+          <Grid container spacing={1} sx={{ mt: 0.5 }}>
             {Object.entries(params).map(([key, value]) => (
-              <div key={key}>
-                <dt className="text-xs text-text-secondary">{key}</dt>
-                <dd className="font-mono text-sm text-text-primary">
+              <Grid size={{ xs: 6, sm: 4, lg: 3 }} key={key}>
+                <Typography variant="caption" color="text.secondary">
+                  {key}
+                </Typography>
+                <Typography variant="body2" sx={{ fontFamily: "monospace" }}>
                   {typeof value === "object" ? JSON.stringify(value) : String(value)}
-                </dd>
-              </div>
+                </Typography>
+              </Grid>
             ))}
-          </dl>
-        </div>
+          </Grid>
+        </Box>
       )}
 
       {/* OOS Metrics */}
       {Object.keys(metrics).length > 0 && (
-        <div className="mt-4">
-          <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-text-secondary">OOS Metrics</h4>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-1 sm:grid-cols-3 lg:grid-cols-5">
+        <Box sx={{ mt: 2 }}>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}
+          >
+            OOS Metrics
+          </Typography>
+          <Divider sx={{ my: 0.5 }} />
+          <Grid container spacing={1} sx={{ mt: 0.5 }}>
             {Object.entries(metrics).map(([key, value]) => {
               const n = Number(value);
               return (
-                <div key={key}>
-                  <span className="text-xs text-text-secondary">{key}</span>
-                  <p className={`font-mono text-sm font-medium ${Number.isFinite(n) ? metricColor(key, n) : "text-text-secondary"}`}>
+                <Grid size={{ xs: 6, sm: 4, lg: "auto" }} key={key}>
+                  <Typography variant="caption" color="text.secondary">
+                    {key}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontFamily: "monospace",
+                      fontWeight: 500,
+                      color: Number.isFinite(n)
+                        ? metricColor(key, n)
+                        : "text.secondary",
+                    }}
+                  >
                     {fmt(value, 4)}
-                  </p>
-                </div>
+                  </Typography>
+                </Grid>
               );
             })}
-          </div>
-        </div>
+          </Grid>
+        </Box>
       )}
-    </div>
+    </Paper>
   );
 }

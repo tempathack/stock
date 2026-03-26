@@ -1,3 +1,17 @@
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Slider,
+  TextField,
+  Typography,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import type { ForecastFiltersState } from "@/api";
 
 interface ForecastFiltersProps {
@@ -31,116 +45,115 @@ export default function ForecastFilters({
     filters.search !== "";
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-6">
+    <Paper sx={{ p: 2 }}>
+      <Grid container spacing={2} alignItems="flex-end">
         {/* Search */}
-        <div className="lg:col-span-1">
-          <label className="mb-1 block text-xs text-text-secondary">
-            Search
-          </label>
-          <input
-            type="text"
+        <Grid size={{ xs: 12, sm: 6, lg: 2 }}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Search"
             placeholder="Ticker or company…"
             value={filters.search}
             onChange={(e) => update({ search: e.target.value })}
-            className="w-full rounded border border-border bg-bg-card px-3 py-1.5 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent focus:outline-none"
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <SearchIcon sx={{ mr: 0.5, color: "text.secondary", fontSize: 18 }} />
+                ),
+              },
+            }}
           />
-        </div>
+        </Grid>
 
         {/* Sector */}
-        <div>
-          <label className="mb-1 block text-xs text-text-secondary">
-            Sector
-          </label>
-          <select
-            value={filters.sector ?? ""}
-            onChange={(e) =>
-              update({ sector: e.target.value || null })
-            }
-            className="w-full rounded border border-border bg-bg-card px-3 py-1.5 text-sm text-text-primary focus:border-accent focus:outline-none"
-          >
-            <option value="">All Sectors</option>
-            {sectors.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Grid size={{ xs: 12, sm: 6, lg: 2 }}>
+          <FormControl size="small" fullWidth>
+            <InputLabel>Sector</InputLabel>
+            <Select
+              label="Sector"
+              value={filters.sector ?? ""}
+              onChange={(e) => update({ sector: e.target.value || null })}
+            >
+              <MenuItem value="">All Sectors</MenuItem>
+              {sectors.map((s) => (
+                <MenuItem key={s} value={s}>
+                  {s}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
 
         {/* Min Return */}
-        <div>
-          <label className="mb-1 block text-xs text-text-secondary">
-            Min Return %
-          </label>
-          <input
+        <Grid size={{ xs: 6, sm: 4, lg: 2 }}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Min Return %"
             type="number"
-            step="0.5"
-            placeholder="—"
+            inputProps={{ step: 0.5 }}
             value={filters.minReturn ?? ""}
             onChange={(e) =>
-              update({
-                minReturn: e.target.value ? Number(e.target.value) : null,
-              })
+              update({ minReturn: e.target.value ? Number(e.target.value) : null })
             }
-            className="w-full rounded border border-border bg-bg-card px-3 py-1.5 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent focus:outline-none"
           />
-        </div>
+        </Grid>
 
         {/* Max Return */}
-        <div>
-          <label className="mb-1 block text-xs text-text-secondary">
-            Max Return %
-          </label>
-          <input
+        <Grid size={{ xs: 6, sm: 4, lg: 2 }}>
+          <TextField
+            size="small"
+            fullWidth
+            label="Max Return %"
             type="number"
-            step="0.5"
-            placeholder="—"
+            inputProps={{ step: 0.5 }}
             value={filters.maxReturn ?? ""}
             onChange={(e) =>
-              update({
-                maxReturn: e.target.value ? Number(e.target.value) : null,
-              })
+              update({ maxReturn: e.target.value ? Number(e.target.value) : null })
             }
-            className="w-full rounded border border-border bg-bg-card px-3 py-1.5 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent focus:outline-none"
           />
-        </div>
+        </Grid>
 
-        {/* Confidence slider */}
-        <div>
-          <label className="mb-1 block text-xs text-text-secondary">
-            Min Confidence:{" "}
-            <span className="text-text-primary">
-              {filters.minConfidence != null
-                ? filters.minConfidence.toFixed(2)
-                : "Any"}
-            </span>
-          </label>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.05}
-            value={filters.minConfidence ?? 0}
-            onChange={(e) => {
-              const v = Number(e.target.value);
-              update({ minConfidence: v > 0 ? v : null });
-            }}
-            className="mt-1 w-full accent-accent"
-          />
-        </div>
+        {/* Min Confidence slider */}
+        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+          <Box>
+            <Typography variant="caption" color="text.secondary">
+              Min Confidence:{" "}
+              <span style={{ color: "inherit" }}>
+                {filters.minConfidence != null
+                  ? filters.minConfidence.toFixed(2)
+                  : "Any"}
+              </span>
+            </Typography>
+            <Slider
+              size="small"
+              min={0}
+              max={1}
+              step={0.05}
+              value={filters.minConfidence ?? 0}
+              onChange={(_, v) => {
+                const val = v as number;
+                update({ minConfidence: val > 0 ? val : null });
+              }}
+              sx={{ mt: 1 }}
+            />
+          </Box>
+        </Grid>
 
         {/* Clear */}
-        <div className="flex items-end">
-          <button
-            onClick={clearAll}
+        <Grid size={{ xs: 12, sm: 2, lg: 1 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            fullWidth
             disabled={!hasActive}
-            className="w-full rounded bg-bg-card px-3 py-1.5 text-sm text-text-secondary transition-colors hover:bg-border hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+            onClick={clearAll}
           >
-            Clear Filters
-          </button>
-        </div>
-      </div>
-    </div>
+            Clear
+          </Button>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 }
