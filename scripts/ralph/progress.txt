@@ -170,3 +170,21 @@ Started: 2026-03-26
   - Both `playwright.config.ts` and `playwright.production.config.ts` include infra specs (70 tests total, 10 files each)
   - `--dry-run` flag not available in this Playwright version; `--list` is the equivalent check
 ---
+
+## 2026-03-26 - E2E-013: Create comprehensive port-forward health-check and test orchestration script
+- Created `stock-prediction-platform/scripts/test-production.sh` — single entry point for all production E2E tests
+- Script supports flags: `--skip-infra`, `--skip-app`, `--report`
+- Step 1: Preflight — validates minikube running, kubectl context=minikube, jq/node/npx present, prints cluster summary
+- Step 2: Port-forwards — kills stale pf processes on target ports, starts 6 core + 2 optional (KFP, K8s dashboard); tracks PIDs in PF_PIDS array + /tmp/pf-prod-*.pid files; trap cleanup on EXIT
+- Step 3: Health-check loop — curl retry (3s interval, up to 60s) for each service; prints ready/unreachable; optional services allowed to fail
+- Step 4: Environment exports — BASE_API_URL, GRAFANA_URL, PROMETHEUS_URL, MINIO_URL, KUBEFLOW_URL, K8S_DASHBOARD_URL; prints KUBERNETES_DASHBOARD_TOKEN generation instructions if not set
+- Step 5: Runs app tests (playwright.production.config.ts) then infra tests (playwright.infra.config.ts); each in separate npx calls; captures exit codes
+- Step 6: Prints summary with pass/fail per suite; offers HTML report opening via --report flag
+- Cleanup trap kills all PF_PIDS and removes /tmp/pf-prod-*.pid files on exit
+- **Learnings for future iterations:**
+  - Service names in actual cluster: `svc/frontend` (not `svc/frontend-service`), `svc/stock-api` (not `svc/stock-api-service`) — match deploy-all.sh names
+  - Grafana mapped to port 3001 (host) → 3000 (pod) to avoid conflict with frontend on 3000
+  - MinIO console (9001) and API (9000) need separate port-forward entries; deploy-all.sh only does console
+  - `PF_PIDS` array approach is cleaner than /tmp PID files for in-process tracking
+  - `bash -n` validates shell syntax; confirmed script runs gracefully without minikube missing
+---
