@@ -203,3 +203,44 @@ Started: 2026-03-26
   - `typeof value` check is more reliable than `value > 0` for numeric fields (handles 0 or negative correctly)
   - 78 total tests in both configs (8 new from api-health.spec.ts added to 70 existing)
 ---
+
+## 2026-03-26 - E2E-015: Ensure Grafana dashboards have correct panel definitions and Kafka metrics tracked
+- **grafana-dashboard-api-health.yaml**: added "Active Pods" stat panel (`count(up{kubernetes_namespace="ingestion"})`) and "Pods by Namespace" timeseries panel in new Cluster row (y=25+)
+- **grafana-dashboard-ml-perf.yaml**: added "Last Training Time" (`model_last_trained_timestamp * 1000` with dateTimeAsIso unit), "Drift Severity" (drift_severity_score + drift_events_total), "Inference Errors" timeseries (drift_events_total by severity), "Predictions" timeseries (predictions_generated_total + prediction_requests_total) in new Training & Drift row (y=27+)
+- **grafana-dashboard-kafka.yaml**: updated Consumer Lag PromQL to use kafka_consumer_lag_sum (primary), kafka_consumergroup_lag (secondary), consumer_lag (fallback) as separate targets; updated Messages Consumed Rate to include kafka_consumer_records_consumed_total; added "Pod CPU Usage" and "Pod Memory Usage" panels using container_cpu_usage_seconds_total and container_memory_working_set_bytes
+- **prometheus-configmap.yaml**: added `kafka-exporter` scrape job (label-based pod discovery, port 9308) and `strimzi-kafka` scrape job (annotation-based, namespaces: kafka/processing)
+- monitoring/prometheus.yml is root-owned and cannot be edited without sudo — K8s configmap is the primary artifact for Kubernetes deployments
+- **Learnings for future iterations:**
+  - Dashboard JSON embedded in YAML ConfigMaps: validate with `python3 -c "import yaml,json; json.loads(yaml.safe_load(open(f))['data'][key])"`
+  - Grafana panel grid positions must not overlap — increment y by panel height before adding new row/panel
+  - Prometheus scrape for Strimzi Kafka: use `__meta_kubernetes_pod_label_strimzi_io_kind` regex `Kafka|KafkaConnect|KafkaBridge` as keep filter
+  - kafka-exporter default port is 9308 (not 9090 or 8080)
+  - monitoring/prometheus.yml (docker-compose) is root-owned — K8s prometheus-configmap.yaml is the canonical source for Kubernetes deployments
+---
+
+## 2026-03-26 - E2E-016: Add K8s Dashboard and Kubeflow deployment manifests if missing
+- Created `k8s/dashboard/kubernetes-dashboard.yaml`: K8s Dashboard v2.7.0 manifest (Namespace, ServiceAccount, Service, Secrets, ConfigMap, Role/ClusterRole, RoleBinding/ClusterRoleBinding, Deployment, metrics-scraper Deployment/Service); uses imagePullPolicy: IfNotPresent for local minikube
+- Created `k8s/ml/kubeflow/kfp-compile-job.yaml`: KFP compile job that uses kfp SDK init container + compiles pipeline + uploads to MinIO via boto3; reads MINIO_ENDPOINT/MINIO_ACCESS_KEY/MINIO_SECRET_KEY from configmap/secret; gracefully logs warning if MinIO upload fails
+- Updated `scripts/deploy-all.sh`: added K8s Dashboard deployment section after Phase 39 (Loki/Promtail); creates dashboard-admin ServiceAccount + ClusterRoleBinding; generates and prints KUBERNETES_DASHBOARD_TOKEN
+- `scripts/submit-pipeline.sh` already existed and is comprehensive
+- `k8s/ml/kubeflow/compile-pipeline-job.yaml` already existed (emptyDir variant); `kfp-compile-job.yaml` is the MinIO-persisting variant
+- **Learnings for future iterations:**
+  - K8s Dashboard access in deploy-all.sh uses `kubectl proxy --port=8001` (not direct port-forward) — URL is http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+  - `kubectl create token` requires the ServiceAccount to exist and the namespace to be ready
+  - K8s Dashboard v2.7.0 uses kubernetesui/dashboard:v2.7.0 + kubernetesui/metrics-scraper:v1.0.8 images
+  - kfp-compile-job.yaml differs from compile-pipeline-job.yaml: uploads to MinIO bucket (model-artifacts/pipelines/), doesn't require kubectl cp after job completes
+---
+
+## 2026-03-26 - UI-001: Migrate frontend to Material UI (MUI) v5 — install, theme, and replace Tailwind primitives
+- Installed: @mui/material, @mui/icons-material, @emotion/react, @emotion/styled, @mui/x-data-grid, @mui/x-charts
+- Created `src/theme/index.ts`: Bloomberg Terminal dark theme (primary #00bcd4, bg #0a0e1a/#111827, IBM Plex Mono font)
+- Updated `src/main.tsx`: wrapped App in `<ThemeProvider theme={theme}><CssBaseline />`
+- Rewrote `src/components/layout/Layout.tsx`: MUI Box with permanent Drawer, no more Tailwind flex layout
+- Rewrote `src/components/layout/Sidebar.tsx`: MUI Drawer (220px permanent), ListItemButton+ListItemIcon with MUI icons, active state via borderLeft primary color
+- TypeScript: 0 errors; `npm run build` succeeds; 78 Playwright tests list without errors
+- **Learnings for future iterations:**
+  - Tailwind CSS is still present (for other components) — MUI and Tailwind coexist without conflict
+  - NavLink component prop on ListItemButton: use `component={NavLink} to={to}` directly (MUI supports polymorphic component prop)
+  - Active state detection: use `location.pathname === to` (useLocation hook) rather than NavLink's isActive callback — more reliable with MUI ListItemButton
+  - CssBaseline from MUI resets margin/padding — ensure body background is set via MUI theme (background.default) not Tailwind globals
+---

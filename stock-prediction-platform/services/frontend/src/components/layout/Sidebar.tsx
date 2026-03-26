@@ -1,72 +1,107 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import BubbleChartIcon from "@mui/icons-material/BubbleChart";
+import SsidChartIcon from "@mui/icons-material/SsidChart";
 import { useHealthCheck } from "@/api";
 
+const DRAWER_WIDTH = 220;
+
 const navItems = [
-  { to: "/dashboard", label: "Dashboard", icon: "📊" },
-  { to: "/models", label: "Models", icon: "🧠" },
-  { to: "/forecasts", label: "Forecasts", icon: "📈" },
-  { to: "/drift", label: "Drift", icon: "⚡" },
-  { to: "/backtest", label: "Backtest", icon: "🔬" },
+  { to: "/dashboard", label: "Dashboard", Icon: DashboardIcon },
+  { to: "/models", label: "Models", Icon: AccountTreeIcon },
+  { to: "/forecasts", label: "Forecasts", Icon: TrendingUpIcon },
+  { to: "/drift", label: "Drift", Icon: BubbleChartIcon },
+  { to: "/backtest", label: "Backtest", Icon: SsidChartIcon },
 ];
 
-interface SidebarProps {
-  onClose: () => void;
-}
-
-export default function Sidebar({ onClose }: SidebarProps) {
+export default function Sidebar() {
+  const location = useLocation();
   const { data: health } = useHealthCheck();
   const apiOnline = health?.status === "healthy";
 
   return (
-    <div className="flex h-full flex-col">
-      {/* Brand */}
-      <div className="flex h-14 items-center border-b border-border px-4">
-        <span className="text-lg font-bold text-accent">◆</span>
-        <span className="ml-2 text-lg font-semibold text-text-primary">
-          Stock Prediction
-        </span>
-        {/* Mobile close */}
-        <button
-          onClick={onClose}
-          className="ml-auto text-text-secondary hover:text-text-primary lg:hidden"
-          aria-label="Close sidebar"
+    <Drawer
+      variant="permanent"
+      sx={{
+        width: DRAWER_WIDTH,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: DRAWER_WIDTH,
+          boxSizing: 'border-box',
+          bgcolor: 'background.paper',
+          borderRight: '1px solid rgba(0,188,212,0.12)',
+        },
+      }}
+    >
+      <Toolbar sx={{ minHeight: 56, px: 2 }}>
+        <Typography
+          variant="h6"
+          sx={{ color: 'primary.main', fontWeight: 700, letterSpacing: '0.05em' }}
         >
-          ✕
-        </button>
-      </div>
+          S&P 500 AI
+        </Typography>
+      </Toolbar>
+      <Divider sx={{ borderColor: 'rgba(0,188,212,0.12)' }} />
 
-      {/* Navigation */}
-      <nav className="flex-1 space-y-1 px-3 py-4">
-        {navItems.map(({ to, label, icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            onClick={onClose}
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "border-l-2 border-accent bg-bg-card text-accent"
-                  : "text-text-secondary hover:bg-bg-card/50 hover:text-text-primary"
-              }`
-            }
-          >
-            <span className="text-base">{icon}</span>
-            {label}
-          </NavLink>
-        ))}
-      </nav>
+      <List sx={{ flex: 1, py: 1 }}>
+        {navItems.map(({ to, label, Icon }) => {
+          const isActive = location.pathname === to || location.pathname.startsWith(to + '/');
+          return (
+            <ListItemButton
+              key={to}
+              component={NavLink}
+              to={to}
+              sx={{
+                mx: 1,
+                borderRadius: 1,
+                mb: 0.5,
+                borderLeft: isActive ? '2px solid' : '2px solid transparent',
+                borderColor: isActive ? 'primary.main' : 'transparent',
+                bgcolor: isActive ? 'rgba(0,188,212,0.08)' : 'transparent',
+                '&:hover': { bgcolor: 'rgba(0,188,212,0.05)' },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 36, color: isActive ? 'primary.main' : 'text.secondary' }}>
+                <Icon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText
+                primary={label}
+                primaryTypographyProps={{
+                  variant: 'body2',
+                  fontWeight: isActive ? 600 : 400,
+                  color: isActive ? 'primary.main' : 'text.secondary',
+                }}
+              />
+            </ListItemButton>
+          );
+        })}
+      </List>
 
-      {/* API status */}
-      <div className="border-t border-border px-4 py-3">
-        <div className="flex items-center gap-2 text-xs text-text-secondary">
-          <span
-            className={`inline-block h-2 w-2 rounded-full ${
-              apiOnline ? "bg-profit" : "bg-loss"
-            }`}
-          />
-          API {apiOnline ? "Connected" : "Offline"}
-        </div>
-      </div>
-    </div>
+      <Divider sx={{ borderColor: 'rgba(0,188,212,0.12)' }} />
+      <Box sx={{ px: 2, py: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box
+          sx={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            bgcolor: apiOnline ? 'success.main' : 'error.main',
+          }}
+        />
+        <Typography variant="caption" color="text.secondary">
+          API {apiOnline ? 'Connected' : 'Offline'}
+        </Typography>
+      </Box>
+    </Drawer>
   );
 }
