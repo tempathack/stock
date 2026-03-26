@@ -129,3 +129,17 @@ Started: 2026-03-26
   - Empty state text: 'No Objects', 'empty', 'No items', 'Nothing here' — check all variants
   - test.fixme() used (not test.fail()) when bucket is empty — infrastructure not bootstrapped is expected
 ---
+
+## 2026-03-26 - E2E-010: Kubeflow spec — verify pipeline registered and at least one run completed
+- Expanded `services/frontend/e2e/infra/kubeflow.spec.ts` with 3 new test suites
+- **'Pipeline registered'** (60s): navigates via hash to /#/pipelines, waits for table rows or empty state, if 0 rows logs instructions and calls test.fixme(); if ≥1 row asserts stock/training/prediction name match, clicks row, asserts graph SVG renders, asserts ≥5 step nodes visible; uses test.fixme() when graph renders with <5 steps
+- **'Pipeline run history'** (60s): navigates to /#/runs, waits for rows or empty state, if 0 runs calls test.fixme(); if ≥1 run asserts count, checks most recent status (warns on Failed), clicks Succeeded run if present, asserts detail graph renders, asserts ≥3 Succeeded step chips; uses test.fixme() when <3 succeeded chips
+- **'Experiments'** (45s): navigates to /#/experiments, asserts page renders, if rows present asserts ≥1 and no error state; no data is acceptable for fresh install
+- All 3 suites preserved existing top-level beforeAll skip and serial mode; 34 total infra tests listed without errors
+- **Learnings for future iterations:**
+  - KFP hash routing: use `page.goto(URL + '/#/route')` — never waitForURL for hash changes
+  - KFP graph node selectors: `svg g.node`, `.graph-node`, `.kfp-graph-component` — try multiple
+  - KFP status chip selector: `[title='Succeeded']` or `.MuiChip-label:text('Succeeded')` or `[data-status='Succeeded']`
+  - All KFP suites use test.fixme() (not test.fail()) when no data — freshly installed KFP without runs is expected
+  - Row selectors for KFP tables: `table tbody tr, .pipeline-list-item, [data-testid='pipeline-row']` — need all three for different KFP versions
+---
