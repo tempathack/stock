@@ -1,5 +1,6 @@
 import type { TreemapSectorGroup } from "@/api";
 import { changePctToColor } from "@/utils/dashboardUtils";
+import { Box, ButtonBase, Divider, Paper, Stack, Typography } from "@mui/material";
 
 interface MobileMarketListProps {
   data: TreemapSectorGroup[];
@@ -14,64 +15,94 @@ export default function MobileMarketList({
 }: MobileMarketListProps) {
   if (data.length === 0) {
     return (
-      <div className="rounded-lg border-2 border-dashed border-border bg-bg-surface p-8 text-center text-text-secondary">
-        No market data available
-      </div>
+      <Box
+        sx={{
+          border: "2px dashed",
+          borderColor: "divider",
+          borderRadius: 1,
+          p: 4,
+          textAlign: "center",
+        }}
+      >
+        <Typography color="text.secondary">No market data available</Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-2">
+    <Stack spacing={1}>
       {data.map((sector) => (
-        <div
-          key={sector.name}
-          className="rounded-lg border border-border bg-bg-surface"
-        >
-          <div className="border-b border-border px-3 py-2">
-            <span className="text-xs font-bold uppercase tracking-wide text-text-secondary">
+        <Paper key={sector.name} variant="outlined">
+          <Box sx={{ borderBottom: "1px solid", borderColor: "divider", px: 1.5, py: 1 }}>
+            <Typography
+              variant="caption"
+              fontWeight={700}
+              color="text.secondary"
+              sx={{ textTransform: "uppercase", letterSpacing: "0.08em" }}
+            >
               {sector.name}
-            </span>
-          </div>
-          <div className="divide-y divide-border/50">
+            </Typography>
+          </Box>
+          <Stack divider={<Divider />}>
             {sector.children.map((stock) => {
               const isSelected = stock.ticker === selectedTicker;
               const pct = stock.dailyChangePct ?? 0;
               return (
-                <button
+                <ButtonBase
                   key={stock.ticker}
                   onClick={() => onSelectTicker(stock.ticker)}
-                  className={`flex w-full items-center justify-between px-3 py-2 text-left transition-colors hover:bg-bg-card/40 ${
-                    isSelected
-                      ? "border-l-2 border-l-accent bg-accent/10"
-                      : ""
-                  }`}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    px: 1.5,
+                    py: 1,
+                    textAlign: "left",
+                    width: "100%",
+                    borderLeft: isSelected ? "2px solid" : "2px solid transparent",
+                    borderLeftColor: isSelected ? "primary.main" : "transparent",
+                    bgcolor: isSelected ? "primary.main" : "transparent",
+                    "&:hover": { bgcolor: "action.hover" },
+                  }}
                 >
-                  <div className="min-w-0 flex-1">
-                    <span className="font-semibold text-accent">
-                      {stock.ticker}
-                    </span>
-                    <span className="ml-2 truncate text-xs text-text-secondary">
-                      {stock.name}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3 text-right">
-                    <span className="font-mono text-sm text-text-primary">
-                      ${stock.lastClose.toFixed(2)}
-                    </span>
-                    <span
-                      className="min-w-[60px] text-right font-mono text-xs font-semibold"
-                      style={{ color: changePctToColor(pct) }}
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      fontWeight={700}
+                      color="primary.main"
                     >
-                      {pct >= 0 ? "+" : ""}
-                      {pct.toFixed(2)}%
-                    </span>
-                  </div>
-                </button>
+                      {stock.ticker}
+                    </Typography>
+                    <Typography
+                      component="span"
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ ml: 1 }}
+                      noWrap
+                    >
+                      {stock.name}
+                    </Typography>
+                  </Box>
+                  <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Typography variant="body2" fontFamily="monospace">
+                      ${stock.lastClose.toFixed(2)}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      fontFamily="monospace"
+                      fontWeight={600}
+                      sx={{ minWidth: 60, textAlign: "right", color: changePctToColor(pct) }}
+                    >
+                      {pct >= 0 ? "+" : ""}{pct.toFixed(2)}%
+                    </Typography>
+                  </Stack>
+                </ButtonBase>
               );
             })}
-          </div>
-        </div>
+          </Stack>
+        </Paper>
       ))}
-    </div>
+    </Stack>
   );
 }

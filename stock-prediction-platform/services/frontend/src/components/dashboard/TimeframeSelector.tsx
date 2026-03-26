@@ -1,4 +1,5 @@
 import type { Timeframe } from "@/api";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 interface TimeframeSelectorProps {
   value: Timeframe;
@@ -12,20 +13,17 @@ export default function TimeframeSelector({
   onChange,
 }: TimeframeSelectorProps) {
   return (
-    <div className="flex gap-1 rounded-lg bg-bg-card p-1 w-fit">
+    <ToggleButtonGroup
+      value={value}
+      exclusive
+      onChange={(_, v: Timeframe | null) => { if (v) onChange(v); }}
+      size="small"
+    >
       {OPTIONS.map((tf) => (
-        <button
-          key={tf}
-          onClick={() => onChange(tf)}
-          className={`rounded px-3 py-1 text-sm transition-colors ${
-            tf === value
-              ? "bg-accent font-medium text-white"
-              : "text-text-secondary hover:text-text-primary"
-          }`}
-        >
+        <ToggleButton key={tf} value={tf} sx={{ px: 1.5, py: 0.5, fontSize: "0.75rem" }}>
           {tf}
-        </button>
+        </ToggleButton>
       ))}
-    </div>
+    </ToggleButtonGroup>
   );
 }

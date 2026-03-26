@@ -10,6 +10,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import type { ShapBeeswarmPoint } from "@/api";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 
 interface ShapBeeswarmPlotProps {
   data: ShapBeeswarmPoint[];
@@ -73,8 +74,10 @@ export default function ShapBeeswarmPlot({
   );
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <h3 className="mb-3 text-sm font-medium text-text-primary">{title}</h3>
+    <Paper sx={{ p: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
+        {title}
+      </Typography>
       <ResponsiveContainer width="100%" height={400}>
         <ScatterChart margin={{ left: 10, right: 20, top: 5, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2a4a" />
@@ -119,15 +122,21 @@ export default function ShapBeeswarmPlot({
       </ResponsiveContainer>
 
       {/* Color legend */}
-      <div className="mt-2 flex items-center justify-center gap-2 text-xs text-text-secondary">
-        <span>Low</span>
-        <div
-          className="h-2 w-24 rounded"
-          style={{ background: "linear-gradient(to right, #4da6ff, #e94560)" }}
+      <Stack direction="row" spacing={1} justifyContent="center" alignItems="center" sx={{ mt: 1 }}>
+        <Typography variant="caption" color="text.secondary">Low</Typography>
+        <Box
+          sx={{
+            height: 8,
+            width: 96,
+            borderRadius: 1,
+            background: "linear-gradient(to right, #4da6ff, #e94560)",
+          }}
         />
-        <span>High</span>
-        <span className="ml-1 text-text-secondary/60">Feature Value</span>
-      </div>
-    </div>
+        <Typography variant="caption" color="text.secondary">High</Typography>
+        <Typography variant="caption" color="text.secondary" sx={{ ml: 0.5, opacity: 0.6 }}>
+          Feature Value
+        </Typography>
+      </Stack>
+    </Paper>
   );
 }

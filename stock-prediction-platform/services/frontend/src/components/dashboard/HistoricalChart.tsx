@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import type { IndicatorValues, Timeframe } from "@/api";
 import TimeframeSelector from "./TimeframeSelector";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 
 interface HistoricalChartProps {
   series: IndicatorValues[];
@@ -99,22 +100,20 @@ export default function HistoricalChart({
 
   if (series.length === 0) {
     return (
-      <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border bg-bg-surface p-12">
-        <p className="text-text-secondary">No historical data available</p>
-      </div>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", border: "2px dashed", borderColor: "divider", borderRadius: 1, p: 6 }}>
+        <Typography color="text.secondary">No historical data available</Typography>
+      </Box>
     );
   }
 
   const forecastIdx = data.length - 1;
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-medium text-text-primary">
-          {ticker} — Historical
-        </h3>
+    <Paper sx={{ p: 2 }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5 }}>
+        <Typography variant="subtitle2">{ticker} — Historical</Typography>
         <TimeframeSelector value={timeframe} onChange={setTimeframe} />
-      </div>
+      </Stack>
       <ResponsiveContainer width="100%" height={360}>
         <ComposedChart
           data={data}
@@ -241,6 +240,6 @@ export default function HistoricalChart({
           )}
         </ComposedChart>
       </ResponsiveContainer>
-    </div>
+    </Paper>
   );
 }

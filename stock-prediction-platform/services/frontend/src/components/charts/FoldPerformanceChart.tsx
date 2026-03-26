@@ -9,6 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import type { FoldMetric } from "@/api";
+import { Paper, Typography } from "@mui/material";
 
 interface FoldPerformanceChartProps {
   data: FoldMetric[];
@@ -22,10 +23,10 @@ export default function FoldPerformanceChart({ data, modelName }: FoldPerformanc
   }));
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <h3 className="mb-3 text-sm font-medium text-text-primary">
+    <Paper sx={{ p: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
         Fold-by-Fold Performance — {modelName}
-      </h3>
+      </Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData} margin={{ left: 10, right: 10, top: 5, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#2a2a4a" />
@@ -66,6 +67,6 @@ export default function FoldPerformanceChart({ data, modelName }: FoldPerformanc
           <Bar yAxisId="right" dataKey="r2" fill="#00d4aa" name="R²" radius={[2, 2, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </Paper>
   );
 }

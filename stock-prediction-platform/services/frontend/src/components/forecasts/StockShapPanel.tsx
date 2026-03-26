@@ -1,5 +1,6 @@
 import { ShapBarChart } from "@/components/charts";
 import { generateMockShapImportance } from "@/utils/mockModelData";
+import { Box, Paper, Typography } from "@mui/material";
 
 interface StockShapPanelProps {
   ticker: string;
@@ -14,30 +15,32 @@ export default function StockShapPanel({
 
   if (importance.length === 0) {
     return (
-      <div className="rounded-lg border border-border bg-bg-surface p-4 text-center text-sm text-text-secondary">
-        SHAP analysis not available for this stock.
-      </div>
+      <Paper sx={{ p: 2, textAlign: "center" }}>
+        <Typography variant="body2" color="text.secondary">
+          SHAP analysis not available for this stock.
+        </Typography>
+      </Paper>
     );
   }
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <div className="mb-3">
-        <h3 className="text-sm font-medium text-text-primary">
-          Feature Contribution — {ticker}
-        </h3>
-        <p className="text-xs text-text-secondary">Model: {modelName}</p>
-      </div>
+    <Paper sx={{ p: 2 }}>
+      <Box sx={{ mb: 1.5 }}>
+        <Typography variant="subtitle2">Feature Contribution — {ticker}</Typography>
+        <Typography variant="caption" color="text.secondary">
+          Model: {modelName}
+        </Typography>
+      </Box>
 
       <ShapBarChart
         data={importance}
         title={`SHAP Feature Importance for ${ticker}`}
       />
 
-      <p className="mt-3 text-xs text-text-secondary">
-        Features driving the 7-day prediction. Higher bars indicate stronger
-        influence on the forecast.
-      </p>
-    </div>
+      <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1.5 }}>
+        Features driving the 7-day prediction. Higher bars indicate stronger influence on the
+        forecast.
+      </Typography>
+    </Paper>
   );
 }

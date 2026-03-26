@@ -1,5 +1,6 @@
 import { useMemo, useCallback, useState, useEffect } from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import type { TreemapSectorGroup } from "@/api";
 import { changePctToColor } from "@/utils/dashboardUtils";
 import MobileMarketList from "./MobileMarketList";
@@ -129,19 +130,19 @@ function TreemapTooltipContent({
   const pct = d.dailyChangePct as number;
 
   return (
-    <div style={tooltipStyle} className="px-3 py-2">
-      <p className="font-bold">
+    <Box style={tooltipStyle} sx={{ px: 1.5, py: 1 }}>
+      <Typography variant="body2" fontWeight={700}>
         {ticker} — {name}
-      </p>
-      <p className="text-xs opacity-80">{sector}</p>
-      <p className="mt-1">
+      </Typography>
+      <Typography variant="caption" sx={{ opacity: 0.8 }}>{sector}</Typography>
+      <Typography variant="body2" sx={{ mt: 0.5 }}>
         ${lastClose.toFixed(2)}{" "}
-        <span style={{ color: pct >= 0 ? "#16a34a" : "#dc2626" }}>
+        <Box component="span" sx={{ color: pct >= 0 ? "#16a34a" : "#dc2626" }}>
           ({pct >= 0 ? "+" : ""}
           {pct.toFixed(2)}%)
-        </span>
-      </p>
-    </div>
+        </Box>
+      </Typography>
+    </Box>
   );
 }
 
@@ -201,42 +202,25 @@ export default function MarketTreemap({
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border bg-bg-surface p-12">
-        <p className="text-text-secondary">No market data available</p>
-      </div>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", border: "2px dashed", borderColor: "divider", borderRadius: 1, p: 6 }}>
+        <Typography color="text.secondary">No market data available</Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-medium text-text-primary">
-          S&amp;P 500 Market Treemap
-        </h3>
-        <div className="flex items-center gap-2 text-xs text-text-secondary">
-          <span className="flex items-center gap-1">
-            <span
-              className="inline-block h-2.5 w-2.5 rounded-sm"
-              style={{ backgroundColor: "#dc2626" }}
-            />
-            Loss
-          </span>
-          <span className="flex items-center gap-1">
-            <span
-              className="inline-block h-2.5 w-2.5 rounded-sm"
-              style={{ backgroundColor: "#4b5563" }}
-            />
-            Flat
-          </span>
-          <span className="flex items-center gap-1">
-            <span
-              className="inline-block h-2.5 w-2.5 rounded-sm"
-              style={{ backgroundColor: "#16a34a" }}
-            />
-            Gain
-          </span>
-        </div>
-      </div>
+    <Paper sx={{ p: 2 }}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5 }}>
+        <Typography variant="subtitle2">S&amp;P 500 Market Treemap</Typography>
+        <Stack direction="row" spacing={1} alignItems="center">
+          {[{ color: "#dc2626", label: "Loss" }, { color: "#4b5563", label: "Flat" }, { color: "#16a34a", label: "Gain" }].map(({ color, label }) => (
+            <Stack key={label} direction="row" spacing={0.5} alignItems="center">
+              <Box sx={{ width: 10, height: 10, borderRadius: 0.5, bgcolor: color }} />
+              <Typography variant="caption" color="text.secondary">{label}</Typography>
+            </Stack>
+          ))}
+        </Stack>
+      </Stack>
       <ResponsiveContainer width="100%" height={height}>
         <Treemap
           data={treemapData}
@@ -248,6 +232,6 @@ export default function MarketTreemap({
           <Tooltip content={<TreemapTooltipContent />} />
         </Treemap>
       </ResponsiveContainer>
-    </div>
+    </Paper>
   );
 }

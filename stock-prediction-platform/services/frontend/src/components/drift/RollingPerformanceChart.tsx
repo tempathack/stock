@@ -9,6 +9,7 @@ import {
   Legend,
 } from "recharts";
 import type { RollingPerformancePoint } from "@/api";
+import { Box, Paper, Typography } from "@mui/material";
 
 interface RollingPerformanceChartProps {
   data: RollingPerformancePoint[];
@@ -30,95 +31,96 @@ const fmtDate = (d: string) => {
 export default function RollingPerformanceChart({ data }: RollingPerformanceChartProps) {
   if (data.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-border bg-bg-surface p-6 text-center text-text-secondary">
-        No performance data available
-      </div>
+      <Box
+        sx={{
+          p: 3,
+          textAlign: "center",
+          border: "1px dashed",
+          borderColor: "divider",
+          borderRadius: 1,
+        }}
+      >
+        <Typography color="text.secondary">No performance data available</Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-5">
-      <h3 className="text-sm font-semibold text-text-primary">Rolling Model Performance</h3>
-      <p className="mt-0.5 text-xs text-text-secondary">
-        30-day rolling RMSE, MAE, and Directional Accuracy
-      </p>
-
-      <div className="mt-4">
-        <ResponsiveContainer width="100%" height={320}>
-          <ComposedChart data={data} margin={{ left: 10, right: 20, top: 10, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#2a2a4a" />
-            <XAxis
-              dataKey="date"
-              tickFormatter={fmtDate}
-              tick={{ fill: "#a0a0a0", fontSize: 10 }}
-              axisLine={{ stroke: "#2a2a4a" }}
-            />
-            <YAxis
-              yAxisId="left"
-              domain={["auto", "auto"]}
-              tick={{ fill: "#a0a0a0", fontSize: 10 }}
-              axisLine={{ stroke: "#2a2a4a" }}
-              label={{ value: "Error", angle: -90, position: "insideLeft", fill: "#a0a0a0", fontSize: 11 }}
-            />
-            <YAxis
-              yAxisId="right"
-              orientation="right"
-              domain={[0, 1]}
-              tickFormatter={(v: number) => `${(v * 100).toFixed(0)}%`}
-              tick={{ fill: "#a0a0a0", fontSize: 10 }}
-              axisLine={{ stroke: "#2a2a4a" }}
-              label={{ value: "Accuracy", angle: 90, position: "insideRight", fill: "#a0a0a0", fontSize: 11 }}
-            />
-            <Tooltip
-              contentStyle={tooltipStyle}
-              labelFormatter={(label) => fmtDate(String(label))}
-              formatter={(value, name) => {
-                const v = Number(value);
-                if (name === "directionalAccuracy") {
-                  return [`${(v * 100).toFixed(1)}%`, "Dir. Accuracy"];
-                }
-                return [v.toFixed(4), String(name).toUpperCase()];
-              }}
-            />
-            <Legend
-              wrapperStyle={{ fontSize: 11, color: "#a0a0a0" }}
-              formatter={(value: string) => {
-                if (value === "rmse") return "RMSE";
-                if (value === "mae") return "MAE";
-                if (value === "directionalAccuracy") return "Directional Accuracy";
-                return value;
-              }}
-            />
-            <Line
-              type="monotone"
-              dataKey="rmse"
-              stroke="#e94560"
-              strokeWidth={2}
-              dot={false}
-              yAxisId="left"
-              isAnimationActive={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="mae"
-              stroke="#ffa726"
-              strokeWidth={2}
-              dot={false}
-              yAxisId="left"
-              isAnimationActive={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="directionalAccuracy"
-              stroke="#00d4aa"
-              strokeWidth={2}
-              dot={false}
-              yAxisId="right"
-              isAnimationActive={false}
-            />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+    <Paper elevation={0} sx={{ p: 2 }}>
+      <ResponsiveContainer width="100%" height={320}>
+        <ComposedChart data={data} margin={{ left: 10, right: 20, top: 10, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#2a2a4a" />
+          <XAxis
+            dataKey="date"
+            tickFormatter={fmtDate}
+            tick={{ fill: "#a0a0a0", fontSize: 10 }}
+            axisLine={{ stroke: "#2a2a4a" }}
+          />
+          <YAxis
+            yAxisId="left"
+            domain={["auto", "auto"]}
+            tick={{ fill: "#a0a0a0", fontSize: 10 }}
+            axisLine={{ stroke: "#2a2a4a" }}
+            label={{ value: "Error", angle: -90, position: "insideLeft", fill: "#a0a0a0", fontSize: 11 }}
+          />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            domain={[0, 1]}
+            tickFormatter={(v: number) => `${(v * 100).toFixed(0)}%`}
+            tick={{ fill: "#a0a0a0", fontSize: 10 }}
+            axisLine={{ stroke: "#2a2a4a" }}
+            label={{ value: "Accuracy", angle: 90, position: "insideRight", fill: "#a0a0a0", fontSize: 11 }}
+          />
+          <Tooltip
+            contentStyle={tooltipStyle}
+            labelFormatter={(label) => fmtDate(String(label))}
+            formatter={(value, name) => {
+              const v = Number(value);
+              if (name === "directionalAccuracy") {
+                return [`${(v * 100).toFixed(1)}%`, "Dir. Accuracy"];
+              }
+              return [v.toFixed(4), String(name).toUpperCase()];
+            }}
+          />
+          <Legend
+            wrapperStyle={{ fontSize: 11, color: "#a0a0a0" }}
+            formatter={(value: string) => {
+              if (value === "rmse") return "RMSE";
+              if (value === "mae") return "MAE";
+              if (value === "directionalAccuracy") return "Directional Accuracy";
+              return value;
+            }}
+          />
+          <Line
+            type="monotone"
+            dataKey="rmse"
+            stroke="#e94560"
+            strokeWidth={2}
+            dot={false}
+            yAxisId="left"
+            isAnimationActive={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="mae"
+            stroke="#ffa726"
+            strokeWidth={2}
+            dot={false}
+            yAxisId="left"
+            isAnimationActive={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="directionalAccuracy"
+            stroke="#00d4aa"
+            strokeWidth={2}
+            dot={false}
+            yAxisId="right"
+            isAnimationActive={false}
+          />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Paper>
   );
 }

@@ -11,6 +11,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import type { BacktestDataPoint } from "@/api";
+import { Typography } from "@mui/material";
 
 interface BacktestChartProps {
   series: BacktestDataPoint[];
@@ -34,11 +35,11 @@ export default function BacktestChart({ series, ticker }: BacktestChartProps) {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <h3 className="mb-3 text-sm font-medium text-text-primary">
+    <>
+      <Typography variant="subtitle2" gutterBottom>
         Actual vs Predicted — {ticker}
-      </h3>
-      <ResponsiveContainer width="100%" height={400}>
+      </Typography>
+      <ResponsiveContainer width="100%" height={380}>
         <ComposedChart
           data={chartData}
           margin={{ left: 10, right: 20, top: 5, bottom: 5 }}
@@ -128,6 +129,6 @@ export default function BacktestChart({ series, ticker }: BacktestChartProps) {
           />
         </ComposedChart>
       </ResponsiveContainer>
-    </div>
+    </>
   );
 }

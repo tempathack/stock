@@ -1,3 +1,5 @@
+import { Box, Button, Typography } from "@mui/material";
+
 interface ErrorFallbackProps {
   message?: string;
   onRetry?: () => void;
@@ -8,16 +10,26 @@ export default function ErrorFallback({
   onRetry,
 }: ErrorFallbackProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-bg-card p-8">
-      <p className="text-lg font-medium text-loss">{message}</p>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 1,
+        p: 4,
+      }}
+    >
+      <Typography color="error.main" variant="body1" fontWeight={500}>
+        {message}
+      </Typography>
       {onRetry && (
-        <button
-          onClick={onRetry}
-          className="mt-4 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/80"
-        >
+        <Button variant="contained" onClick={onRetry} sx={{ mt: 2 }}>
           Retry
-        </button>
+        </Button>
       )}
-    </div>
+    </Box>
   );
 }

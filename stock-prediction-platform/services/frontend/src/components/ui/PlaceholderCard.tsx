@@ -1,3 +1,5 @@
+import { Box, Chip, Typography } from "@mui/material";
+
 interface PlaceholderCardProps {
   title: string;
   phase: number;
@@ -5,11 +7,22 @@ interface PlaceholderCardProps {
 
 export default function PlaceholderCard({ title, phase }: PlaceholderCardProps) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-bg-surface p-12">
-      <p className="text-lg font-medium text-text-secondary">{title}</p>
-      <span className="mt-2 rounded-full bg-bg-card px-3 py-1 text-xs text-text-secondary">
-        Coming in Phase {phase}
-      </span>
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "2px dashed",
+        borderColor: "divider",
+        borderRadius: 1,
+        p: 6,
+      }}
+    >
+      <Typography variant="body1" color="text.secondary" fontWeight={500}>
+        {title}
+      </Typography>
+      <Chip label={`Coming in Phase ${phase}`} size="small" sx={{ mt: 1 }} />
+    </Box>
   );
 }

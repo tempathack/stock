@@ -10,6 +10,7 @@ import {
   Cell,
 } from "recharts";
 import type { CandlePoint, WebSocketPriceUpdate } from "@/api";
+import { Box, Paper, Typography } from "@mui/material";
 
 interface CandlestickChartProps {
   candles: CandlePoint[];
@@ -167,25 +168,35 @@ export default function CandlestickChart({
 
   if (candles.length === 0) {
     return (
-      <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border bg-bg-surface p-12">
-        <p className="text-text-secondary">No intraday data available</p>
-      </div>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", border: "2px dashed", borderColor: "divider", borderRadius: 1, p: 6 }}>
+        <Typography color="text.secondary">No intraday data available</Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-4">
-      <h3 className="mb-1 text-sm font-medium text-text-primary">
+    <Paper sx={{ p: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
         {ticker} — Intraday
         {livePrice && (
-          <span
-            className="ml-2 inline-block h-2 w-2 rounded-full bg-green-500"
-            style={{ animation: "pulse 1.5s ease-in-out infinite" }}
+          <Box
+            component="span"
+            sx={{
+              ml: 1,
+              display: "inline-block",
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              bgcolor: "success.main",
+              animation: "pulse 1.5s ease-in-out infinite",
+            }}
             title="Live data active"
           />
         )}
-      </h3>
-      <p className="mb-3 text-xs text-text-secondary">{dateLabel}</p>
+      </Typography>
+      <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1.5 }}>
+        {dateLabel}
+      </Typography>
       <ResponsiveContainer width="100%" height={320}>
         <ComposedChart
           data={chartData}
@@ -231,6 +242,6 @@ export default function CandlestickChart({
           </Bar>
         </ComposedChart>
       </ResponsiveContainer>
-    </div>
+    </Paper>
   );
 }

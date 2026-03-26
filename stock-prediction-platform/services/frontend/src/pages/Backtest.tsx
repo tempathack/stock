@@ -1,6 +1,24 @@
 import { useState, useMemo } from "react";
-import { PageHeader } from "@/components/layout";
-import { LoadingSpinner, ErrorFallback, ExportButtons } from "@/components/ui";
+import {
+  Autocomplete,
+  Box,
+  ButtonGroup,
+  Button,
+  Container,
+  LinearProgress,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import LoadingButton from "@mui/lab/LoadingButton";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import { ErrorFallback } from "@/components/ui";
 import { BacktestChart, BacktestMetricsSummary } from "@/components/backtest";
 import { useBacktest, useMarketOverview } from "@/api";
 import { exportToCsv } from "@/utils/exportCsv";
@@ -33,156 +51,199 @@ export default function Backtest() {
     if (cleaned) setActiveTicker(cleaned);
   };
 
+  const handleExportCsv = () => {
+    if (!backtestQuery.data) return;
+    const d = backtestQuery.data;
+    const headers = ["Date", "Actual Price", "Predicted Price", "Error"];
+    const rows = d.series.map((p) => [
+      p.date,
+      p.actual_price.toFixed(2),
+      p.predicted_price.toFixed(2),
+      Math.abs(p.actual_price - p.predicted_price).toFixed(2),
+    ]);
+    exportToCsv(`backtest_${activeTicker}_${start}_${end}.csv`, headers, rows);
+  };
+
+  const handleExportPdf = () => {
+    if (!backtestQuery.data) return;
+    const d = backtestQuery.data;
+    const headers = ["Date", "Actual Price", "Predicted Price", "Error"];
+    const rows = d.series.map((p) => [
+      p.date,
+      p.actual_price.toFixed(2),
+      p.predicted_price.toFixed(2),
+      Math.abs(p.actual_price - p.predicted_price).toFixed(2),
+    ]);
+    exportTableToPdf(
+      `backtest_${activeTicker}_${start}_${end}.pdf`,
+      `Backtest Report — ${activeTicker}`,
+      headers,
+      rows,
+      [
+        `Model: ${d.model_name}`,
+        `Horizon: ${d.horizon}d`,
+        `Period: ${d.start_date} → ${d.end_date}`,
+        `RMSE: ${d.metrics.rmse.toFixed(4)}`,
+        `MAE: ${d.metrics.mae.toFixed(4)}`,
+        `Dir. Accuracy: ${d.metrics.directional_accuracy.toFixed(1)}%`,
+      ],
+    );
+  };
+
   return (
-    <>
-      <PageHeader
-        title="Backtest"
-        subtitle="Compare historical predictions against actual prices"
-      />
+    <Container maxWidth="xl" sx={{ py: 3 }}>
+      {backtestQuery.isLoading && (
+        <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }} />
+      )}
 
-      {/* Controls */}
-      <div className="mb-6 flex flex-wrap items-end gap-4">
-        {/* Ticker */}
-        <div className="w-full sm:w-auto">
-          <label className="mb-1 block text-xs text-text-secondary">
-            Ticker
-          </label>
-          <select
-            value={ticker}
-            onChange={(e) => setTicker(e.target.value)}
-            className="rounded-md border border-border bg-bg-card px-3 py-2 text-sm text-text-primary"
-          >
-            {tickers.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-        </div>
+      <Typography variant="h4" sx={{ mb: 3 }}>
+        Backtest
+      </Typography>
 
-        {/* Start */}
-        <div className="w-full sm:w-auto">
-          <label className="mb-1 block text-xs text-text-secondary">
-            Start Date
-          </label>
-          <input
-            type="date"
-            value={start}
-            onChange={(e) => setStart(e.target.value)}
-            className="rounded-md border border-border bg-bg-card px-3 py-2 text-sm text-text-primary"
-          />
-        </div>
+      {/* Control Panel */}
+      <Paper sx={{ p: 3, mb: 3 }}>
+        <Grid container spacing={2} alignItems="flex-end">
+          {/* Ticker */}
+          <Grid size={{ xs: 12, sm: 4, md: 3 }}>
+            <Autocomplete
+              options={tickers}
+              value={ticker}
+              onChange={(_, v) => setTicker(v ?? "AAPL")}
+              renderInput={(params) => (
+                <TextField {...params} label="Ticker" size="small" fullWidth />
+              )}
+              freeSolo
+            />
+          </Grid>
 
-        {/* End */}
-        <div className="w-full sm:w-auto">
-          <label className="mb-1 block text-xs text-text-secondary">
-            End Date
-          </label>
-          <input
-            type="date"
-            value={end}
-            onChange={(e) => setEnd(e.target.value)}
-            className="rounded-md border border-border bg-bg-card px-3 py-2 text-sm text-text-primary"
-          />
-        </div>
+          {/* Start Date */}
+          <Grid size={{ xs: 12, sm: 4, md: 2 }}>
+            <TextField
+              type="date"
+              label="Start Date"
+              value={start}
+              onChange={(e) => setStart(e.target.value)}
+              size="small"
+              fullWidth
+              slotProps={{ inputLabel: { shrink: true } }}
+            />
+          </Grid>
 
-        {/* Horizon */}
-        <div className="w-full sm:w-auto">
-          <label className="mb-1 block text-xs text-text-secondary">
-            Horizon (days)
-          </label>
-          <select
-            value={horizon ?? ""}
-            onChange={(e) =>
-              setHorizon(e.target.value ? Number(e.target.value) : undefined)
-            }
-            className="rounded-md border border-border bg-bg-card px-3 py-2 text-sm text-text-primary"
-          >
-            <option value="">All</option>
-            <option value="1">1d</option>
-            <option value="7">7d</option>
-            <option value="30">30d</option>
-          </select>
-        </div>
+          {/* End Date */}
+          <Grid size={{ xs: 12, sm: 4, md: 2 }}>
+            <TextField
+              type="date"
+              label="End Date"
+              value={end}
+              onChange={(e) => setEnd(e.target.value)}
+              size="small"
+              fullWidth
+              slotProps={{ inputLabel: { shrink: true } }}
+            />
+          </Grid>
 
-        {/* Run button */}
-        <button
-          onClick={handleRun}
-          className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent/80"
-        >
-          Run Backtest
-        </button>
+          {/* Horizon */}
+          <Grid size={{ xs: 12, sm: 4, md: 2 }}>
+            <Select
+              value={horizon != null ? String(horizon) : ""}
+              onChange={(e) => {
+                const v = e.target.value as string;
+                setHorizon(v !== "" ? Number(v) : undefined);
+              }}
+              size="small"
+              fullWidth
+              displayEmpty
+            >
+              <MenuItem value="">All Horizons</MenuItem>
+              <MenuItem value="1">1d</MenuItem>
+              <MenuItem value="7">7d</MenuItem>
+              <MenuItem value="30">30d</MenuItem>
+            </Select>
+          </Grid>
 
-        <ExportButtons
-          disabled={!backtestQuery.data}
-          onExportCsv={() => {
-            if (!backtestQuery.data) return;
-            const d = backtestQuery.data;
-            const headers = ["Date", "Actual Price", "Predicted Price", "Error"];
-            const rows = d.series.map((p) => [
-              p.date,
-              p.actual_price.toFixed(2),
-              p.predicted_price.toFixed(2),
-              Math.abs(p.actual_price - p.predicted_price).toFixed(2),
-            ]);
-            exportToCsv(`backtest_${activeTicker}_${start}_${end}.csv`, headers, rows);
-          }}
-          onExportPdf={() => {
-            if (!backtestQuery.data) return;
-            const d = backtestQuery.data;
-            const headers = ["Date", "Actual Price", "Predicted Price", "Error"];
-            const rows = d.series.map((p) => [
-              p.date,
-              p.actual_price.toFixed(2),
-              p.predicted_price.toFixed(2),
-              Math.abs(p.actual_price - p.predicted_price).toFixed(2),
-            ]);
-            exportTableToPdf(
-              `backtest_${activeTicker}_${start}_${end}.pdf`,
-              `Backtest Report \u2014 ${activeTicker}`,
-              headers,
-              rows,
-              [
-                `Model: ${d.model_name}`,
-                `Horizon: ${d.horizon}d`,
-                `Period: ${d.start_date} \u2192 ${d.end_date}`,
-                `RMSE: ${d.metrics.rmse.toFixed(4)}`,
-                `MAE: ${d.metrics.mae.toFixed(4)}`,
-                `Dir. Accuracy: ${d.metrics.directional_accuracy.toFixed(1)}%`,
-              ],
-            );
-          }}
-        />
-      </div>
+          {/* Run Button */}
+          <Grid size={{ xs: 12, sm: 4, md: 2 }}>
+            <Tooltip title="Run backtest with selected parameters">
+              <span style={{ display: "block" }}>
+                <LoadingButton
+                  loading={backtestQuery.isLoading}
+                  variant="contained"
+                  startIcon={<PlayArrowIcon />}
+                  onClick={handleRun}
+                  fullWidth
+                >
+                  Run Backtest
+                </LoadingButton>
+              </span>
+            </Tooltip>
+          </Grid>
 
-      {/* Results */}
-      {backtestQuery.isLoading && <LoadingSpinner />}
+          {/* Export Buttons */}
+          <Grid size={{ xs: 12, sm: 4, md: 1 }}>
+            <ButtonGroup variant="outlined" size="small" disabled={!backtestQuery.data}>
+              <Tooltip title="Export as CSV">
+                <span>
+                  <Button onClick={handleExportCsv} disabled={!backtestQuery.data}>
+                    <FileDownloadIcon fontSize="small" />
+                  </Button>
+                </span>
+              </Tooltip>
+              <Tooltip title="Export as PDF">
+                <span>
+                  <Button onClick={handleExportPdf} disabled={!backtestQuery.data}>
+                    <PictureAsPdfIcon fontSize="small" />
+                  </Button>
+                </span>
+              </Tooltip>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
+      </Paper>
+
+      {/* Error State */}
       {backtestQuery.isError && (
         <ErrorFallback
           message={`No backtest data available for ${activeTicker} in the selected range.`}
         />
       )}
+
+      {/* Results */}
       {backtestQuery.data && (
-        <div className="space-y-6">
+        <Box>
           {/* Model info banner */}
-          <div className="rounded-lg border border-border bg-bg-card px-4 py-3 text-sm text-text-secondary">
-            Model: <span className="font-medium text-text-primary">{backtestQuery.data.model_name}</span>
-            {" · "}Horizon: <span className="font-medium text-text-primary">{backtestQuery.data.horizon}d</span>
-            {" · "}Period: <span className="font-medium text-text-primary">{backtestQuery.data.start_date}</span>
-            {" → "}
-            <span className="font-medium text-text-primary">{backtestQuery.data.end_date}</span>
-          </div>
+          <Paper sx={{ px: 3, py: 1.5, mb: 3 }}>
+            <Typography variant="body2" color="text.secondary">
+              Model:{" "}
+              <Box component="span" sx={{ color: "text.primary", fontWeight: 600 }}>
+                {backtestQuery.data.model_name}
+              </Box>
+              {" · "}Horizon:{" "}
+              <Box component="span" sx={{ color: "text.primary", fontWeight: 600 }}>
+                {backtestQuery.data.horizon}d
+              </Box>
+              {" · "}Period:{" "}
+              <Box component="span" sx={{ color: "text.primary", fontWeight: 600 }}>
+                {backtestQuery.data.start_date}
+              </Box>
+              {" → "}
+              <Box component="span" sx={{ color: "text.primary", fontWeight: 600 }}>
+                {backtestQuery.data.end_date}
+              </Box>
+            </Typography>
+          </Paper>
 
           {/* Chart */}
-          <BacktestChart
-            series={backtestQuery.data.series}
-            ticker={activeTicker}
-          />
+          <Paper sx={{ p: 2, mb: 3, height: 450 }} data-testid="backtest-chart">
+            <BacktestChart
+              series={backtestQuery.data.series}
+              ticker={activeTicker}
+            />
+          </Paper>
 
           {/* Metrics summary */}
           <BacktestMetricsSummary metrics={backtestQuery.data.metrics} />
-        </div>
+        </Box>
       )}
-    </>
+    </Container>
   );
 }

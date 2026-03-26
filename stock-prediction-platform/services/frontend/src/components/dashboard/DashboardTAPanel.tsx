@@ -16,6 +16,7 @@ import {
   Legend,
 } from "recharts";
 import type { IndicatorValues } from "@/api";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 
 interface DashboardTAPanelProps {
   series: IndicatorValues[];
@@ -50,10 +51,12 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-bg-card p-3">
-      <h4 className="mb-2 text-sm font-medium text-text-secondary">{title}</h4>
+    <Paper sx={{ p: 1.5 }}>
+      <Typography variant="caption" fontWeight={600} color="text.secondary" display="block" sx={{ mb: 1 }}>
+        {title}
+      </Typography>
       {children}
-    </div>
+    </Paper>
   );
 }
 
@@ -515,23 +518,33 @@ export default function DashboardTAPanel({
 }: DashboardTAPanelProps) {
   if (series.length === 0) {
     return (
-      <div className="rounded-lg border-2 border-dashed border-border bg-bg-surface p-12 text-center text-text-secondary">
-        Select a stock to view technical indicators
-      </div>
+      <Box
+        sx={{
+          border: "2px dashed",
+          borderColor: "divider",
+          borderRadius: 1,
+          p: 6,
+          textAlign: "center",
+        }}
+      >
+        <Typography color="text.secondary">
+          Select a stock to view technical indicators
+        </Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-sm font-semibold text-text-secondary">
+    <Stack spacing={2}>
+      <Typography variant="subtitle2" color="text.secondary">
         {ticker} — Technical Indicators
-      </h3>
+      </Typography>
       <RsiChart series={series} />
       <MacdChart series={series} />
       <BollingerChart series={series} />
       <MovingAveragesChart series={series} />
       <VolumeChart series={series} />
       <VwapChart series={series} />
-    </div>
+    </Stack>
   );
 }

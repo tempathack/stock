@@ -15,6 +15,7 @@ import {
   ReferenceArea,
 } from "recharts";
 import type { IndicatorValues } from "@/api";
+import { Paper, Stack, Typography } from "@mui/material";
 
 interface IndicatorOverlayChartsProps {
   series: IndicatorValues[];
@@ -84,12 +85,12 @@ export default function IndicatorOverlayCharts({
   );
 
   return (
-    <div className="space-y-4">
+    <Stack spacing={2}>
       {/* RSI Chart */}
-      <div className="rounded-lg border border-border bg-bg-surface p-4">
-        <h4 className="mb-2 text-xs font-medium text-text-primary">
+      <Paper sx={{ p: 2 }}>
+        <Typography variant="caption" fontWeight={600} display="block" sx={{ mb: 1 }}>
           RSI (14)
-        </h4>
+        </Typography>
         <ResponsiveContainer width="100%" height={180}>
           <LineChart
             data={rsiData}
@@ -140,13 +141,13 @@ export default function IndicatorOverlayCharts({
             />
           </LineChart>
         </ResponsiveContainer>
-      </div>
+      </Paper>
 
       {/* MACD Chart */}
-      <div className="rounded-lg border border-border bg-bg-surface p-4">
-        <h4 className="mb-2 text-xs font-medium text-text-primary">
+      <Paper sx={{ p: 2 }}>
+        <Typography variant="caption" fontWeight={600} display="block" sx={{ mb: 1 }}>
           MACD (12/26/9)
-        </h4>
+        </Typography>
         <ResponsiveContainer width="100%" height={180}>
           <ComposedChart
             data={macdData}
@@ -202,13 +203,13 @@ export default function IndicatorOverlayCharts({
             />
           </ComposedChart>
         </ResponsiveContainer>
-      </div>
+      </Paper>
 
       {/* Bollinger Band Width */}
-      <div className="rounded-lg border border-border bg-bg-surface p-4">
-        <h4 className="mb-2 text-xs font-medium text-text-primary">
+      <Paper sx={{ p: 2 }}>
+        <Typography variant="caption" fontWeight={600} display="block" sx={{ mb: 1 }}>
           Bollinger Band Width
-        </h4>
+        </Typography>
         <ResponsiveContainer width="100%" height={180}>
           <AreaChart
             data={bbWidthData}
@@ -246,7 +247,7 @@ export default function IndicatorOverlayCharts({
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
-    </div>
+      </Paper>
+    </Stack>
   );
 }

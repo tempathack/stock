@@ -7,6 +7,11 @@ import {
   Tooltip,
 } from "recharts";
 import type { FeatureDistribution } from "@/api";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Box, Chip, Grid, Typography } from "@mui/material";
 
 interface FeatureDistributionChartProps {
   distributions: FeatureDistribution[];
@@ -32,82 +37,84 @@ function FeatureCard({ dist }: { dist: FeatureDistribution }) {
   );
 
   return (
-    <div
-      className={`rounded-lg border p-3 ${
-        dist.isDrifted ? "border-accent bg-bg-card" : "border-border bg-bg-card"
-      }`}
+    <Box
+      sx={{
+        border: "1px solid",
+        borderColor: dist.isDrifted ? "primary.main" : "divider",
+        borderRadius: 1,
+        p: 1.5,
+        bgcolor: "background.default",
+      }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-mono text-text-primary">{dist.feature}</span>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 0.5 }}>
+        <Typography variant="caption" fontFamily="monospace" color="text.primary">
+          {dist.feature}
+        </Typography>
         {dist.isDrifted ? (
-          <span className="rounded bg-accent/20 px-1.5 py-0.5 text-xs font-semibold uppercase text-accent">
-            Drifted
-          </span>
+          <Chip label="Drifted" color="primary" size="small" />
         ) : (
-          <span className="rounded bg-profit/20 px-1.5 py-0.5 text-xs font-semibold uppercase text-profit">
-            OK
-          </span>
+          <Chip label="OK" color="success" size="small" />
         )}
-      </div>
-
-      {/* Stats */}
-      <div className="mt-1 flex gap-3 text-xs font-mono text-text-secondary">
-        <span>KS: {dist.ksStat?.toFixed(3) ?? "—"}</span>
-        <span>PSI: {dist.psiValue?.toFixed(3) ?? "—"}</span>
-      </div>
-
-      {/* Histogram */}
-      <div className="mt-2">
-        <ResponsiveContainer width="100%" height={120}>
-          <BarChart data={mergedData} barCategoryGap="15%">
-            <XAxis
-              dataKey="bin"
-              tick={{ fontSize: 9, fill: "#a0a0a0" }}
-              axisLine={{ stroke: "#2a2a4a" }}
-              angle={-45}
-              textAnchor="end"
-              height={30}
-            />
-            <Tooltip
-              contentStyle={tooltipStyle}
-              formatter={(value, name) => [
-                Number(value),
-                name === "training" ? "Training" : "Recent",
-              ]}
-            />
-            <Bar dataKey="training" fill="#3b82f6" opacity={0.7} isAnimationActive={false} />
-            <Bar dataKey="recent" fill="#e94560" opacity={0.7} isAnimationActive={false} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+      </Box>
+      <Box sx={{ display: "flex", gap: 2, mb: 1 }}>
+        <Typography variant="caption" fontFamily="monospace" color="text.secondary">
+          KS: {dist.ksStat?.toFixed(3) ?? "—"}
+        </Typography>
+        <Typography variant="caption" fontFamily="monospace" color="text.secondary">
+          PSI: {dist.psiValue?.toFixed(3) ?? "—"}
+        </Typography>
+      </Box>
+      <ResponsiveContainer width="100%" height={120}>
+        <BarChart data={mergedData} barCategoryGap="15%">
+          <XAxis
+            dataKey="bin"
+            tick={{ fontSize: 9, fill: "#a0a0a0" }}
+            axisLine={{ stroke: "#2a2a4a" }}
+            angle={-45}
+            textAnchor="end"
+            height={30}
+          />
+          <Tooltip
+            contentStyle={tooltipStyle}
+            formatter={(value, name) => [
+              Number(value),
+              name === "training" ? "Training" : "Recent",
+            ]}
+          />
+          <Bar dataKey="training" fill="#3b82f6" opacity={0.7} isAnimationActive={false} />
+          <Bar dataKey="recent" fill="#e94560" opacity={0.7} isAnimationActive={false} />
+        </BarChart>
+      </ResponsiveContainer>
+    </Box>
   );
 }
 
 export default function FeatureDistributionChart({ distributions }: FeatureDistributionChartProps) {
   if (distributions.length === 0) {
-    return (
-      <div className="rounded-lg border border-dashed border-border bg-bg-surface p-6 text-center text-text-secondary">
-        No feature distribution data available
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div className="rounded-lg border border-border bg-bg-surface p-5">
-      <h3 className="text-sm font-semibold text-text-primary">
-        Feature Distributions — Training vs. Recent
-      </h3>
-      <p className="mt-0.5 text-xs text-text-secondary">
-        {distributions.length} features monitored
-      </p>
-
-      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {distributions.map((dist) => (
-          <FeatureCard key={dist.feature} dist={dist} />
-        ))}
-      </div>
-    </div>
+    <Accordion defaultExpanded={false}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Box>
+          <Typography variant="subtitle2">
+            Feature Distributions — Training vs. Recent
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {distributions.length} features monitored
+          </Typography>
+        </Box>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Grid container spacing={2}>
+          {distributions.map((dist) => (
+            <Grid size={{ xs: 12, md: 6, xl: 4 }} key={dist.feature}>
+              <FeatureCard dist={dist} />
+            </Grid>
+          ))}
+        </Grid>
+      </AccordionDetails>
+    </Accordion>
   );
 }
