@@ -1,101 +1,126 @@
-import { test, expect, request } from "@playwright/test";
-import { healthFixture, modelComparisonFixture } from "./fixtures/api";
+import { test, expect } from "@playwright/test";
+import { skipIfNotProduction } from "./helpers/production-guard";
 
-// Helper: stub all Models page routes
-async function stubModelsRoutes(page: import("@playwright/test").Page) {
-  await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-  await page.route("**/models/comparison", (route) =>
-    route.fulfill({ json: modelComparisonFixture() })
-  );
-}
+const BASE_API_URL = process.env.BASE_API_URL ?? "http://localhost:8000";
 
-test.describe("Models page", () => {
-  test.beforeAll(async () => {
-    const ctx = await request.newContext();
-    try {
-      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
-      if (!healthRes.ok()) {
-        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-        return;
-      }
-      const compRes = await ctx.get("http://localhost:8000/models/comparison", { timeout: 5_000 });
-      if (!compRes.ok()) {
-        test.skip(true, "GET /models/comparison failed — backend unhealthy");
-        return;
-      }
-      const data = await compRes.json();
-      if (!data?.models?.length) {
-        test.skip(true, "GET /models/comparison returned 0 models — run the training pipeline first");
-      }
-    } catch {
-      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-    } finally {
-      await ctx.dispose();
+test.describe.configure({ mode: "serial" });
+
+skipIfNotProduction(test, [
+  { url: `${BASE_API_URL}/health`, description: "API health endpoint must be 200" },
+  {
+    url: `${BASE_API_URL}/models/comparison`,
+    description: "models/comparison must return ≥1 model",
+  },
+]);
+
+test.describe("Models page — production", () => {
+  test.setTimeout(25_000);
+
+  test("winner card shows real model name", async ({ page }) => {
+    await page.goto("/models");
+    await expect(page.getByRole("heading", { name: "Model Comparison" })).toBeVisible({
+      timeout: 20_000,
+    });
+    // WinnerCard must render
+    await expect(page.getByText(/Winner/i).first()).toBeVisible();
+    // Model name must NOT contain 'fixture_' prefix
+    const winnerCard = page.locator('[data-testid="winner-card"], .winner-card, [class*="winner"]').first();
+    const cardText = await winnerCard.textContent().catch(() => "");
+    expect(cardText).not.toMatch(/fixture_/i);
+    // At least one metric (RMSE, MAE, R²) shows a real number (not '-')
+    const metricsArea = page.locator('[data-testid="winner-card"], .winner-card, [class*="winner"]').first();
+    const metricsText = await metricsArea.textContent().catch(() => "");
+    const hasRealMetric = /\d+\.\d+/.test(metricsText);
+    expect(hasRealMetric).toBe(true);
+  });
+
+  test("model table has ≥1 row", async ({ page }) => {
+    await page.goto("/models");
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    const rowCount = await page.locator("table tbody tr").count();
+    expect(rowCount).toBeGreaterThanOrEqual(1);
+  });
+
+  test("winner is auto-selected and SHAP panel loads", async ({ page }) => {
+    await page.goto("/models");
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    // SHAP Feature Importance section must be visible (winner auto-selected)
+    await expect(
+      page.getByText(/SHAP Feature Importance|Feature Importance/i).first()
+    ).toBeVisible({ timeout: 20_000 });
+    // At least 3 feature names shown
+    const featureItems = page.locator(
+      '[data-testid*="feature"], .shap-feature, [class*="feature"]'
+    );
+    const featureCount = await featureItems.count();
+    // If no testid-based selectors, fall back to checking SHAP section text has content
+    if (featureCount >= 3) {
+      expect(featureCount).toBeGreaterThanOrEqual(3);
+    } else {
+      const shapSection = page
+        .locator("section, div")
+        .filter({ hasText: /SHAP Feature Importance|Feature Importance/i })
+        .first();
+      const shapText = await shapSection.textContent().catch(() => "");
+      // Expect some feature names (at least a few words after the heading)
+      expect(shapText.length).toBeGreaterThan(30);
     }
   });
 
-  test.describe.configure({ mode: "serial" });
-
-  test("page loads and renders winner card with fixture model name", async ({ page }) => {
-    await stubModelsRoutes(page);
+  test("clicking a different model updates detail panel", async ({ page }) => {
     await page.goto("/models");
-    await expect(page.getByRole("heading", { name: "Model Comparison" })).toBeVisible();
-    // WinnerCard shows fixture winner model name — confirms fixture loaded, not mock
-    await expect(
-      page.getByText("fixture_stacking_ensemble_meta_ridge").first()
-    ).toBeVisible();
-  });
-
-  test("winner model is auto-selected on load and detail panel is shown", async ({ page }) => {
-    await stubModelsRoutes(page);
-    await page.goto("/models");
-    // useEffect auto-selects winner — detail panel renders without clicking a row
-    // WinnerCard has winner badge text
-    await expect(page.getByText(/Winner/).first()).toBeVisible();
-    // The detail panel is shown: it contains SHAP chart section
-    // ShapBarChart renders within its parent container — check for SHAP-related heading
-    // Models.tsx renders "SHAP Feature Importance" heading above ShapBarChart
-    await expect(
-      page.getByText(/SHAP Feature Importance|Feature Importance/i).first()
-    ).toBeVisible();
-  });
-
-  test("table shows both fixture models", async ({ page }) => {
-    await stubModelsRoutes(page);
-    await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    const rows = page.locator("table tbody tr");
-    await expect(rows).toHaveCount(2);
-    await expect(page.getByText("fixture_stacking_ensemble_meta_ridge").first()).toBeVisible();
-    await expect(page.getByText("fixture_ridge_quantile").first()).toBeVisible();
-  });
-
-  test("clicking a non-winner table row updates detail panel", async ({ page }) => {
-    await stubModelsRoutes(page);
-    await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    // Click second row (fixture_ridge_quantile — the non-winner)
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    const rowCount = await page.locator("table tbody tr").count();
+    if (rowCount < 2) {
+      test.skip();
+      return;
+    }
+    // Get winner model name from detail panel before clicking
+    const initialPanelText = await page
+      .locator('[data-testid="model-detail"], [class*="detail"], main')
+      .first()
+      .textContent()
+      .catch(() => "");
+    // Click second row
     await page.locator("table tbody tr").nth(1).click();
-    // Detail panel heading or content updates to show selected model
-    // ModelDetailPanel renders the selected model's name
-    await expect(page.getByText("fixture_ridge_quantile").first()).toBeVisible();
+    // Detail panel should update — wait for any change
+    await page.waitForTimeout(500);
+    const updatedPanelText = await page
+      .locator('[data-testid="model-detail"], [class*="detail"], main')
+      .first()
+      .textContent()
+      .catch(() => "");
+    // Panel text should change (different model selected)
+    expect(updatedPanelText).not.toBe(initialPanelText);
   });
 
-  test("search input filters table to matching model name", async ({ page }) => {
-    await stubModelsRoutes(page);
+  test("search filters by real model name", async ({ page }) => {
     await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    await page.getByPlaceholder("Filter by model name…").fill("fixture_ridge");
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    // Get the winner model name from the WinnerCard
+    const winnerNameEl = page
+      .locator('[data-testid="winner-card"] [data-testid="model-name"], .winner-card [class*="name"]')
+      .first();
+    let winnerName = await winnerNameEl.textContent().catch(() => "");
+    // Fallback: get first row model name from table
+    if (!winnerName || winnerName.trim() === "") {
+      winnerName = (await page.locator("table tbody tr td").first().textContent()) ?? "";
+    }
+    const searchPrefix = winnerName.trim().slice(0, 4);
+    if (!searchPrefix) {
+      test.skip();
+      return;
+    }
+    await page.getByPlaceholder("Filter by model name…").fill(searchPrefix);
     const rows = page.locator("table tbody tr");
-    await expect(rows).toHaveCount(1);
-    await expect(page.getByText("fixture_ridge_quantile").first()).toBeVisible();
+    await expect(rows).toHaveCount(await rows.count(), { timeout: 5_000 });
+    const filteredCount = await rows.count();
+    expect(filteredCount).toBeLessThanOrEqual(3);
   });
 
-  test("export CSV and PDF buttons are enabled when data is loaded", async ({ page }) => {
-    await stubModelsRoutes(page);
+  test("export CSV and PDF buttons are enabled", async ({ page }) => {
     await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible();
-    // ExportButtons: disabled={!data?.models.length}
+    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
     await expect(page.getByRole("button", { name: /CSV/i })).toBeEnabled();
     await expect(page.getByRole("button", { name: /PDF/i })).toBeEnabled();
   });

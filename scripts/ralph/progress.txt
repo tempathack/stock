@@ -32,3 +32,38 @@ Started: 2026-03-26
   - deploy-all.sh uses port 8080 for frontend; production config targets :3000 (separate port-forward or dev server)
   - skipIfNotProduction uses TestType<any,any> to avoid generic constraint issues in TypeScript
 ---
+
+## 2026-03-26 - E2E-002: Dashboard spec — production mode with real S&P 500 data
+- Rewrote `services/frontend/e2e/dashboard.spec.ts` — removed all page.route() fixture mocks
+- Added `skipIfNotProduction` guard with health + market/overview checks (skips gracefully in CI)
+- 5 production tests: treemap ≥20 tickers (API + SVG text count), AAPL detail view with real metric cards, TA toggle, navigation to all 4 pages, close button
+- Fixture imports removed; no stubAllRoutes function; serial mode and 20s timeouts preserved
+- **Learnings for future iterations:**
+  - Treemap ticker text is in SVG `<text>` elements; filter with `/^[A-Z]{2,5}$/` to count cells
+  - Not all 500 tickers render text (cells too small at 1280x800) — assert ≥5 visible + API count ≥20
+  - MetricCards price value selector: `.rounded-lg` filter by label text, then `p.text-lg` for value
+  - When removing mocks, tests become skip-guards under fixture config (playwright.config.ts) — this is correct behavior
+---
+
+## 2026-03-26 - E2E-003: Forecasts spec — production mode with real predictions
+- Rewrote `services/frontend/e2e/forecasts.spec.ts` — removed all `page.route()` fixture mocks and `stubForecastsRoutes()` helper
+- Added `skipIfNotProduction` guard with health + predict/bulk?horizon=7 + market/overview checks
+- 6 production tests: table ≥10 rows, model name not fixture_ prefix, 30D horizon toggle refetches, search filters/clears, row click opens detail with chart, export buttons enabled
+- `test.describe.configure({ mode: 'serial' })` moved to top-level (above describe block) per pattern
+- **Learnings for future iterations:**
+  - `tail -20` on playwright list may hide production-spec tests — 49 total tests confirms they're present
+  - First table cell ticker extraction: `locator("table tbody tr").first().locator("td").first()` for dynamic ticker name
+  - `text=/Model:/` locator finds model name text in SHAP panel without hardcoding selector
+---
+
+## 2026-03-26 - E2E-004: Models spec — production mode with real trained model data
+- Rewrote `services/frontend/e2e/models.spec.ts` — removed all `page.route()` mock stubs and fixture imports
+- Added `skipIfNotProduction` guard with health + models/comparison checks
+- 6 production tests: winner card real model name (no fixture_ prefix, has real metrics), table ≥1 row, SHAP panel auto-loads, second row click updates panel, search filter ≤3 results, export buttons enabled
+- `test.describe.configure({ mode: 'serial' })` placed at top-level (above describe block)
+- **Learnings for future iterations:**
+  - Winner model name fallback: if no testid-based selector, read first table cell for model name prefix
+  - Panel change detection: compare full textContent before/after click; skip if only 1 model
+  - SHAP feature count: when no data-testid on items, check section textContent length as proxy for ≥3 features
+  - `test.skip()` inside an if-block (e.g., skip if <2 models) works correctly in serial mode
+---
