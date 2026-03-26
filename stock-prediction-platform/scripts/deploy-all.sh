@@ -372,6 +372,38 @@ kubectl rollout status deployment/grafana -n monitoring --timeout=120s
 
 echo "[Phase 39] ✓ Loki + Promtail log aggregation deployed"
 
+# --- Kubernetes Dashboard ---
+echo "[Dashboard] Deploying Kubernetes Dashboard v2.7.0..."
+kubectl apply -f "$PROJECT_ROOT/k8s/dashboard/kubernetes-dashboard.yaml"
+
+echo "[Dashboard] Waiting for Kubernetes Dashboard to be ready..."
+kubectl rollout status deployment/kubernetes-dashboard -n kubernetes-dashboard --timeout=120s 2>/dev/null \
+    || echo "WARNING: kubernetes-dashboard deployment not ready yet — it may still be pulling the image"
+
+echo "[Dashboard] Creating dashboard-admin service account and cluster-admin binding..."
+kubectl create serviceaccount dashboard-admin -n kubernetes-dashboard \
+    --dry-run=client -o yaml | kubectl apply -f -
+kubectl create clusterrolebinding dashboard-admin \
+    --clusterrole=cluster-admin \
+    --serviceaccount=kubernetes-dashboard:dashboard-admin \
+    --dry-run=client -o yaml | kubectl apply -f -
+
+echo ""
+echo "=== K8s Dashboard Token ==="
+KUBERNETES_DASHBOARD_TOKEN=$(kubectl create token dashboard-admin -n kubernetes-dashboard 2>/dev/null || true)
+if [ -n "$KUBERNETES_DASHBOARD_TOKEN" ]; then
+    echo "KUBERNETES_DASHBOARD_TOKEN=$KUBERNETES_DASHBOARD_TOKEN"
+    echo ""
+    echo "Export with:"
+    echo "  export KUBERNETES_DASHBOARD_TOKEN='$KUBERNETES_DASHBOARD_TOKEN'"
+else
+    echo "WARNING: Could not generate dashboard token — ensure kubernetes-dashboard namespace is ready."
+    echo "Retry with: kubectl create token dashboard-admin -n kubernetes-dashboard"
+fi
+echo ""
+
+echo "[Dashboard] ✓ Kubernetes Dashboard deployed"
+
 echo "=== Deployment complete ==="
 
 # =============================================================================

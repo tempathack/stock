@@ -1,0 +1,139 @@
+# kfp-compile-job.yaml
+#
+# One-shot Kubernetes Job that compiles the KFP v2 training pipeline YAML and
+# uploads the result to MinIO (s3://model-artifacts/pipelines/training_pipeline.yaml).
+#
+# This job is referenced by deploy-all.sh and scripts/submit-pipeline.sh.
+# It differs from compile-pipeline-job.yaml in that it persists the compiled
+# YAML to MinIO rather than an emptyDir, so it survives pod termination.
+#
+# Usage:
+#   kubectl delete job kfp-compile-pipeline -n ml --ignore-not-found
+#   kubectl apply  -f k8s/ml/kubeflow/kfp-compile-job.yaml
+#   kubectl wait  --for=condition=complete job/kfp-compile-pipeline -n ml --timeout=180s
+#
+# The compiled pipeline YAML will be at:
+#   s3://model-artifacts/pipelines/training_pipeline.yaml
+#
+# To submit the uploaded pipeline to KFP:
+#   kubectl port-forward svc/ml-pipeline-ui 8888:80 -n kubeflow &
+#   PIPELINE_YAML=/tmp/training_pipeline.yaml ./scripts/submit-pipeline.sh
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kfp-compile-pipeline
+  namespace: ml
+  labels:
+    app.kubernetes.io/name: kfp-compile-pipeline
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: pipeline-compiler
+spec:
+  ttlSecondsAfterFinished: 600
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kfp-compile-pipeline
+        job-name: kfp-compile-pipeline
+    spec:
+      restartPolicy: OnFailure
+
+      # -----------------------------------------------------------------------
+      # Init container: install the kfp SDK so the main container can compile.
+      # -----------------------------------------------------------------------
+      initContainers:
+        - name: install-kfp-sdk
+          image: stock-ml-pipeline:latest
+          imagePullPolicy: Never
+          command:
+            - pip
+            - install
+            - --quiet
+            - --target=/kfp-packages
+            - "kfp>=2.0,<3"
+            - "PyYAML>=6.0"
+          volumeMounts:
+            - name: kfp-packages
+              mountPath: /kfp-packages
+
+      containers:
+        - name: compiler
+          image: stock-ml-pipeline:latest
+          imagePullPolicy: Never
+
+          command:
+            - python
+            - -c
+            - |
+              import os, logging, boto3
+              from botocore.client import Config
+
+              logging.basicConfig(level=logging.INFO)
+
+              # Step 1 — compile the pipeline to a local temp file
+              from ml.pipelines.drift_pipeline import compile_kfp_pipeline
+              local_path = "/tmp/training_pipeline.yaml"
+              path = compile_kfp_pipeline(output_path=local_path)
+              print(f"Compiled pipeline YAML written to: {path}")
+
+              # Step 2 — upload to MinIO
+              minio_endpoint = os.environ.get("MINIO_ENDPOINT", "http://minio.storage.svc.cluster.local:9000")
+              access_key = os.environ.get("MINIO_ACCESS_KEY", "minioadmin")
+              secret_key = os.environ.get("MINIO_SECRET_KEY", "minioadmin")
+              bucket = "model-artifacts"
+              object_key = "pipelines/training_pipeline.yaml"
+
+              try:
+                  s3 = boto3.client(
+                      "s3",
+                      endpoint_url=minio_endpoint,
+                      aws_access_key_id=access_key,
+                      aws_secret_access_key=secret_key,
+                      config=Config(signature_version="s3v4"),
+                      region_name="us-east-1",
+                  )
+                  s3.upload_file(local_path, bucket, object_key)
+                  print(f"Uploaded to s3://{bucket}/{object_key}")
+              except Exception as e:
+                  print(f"WARNING: MinIO upload failed: {e}")
+                  print("The compiled YAML is at /tmp/training_pipeline.yaml in this pod.")
+                  print("Retrieve with: kubectl cp ml/<pod-name>:/tmp/training_pipeline.yaml /tmp/training_pipeline.yaml")
+
+          env:
+            - name: PYTHONPATH
+              value: /kfp-packages
+            - name: MINIO_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: minio-config
+                  key: MINIO_ENDPOINT
+                  optional: true
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: MINIO_ACCESS_KEY
+                  optional: true
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: MINIO_SECRET_KEY
+                  optional: true
+
+          volumeMounts:
+            - name: kfp-packages
+              mountPath: /kfp-packages
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+      volumes:
+        - name: kfp-packages
+          emptyDir: {}
