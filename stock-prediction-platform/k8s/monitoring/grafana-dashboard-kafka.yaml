@@ -43,9 +43,15 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "sum(rate(messages_consumed_total[5m])) by (topic)",
-              "legendFormat": "{{ topic }}",
+              "expr": "sum(rate(kafka_consumer_records_consumed_total[5m])) by (topic)",
+              "legendFormat": "Kafka: {{ topic }}",
               "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(rate(messages_consumed_total[5m])) by (topic)",
+              "legendFormat": "Custom: {{ topic }}",
+              "refId": "B"
             }
           ],
           "title": "Messages Consumed Rate",
@@ -82,9 +88,21 @@ data:
           "targets": [
             {
               "datasource": { "type": "prometheus", "uid": "prometheus" },
-              "expr": "consumer_lag",
-              "legendFormat": "{{ topic }}/{{ partition }}",
+              "expr": "kafka_consumer_lag_sum",
+              "legendFormat": "Strimzi: {{ topic }}/{{ consumergroup }}",
               "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "kafka_consumergroup_lag",
+              "legendFormat": "JMX: {{ topic }}/{{ partition }}",
+              "refId": "B"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "consumer_lag",
+              "legendFormat": "Custom: {{ topic }}/{{ partition }}",
+              "refId": "C"
             }
           ],
           "title": "Consumer Lag",
@@ -236,6 +254,87 @@ data:
               }
             }
           ]
+        },
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
+          "id": 103,
+          "title": "Compute Resources",
+          "type": "row"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "lineWidth": 2,
+                "pointSize": 5,
+                "showPoints": "auto",
+                "spanNulls": false
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 28 },
+          "id": 7,
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"ingestion|processing|ml\",container!=\"\"}[5m])) by (namespace, pod)",
+              "legendFormat": "{{ namespace }}/{{ pod }}",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(rate(process_cpu_seconds_total{kubernetes_namespace=~\"ingestion|processing|ml\"}[5m])) by (kubernetes_namespace, kubernetes_pod_name)",
+              "legendFormat": "{{ kubernetes_namespace }}/{{ kubernetes_pod_name }}",
+              "refId": "B"
+            }
+          ],
+          "title": "Pod CPU Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": {
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "lineWidth": 2,
+                "pointSize": 5,
+                "showPoints": "auto",
+                "spanNulls": false
+              },
+              "unit": "bytes"
+            },
+            "overrides": []
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 28 },
+          "id": 8,
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(container_memory_working_set_bytes{namespace=~\"ingestion|processing|ml\",container!=\"\"}) by (namespace, pod)",
+              "legendFormat": "{{ namespace }}/{{ pod }}",
+              "refId": "A"
+            },
+            {
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "expr": "sum(process_resident_memory_bytes{kubernetes_namespace=~\"ingestion|processing|ml\"}) by (kubernetes_namespace, kubernetes_pod_name)",
+              "legendFormat": "{{ kubernetes_namespace }}/{{ kubernetes_pod_name }}",
+              "refId": "B"
+            }
+          ],
+          "title": "Pod Memory Usage",
+          "type": "timeseries"
         }
       ],
       "schemaVersion": 39,
