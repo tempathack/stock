@@ -8,13 +8,15 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --config=playwright.config.ts",
+    "test:e2e:prod": "playwright test --config=playwright.production.config.ts",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
-    "test:infra": "playwright test --config playwright.infra.config.ts",
+    "test:infra": "playwright test --config=playwright.infra.config.ts",
     "test:infra:grafana": "playwright test --config playwright.infra.config.ts --project=grafana",
-    "test:infra:headed": "playwright test --config playwright.infra.config.ts --headed"
+    "test:infra:headed": "playwright test --config playwright.infra.config.ts --headed",
+    "test:all": "npm run test:e2e && npm run test:infra"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.0",
