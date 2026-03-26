@@ -143,3 +143,17 @@ Started: 2026-03-26
   - All KFP suites use test.fixme() (not test.fail()) when no data — freshly installed KFP without runs is expected
   - Row selectors for KFP tables: `table tbody tr, .pipeline-list-item, [data-testid='pipeline-row']` — need all three for different KFP versions
 ---
+
+## 2026-03-26 - E2E-011: Prometheus spec — verify targets are UP and alert rules fire correctly
+- Expanded `services/frontend/e2e/infra/prometheus.spec.ts` with 4 new test suites (11 new tests)
+- **"Critical targets are UP"** suite (45s): navigates to /targets, asserts no job shows '0/X up', queries API for total UP targets >= 5; uses test.fixme() when cluster not fully deployed
+- **"PromQL sanity queries"** suite (4 tests, API-based): up{job="kubernetes-pods"} >= 3 pods; starlette_requests_total OR http_requests_total for FastAPI; kafka_consumer_lag_sum OR kafka_consumergroup_lag for Kafka; process_cpu_seconds_total for generic scraping; queries 2 and 3 use test.fixme() (not hard fail) if metric not found
+- **"Alert rules are configured"** suite (3 tests): /alerts page renders, GET /api/v1/rules?type=alert asserts >= 3 rules with HighDriftSeverity/HighAPIErrorRate/HighConsumerLag, UI check on /alerts page; all use test.fixme() when rules missing
+- **Expanded targets test**: asserts kubernetes-pods link count > 0 (covers FastAPI pod annotations via same job)
+- **Learnings for future iterations:**
+  - Prometheus rules API: GET /api/v1/rules?type=alert; groups[].rules[].name is the rule name field
+  - PromQL API: /api/v1/query?query=<encoded> returns {data: {result: [{value: [timestamp, "1"]}]}}; value[1]==="1" means UP
+  - "0/X up" pattern in /targets page text can detect unreachable scrape jobs without parsing table structure
+  - Use separate request.newContext() for each API-only test (no page/browser needed) — dispose in finally
+  - test.fixme() with boolean true + message works correctly for conditional graceful degradation
+---
