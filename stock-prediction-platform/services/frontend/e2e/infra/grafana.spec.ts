@@ -11,6 +11,16 @@ test.beforeAll(async () => {
     const res = await ctx.get(`${GRAFANA_URL}/api/health`, { timeout: 5_000 });
     if (!res.ok()) {
       test.skip(true, `Grafana not reachable at ${GRAFANA_URL}`);
+      return;
+    }
+    // Validate the response is actually from Grafana (not a proxied React app or Vite dev server)
+    // Grafana /api/health returns JSON with a 'database' field
+    const body = await res.json().catch(() => null);
+    if (!body || typeof body !== "object" || !("database" in body)) {
+      test.skip(
+        true,
+        `${GRAFANA_URL} is not a Grafana instance (got non-Grafana /api/health response) — set GRAFANA_URL env var to the correct Grafana address`
+      );
     }
   } catch {
     test.skip(true, `Grafana not reachable at ${GRAFANA_URL}`);
