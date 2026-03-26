@@ -35,14 +35,14 @@
       "id": "E2E-005",
       "title": "Drift spec \u2014 production mode with real drift monitoring data",
       "priority": 5,
-      "passes": false,
+      "passes": true,
       "description": "Rewrite `services/frontend/e2e/drift.spec.ts` for production mode:\n\n**Remove all `page.route()` mock stubs.**\n\nbeforeAll guard:\n- Skip if /health not 200\n- Skip if /models/comparison returns 0 models (ActiveModelCard needs this)\n- Skip if /models/drift is not 200\n\nTest cases:\n1. **Heading renders**: Assert 'Drift Monitoring' heading visible.\n2. **ActiveModelCard shows real model with 'Active' badge**: Assert model name shown does NOT start with 'fixture_'. Assert badge with text 'Active' visible.\n3. **RollingPerformanceChart container visible**: Assert the rolling performance chart container is in the DOM and has non-zero height. (No assertion on data points \u2014 chart may be empty if no recent predictions.)\n4. **DriftTimeline renders**: Assert the drift timeline section renders. If drift events exist, assert at least one event row is visible. If no events, assert empty state message is shown \u2014 either is acceptable.\n5. **RetrainStatusPanel renders**: Assert retrain status panel is visible with some content (previous model or 'No previous model' message).\n6. **No unhandled loading state**: After 10 seconds, assert no loading spinners remain visible.\n\nSerial mode. Timeout 30000ms."
     },
     {
       "id": "E2E-006",
       "title": "Backtest spec \u2014 production mode with real historical data",
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "description": "Rewrite `services/frontend/e2e/backtest.spec.ts` for production mode:\n\n**Remove all `page.route()` mock stubs.**\n\nbeforeAll guard:\n- Skip if /health not 200\n- Skip if /market/overview returns <5 stocks\n\nTest cases:\n1. **Page loads and shows model info**: Assert model info banner visible. Model name must NOT start with 'fixture_'. Assert horizon shown (7d or similar).\n2. **Ticker select populated with real tickers**: Open ticker dropdown. Assert \u22655 ticker options visible. AAPL should be among them.\n3. **Date inputs and horizon select present**: Assert start date input, end date input, and horizon select are present and interactable.\n4. **Run Backtest with AAPL produces metrics**: Select AAPL. Set start date to 1 year ago (calculate dynamically: new Date(); setFullYear(year-1); format YYYY-MM-DD). Set end date to today. Click 'Run Backtest'. Wait up to 20s for results. Assert BacktestMetricsSummary shows RMSE > 0 and MAE > 0.\n5. **Chart renders after backtest run**: Assert backtest chart container is visible and has non-zero height.\n6. **Export buttons enabled after run**: Assert CSV + PDF export buttons not disabled.\n\nSerial mode. Timeout 30000ms."
     },
     {

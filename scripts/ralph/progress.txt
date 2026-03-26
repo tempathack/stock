@@ -56,6 +56,29 @@ Started: 2026-03-26
   - `text=/Model:/` locator finds model name text in SHAP panel without hardcoding selector
 ---
 
+## 2026-03-26 - E2E-005: Drift spec — production mode with real drift monitoring data
+- Rewrote `services/frontend/e2e/drift.spec.ts` — removed all `page.route()` fixture mocks and `stubDriftRoutes()` helper
+- Added `skipIfNotProduction` guard with health + models/comparison + models/drift checks (skips if 0 models or drift endpoint fails)
+- 6 production tests: heading renders, ActiveModelCard real model name (no fixture_ prefix) + Active badge, RollingPerformanceChart container visible with height check, DriftTimeline renders (events or empty state — both acceptable), RetrainStatusPanel renders with content, no unhandled loading state after 10s
+- `test.describe.configure({ mode: 'serial' })` placed at top-level (above describe block)
+- **Learnings for future iterations:**
+  - DriftTimeline empty state is valid — assert `events.count > 0 OR emptyState.count > 0`, fall back to body text check
+  - `page.waitForTimeout(10_000)` in loading spinner test: check both `getByText('Loading...')` and `getByRole('status')` for hidden vs visible state
+  - RetrainStatusPanel may show 'No previous model' message — both model name and that fallback text are acceptable
+---
+
+## 2026-03-26 - E2E-006: Backtest spec — production mode with real historical data
+- Rewrote `services/frontend/e2e/backtest.spec.ts` — removed all `page.route()` fixture mocks
+- Added `skipIfNotProduction` guard with health + market/overview checks (skips gracefully if API unavailable)
+- 6 production tests: model info banner (no fixture_ prefix), ticker select ≥5 options with AAPL, date inputs + horizon select present, Run Backtest with AAPL waits 25s for RMSE/MAE metrics, chart container visible with non-zero height, export buttons enabled post-run
+- `test.describe.configure({ mode: 'serial' })` placed at top-level and also inside describe block
+- **Learnings for future iterations:**
+  - `tickerSelect.selectOption({ label: "AAPL" }).catch(() => selectOption({ value: "AAPL" }))` handles both label/value-keyed selects
+  - Chart container selector uses multiple fallbacks: `[data-testid="backtest-chart"], .recharts-responsive-container, [class*="chart"], canvas`
+  - Dynamic date calculation: `new Date(); setFullYear(year-1); toISOString().split('T')[0]` for YYYY-MM-DD format
+  - Metrics section has fallback: if no specific testid, scan body for RMSE/MAE text; if metrics container found, check for positive floats
+---
+
 ## 2026-03-26 - E2E-004: Models spec — production mode with real trained model data
 - Rewrote `services/frontend/e2e/models.spec.ts` — removed all `page.route()` mock stubs and fixture imports
 - Added `skipIfNotProduction` guard with health + models/comparison checks
