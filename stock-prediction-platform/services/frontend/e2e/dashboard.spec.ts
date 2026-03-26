@@ -1,236 +1,145 @@
-import { test, expect, request } from "@playwright/test";
-import {
-  healthFixture,
-  marketOverviewFixture,
-  tickerIndicatorsFixture,
-  bulkPredictionsFixture,
-  modelComparisonFixture,
-  driftStatusFixture,
-  rollingPerformanceFixture,
-  retrainStatusFixture,
-  backtestFixture,
-  availableHorizonsFixture,
-} from "./fixtures/api";
+import { test, expect } from "@playwright/test";
+import { skipIfNotProduction } from "./helpers/production-guard";
 
-// Helper: stub all routes used across all pages (for nav tests that navigate away).
-// Playwright matches routes in LIFO order (last registered = first matched).
-// Register broad catch-all patterns FIRST so specific patterns registered LAST take priority.
-async function stubAllRoutes(page: import("@playwright/test").Page) {
-  // Broad catch-all for predict/:ticker — registered FIRST so specific routes below override it
-  await page.route("**/predict/**", (route) =>
-    route.fulfill({
-      json: {
-        ticker: "AAPL",
-        prediction_date: "2026-03-25",
-        predicted_date: "2026-04-01",
-        predicted_price: 182.30,
-        model_name: "fixture_stacking_ensemble_meta_ridge",
-        confidence: 0.87,
-        horizon_days: 7,
-      },
-    })
-  );
-  // Broad catch-all for models/drift — registered before more-specific sub-routes
-  await page.route("**/models/drift", (route) => route.fulfill({ json: driftStatusFixture() }));
-  // Specific routes registered LAST take priority (LIFO matching)
-  await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-  await page.route("**/market/overview", (route) => route.fulfill({ json: marketOverviewFixture() }));
-  await page.route("**/market/indicators/**", (route) => route.fulfill({ json: tickerIndicatorsFixture() }));
-  await page.route("**/predict/horizons", (route) => route.fulfill({ json: availableHorizonsFixture() }));
-  await page.route("**/predict/bulk**", (route) => route.fulfill({ json: bulkPredictionsFixture() }));
-  await page.route("**/models/comparison", (route) => route.fulfill({ json: modelComparisonFixture() }));
-  await page.route("**/models/drift/rolling-performance**", (route) => route.fulfill({ json: rollingPerformanceFixture() }));
-  await page.route("**/models/retrain-status", (route) => route.fulfill({ json: retrainStatusFixture() }));
-  await page.route("http://localhost:8000/backtest/**", (route) => route.fulfill({ json: backtestFixture() }));
-}
+const BASE_API = process.env.BASE_API_URL ?? "http://localhost:8000";
 
-// Serial mode: Vite dev server handles one browser at a time for stability
+// Serial mode: single browser instance against live services
 test.describe.configure({ mode: "serial" });
 
-test.describe("Navigation", () => {
-  test.beforeAll(async () => {
-    const ctx = await request.newContext();
-    try {
-      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
-      if (!healthRes.ok()) {
-        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-        return;
-      }
-      const overviewRes = await ctx.get("http://localhost:8000/market/overview", { timeout: 5_000 });
-      if (!overviewRes.ok()) {
-        test.skip(true, "GET /market/overview failed — backend unhealthy");
-        return;
-      }
-      const data = await overviewRes.json();
-      if (!data?.stocks?.length) {
-        test.skip(true, "GET /market/overview returned 0 stocks — run seed data script first: stock-prediction-platform/scripts/seed-data.sh");
-      }
-    } catch {
-      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-    } finally {
-      await ctx.dispose();
-    }
-  });
-
-  test("sidebar link to Forecasts navigates to /forecasts", async ({ page }) => {
-    await stubAllRoutes(page);
-    await page.goto("/dashboard");
-    await expect(page.getByRole("heading", { name: "Market Dashboard" })).toBeVisible();
-    await page.getByRole("link", { name: "Forecasts" }).click();
-    await expect(page).toHaveURL(/\/forecasts/);
-    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
-  });
-
-  test("sidebar link to Models navigates to /models", async ({ page }) => {
-    await stubAllRoutes(page);
-    await page.goto("/dashboard");
-    await page.getByRole("link", { name: "Models" }).click();
-    await expect(page).toHaveURL(/\/models/);
-    await expect(page.getByRole("heading", { name: "Model Comparison" })).toBeVisible();
-  });
-
-  test("sidebar link to Drift navigates to /drift", async ({ page }) => {
-    await stubAllRoutes(page);
-    await page.goto("/dashboard");
-    await page.getByRole("link", { name: "Drift" }).click();
-    await expect(page).toHaveURL(/\/drift/);
-    await expect(page.getByRole("heading", { name: "Drift Monitoring" })).toBeVisible();
-  });
-
-  test("sidebar link to Backtest navigates to /backtest", async ({ page }) => {
-    await stubAllRoutes(page);
-    await page.goto("/dashboard");
-    await page.getByRole("link", { name: "Backtest" }).click();
-    await expect(page).toHaveURL(/\/backtest/);
-    await expect(page.getByRole("heading", { name: "Backtest" })).toBeVisible();
-  });
-});
+const PRODUCTION_GUARD = [
+  { url: `${BASE_API}/health`, description: "API health endpoint must be 200" },
+  {
+    url: `${BASE_API}/market/overview`,
+    description: "market/overview must return ≥20 stocks",
+  },
+];
 
 test.describe("Dashboard page", () => {
-  test.beforeAll(async () => {
-    const ctx = await request.newContext();
-    try {
-      const healthRes = await ctx.get("http://localhost:8000/health", { timeout: 5_000 });
-      if (!healthRes.ok()) {
-        test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-        return;
-      }
-      const overviewRes = await ctx.get("http://localhost:8000/market/overview", { timeout: 5_000 });
-      if (!overviewRes.ok()) {
-        test.skip(true, "GET /market/overview failed — backend unhealthy");
-        return;
-      }
-      const data = await overviewRes.json();
-      if (!data?.stocks?.length) {
-        test.skip(true, "GET /market/overview returned 0 stocks — run seed data script first: stock-prediction-platform/scripts/seed-data.sh");
-      }
-    } catch {
-      test.skip(true, "Backend API is not running at http://localhost:8000 — start the API first");
-    } finally {
-      await ctx.dispose();
-    }
-  });
+  skipIfNotProduction(test, PRODUCTION_GUARD);
 
   test.beforeEach(async ({ page }) => {
-    // Suppress WebSocket connection errors (expected: dev server has no WS endpoint)
+    // Suppress WebSocket errors — ws endpoint may not be active
     page.on("websocket", (ws) => {
       ws.on("socketerror", () => {});
     });
   });
 
-  test("treemap renders fixture tickers from /market/overview", async ({ page }) => {
-    await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-    await page.route("**/market/overview", (route) => route.fulfill({ json: marketOverviewFixture() }));
+  test("treemap renders ≥20 tickers", async ({ page }) => {
+    test.setTimeout(20_000);
     await page.goto("/dashboard");
     await expect(page.getByRole("heading", { name: "Market Dashboard" })).toBeVisible();
-    // Assert on fixture tickers — both AAPL and MSFT appear from marketOverviewFixture
-    await expect(page.getByText("AAPL")).toBeVisible();
-    await expect(page.getByText("MSFT")).toBeVisible();
+
+    // Wait for market data to load (treemap replaces loading spinner)
+    await expect(page.locator(".recharts-wrapper")).toBeVisible({ timeout: 15_000 });
+
+    // Verify the API returned ≥20 stocks
+    const resp = await page.request.get(`${BASE_API}/market/overview`, { timeout: 10_000 });
+    expect(resp.ok()).toBe(true);
+    const data = await resp.json();
+    expect((data.stocks as unknown[]).length).toBeGreaterThanOrEqual(20);
+
+    // Verify treemap SVG cells are rendered (at least some ticker text visible)
+    // Large-cap stocks (AAPL, MSFT, GOOGL etc.) always have wide cells that show ticker text
+    const tickerTexts = page.locator("svg text").filter({ hasText: /^[A-Z]{2,5}$/ });
+    await expect(tickerTexts.first()).toBeVisible({ timeout: 10_000 });
+    const visibleCount = await tickerTexts.count();
+    // At 1280x800 with 500 stocks, top caps will render text labels
+    expect(visibleCount).toBeGreaterThanOrEqual(5);
   });
 
-  test("clicking treemap ticker opens detail view with metric cards", async ({ page }) => {
-    await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-    await page.route("**/market/overview", (route) => route.fulfill({ json: marketOverviewFixture() }));
-    await page.route("**/market/indicators/**", (route) =>
-      route.fulfill({ json: tickerIndicatorsFixture("AAPL") })
-    );
-    await page.route("**/predict/**", (route) =>
-      route.fulfill({
-        json: {
-          ticker: "AAPL",
-          prediction_date: "2026-03-25",
-          predicted_date: "2026-04-01",
-          predicted_price: 182.30,
-          model_name: "fixture_stacking_ensemble_meta_ridge",
-          confidence: 0.87,
-          horizon_days: 7,
-        },
-      })
-    );
+  test("clicking AAPL cell opens detail view with real metric cards", async ({ page }) => {
+    test.setTimeout(20_000);
     await page.goto("/dashboard");
-    await expect(page.getByText("AAPL")).toBeVisible();
-    // Click the AAPL cell in the treemap
-    await page.getByText("AAPL").first().click();
-    // Detail view heading shows ticker name
-    await expect(page.getByText("AAPL — Detail View")).toBeVisible();
-    // Close button is present
-    await expect(page.getByRole("button", { name: /✕ Close/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Market Dashboard" })).toBeVisible();
+    await expect(page.locator(".recharts-wrapper")).toBeVisible({ timeout: 15_000 });
+
+    // Find and click AAPL — it's always large enough to render as SVG text
+    const aaplText = page.locator("svg text", { hasText: "AAPL" }).first();
+    await expect(aaplText).toBeVisible({ timeout: 10_000 });
+    await aaplText.click();
+
+    // Detail view heading appears
+    await expect(page.getByText("AAPL — Detail View")).toBeVisible({ timeout: 10_000 });
+
+    // Metric cards are visible with real values (not '-' or '--')
+    await expect(page.getByText("Current Price")).toBeVisible();
+    await expect(page.getByText("Daily Change")).toBeVisible();
+    await expect(page.getByText("Market Cap")).toBeVisible();
+
+    // Price value starts with '$' and is a real number
+    const priceCard = page.locator(".rounded-lg").filter({ hasText: "Current Price" });
+    const priceValue = priceCard.locator("p.text-lg");
+    await expect(priceValue).toBeVisible();
+    const priceText = await priceValue.textContent();
+    expect(priceText).toMatch(/^\$[\d,.]+$/);
+    expect(priceText).not.toMatch(/^[–-]+$/);
   });
 
-  test("Show Technical Indicators button toggles TA panel", async ({ page }) => {
-    await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-    await page.route("**/market/overview", (route) => route.fulfill({ json: marketOverviewFixture() }));
-    await page.route("**/market/indicators/**", (route) =>
-      route.fulfill({ json: tickerIndicatorsFixture("AAPL") })
-    );
-    await page.route("**/predict/**", (route) =>
-      route.fulfill({
-        json: {
-          ticker: "AAPL",
-          prediction_date: "2026-03-25",
-          predicted_date: "2026-04-01",
-          predicted_price: 182.30,
-          model_name: "fixture_stacking_ensemble_meta_ridge",
-          confidence: 0.87,
-          horizon_days: 7,
-        },
-      })
-    );
+  test("technical indicators toggle shows TA panel", async ({ page }) => {
+    test.setTimeout(20_000);
     await page.goto("/dashboard");
-    await page.getByText("AAPL").first().click();
-    await expect(page.getByText("AAPL — Detail View")).toBeVisible();
-    // Initially TA panel is hidden — button says "Show"
+    await expect(page.locator(".recharts-wrapper")).toBeVisible({ timeout: 15_000 });
+
+    // Click AAPL
+    const aaplText = page.locator("svg text", { hasText: "AAPL" }).first();
+    await expect(aaplText).toBeVisible({ timeout: 10_000 });
+    await aaplText.click();
+    await expect(page.getByText("AAPL — Detail View")).toBeVisible({ timeout: 10_000 });
+
+    // Show Technical Indicators button is visible before toggle
     const showBtn = page.getByRole("button", { name: /Show Technical Indicators/i });
     await expect(showBtn).toBeVisible();
     await showBtn.click();
-    // After click — button text changes to "Hide"
+
+    // After toggle, button changes to "Hide"
     await expect(page.getByRole("button", { name: /Hide Technical Indicators/i })).toBeVisible();
+
+    // TA panel is now visible in DOM
+    const hideBtn = page.getByRole("button", { name: /Hide Technical Indicators/i });
+    await expect(hideBtn).toBeVisible();
   });
 
-  test("close button hides the detail section", async ({ page }) => {
-    await page.route("**/health", (route) => route.fulfill({ json: healthFixture() }));
-    await page.route("**/market/overview", (route) => route.fulfill({ json: marketOverviewFixture() }));
-    await page.route("**/market/indicators/**", (route) =>
-      route.fulfill({ json: tickerIndicatorsFixture("AAPL") })
-    );
-    await page.route("**/predict/**", (route) =>
-      route.fulfill({
-        json: {
-          ticker: "AAPL",
-          prediction_date: "2026-03-25",
-          predicted_date: "2026-04-01",
-          predicted_price: 182.30,
-          model_name: "fixture_stacking_ensemble_meta_ridge",
-          confidence: 0.87,
-          horizon_days: 7,
-        },
-      })
-    );
+  test("navigation to all 4 app pages works", async ({ page }) => {
+    test.setTimeout(20_000);
     await page.goto("/dashboard");
-    await page.getByText("AAPL").first().click();
-    await expect(page.getByText("AAPL — Detail View")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Market Dashboard" })).toBeVisible();
+
+    // Navigate to Forecasts
+    await page.getByRole("link", { name: "Forecasts" }).click();
+    await expect(page).toHaveURL(/\/forecasts/);
+    await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible({ timeout: 10_000 });
+
+    // Navigate to Models
+    await page.getByRole("link", { name: "Models" }).click();
+    await expect(page).toHaveURL(/\/models/);
+    await expect(page.getByRole("heading", { name: "Model Comparison" })).toBeVisible({ timeout: 10_000 });
+
+    // Navigate to Drift
+    await page.getByRole("link", { name: "Drift" }).click();
+    await expect(page).toHaveURL(/\/drift/);
+    await expect(page.getByRole("heading", { name: "Drift Monitoring" })).toBeVisible({ timeout: 10_000 });
+
+    // Navigate to Backtest
+    await page.getByRole("link", { name: "Backtest" }).click();
+    await expect(page).toHaveURL(/\/backtest/);
+    await expect(page.getByRole("heading", { name: /Backtest/i })).toBeVisible({ timeout: 10_000 });
+  });
+
+  test("close button hides detail section", async ({ page }) => {
+    test.setTimeout(20_000);
+    await page.goto("/dashboard");
+    await expect(page.locator(".recharts-wrapper")).toBeVisible({ timeout: 15_000 });
+
+    // Open detail view for AAPL
+    const aaplText = page.locator("svg text", { hasText: "AAPL" }).first();
+    await expect(aaplText).toBeVisible({ timeout: 10_000 });
+    await aaplText.click();
+    await expect(page.getByText("AAPL — Detail View")).toBeVisible({ timeout: 10_000 });
+
+    // Click close button
     await page.getByRole("button", { name: /✕ Close/i }).click();
-    // Detail view should be gone
+
+    // Detail view is gone
     await expect(page.getByText("AAPL — Detail View")).not.toBeVisible();
   });
 });

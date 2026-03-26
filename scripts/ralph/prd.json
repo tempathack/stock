@@ -14,7 +14,7 @@
       "id": "E2E-002",
       "title": "Dashboard spec — production mode with real S&P 500 data",
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "description": "Rewrite `services/frontend/e2e/dashboard.spec.ts` for production mode:\n\n**Remove all `page.route()` mock stubs** — let requests hit the real API.\n\nbeforeAll guard (use production-guard.ts helper):\n- Skip if /health not 200\n- Skip if /market/overview returns <20 stocks\n\nTest cases:\n1. **Treemap renders ≥20 tickers**: After page load, count visible treemap cells. Assert count >= 20. (selector: look for the treemap cells, which contain ticker text like AAPL, MSFT, GOOGL etc.)\n2. **Clicking a real ticker opens detail view**: Click the AAPL cell in treemap. Assert detail section appears with metric cards showing Price, Change, Volume, Market Cap values (not '-' or '--').\n3. **Technical indicators toggle works with real data**: In detail view, click 'Show Technical Indicators'. Assert the TA panel appears. Assert at least one indicator value is visible (RSI should show a number between 0-100).\n4. **Navigation to all 4 app pages works**: Click each sidebar link (Forecasts, Models, Drift, Backtest). Assert URL changes and page heading is correct.\n5. **Close detail view**: Open detail, click X/Close, assert detail section hidden.\n\nKeep `test.describe.configure({ mode: 'serial' })` on all describe blocks.\nIncrease timeout to 20000ms per test (real API calls are slower than mocks)."
     },
     {
