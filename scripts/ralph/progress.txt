@@ -188,3 +188,18 @@ Started: 2026-03-26
   - `PF_PIDS` array approach is cleaner than /tmp PID files for in-process tracking
   - `bash -n` validates shell syntax; confirmed script runs gracefully without minikube missing
 ---
+
+## 2026-03-26 - E2E-014: Verify all backend API endpoints return production data for S&P 500
+- Created `services/frontend/e2e/api-health.spec.ts` — 8 API-only tests using `request.newContext()` (no page/browser)
+- Uses `process.env.BASE_API_URL ?? 'http://localhost:8000'` for baseURL
+- `test.beforeAll` probe: skips entire suite if /health not reachable
+- No `test.describe.configure({ mode: 'serial' })` — tests are independent stateless checks
+- Tests: /health status ok, /market/overview ≥20 items with non-null prices, /predict/bulk?horizon=7 ≥10 items + no fixture_ model names, /predict/AAPL?horizon=7 with confidence_metrics, /models/comparison winner with rmse+mae numbers, /models/drift drift_events array + active_model, /market/indicators/AAPL with rsi+macd_line+sma_20, /predict/bulk?horizon=30 ≥10 items
+- All assertions print actual response body on failure for easier debugging
+- playwright.production.config.ts picks up spec automatically via testMatch **/*.spec.ts (no change needed)
+- **Learnings for future iterations:**
+  - `request.newContext({ baseURL })` in beforeAll probe needs its own dispose() in finally — avoid leaking contexts
+  - Field name flexibility: accept ticker/symbol, price/current_price/close, predicted_price/prediction/predicted_return — real API may differ from spec
+  - `typeof value` check is more reliable than `value > 0` for numeric fields (handles 0 or negative correctly)
+  - 78 total tests in both configs (8 new from api-health.spec.ts added to 70 existing)
+---
