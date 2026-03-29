@@ -1333,7 +1333,7 @@ Plans:
 6. `deploy-all.sh` updated: initial bootstrap via `kubectl apply -n argocd` then `argocd app sync --all` for subsequent deploys
 
 **Plans:**
-- [ ] 65-01-PLAN.md — Install Argo CD, create argocd namespace, root Application + child ApplicationSet for all namespaces
+- [ ] 65-01-PLAN.md — Install Argo CD, create argocd namespace, root Application + 7 child Application CRs for all namespaces
 - [ ] 65-02-PLAN.md — Sync policies, custom health checks for Strimzi/KServe CRDs, deploy-all.sh integration, smoke validation
 
 ---
