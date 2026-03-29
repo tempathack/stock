@@ -1,7 +1,7 @@
 # Roadmap — Stock Prediction Platform
 
-**Granularity:** Fine | **Mode:** YOLO | **Parallelization:** Enabled  
-**Milestone v1.0:** Phases 1–30 (Complete) | **Milestone v1.1:** Phases 31–50 (Production-Ready) | **Milestone v2.0:** Phases 51–57 (MinIO + KServe Migration)
+**Granularity:** Fine | **Mode:** YOLO | **Parallelization:** Enabled
+**Milestone v1.0:** Phases 1–30 (Complete) | **Milestone v1.1:** Phases 31–50 (Production-Ready) | **Milestone v2.0:** Phases 51–63 (MinIO + KServe + E2E Tests) | **Milestone v3.0:** Phases 64–68 (Real-Time Analytics & GitOps)
 
 ---
 
@@ -66,6 +66,18 @@
 | 55 | KServe InferenceService Deployment | Replace uvicorn serving with KServe InferenceService | KSERV-05–08 | 2 | ✅ |
 | 56 | API & Frontend KServe Adaptation | Prediction service calls KServe V2 inference protocol | KSERV-09–12 | 2 | ✅ |
 | 57 | Migration Cleanup & E2E Validation | Remove PVC serving, validate full flow, update docs | KSERV-13–15 | 2 | ✅ |
+| 58 | Docker-Compose Runtime Fixes | Kafka broker default + ML pipeline entrypoint fix | FIX-KAFKA, FIX-ML | 1 | ✅ |
+| 59 | Minikube E2E Validation | Full stack deploy + ingest-train-KServe serve flow | KSERV-15 | 4 | ✅ |
+| 60 | Fix model_name in predict response | Fetch serving metadata from MinIO on API startup | PRED-MNAME-01–05 | 2 | ✅ |
+| 61 | Playwright E2E — Frontend Coverage | All 5 pages: Dashboard, Forecasts, Models, Drift, Backtest | TEST-PW-01–05 | 5 | ✅ |
+| 62 | Playwright E2E — Infra Coverage | Grafana, Prometheus, MinIO, Kubeflow, K8s Dashboard | TEST-INFRA-01–05 | 5 | ✅ |
+| 63 | Fix E2E Test Assertions | Real API data guards in all spec beforeAll blocks | TEST-E2E-01 | 1 | ✅ |
+| 64 | 1/2 | In Progress|  | 2 |
+| 65 | Argo CD — GitOps Deployment | App-of-apps pattern, auto-sync all namespaces | GITOPS-01–05 | 2 |
+| 66 | Feast — Production Feature Store | Feature registry, offline (PG) + online (Redis) stores | FEAST-01–08 | 3 |
+| 67 | Apache Flink — Stream Processing | Flink Operator, real-time OHLCV + rolling indicators + Feast writer | FLINK-01–08 | 3 |
+| 68 | E2E Integration — v3.0 Validation | Full v3.0 smoke test: Flink→Feast→predict, Argo CD, OLAP | V3INT-01–05 | 2 |
+| 69 | Frontend — /analytics Page | Real-time analytics UI: stream lag, feature freshness, OLAP candle chart, Feast health | UI-RT-01–07 | 2 |
 
 ---
 
@@ -1277,6 +1289,141 @@ Plans:
 
 ---
 
+## v3.0 Phases — Real-Time Analytics & GitOps
+
+> **Milestone:** v3.0 — Phases 64–69
+> **Strategy:** 3 waves — Analytics Foundation (64), GitOps (65), Data Platform (66–67), Integration + UI (68–69)
+> **New Technologies:** TimescaleDB OLAP, Argo CD, Feast, Apache Flink
+> **Dependencies:** Wave 1 (64–65) parallel; Wave 2 (66–67) parallel, depends on 64; Wave 3 (68–69) depends on 66+67
+
+---
+
+### Phase 64: TimescaleDB OLAP — Continuous Aggregates & Compression
+
+**Goal:** Unlock TimescaleDB's full analytical power — continuous aggregates materialize hourly and daily OHLCV rollups automatically, compression policies shrink cold data storage by 90%+, and retention policies enforce data lifecycle, enabling sub-second OLAP queries that today take seconds on raw hypertables.
+
+**Requirements:** TSDB-01, TSDB-02, TSDB-03, TSDB-04, TSDB-05, TSDB-06
+
+**Success Criteria:**
+1. `ohlcv_daily_1h_agg` continuous aggregate materializes 1-hour OHLCV rollups from `ohlcv_intraday` (OHLCV time_bucket, auto-refresh every 30 min)
+2. `ohlcv_daily_agg` continuous aggregate materializes daily summaries from `ohlcv_daily` (auto-refresh every 1 hour)
+3. Compression policy on `ohlcv_daily`: chunks older than 7 days compressed (segmentby ticker, orderby date)
+4. Compression policy on `ohlcv_intraday`: chunks older than 3 days compressed
+5. Retention policy: `ohlcv_intraday` drops data older than 90 days; `ohlcv_daily` keeps 5 years
+6. New API endpoint `GET /market/candles?ticker=AAPL&interval=1h` queries continuous aggregate and returns ≤50ms p99
+
+**Plans:**
+1/2 plans executed
+- [ ] 64-02-PLAN.md — API: `GET /market/candles` endpoint querying continuous aggregates + Grafana OLAP datasource query update
+
+---
+
+### Phase 65: Argo CD — GitOps Deployment Pipeline
+
+**Goal:** Replace the manual `deploy-all.sh` kubectl apply workflow with Argo CD GitOps so the K8s cluster continuously reconciles to the git state — every `git push` automatically syncs to the cluster with health checking and rollback.
+
+**Requirements:** GITOPS-01, GITOPS-02, GITOPS-03, GITOPS-04, GITOPS-05
+
+**Success Criteria:**
+1. Argo CD installed in `argocd` namespace; `argocd` CLI accessible via port-forward at localhost:8080
+2. Root `Application` (app-of-apps) in `argocd` namespace pointing to `k8s/` directory in git repo
+3. Child `Application` CRs exist for: ingestion, processing, storage, ml, frontend, monitoring, argocd namespaces
+4. Sync policy: automated with `prune: true` and `selfHeal: true` on all apps
+5. Custom health checks for Strimzi `Kafka` CR and KServe `InferenceService` CR (Healthy when READY=True)
+6. `deploy-all.sh` updated: initial bootstrap via `kubectl apply -n argocd` then `argocd app sync --all` for subsequent deploys
+
+**Plans:**
+- [ ] 65-01-PLAN.md — Install Argo CD, create argocd namespace, root Application + child ApplicationSet for all namespaces
+- [ ] 65-02-PLAN.md — Sync policies, custom health checks for Strimzi/KServe CRDs, deploy-all.sh integration, smoke validation
+
+---
+
+### Phase 66: Feast — Production Feature Store
+
+**Goal:** Replace the ad-hoc `ml/features/store.py` precomputed cache with Feast — a production-grade feature store providing point-in-time correct historical feature retrieval for training (offline store → PostgreSQL) and sub-millisecond online feature serving for inference (online store → Redis).
+
+**Requirements:** FEAST-01, FEAST-02, FEAST-03, FEAST-04, FEAST-05, FEAST-06, FEAST-07, FEAST-08
+
+**Success Criteria:**
+1. `ml/feature_store/feature_store.yaml` configures Feast with PostgreSQL offline store and Redis online store
+2. Three `FeatureView`s registered: `ohlcv_stats_fv` (OHLCV + returns), `technical_indicators_fv` (RSI/MACD/BBands/ATR etc.), `lag_features_fv` (t-1 to t-21 lags + rolling stats)
+3. `feast apply` materializes feature definitions without error
+4. `store.get_historical_features(entity_df)` returns point-in-time correct training data (no future leakage)
+5. `store.get_online_features({"ticker": ["AAPL"]})` returns current features from Redis in <5ms
+6. ML training pipeline uses `feast.get_historical_features()` instead of raw DB queries + `ml/features/` compute
+7. Prediction API uses `feast.get_online_features()` for real-time feature retrieval
+8. K8s `CronJob` materializes features daily at 18:30 ET; Feast feature server Deployment in `ml` namespace
+
+**Plans:**
+- [ ] 66-01-PLAN.md — Feast installation, feature_store.yaml, Entity + FeatureViews for ohlcv/indicators/lag features, `feast apply`, unit tests
+- [ ] 66-02-PLAN.md — Update ML training pipeline to use `get_historical_features()`; replace store.py compute with Feast retrieval
+- [ ] 66-03-PLAN.md — Feast feature server K8s Deployment + materialization CronJob; update prediction API to use `get_online_features()`
+
+---
+
+### Phase 67: Apache Flink — Real-Time Stream Processing
+
+**Goal:** Deploy Apache Flink via the Flink Kubernetes Operator to replace the batch Kafka consumer with stateful stream processing — real-time OHLCV normalization and upsert to TimescaleDB, windowed technical indicator computation (rolling RSI/MACD/EMA), and live feature push to Feast's Redis online store.
+
+**Requirements:** FLINK-01, FLINK-02, FLINK-03, FLINK-04, FLINK-05, FLINK-06, FLINK-07, FLINK-08
+
+**Success Criteria:**
+1. Flink Kubernetes Operator installed in `flink` namespace; `FlinkDeployment` CRD available
+2. **Job 1 — OHLCV Normalizer** (`ohlcv_normalizer`): reads `intraday-data` Kafka topic → validates/normalizes → upserts to `ohlcv_intraday` TimescaleDB hypertable (replaces kafka-consumer batch writer for intraday)
+3. **Job 2 — Indicator Stream** (`indicator_stream`): reads `intraday-data` → computes 5-min windowed RSI, MACD signal line, EMA-20 via Flink sliding windows → publishes to `processed-features` Kafka topic
+4. **Job 3 — Feast Online Writer** (`feast_writer`): consumes `processed-features` → pushes to Feast Redis online store via `feast.write_to_online_store()`
+5. New Kafka topic `processed-features` (3 partitions, 24h retention) provisioned via Strimzi KafkaTopic CR
+6. Flink jobs packaged as Docker images, deployed as `FlinkDeployment` CRs in `flink` namespace
+7. Flink metrics exported to Prometheus via Flink's PrometheusReporter; Grafana panel shows job uptime + record throughput
+8. All 3 jobs survive a simulated Kafka broker restart (checkpointing enabled, RocksDB state backend)
+
+**Plans:**
+- [ ] 67-01-PLAN.md — Flink Kubernetes Operator install, flink namespace, `processed-features` Kafka topic, Job 1 OHLCV Normalizer (PyFlink or Flink SQL) + Dockerfile
+- [ ] 67-02-PLAN.md — Job 2 Indicator Stream (sliding window RSI/MACD/EMA) + Job 3 Feast Online Writer + FlinkDeployment CRs + Prometheus metrics + Grafana panel
+- [ ] 67-03-PLAN.md — Checkpoint config (RocksDB, S3 backend → MinIO), restart strategy, deploy-all.sh integration, smoke validation
+
+---
+
+### Phase 68: E2E Integration — v3.0 Stack Validation
+
+**Goal:** End-to-end validation of the complete v3.0 data platform: TimescaleDB continuous aggregates serving API candle queries, Argo CD auto-syncing after a manifest change, Feast point-in-time correct training and online inference, Flink processing a live Kafka stream from ingest to prediction.
+
+**Requirements:** V3INT-01, V3INT-02, V3INT-03, V3INT-04, V3INT-05
+
+**Success Criteria:**
+1. **OLAP benchmark:** `GET /market/candles?ticker=AAPL&interval=1h&days=30` returns in <200ms vs >2s on raw hypertable (≥10x improvement documented)
+2. **Argo CD sync test:** Update a ConfigMap value in git, push — Argo CD detects diff and syncs within 3 minutes without manual kubectl apply
+3. **Feast offline:** ML training pipeline completes using `get_historical_features()` — no raw DB queries in training path; point-in-time correctness validated via future-leakage assertion test
+4. **Feast online:** POST to `/predict/AAPL` triggers `get_online_features()` from Redis; feature freshness timestamp <2 min old
+5. **Full Flink pipeline:** Trigger `/ingest/intraday` → Flink Job 1 upserts to TimescaleDB within 10s → Flink Job 2 publishes to `processed-features` → Flink Job 3 updates Feast online store → `/predict/AAPL` returns prediction using fresh features
+
+**Plans:**
+- [ ] 68-01-PLAN.md — OLAP candle query benchmark, Argo CD sync smoke test, Alembic migration validation for OLAP schema
+- [ ] 68-02-PLAN.md — Feast offline/online integration tests, full Flink pipeline E2E smoke test, Playwright infra spec additions (Argo CD UI + Flink Web UI)
+
+---
+
+### Phase 69: Frontend — /analytics Page
+
+**Goal:** Add a new `/analytics` page to the React dashboard exposing the real-time analytics stack — live Flink job health, Feast feature freshness panel, OLAP-powered multi-interval candle chart, and a stream lag monitor — giving operators full visibility into the v3.0 data platform in the existing Bloomberg Terminal UI.
+
+**Requirements:** UI-RT-01, UI-RT-02, UI-RT-03, UI-RT-04, UI-RT-05, UI-RT-06, UI-RT-07
+
+**Success Criteria:**
+1. `/analytics` route added to React Router; nav sidebar shows "Analytics" link below "Drift"
+2. **StreamHealthPanel**: shows each Flink job (OHLCV Normalizer, Indicator Stream, Feast Writer) with status badge (RUNNING/FAILED/RESTARTING) and records-per-second throughput — polls `GET /analytics/flink/jobs` every 10s
+3. **FeatureFreshnessPanel**: shows last materialization timestamp per FeatureView (ohlcv_stats, technical_indicators, lag_features) with staleness indicator (green <15min, amber <1h, red >1h) — polls `GET /analytics/feast/freshness` every 30s
+4. **OLAPCandleChart**: multi-interval candlestick chart (5m, 1h, 4h, 1d) using TimescaleDB continuous aggregates via `GET /market/candles`; interval toggle buttons; renders with Lightweight Charts
+5. **StreamLagMonitor**: Kafka consumer group lag for `processed-features` topic per partition, line chart over last 30 min — polls `GET /analytics/kafka/lag` every 15s
+6. **SystemHealthSummary**: top-of-page card row showing Argo CD sync status (Synced/OutOfSync), Flink cluster health, Feast online store latency p99, continuous aggregate last-refresh time
+7. All panels have graceful empty states and error boundaries; page fully responsive at 375px
+
+**Plans:**
+- [ ] 69-01-PLAN.md — New API endpoints: `/analytics/flink/jobs`, `/analytics/feast/freshness`, `/analytics/kafka/lag` + backend services; nav + route wiring
+- [ ] 69-02-PLAN.md — StreamHealthPanel, FeatureFreshnessPanel, OLAPCandleChart, StreamLagMonitor, SystemHealthSummary components + Playwright E2E spec
+
+---
+
 ## Requirement Traceability
 
 | REQ-ID | Phase |
@@ -1340,4 +1487,12 @@ Plans:
 | KSERV-05–08 | 55 |
 | KSERV-09–12 | 56 |
 | KSERV-13–15 | 57 |
-| TEST-PW-01–05 | 61 | 5/5 | Complete    | 2026-03-25 | 
+| TEST-PW-01–05 | 61 |
+| TEST-INFRA-01–05 | 62 |
+| TEST-E2E-01 | 63 |
+| TSDB-01–06 | 64 |
+| GITOPS-01–05 | 65 |
+| FEAST-01–08 | 66 |
+| FLINK-01–08 | 67 |
+| V3INT-01–05 | 68 |
+| UI-RT-01–07 | 69 |

@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 22-01-PLAN.md
-last_updated: "2026-03-25T16:25:46.483Z"
+stopped_at: Completed 64-01-PLAN.md — TimescaleDB OLAP migration written
+last_updated: "2026-03-29T21:04:38.979Z"
 progress:
   total_phases: 63
-  completed_phases: 25
+  completed_phases: 26
   total_plans: 144
-  completed_plans: 59
+  completed_plans: 60
 ---
 
 # STATE.md — Project Memory
@@ -19,14 +19,25 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 21 — drift-detection
+**Current focus:** Phase 64 — timescaledb-olap-continuous-aggregates-compression
 
 ## Current Status
 
-- **Active phase:** v1.1 complete
-- **Phase name:** Milestone v1.1 Production-Ready Complete
-- **Phase plans:** 50/50 phases complete
-- **Overall progress:** 50 / 50 phases complete
+- **Active phase:** v3.0 milestone planned — ready to execute Phase 64
+- **Phase name:** Phase 64 — TimescaleDB OLAP (next)
+- **Phase plans:** 63/69 phases complete (6 new phases added: 64–69)
+- **Overall progress:** 63 / 69 phases complete
+
+## v3.0 New Phases
+
+| Phase | Name | Technology | Status |
+|-------|------|-----------|--------|
+| 64 | TimescaleDB OLAP — Continuous Aggregates & Compression | TimescaleDB | Planned |
+| 65 | Argo CD — GitOps Deployment Pipeline | Argo CD | Planned |
+| 66 | Feast — Production Feature Store | Feast | Planned |
+| 67 | Apache Flink — Real-Time Stream Processing | Apache Flink | Planned |
+| 68 | E2E Integration — v3.0 Stack Validation | All v3.0 | Planned |
+| 69 | Frontend — /analytics Page | React + MUI | Planned |
 
 ## Phase Completion Log
 
@@ -267,20 +278,38 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 22]: predictor.py generates predictions from active serving directory (pipeline.pkl + features.json + metadata.json)
 - [Phase 22]: save_predictions() writes latest.json to registry predictions/ folder
 - [Phase 22]: 7 new predictor tests + 9 trigger tests updated, 43 drift-related tests pass in ~10s
+- [Phase 64-01]: date::timestamptz cast required in ohlcv_daily_agg for TimescaleDB DATE column in continuous aggregates (issue #6042)
+- [Phase 64-01]: timescaledb.materialized_only=false set on both views for real-time tail visibility regardless of TimescaleDB version
+- [Phase 64-01]: compress_after > start_offset pairs ensure safe overlap: intraday (3d vs 2h), daily (7d vs 3d)
 
 ## Last Session
 
-- **Stopped at:** Completed 22-01-PLAN.md
-- **Timestamp:** 2026-03-22T13:30:00Z
+- **Stopped at:** Completed 64-01-PLAN.md — TimescaleDB OLAP migration written
+- **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
 
-(Add notes here as work progresses)
+### v3.0 Technology Integration Summary
+
+- **Phase 64 (TimescaleDB OLAP):** No new services. Pure schema + query layer — continuous aggregates, compression, retention, candle API endpoint.
+- **Phase 65 (Argo CD):** New `argocd` namespace. Replaces manual `kubectl apply` with GitOps reconciliation. App-of-Apps pattern for all existing namespaces.
+- **Phase 66 (Feast):** New `ml/feature_store/` directory. Offline store = existing PostgreSQL. Online store = existing Redis. Replaces `ml/features/store.py`. Adds `feast` namespace CronJob + feature server Deployment.
+- **Phase 67 (Apache Flink):** New `flink` namespace. 3 PyFlink jobs (OHLCV normalizer, indicator stream, Feast writer). New `processed-features` Kafka topic. Replaces kafka-consumer batch writer for intraday path.
+- **Phase 68 (E2E):** Integration tests + Playwright spec additions for Argo CD UI and Flink Web UI.
+- **Phase 69 (/analytics UI):** New React page with 5 panels: StreamHealthPanel, FeatureFreshnessPanel, OLAPCandleChart, StreamLagMonitor, SystemHealthSummary. Backed by 3 new API endpoints.
+
+### Execution Order
+
+Recommended wave execution:
+
+- **Wave 1 (parallel):** Phase 64 + Phase 65 — independent, no new services touching each other
+- **Wave 2 (parallel):** Phase 66 + Phase 67 — both depend on Phase 64 (TimescaleDB schema must exist for Flink upserts + Feast offline store queries)
+- **Wave 3 (sequential):** Phase 68 (integration tests require 64+65+66+67 complete) → Phase 69 (UI requires Phase 68 API endpoints)
 
 ### Roadmap Evolution
 
 - Phase 58 added: Fix docker-compose runtime: kafka-consumer configurable broker + ml-pipeline entrypoint fix
 - Phase 59 added: Minikube E2E validation: start cluster, deploy full stack, run ingest-train-serve flow
-
 - Phase 60 added: Fix model_name unknown in predict response — fetch metadata from MinIO or DB on API startup
 - Phase 63 added: Fix E2E test assertions — require real API data, not mock/empty fallbacks
+- Phases 64–69 added: v3.0 milestone — TimescaleDB OLAP, Argo CD GitOps, Feast feature store, Apache Flink stream processing, E2E integration, /analytics UI page
