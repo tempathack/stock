@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 65-01-PLAN.md — Argo CD v3.3.6 installed, app-of-apps pattern with root-app + 7 child Application CRs, all Synced
-last_updated: "2026-03-29T21:44:16.577Z"
+stopped_at: Completed 65-02-PLAN.md — argocd-cm Lua health checks for Strimzi+KServe, validate-argocd.sh 32 PASS 0 FAIL
+last_updated: "2026-03-29T21:49:19.542Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -287,10 +287,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 65]: app-kafka destination namespace is storage — Strimzi CRs deploy into storage namespace, not a kafka namespace
 - [Phase 65]: app-ml uses directory.recurse=false to exclude kserve/ and kubeflow/ subdirs from Argo CD reconciliation (operator-managed)
 - [Phase 65]: Files must be pushed to origin/master before root-app sync — Argo CD reads from remote git targetRevision: HEAD
+- [Phase 65]: kubectl get applications.argoproj.io required (not application) — two Application CRDs coexist: argoproj.io (Argo CD) and app.k8s.io (Kubeflow); unqualified name resolves to Kubeflow CRD
+- [Phase 65]: argocd-cm server-side apply with --force-conflicts merges health check keys without overwriting existing Argo CD ConfigMap fields
 
 ## Last Session
 
-- **Stopped at:** Completed 65-01-PLAN.md — Argo CD v3.3.6 installed, app-of-apps pattern with root-app + 7 child Application CRs, all Synced
+- **Stopped at:** Completed 65-02-PLAN.md — argocd-cm Lua health checks for Strimzi+KServe, validate-argocd.sh 32 PASS 0 FAIL
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
