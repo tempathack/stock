@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | — Pending |
 
 ---
-*Last updated: 2026-03-29 — Phase 64 complete (TimescaleDB OLAP: continuous aggregates for 1h/1d candles, compression + retention policies, GET /market/candles endpoint, Grafana TimescaleDB datasource)*
+*Last updated: 2026-03-29 — Phase 65 complete (Argo CD GitOps: app-of-apps with 7 child Application CRs, automated sync with prune+selfHeal, Lua health checks for Strimzi/KServe, validate-argocd.sh smoke test 32/32 PASS)*
