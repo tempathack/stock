@@ -132,3 +132,62 @@ async def _load_ohlcv_from_db(
     except Exception:
         logger.exception("Failed to load OHLCV for %s", ticker)
         return None
+
+
+# Valid continuous aggregate views per interval key
+_CANDLE_VIEW_MAP: dict[str, str] = {
+    "1h": "ohlcv_daily_1h_agg",
+    "1d": "ohlcv_daily_agg",
+}
+
+
+async def get_candles(
+    ticker: str,
+    interval: str,
+    limit: int = 200,
+) -> list[dict] | None:
+    """Query the continuous aggregate view for OHLCV candle bars.
+
+    Returns:
+        list[dict] with keys ts/ticker/open/high/low/close/volume/vwap on success.
+        None if interval is unsupported or DB is unavailable.
+        Empty list [] if no rows found for ticker.
+
+    NOTE: Backfills of data older than compress_after (3d intraday, 7d daily)
+    will fail on ON CONFLICT into compressed chunks — normal real-time writes
+    are unaffected (write current data only).
+    """
+    view = _CANDLE_VIEW_MAP.get(interval)
+    if view is None:
+        return None
+
+    if get_engine() is None:
+        return []
+
+    # Use text() with named bind parameters — no string interpolation of view name
+    # View name comes from the validated _CANDLE_VIEW_MAP dict, not user input
+    query = text(f"""
+        SELECT
+            bucket::text  AS ts,
+            ticker,
+            open::float   AS open,
+            high::float   AS high,
+            low::float    AS low,
+            close::float  AS close,
+            volume::bigint AS volume,
+            vwap::float   AS vwap
+        FROM {view}
+        WHERE ticker = :ticker
+        ORDER BY bucket DESC
+        LIMIT :limit
+    """)
+    try:
+        async with get_async_session() as session:
+            result = await session.execute(
+                query, {"ticker": ticker.upper(), "limit": limit},
+            )
+            rows = result.mappings().all()
+        return [dict(row) for row in rows]
+    except Exception:
+        logger.exception("Failed to fetch candles for %s from %s", ticker, view)
+        return []

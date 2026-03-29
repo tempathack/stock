@@ -167,6 +167,24 @@ class TickerIndicatorsResponse(BaseModel):
     count: int
 
 
+class CandleBar(BaseModel):
+    ts: str                   # ISO-8601 UTC timestamp of the time_bucket
+    ticker: str
+    open: float | None = None
+    high: float | None = None
+    low: float | None = None
+    close: float | None = None
+    volume: int | None = None
+    vwap: float | None = None
+
+
+class CandlesResponse(BaseModel):
+    ticker: str
+    interval: str
+    candles: list[CandleBar]
+    count: int
+
+
 # ── Backtest ──────────────────────────────────────────────────────────────
 
 

@@ -19,3 +19,20 @@ data:
         url: http://loki.monitoring.svc.cluster.local:3100
         isDefault: false
         editable: false
+      - name: TimescaleDB
+        type: postgres
+        access: proxy
+        url: postgresql.storage.svc.cluster.local:5432
+        database: stockdb
+        user: stockuser
+        secureJsonData:
+          password: "${TIMESCALEDB_PASSWORD}"
+        jsonData:
+          sslmode: disable
+          maxOpenConns: 5
+          maxIdleConns: 2
+          connMaxLifetime: 14400
+          postgresVersion: 1500
+          timescaledb: true
+        isDefault: false
+        editable: false
