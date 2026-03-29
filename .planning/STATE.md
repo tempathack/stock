@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 64-02-PLAN.md — GET /market/candles endpoint with TimescaleDB continuous aggregates and Grafana datasource
-last_updated: "2026-03-29T21:10:02.504Z"
+stopped_at: Completed 65-01-PLAN.md — Argo CD v3.3.6 installed, app-of-apps pattern with root-app + 7 child Application CRs, all Synced
+last_updated: "2026-03-29T21:44:16.577Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 64 — timescaledb-olap-continuous-aggregates-compression
+**Current focus:** Phase 65 — argo-cd-gitops-deployment-pipeline
 
 ## Current Status
 
@@ -283,10 +283,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 64-01]: compress_after > start_offset pairs ensure safe overlap: intraday (3d vs 2h), daily (7d vs 3d)
 - [Phase 64]: View name from _CANDLE_VIEW_MAP dict (not user input) — text(f-string) safe because view is whitelist-validated
 - [Phase 64]: Grafana TimescaleDB password uses ${TIMESCALEDB_PASSWORD} env var substitution — K8s Secret provisioning deferred to Phase 65 GitOps
+- [Phase 65]: argocd CLI installed to ~/.local/bin/ instead of /usr/local/bin/ (sudo not available in non-interactive shell)
+- [Phase 65]: app-kafka destination namespace is storage — Strimzi CRs deploy into storage namespace, not a kafka namespace
+- [Phase 65]: app-ml uses directory.recurse=false to exclude kserve/ and kubeflow/ subdirs from Argo CD reconciliation (operator-managed)
+- [Phase 65]: Files must be pushed to origin/master before root-app sync — Argo CD reads from remote git targetRevision: HEAD
 
 ## Last Session
 
-- **Stopped at:** Completed 64-02-PLAN.md — GET /market/candles endpoint with TimescaleDB continuous aggregates and Grafana datasource
+- **Stopped at:** Completed 65-01-PLAN.md — Argo CD v3.3.6 installed, app-of-apps pattern with root-app + 7 child Application CRs, all Synced
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes

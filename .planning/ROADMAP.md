@@ -73,7 +73,7 @@
 | 62 | Playwright E2E — Infra Coverage | Grafana, Prometheus, MinIO, Kubeflow, K8s Dashboard | TEST-INFRA-01–05 | 5 | ✅ |
 | 63 | Fix E2E Test Assertions | Real API data guards in all spec beforeAll blocks | TEST-E2E-01 | 1 | ✅ |
 | 64 | 2/2 | Complete    | 2026-03-29 | 2 |
-| 65 | Argo CD — GitOps Deployment | App-of-apps pattern, auto-sync all namespaces | GITOPS-01–05 | 2 |
+| 65 | 1/2 | In Progress|  | 2 |
 | 66 | Feast — Production Feature Store | Feature registry, offline (PG) + online (Redis) stores | FEAST-01–08 | 3 |
 | 67 | Apache Flink — Stream Processing | Flink Operator, real-time OHLCV + rolling indicators + Feast writer | FLINK-01–08 | 3 |
 | 68 | E2E Integration — v3.0 Validation | Full v3.0 smoke test: Flink→Feast→predict, Argo CD, OLAP | V3INT-01–05 | 2 |
@@ -1333,7 +1333,7 @@ Plans:
 6. `deploy-all.sh` updated: initial bootstrap via `kubectl apply -n argocd` then `argocd app sync --all` for subsequent deploys
 
 **Plans:**
-- [ ] 65-01-PLAN.md — Install Argo CD, create argocd namespace, root Application + 7 child Application CRs for all namespaces
+1/2 plans executed
 - [ ] 65-02-PLAN.md — Sync policies, custom health checks for Strimzi/KServe CRDs, deploy-all.sh integration, smoke validation
 
 ---
