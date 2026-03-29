@@ -4,7 +4,7 @@ milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
 stopped_at: Completed 64-02-PLAN.md — GET /market/candles endpoint with TimescaleDB continuous aggregates and Grafana datasource
-last_updated: "2026-03-29T21:06:12.686Z"
+last_updated: "2026-03-29T21:10:02.504Z"
 progress:
   total_phases: 63
   completed_phases: 26
