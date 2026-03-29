@@ -23,6 +23,57 @@ fi
 
 echo "=== Stock Prediction Platform - Deploy All ==="
 
+# --- Phase 65: Argo CD GitOps Bootstrap ---
+echo "[Phase 65] Checking Argo CD installation..."
+if ! kubectl get namespace argocd &>/dev/null; then
+  echo "[Phase 65] Installing Argo CD v3.3.6..."
+  kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+  kubectl apply -n argocd \
+    -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.3.6/manifests/install.yaml \
+    --server-side --force-conflicts
+  kubectl wait --for=condition=available deployment/argocd-server -n argocd --timeout=180s
+
+  # Install argocd CLI if missing
+  if ! command -v argocd &>/dev/null; then
+    curl -sSL -o /tmp/argocd-linux-amd64 \
+      https://github.com/argoproj/argo-cd/releases/download/v3.3.6/argocd-linux-amd64
+    sudo install -m 555 /tmp/argocd-linux-amd64 /usr/local/bin/argocd
+  fi
+fi
+
+# Start port-forward to argocd-server for CLI commands
+kubectl port-forward svc/argocd-server -n argocd 8080:443 >/tmp/pf-argocd.log 2>&1 &
+ARGOCD_PF_PID=$!
+sleep 4
+
+ARGOCD_PWD=$(argocd admin initial-password -n argocd 2>/dev/null | head -1 || \
+  kubectl -n argocd get secret argocd-initial-admin-secret \
+    -o jsonpath="{.data.password}" 2>/dev/null | base64 -d || echo "")
+
+if [ -n "$ARGOCD_PWD" ]; then
+  echo "$ARGOCD_PWD" >/tmp/argocd-pwd.txt
+  argocd login localhost:8080 --username admin --password "$ARGOCD_PWD" --insecure --grpc-web
+
+  # Register repo if credentials available
+  GITHUB_PAT="${GITHUB_TOKEN:-${ARGOCD_GITHUB_PAT:-}}"
+  if [ -n "$GITHUB_PAT" ]; then
+    argocd repo add https://github.com/tempathack/stock.git \
+      --username tempathack --password "$GITHUB_PAT" 2>/dev/null || true
+  fi
+
+  # Apply root app (idempotent)
+  kubectl apply -n argocd -f "$PROJECT_ROOT/k8s/argocd/root-app.yaml"
+  sleep 5
+  argocd app sync root-app --timeout 120 2>/dev/null || true
+  argocd app sync --all --timeout 300 2>/dev/null || true
+  echo "[Phase 65] Argo CD sync triggered for all applications"
+else
+  echo "[Phase 65] WARNING: Could not obtain Argo CD admin password — skipping app sync"
+fi
+
+kill $ARGOCD_PF_PID 2>/dev/null || true
+echo "[Phase 65] Argo CD bootstrap complete"
+
 # --- Phase 2: Namespaces ---
 echo "[Phase 2] Applying namespaces..."
 kubectl apply -f "$PROJECT_ROOT/k8s/namespaces.yaml"
@@ -413,7 +464,7 @@ echo ""
 echo "=== Setting up port-forwarding ==="
 
 # Kill any stale port-forwards on our ports to avoid bind conflicts
-for port in 8080 8000 3000 9090 9001 3100; do
+for port in 8079 8080 8000 3000 9090 9001 3100; do
   pkill -f "kubectl port-forward.*:${port}" 2>/dev/null || true
 done
 sleep 1
@@ -434,6 +485,7 @@ kubectl port-forward svc/grafana    3000:3000 -n monitoring >/tmp/pf-grafana.log
 kubectl port-forward svc/prometheus 9090:9090 -n monitoring >/tmp/pf-prometheus.log 2>&1 & echo $! >/tmp/pf-prometheus.pid
 kubectl port-forward svc/minio      9001:9001 -n storage    >/tmp/pf-minio.log      2>&1 & echo $! >/tmp/pf-minio.pid
 kubectl port-forward svc/loki       3100:3100 -n monitoring >/tmp/pf-loki.log       2>&1 & echo $! >/tmp/pf-loki.pid
+kubectl port-forward svc/argocd-server 8079:443 -n argocd >/tmp/pf-argocd-ui.log 2>&1 & echo $! >/tmp/pf-argocd-ui.pid
 
 # Kubernetes dashboard runs through kubectl proxy (not a standard svc port-forward)
 pkill -f "kubectl proxy" 2>/dev/null || true
@@ -485,6 +537,9 @@ echo -e "  ${DIM}                           Pipeline runs, experiments, artifact
 echo ""
 echo -e "  \033[0;32m${BOLD}Kubernetes Dashboard${RESET}  ${DIM}──>${RESET}  \033[0;32mhttp://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/${RESET}"
 echo -e "  ${DIM}                           Cluster overview — pods, deployments, logs${RESET}"
+echo ""
+echo -e "  \033[1;35m${BOLD}Argo CD UI${RESET}            ${DIM}──>${RESET}  \033[1;35mhttps://localhost:8079${RESET}  ${DIM}(admin / see /tmp/argocd-pwd.txt)${RESET}"
+echo -e "  ${DIM}                           GitOps sync status for all 7 platform applications${RESET}"
 echo ""
 echo -e "  ${DIM}Port-forward PIDs saved to /tmp/pf-*.pid${RESET}"
 echo -e "  ${DIM}Stop all forwards:  pkill -f 'kubectl port-forward'${RESET}"
