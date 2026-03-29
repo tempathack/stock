@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | — Pending |
 
 ---
-*Last updated: 2026-03-25 — Phase 62 complete (Playwright infra E2E tests: 19 tests across 5 infra services — Grafana, Prometheus, MinIO, Kubeflow, K8s Dashboard; graceful skip-on-unreachable pattern)*
+*Last updated: 2026-03-29 — Phase 64 complete (TimescaleDB OLAP: continuous aggregates for 1h/1d candles, compression + retention policies, GET /market/candles endpoint, Grafana TimescaleDB datasource)*
