@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 64-01-PLAN.md — TimescaleDB OLAP migration written
-last_updated: "2026-03-29T21:04:38.979Z"
+stopped_at: Completed 64-02-PLAN.md — GET /market/candles endpoint with TimescaleDB continuous aggregates and Grafana datasource
+last_updated: "2026-03-29T21:06:12.686Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -281,10 +281,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 64-01]: date::timestamptz cast required in ohlcv_daily_agg for TimescaleDB DATE column in continuous aggregates (issue #6042)
 - [Phase 64-01]: timescaledb.materialized_only=false set on both views for real-time tail visibility regardless of TimescaleDB version
 - [Phase 64-01]: compress_after > start_offset pairs ensure safe overlap: intraday (3d vs 2h), daily (7d vs 3d)
+- [Phase 64]: View name from _CANDLE_VIEW_MAP dict (not user input) — text(f-string) safe because view is whitelist-validated
+- [Phase 64]: Grafana TimescaleDB password uses ${TIMESCALEDB_PASSWORD} env var substitution — K8s Secret provisioning deferred to Phase 65 GitOps
 
 ## Last Session
 
-- **Stopped at:** Completed 64-01-PLAN.md — TimescaleDB OLAP migration written
+- **Stopped at:** Completed 64-02-PLAN.md — GET /market/candles endpoint with TimescaleDB continuous aggregates and Grafana datasource
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes

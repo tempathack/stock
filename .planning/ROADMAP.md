@@ -72,7 +72,7 @@
 | 61 | Playwright E2E — Frontend Coverage | All 5 pages: Dashboard, Forecasts, Models, Drift, Backtest | TEST-PW-01–05 | 5 | ✅ |
 | 62 | Playwright E2E — Infra Coverage | Grafana, Prometheus, MinIO, Kubeflow, K8s Dashboard | TEST-INFRA-01–05 | 5 | ✅ |
 | 63 | Fix E2E Test Assertions | Real API data guards in all spec beforeAll blocks | TEST-E2E-01 | 1 | ✅ |
-| 64 | 1/2 | In Progress|  | 2 |
+| 64 | 2/2 | Complete   | 2026-03-29 | 2 |
 | 65 | Argo CD — GitOps Deployment | App-of-apps pattern, auto-sync all namespaces | GITOPS-01–05 | 2 |
 | 66 | Feast — Production Feature Store | Feature registry, offline (PG) + online (Redis) stores | FEAST-01–08 | 3 |
 | 67 | Apache Flink — Stream Processing | Flink Operator, real-time OHLCV + rolling indicators + Feast writer | FLINK-01–08 | 3 |
@@ -1313,7 +1313,7 @@ Plans:
 6. New API endpoint `GET /market/candles?ticker=AAPL&interval=1h` queries continuous aggregate and returns ≤50ms p99
 
 **Plans:**
-1/2 plans executed
+2/2 plans complete
 - [ ] 64-02-PLAN.md — API: `GET /market/candles` endpoint querying continuous aggregates + Grafana OLAP datasource query update
 
 ---
