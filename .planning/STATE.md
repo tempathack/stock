@@ -4,7 +4,7 @@ milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
 stopped_at: Completed 65-02-PLAN.md — argocd-cm Lua health checks for Strimzi+KServe, validate-argocd.sh 32 PASS 0 FAIL
-last_updated: "2026-03-29T21:49:19.542Z"
+last_updated: "2026-03-29T21:53:16.964Z"
 progress:
   total_phases: 63
   completed_phases: 26
