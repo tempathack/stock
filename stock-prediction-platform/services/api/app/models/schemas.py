@@ -248,3 +248,56 @@ class ABResultsResponse(BaseModel):
     total_evaluated: int = 0
     period_start: str | None = None
     period_end: str | None = None
+
+
+# --- Analytics schemas (Phase 69) ---
+
+
+class FlinkJobEntry(BaseModel):
+    job_id: str
+    name: str
+    state: str
+    start_time: int
+    duration_ms: int
+    tasks_running: int
+
+
+class FlinkJobsResponse(BaseModel):
+    jobs: list[FlinkJobEntry]
+    total_running: int
+    total_failed: int
+
+
+class FeastViewFreshness(BaseModel):
+    view_name: str
+    last_updated: str | None = None
+    staleness_seconds: int | None = None
+    status: str
+
+
+class FeastFreshnessResponse(BaseModel):
+    views: list[FeastViewFreshness]
+    registry_available: bool
+
+
+class KafkaPartitionLag(BaseModel):
+    partition: int
+    current_offset: int
+    end_offset: int
+    lag: int
+
+
+class KafkaLagResponse(BaseModel):
+    topic: str
+    consumer_group: str
+    partitions: list[KafkaPartitionLag]
+    total_lag: int
+    sampled_at: str
+
+
+class AnalyticsSummaryResponse(BaseModel):
+    argocd_sync_status: str | None = None
+    flink_running_jobs: int
+    flink_failed_jobs: int
+    feast_online_latency_ms: float | None = None
+    ca_last_refresh: str | None = None

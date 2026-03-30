@@ -68,6 +68,13 @@ class Settings(BaseSettings):
     # Group 13 — MinIO / Model Metadata (Phase 60+)
     MINIO_SERVING_PREFIX: str = "serving/active"
 
+    # Group 14 — Analytics service URLs (Phase 69)
+    FLINK_REST_URLS: str = "http://ohlcv-normalizer-rest.flink.svc.cluster.local:8081,http://indicator-stream-rest.flink.svc.cluster.local:8081,http://feast-writer-rest.flink.svc.cluster.local:8081"
+    ARGOCD_URL: str = "http://argocd-server.argocd.svc.cluster.local"
+    ARGOCD_TOKEN: str = ""
+    KAFKA_CONSUMER_GROUP: str = "feast-writer-group"
+    FEAST_FEATURE_VIEWS: str = "ohlcv_stats_fv,technical_indicators_fv,lag_features_fv"
+
     # Group 6 — ML / Model Serving (Phase 23+)
     MODEL_REGISTRY_DIR: str = "model_registry"
     DRIFT_LOG_DIR: str = "drift_logs"
