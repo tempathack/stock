@@ -29,6 +29,18 @@ export const MINIO_PASSWORD =
 export const K8S_DASHBOARD_TOKEN =
   process.env.KUBERNETES_DASHBOARD_TOKEN;
 
+// Argo CD UI — port-forward: kubectl port-forward svc/argocd-server -n argocd 8080:443
+export const ARGOCD_URL =
+  process.env.ARGOCD_URL ?? "http://localhost:8080";
+
+export const ARGOCD_PASSWORD =
+  process.env.ARGOCD_PASSWORD ?? "";
+
+// Flink Web UI — port-forward: kubectl port-forward svc/flink-rest -n flink 8081:8081
+// (or: kubectl port-forward deploy/flink-jobmanager -n flink 8081:8081)
+export const FLINK_UI_URL =
+  process.env.FLINK_UI_URL ?? "http://localhost:8081";
+
 // ── Login helpers ────────────────────────────────────────────────────────────
 
 export async function loginGrafana(page: Page): Promise<void> {
