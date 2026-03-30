@@ -17,6 +17,8 @@ export default defineConfig({
     { name: "minio",         testMatch: "**/minio.spec.ts" },
     { name: "kubeflow",      testMatch: "**/kubeflow.spec.ts" },
     { name: "k8s-dashboard", testMatch: "**/k8s-dashboard.spec.ts" },
+    { name: "argocd",        testMatch: "**/argocd.spec.ts" },
+    { name: "flink-web-ui",  testMatch: "**/flink-web-ui.spec.ts" },
   ],
   // No webServer block — infra services are already running via kubectl port-forward
 });
