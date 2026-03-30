@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 69-01-PLAN.md — analytics backend
-last_updated: "2026-03-30T12:58:56.049Z"
+stopped_at: Completed 69-02-PLAN.md — frontend analytics page
+last_updated: "2026-03-30T13:11:06.483Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -37,7 +37,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 | 66 | Feast — Production Feature Store | Feast | Planned |
 | 67 | Apache Flink — Real-Time Stream Processing | Apache Flink | Planned |
 | 68 | E2E Integration — v3.0 Stack Validation | All v3.0 | Planned |
-| 69 | Frontend — /analytics Page | React + MUI | Planned |
+| 69 | Frontend — /analytics Page | React + MUI | Complete (2/2 plans) |
 
 ## Phase Completion Log
 
@@ -316,11 +316,15 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 68-01]: V3INT-05 uses updated_at column for 30-second window (not timestamp column) — avoids yfinance stale timestamp false negatives
 - [Phase 69]: Move confluent_kafka and get_engine imports to module level in service files so test patch paths resolve at app.services.* attribute
 - [Phase 69]: Use _dt_type alias bound at import time for isinstance checks to survive datetime module mock in unit tests
+- [Phase 69-02]: OLAPCandleChart delivers 1H/1D only — 5m/4h deferred because Phase 64 created only 1h/1d TimescaleDB continuous aggregates
+- [Phase 69-02]: Recharts used for candlestick chart over Lightweight Charts — Recharts already in codebase (CandlestickChart.tsx pattern), avoids second charting library
+- [Phase 69-02]: useRef ring buffer (max 120 samples) for StreamLagMonitor — avoids useState re-render churn on 15s Kafka polling, caps memory
+- [Phase 69-02]: Per-panel ErrorBoundary on all 5 analytics panels — fault isolation prevents single failing backend from blanking /analytics page
 
 ## Last Session
 
-- **Stopped at:** Completed 69-01-PLAN.md — analytics backend
-- **Timestamp:** 2026-03-29T00:00:00Z
+- **Stopped at:** Completed 69-02-PLAN.md — frontend analytics page
+- **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
 
