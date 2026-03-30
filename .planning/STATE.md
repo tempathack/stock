@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: "Completed 66-02-PLAN.md — Feast feature engineer integration: use_feast=True path in engineer_features(), 5 TestFeastPath tests, 16 total tests passing"
-last_updated: "2026-03-30T07:32:06.871Z"
+stopped_at: Completed 66-03-PLAN.md — Feast online features in prediction_service.py, materialize.py, K8s CronJob and feature server Deployment
+last_updated: "2026-03-30T07:36:57.716Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -295,10 +295,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 66]: TTL=timedelta(days=365) on all FeatureViews — not research default 7 days — so full-year historical training data retrieval works
 - [Phase 66]: Module-level alias get_historical_features = _feast_get_historical allows patch target ml.pipelines.components.feature_engineer.get_historical_features to work without internal import
 - [Phase 66-02]: use_feast branch inserted BEFORE use_feature_store branch so Feast path takes precedence when explicitly enabled; exception fallback broad (except Exception) so any Feast infrastructure failure falls back silently
+- [Phase 66]: Feast import guard at module level via try/except ImportError with _FEAST_AVAILABLE flag — API starts even if feast package not installed
+- [Phase 66]: get_online_features module-level alias so tests can patch app.services.prediction_service.get_online_features cleanly
+- [Phase 66]: feast-feature-store-config ConfigMap embeds feature_store.yaml with dollar-sign VAR placeholders — Feast resolves env vars at runtime natively
 
 ## Last Session
 
-- **Stopped at:** Completed 66-02-PLAN.md — Feast feature engineer integration: use_feast=True path in engineer_features(), 5 TestFeastPath tests, 16 total tests passing
+- **Stopped at:** Completed 66-03-PLAN.md — Feast online features in prediction_service.py, materialize.py, K8s CronJob and feature server Deployment
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
