@@ -13,6 +13,11 @@ import type {
   RetrainStatusResponse,
   AvailableHorizonsResponse,
   BacktestResponse,
+  FlinkJobsResponse,
+  FeastFreshnessResponse,
+  KafkaLagResponse,
+  AnalyticsSummaryResponse,
+  CandlePoint,
 } from "./types";
 
 /* ── query key constants ───────────────────────────────── */
@@ -192,5 +197,69 @@ export function useBacktest(
       return data;
     },
     enabled: !!ticker,
+  });
+}
+
+// --- Analytics hooks (Phase 69) ---
+
+export function useFlinkJobs() {
+  return useQuery({
+    queryKey: ["analytics", "flink", "jobs"],
+    queryFn: async () => {
+      const { data } = await apiClient.get<FlinkJobsResponse>("/analytics/flink/jobs");
+      return data;
+    },
+    refetchInterval: 10_000,
+    retry: false,
+  });
+}
+
+export function useFeatureFreshness() {
+  return useQuery({
+    queryKey: ["analytics", "feast", "freshness"],
+    queryFn: async () => {
+      const { data } = await apiClient.get<FeastFreshnessResponse>("/analytics/feast/freshness");
+      return data;
+    },
+    refetchInterval: 30_000,
+    retry: false,
+  });
+}
+
+export function useKafkaLag() {
+  return useQuery({
+    queryKey: ["analytics", "kafka", "lag"],
+    queryFn: async () => {
+      const { data } = await apiClient.get<KafkaLagResponse>("/analytics/kafka/lag");
+      return data;
+    },
+    refetchInterval: 15_000,
+    retry: false,
+  });
+}
+
+export function useAnalyticsSummary() {
+  return useQuery({
+    queryKey: ["analytics", "summary"],
+    queryFn: async () => {
+      const { data } = await apiClient.get<AnalyticsSummaryResponse>("/analytics/summary");
+      return data;
+    },
+    refetchInterval: 30_000,
+    retry: false,
+  });
+}
+
+export function useAnalyticsCandles(ticker: string, interval: "1h" | "1d") {
+  return useQuery({
+    queryKey: ["analytics", "candles", ticker, interval],
+    queryFn: async () => {
+      const { data } = await apiClient.get<{ candles: CandlePoint[] }>(
+        "/market/candles",
+        { params: { ticker, interval, limit: 100 } }
+      );
+      return data;
+    },
+    retry: false,
   });
 }

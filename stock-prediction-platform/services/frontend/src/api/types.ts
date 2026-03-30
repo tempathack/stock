@@ -351,3 +351,55 @@ export interface BacktestResponse {
   metrics: BacktestMetrics;
   series: BacktestDataPoint[];
 }
+
+// --- Analytics interfaces (Phase 69) ---
+
+export interface FlinkJobEntry {
+  job_id: string;
+  name: string;
+  state: "RUNNING" | "FAILED" | "FAILING" | "RESTARTING" | "CANCELED" | "FINISHED" | string;
+  start_time: number;
+  duration_ms: number;
+  tasks_running: number;
+}
+
+export interface FlinkJobsResponse {
+  jobs: FlinkJobEntry[];
+  total_running: number;
+  total_failed: number;
+}
+
+export interface FeastViewFreshness {
+  view_name: string;
+  last_updated: string | null;
+  staleness_seconds: number | null;
+  status: "fresh" | "stale" | "unknown";
+}
+
+export interface FeastFreshnessResponse {
+  views: FeastViewFreshness[];
+  registry_available: boolean;
+}
+
+export interface KafkaPartitionLag {
+  partition: number;
+  current_offset: number;
+  end_offset: number;
+  lag: number;
+}
+
+export interface KafkaLagResponse {
+  topic: string;
+  consumer_group: string;
+  partitions: KafkaPartitionLag[];
+  total_lag: number;
+  sampled_at: string;
+}
+
+export interface AnalyticsSummaryResponse {
+  argocd_sync_status: string | null;
+  flink_running_jobs: number;
+  flink_failed_jobs: number;
+  feast_online_latency_ms: number | null;
+  ca_last_refresh: string | null;
+}
