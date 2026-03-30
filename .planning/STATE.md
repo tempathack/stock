@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 65-02-PLAN.md — argocd-cm Lua health checks for Strimzi+KServe, validate-argocd.sh 32 PASS 0 FAIL
-last_updated: "2026-03-29T21:53:16.964Z"
+stopped_at: "Completed 66-01-PLAN.md — Feast 0.61.0 feature store foundation: feature_store.yaml, feature_repo.py, feast_store.py, Alembic migration, 20 tests pass"
+last_updated: "2026-03-30T07:28:11.680Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 65 — argo-cd-gitops-deployment-pipeline
+**Current focus:** Phase 66 — feast-production-feature-store
 
 ## Current Status
 
@@ -289,10 +289,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 65]: Files must be pushed to origin/master before root-app sync — Argo CD reads from remote git targetRevision: HEAD
 - [Phase 65]: kubectl get applications.argoproj.io required (not application) — two Application CRDs coexist: argoproj.io (Argo CD) and app.k8s.io (Kubeflow); unqualified name resolves to Kubeflow CRD
 - [Phase 65]: argocd-cm server-side apply with --force-conflicts merges health check keys without overwriting existing Argo CD ConfigMap fields
+- [Phase 66]: feast[postgres,redis]==0.61.0 requires numpy>=2.0.0 — bumped xgboost 3.2.0, lightgbm 4.6.0, catboost 1.2.10, shap 0.51.0 for numpy 2.x compatibility
+- [Phase 66]: Feast Entity.join_key is singular str not join_keys list in Feast 0.61.0 — test corrected to use ticker.join_key
+- [Phase 66]: PostgreSQLSource exposes get_table_query_string() method not .query attribute — test corrected to call method
+- [Phase 66]: TTL=timedelta(days=365) on all FeatureViews — not research default 7 days — so full-year historical training data retrieval works
 
 ## Last Session
 
-- **Stopped at:** Completed 65-02-PLAN.md — argocd-cm Lua health checks for Strimzi+KServe, validate-argocd.sh 32 PASS 0 FAIL
+- **Stopped at:** Completed 66-01-PLAN.md — Feast 0.61.0 feature store foundation: feature_store.yaml, feature_repo.py, feast_store.py, Alembic migration, 20 tests pass
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
