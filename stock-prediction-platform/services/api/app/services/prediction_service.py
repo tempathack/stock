@@ -127,7 +127,7 @@ async def load_model_comparison_from_db() -> list[dict] | None:
         return None
 
     query = sa_text("""
-        SELECT model_name, version, metrics_json, trained_at, is_active, traffic_weight
+        SELECT model_name, version, metrics_json, trained_at, is_active
         FROM model_registry
         ORDER BY (metrics_json->>'oos_rmse')::numeric ASC NULLS LAST
     """)
@@ -156,9 +156,81 @@ async def load_model_comparison_from_db() -> list[dict] | None:
             "fold_stability": metrics.get("fold_stability"),
             "best_params": metrics.get("best_params", {}),
             "saved_at": raw["trained_at"].isoformat() if raw.get("trained_at") else None,
-            "traffic_weight": float(raw["traffic_weight"]) if raw.get("traffic_weight") is not None else 0.0,
+            "traffic_weight": 0.0,
         })
     return entries
+
+
+async def load_db_predictions(horizon: int | None = None) -> list[dict] | None:
+    """Read stored predictions from the DB predictions table.
+
+    Used as a last-resort fallback when pipeline.pkl and cached files are absent.
+    Returns the most recent prediction_date batch, optionally filtered to
+    predictions whose horizon (predicted_date - prediction_date) matches.
+    """
+    from sqlalchemy import text as sa_text
+
+    from app.models.database import get_async_session, get_engine
+
+    if get_engine() is None:
+        return None
+
+    query = sa_text("""
+        WITH latest AS (
+            SELECT MAX(prediction_date) AS max_date FROM predictions
+        ),
+        active_model AS (
+            SELECT model_id, model_name FROM model_registry
+            WHERE is_active = true ORDER BY trained_at DESC LIMIT 1
+        )
+        SELECT
+            p.ticker,
+            p.prediction_date::text  AS prediction_date,
+            p.predicted_date::text   AS predicted_date,
+            p.predicted_price,
+            p.confidence,
+            COALESCE(a.model_name, 'unknown') AS model_name,
+            p.model_id,
+            (p.predicted_date - p.prediction_date) AS horizon_days
+        FROM predictions p
+        CROSS JOIN latest l
+        LEFT JOIN active_model a ON TRUE
+        WHERE p.prediction_date = l.max_date
+        ORDER BY p.ticker, p.predicted_date
+    """)
+
+    try:
+        async with get_async_session() as session:
+            result = await session.execute(query)
+            rows = result.mappings().all()
+    except Exception:
+        logger.exception("Failed to load DB predictions fallback")
+        return None
+
+    if not rows:
+        return None
+
+    entries = []
+    for r in rows:
+        h = int(r["horizon_days"]) if r.get("horizon_days") is not None else None
+        if horizon is not None and h != horizon:
+            continue
+        entries.append({
+            "ticker": r["ticker"],
+            "prediction_date": r["prediction_date"],
+            "predicted_date": r["predicted_date"],
+            "predicted_price": float(r["predicted_price"]),
+            "confidence": float(r["confidence"]) if r.get("confidence") is not None else None,
+            "model_name": r["model_name"],
+            "assigned_model_id": r["model_id"],
+            "horizon_days": h,
+        })
+
+    # If horizon filter yielded nothing, return all (horizon mismatch — serve what exists)
+    if not entries and horizon is not None:
+        return await load_db_predictions(horizon=None)
+
+    return entries if entries else None
 
 
 async def load_drift_events_from_db(n: int = 100) -> list[dict] | None:
@@ -280,6 +352,9 @@ async def _kserve_inference(
     else:
         base_srv = _Path(effective_serving_dir)
     features_path = base_srv / "features.json"
+    # Fallback: if horizon-specific features.json missing, use root serving dir
+    if not features_path.exists() and horizon is not None:
+        features_path = _Path(effective_serving_dir) / "features.json"
     feature_names: list[str] | None = None
     if features_path.exists():
         with open(features_path) as f:
