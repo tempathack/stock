@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 68-02-PLAN.md
-last_updated: "2026-03-30T11:09:01.041Z"
+stopped_at: Completed 68-01-PLAN.md
+last_updated: "2026-03-30T11:09:35.685Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -311,10 +311,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 68]: ARGOCD_PASSWORD defaults to empty string — login tests skip gracefully when env var not set
 - [Phase 68]: Flink spec probes /overview REST endpoint (not UI) for beforeAll skip — hash-routing makes UI probes unreliable
 - [Phase 68]: playwright.infra.config.ts now has 7 project entries (5 original + argocd + flink-web-ui)
+- [Phase 68-01]: validate/last-checked annotation patched with python3 inline heredoc (no yq dependency)
+- [Phase 68-01]: Argo CD poll checks both operationState.phase=Succeeded AND sync.revision matches NEW_HEAD prefix — prevents false-positive on prior sync
+- [Phase 68-01]: V3INT-05 uses updated_at column for 30-second window (not timestamp column) — avoids yfinance stale timestamp false negatives
 
 ## Last Session
 
-- **Stopped at:** Completed 68-02-PLAN.md
+- **Stopped at:** Completed 68-01-PLAN.md
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
