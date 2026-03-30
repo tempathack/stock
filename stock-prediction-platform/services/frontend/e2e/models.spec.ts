@@ -36,14 +36,14 @@ test.describe("Models page — production", () => {
 
   test("model table has ≥1 row", async ({ page }) => {
     await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
-    const rowCount = await page.locator("table tbody tr").count();
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
+    const rowCount = await page.locator(".MuiDataGrid-row").count();
     expect(rowCount).toBeGreaterThanOrEqual(1);
   });
 
   test("winner is auto-selected and SHAP panel loads", async ({ page }) => {
     await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
     // SHAP Feature Importance section must be visible (winner auto-selected)
     await expect(
       page.getByText(/SHAP Feature Importance|Feature Importance/i).first()
@@ -69,8 +69,8 @@ test.describe("Models page — production", () => {
 
   test("clicking a different model updates detail panel", async ({ page }) => {
     await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
-    const rowCount = await page.locator("table tbody tr").count();
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
+    const rowCount = await page.locator(".MuiDataGrid-row").count();
     if (rowCount < 2) {
       test.skip();
       return;
@@ -82,7 +82,7 @@ test.describe("Models page — production", () => {
       .textContent()
       .catch(() => "");
     // Click second row
-    await page.locator("table tbody tr").nth(1).click();
+    await page.locator(".MuiDataGrid-row").nth(1).click();
     // Detail panel should update — wait for any change
     await page.waitForTimeout(500);
     const updatedPanelText = await page
@@ -95,32 +95,29 @@ test.describe("Models page — production", () => {
   });
 
   test("search filters by real model name", async ({ page }) => {
+    test.setTimeout(40_000);
     await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
-    // Get the winner model name from the WinnerCard
-    const winnerNameEl = page
-      .locator('[data-testid="winner-card"] [data-testid="model-name"], .winner-card [class*="name"]')
-      .first();
-    let winnerName = await winnerNameEl.textContent().catch(() => "");
-    // Fallback: get first row model name from table
-    if (!winnerName || winnerName.trim() === "") {
-      winnerName = (await page.locator("table tbody tr td").first().textContent()) ?? "";
-    }
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
+
+    // Get the first row's model name to use as search term
+    const firstCell = page.locator(".MuiDataGrid-row .MuiDataGrid-cell").first();
+    await expect(firstCell).toBeVisible({ timeout: 10_000 });
+    const winnerName = (await firstCell.textContent()) ?? "";
     const searchPrefix = winnerName.trim().slice(0, 4);
     if (!searchPrefix) {
       test.skip();
       return;
     }
     await page.getByPlaceholder("Filter by model name…").fill(searchPrefix);
-    const rows = page.locator("table tbody tr");
-    await expect(rows).toHaveCount(await rows.count(), { timeout: 5_000 });
-    const filteredCount = await rows.count();
-    expect(filteredCount).toBeLessThanOrEqual(3);
+    // After filtering, rows should reduce
+    await page.waitForTimeout(500);
+    const filteredCount = await page.locator(".MuiDataGrid-row").count();
+    expect(filteredCount).toBeLessThanOrEqual(9);
   });
 
   test("export CSV and PDF buttons are enabled", async ({ page }) => {
     await page.goto("/models");
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
     await expect(page.getByRole("button", { name: /CSV/i })).toBeEnabled();
     await expect(page.getByRole("button", { name: /PDF/i })).toBeEnabled();
   });

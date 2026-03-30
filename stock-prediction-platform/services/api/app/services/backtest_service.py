@@ -56,10 +56,14 @@ async def get_backtest_data(
         "p.predicted_date >= :start_date",
         "p.predicted_date <= :end_date",
     ]
+    # asyncpg requires datetime.date objects for DATE columns, not strings
+    import datetime
+    start_dt = datetime.date.fromisoformat(start_date) if isinstance(start_date, str) else start_date
+    end_dt = datetime.date.fromisoformat(end_date) if isinstance(end_date, str) else end_date
     params: dict = {
         "ticker": ticker,
-        "start_date": start_date,
-        "end_date": end_date,
+        "start_date": start_dt,
+        "end_date": end_dt,
     }
 
     if horizon is not None:

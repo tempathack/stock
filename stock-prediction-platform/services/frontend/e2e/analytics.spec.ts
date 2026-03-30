@@ -37,7 +37,7 @@ test.describe("/analytics page", () => {
   test("StreamHealthPanel is visible", async ({ page }) => {
     test.setTimeout(20_000);
     await expect(page.getByRole("heading", { name: /analytics/i })).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByText(/stream health/i)).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole("heading", { name: /^stream health$/i })).toBeVisible({ timeout: 10_000 });
   });
 
   test("FeatureFreshnessPanel is visible", async ({ page }) => {

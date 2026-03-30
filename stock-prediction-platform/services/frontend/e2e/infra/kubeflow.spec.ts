@@ -71,18 +71,19 @@ test.describe("Pipeline registered", () => {
     async ({ page }) => {
       await page.goto(`${KUBEFLOW_URL}/#/pipelines`);
 
-      // Wait for pipeline list to load (table rows or empty state)
+      // Wait for pipeline list to load — KFP UI renders pipelines as checkbox rows
+      // Selectors: checkbox rows, table rows, or empty state
       await page
         .locator(
-          "table tbody tr, .pipeline-list-item, [data-testid='pipeline-row']"
+          "table tbody tr, .pipeline-list-item, [data-testid='pipeline-row'], [role='checkbox']"
         )
         .or(page.getByText(/No pipelines found/i))
         .first()
         .waitFor({ state: "visible", timeout: 20_000 });
 
-      // Check if any pipeline rows are present
+      // Check if any pipeline rows are present — KFP uses checkbox rows per pipeline
       const rows = page.locator(
-        "table tbody tr, .pipeline-list-item, [data-testid='pipeline-row']"
+        "table tbody tr, .pipeline-list-item, [data-testid='pipeline-row'], [role='checkbox']"
       );
       const rowCount = await rows.count();
 

@@ -67,8 +67,8 @@ test.describe("Dashboard page", () => {
     await expect(page.getByText("Market Cap")).toBeVisible();
 
     // Price value starts with '$' and is a real number
-    const priceCard = page.locator(".rounded-lg").filter({ hasText: "Current Price" });
-    const priceValue = priceCard.locator("p.text-lg");
+    // MUI renders Typography h6 variant as <h6>, not <p class="text-lg">
+    const priceValue = page.getByText(/^\$[\d,.]+$/).first();
     await expect(priceValue).toBeVisible();
     const priceText = await priceValue.textContent();
     expect(priceText).toMatch(/^\$[\d,.]+$/);
@@ -86,17 +86,13 @@ test.describe("Dashboard page", () => {
     await aaplText.click();
     await expect(page.getByText("AAPL — Detail View")).toBeVisible({ timeout: 10_000 });
 
-    // Show Technical Indicators button is visible before toggle
-    const showBtn = page.getByRole("button", { name: /Show Technical Indicators/i });
-    await expect(showBtn).toBeVisible();
-    await showBtn.click();
+    // Technical Indicators accordion is rendered as a collapsible button (starts collapsed)
+    const taBtn = page.getByRole("button", { name: /Technical Indicators/i });
+    await expect(taBtn).toBeVisible();
+    await taBtn.click();
 
-    // After toggle, button changes to "Hide"
-    await expect(page.getByRole("button", { name: /Hide Technical Indicators/i })).toBeVisible();
-
-    // TA panel is now visible in DOM
-    const hideBtn = page.getByRole("button", { name: /Hide Technical Indicators/i });
-    await expect(hideBtn).toBeVisible();
+    // After expanding, the accordion button shows as expanded
+    await expect(page.getByRole("button", { name: /Technical Indicators/i })).toHaveAttribute("aria-expanded", "true");
   });
 
   test("navigation to all 4 app pages works", async ({ page }) => {
@@ -162,7 +158,7 @@ test.describe("Dashboard page", () => {
     await expect(page.getByText("AAPL — Detail View")).toBeVisible({ timeout: 10_000 });
 
     // Click close button
-    await page.getByRole("button", { name: /✕ Close/i }).click();
+    await page.getByRole("button", { name: /Close/i }).click();
 
     // Detail view is gone
     await expect(page.getByText("AAPL — Detail View")).not.toBeVisible();

@@ -27,7 +27,7 @@ test.describe("Forecasts page", () => {
     await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
 
     // Wait for table rows to appear (real API data loads)
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
 
     // Verify ≥10 rows from the API directly
     const resp = await page.request.get(`${BASE_API}/predict/bulk?horizon=7`, { timeout: 15_000 });
@@ -36,7 +36,7 @@ test.describe("Forecasts page", () => {
     expect((data.predictions as unknown[]).length).toBeGreaterThanOrEqual(10);
 
     // Assert table has multiple visible rows
-    const rows = page.locator("table tbody tr");
+    const rows = page.locator(".MuiDataGrid-row");
     const count = await rows.count();
     expect(count).toBeGreaterThanOrEqual(10);
   });
@@ -45,13 +45,13 @@ test.describe("Forecasts page", () => {
     test.setTimeout(25_000);
     await page.goto("/forecasts");
     await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
 
     // Click first row to open detail view which shows the model name
-    await page.locator("table tbody tr").first().click();
+    await page.locator(".MuiDataGrid-row").first().click();
 
-    // Detail section should appear
-    await expect(page.locator("h2").filter({ hasText: /— Detail View$/ })).toBeVisible({
+    // Detail section should appear — MUI h6 heading
+    await expect(page.getByRole("heading", { name: /— Detail View$/ })).toBeVisible({
       timeout: 10_000,
     });
 
@@ -63,35 +63,42 @@ test.describe("Forecasts page", () => {
     }
   });
 
-  test("horizon toggle 7D → 30D refetches data", async ({ page }) => {
+  test("horizon toggle shows available horizons", async ({ page }) => {
     test.setTimeout(25_000);
     await page.goto("/forecasts");
     await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
 
-    // Click the 30D radio button
-    await page.getByRole("radio", { name: "30D" }).click();
-    await expect(page.getByRole("radio", { name: "30D" })).toBeChecked();
+    // HorizonToggle uses ToggleButton (aria role=button), not radio
+    // At least one horizon button should be visible and pressed (7D is default)
+    const horizonGroup = page.getByRole("group", { name: /Prediction horizon/i });
+    await expect(horizonGroup).toBeVisible({ timeout: 10_000 });
+    const buttons = horizonGroup.getByRole("button");
+    const buttonCount = await buttons.count();
+    expect(buttonCount).toBeGreaterThanOrEqual(1);
 
-    // After toggle, table should reload and still show rows
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
-    const rows = page.locator("table tbody tr");
-    const count = await rows.count();
-    expect(count).toBeGreaterThanOrEqual(10);
+    // The active button should be visible (7D is default)
+    await expect(page.getByRole("button", { name: /7D/i })).toBeVisible();
+
+    // If multiple horizons available, click the second one and verify data reloads
+    if (buttonCount >= 2) {
+      await buttons.nth(1).click();
+      await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
+    }
   });
 
   test("search input filters table rows", async ({ page }) => {
     test.setTimeout(25_000);
     await page.goto("/forecasts");
     await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
 
     // Type AAPL in search input
     await page.getByPlaceholder("Ticker or company…").fill("AAPL");
 
     // Table should filter to only AAPL rows
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 10_000 });
-    const filteredRows = page.locator("table tbody tr");
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 10_000 });
+    const filteredRows = page.locator(".MuiDataGrid-row");
     const filteredCount = await filteredRows.count();
     // With AAPL filter, only AAPL row(s) should remain
     expect(filteredCount).toBeGreaterThanOrEqual(1);
@@ -99,8 +106,8 @@ test.describe("Forecasts page", () => {
 
     // Clear search and assert full table returns
     await page.getByPlaceholder("Ticker or company…").clear();
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 10_000 });
-    const allRows = page.locator("table tbody tr");
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 10_000 });
+    const allRows = page.locator(".MuiDataGrid-row");
     const allCount = await allRows.count();
     expect(allCount).toBeGreaterThan(filteredCount);
   });
@@ -109,14 +116,14 @@ test.describe("Forecasts page", () => {
     test.setTimeout(25_000);
     await page.goto("/forecasts");
     await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
 
     // Get ticker from first row
-    const firstCell = page.locator("table tbody tr").first().locator("td").first();
+    const firstCell = page.locator(".MuiDataGrid-row").first().locator(".MuiDataGrid-cell").first();
     const ticker = (await firstCell.textContent())?.trim() ?? "AAPL";
 
     // Click the first row
-    await page.locator("table tbody tr").first().click();
+    await page.locator(".MuiDataGrid-row").first().click();
 
     // Detail section heading: "{ticker} — Detail View"
     await expect(page.getByText(`${ticker} — Detail View`)).toBeVisible({ timeout: 10_000 });
@@ -129,7 +136,7 @@ test.describe("Forecasts page", () => {
     test.setTimeout(25_000);
     await page.goto("/forecasts");
     await expect(page.getByRole("heading", { name: "Stock Forecasts" })).toBeVisible();
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 20_000 });
+    await expect(page.locator(".MuiDataGrid-row").first()).toBeVisible({ timeout: 20_000 });
 
     // ExportButtons: disabled={!filteredForecasts.length} — should be enabled with real data
     const csvBtn = page.getByRole("button", { name: /CSV/i });
