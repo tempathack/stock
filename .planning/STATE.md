@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 68-01-PLAN.md
-last_updated: "2026-03-30T11:14:55.976Z"
+stopped_at: Completed 69-01-PLAN.md — analytics backend
+last_updated: "2026-03-30T12:58:56.049Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 68 — e2e-integration-v3-0-stack-validation
+**Current focus:** Phase 69 — frontend-analytics-page
 
 ## Current Status
 
@@ -314,10 +314,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 68-01]: validate/last-checked annotation patched with python3 inline heredoc (no yq dependency)
 - [Phase 68-01]: Argo CD poll checks both operationState.phase=Succeeded AND sync.revision matches NEW_HEAD prefix — prevents false-positive on prior sync
 - [Phase 68-01]: V3INT-05 uses updated_at column for 30-second window (not timestamp column) — avoids yfinance stale timestamp false negatives
+- [Phase 69]: Move confluent_kafka and get_engine imports to module level in service files so test patch paths resolve at app.services.* attribute
+- [Phase 69]: Use _dt_type alias bound at import time for isinstance checks to survive datetime module mock in unit tests
 
 ## Last Session
 
-- **Stopped at:** Completed 68-01-PLAN.md
+- **Stopped at:** Completed 69-01-PLAN.md — analytics backend
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
