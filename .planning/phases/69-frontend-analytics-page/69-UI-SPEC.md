@@ -61,7 +61,7 @@ All values from `theme/index.ts` — use exactly as defined, do not override per
 | Body | 12.8px (0.8rem via body2) | 400 (regular) | 1.5 | Data values in table cells, chip labels, metric values |
 | Label | 14px (0.875rem, MUI default) | 400 (regular) | 1.5 | Panel field labels, axis tick labels, legend text |
 | Heading | 20px (MUI h6, 1.25rem) | 600 (semibold via `fontWeight: 600`) | 1.3 | Panel section titles (e.g. "Stream Health", "Kafka Lag") |
-| Display | 28px (MUI h4 at ~1.75rem) | 700 (bold via `fontWeight: 700`) | 1.2 | Page title "Analytics" |
+| Display | 28px (MUI h4 at ~1.75rem) | 600 (semibold via `fontWeight: 600`) | 1.2 | Page title "Analytics" |
 
 Font: `"IBM Plex Mono", "Roboto Mono", monospace` — applies to all text including chart axis labels.
 
