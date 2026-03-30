@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 66-03-PLAN.md — Feast online features in prediction_service.py, materialize.py, K8s CronJob and feature server Deployment
-last_updated: "2026-03-30T07:41:32.053Z"
+stopped_at: Completed 67-01-PLAN.md — Flink namespace RBAC, OHLCV Normalizer PyFlink job, FlinkDeployment CR
+last_updated: "2026-03-30T08:30:30.058Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 66 — feast-production-feature-store
+**Current focus:** Phase 67 — apache-flink-real-time-stream-processing
 
 ## Current Status
 
@@ -298,10 +298,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 66]: Feast import guard at module level via try/except ImportError with _FEAST_AVAILABLE flag — API starts even if feast package not installed
 - [Phase 66]: get_online_features module-level alias so tests can patch app.services.prediction_service.get_online_features cleanly
 - [Phase 66]: feast-feature-store-config ConfigMap embeds feature_store.yaml with dollar-sign VAR placeholders — Feast resolves env vars at runtime natively
+- [Phase 67]: PyFlink job split into normalizer_logic.py (pure Python) + ohlcv_normalizer.py (Flink Table API) so unit tests exercise filter logic without pyflink runtime installed
+- [Phase 67]: JDBC upsert mode triggered by PRIMARY KEY (ticker, timestamp) NOT ENFORCED on sink table DDL — maps to INSERT ON CONFLICT DO UPDATE in PostgreSQL
+- [Phase 67]: s3.access.key/s3.secret.key omitted from flinkConfiguration — flink-s3-fs-presto plugin resolves from AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY env vars injected via minio-secrets secretRef
+- [Phase 67]: stock-platform-secrets and minio-secrets must be copied to flink namespace in deploy-all.sh before FlinkDeployment apply — documented as inline YAML comments with exact kubectl commands
 
 ## Last Session
 
-- **Stopped at:** Completed 66-03-PLAN.md — Feast online features in prediction_service.py, materialize.py, K8s CronJob and feature server Deployment
+- **Stopped at:** Completed 67-01-PLAN.md — Flink namespace RBAC, OHLCV Normalizer PyFlink job, FlinkDeployment CR
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
