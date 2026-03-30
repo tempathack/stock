@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 67-02-PLAN.md — Indicator Stream UDAF job, Feast Writer job, FlinkDeployment CRs, Grafana Flink dashboard
-last_updated: "2026-03-30T08:39:19.059Z"
+stopped_at: "Checkpoint: 67-03 Task 3 human-verify — awaiting smoke validation of 3 Flink jobs RUNNING + Kafka restart resilience"
+last_updated: "2026-03-30T08:42:46.247Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -306,10 +306,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 67]: feast_writer Dockerfile uses Python 3.10 — Feast 0.61.0 requires Python 3.9+ but flink:1.19 ships Python 3.8
 - [Phase 67]: push_batch_to_feast() defined at module level with store_path param so tests can patch FeatureStore without feast installed
 - [Phase 67]: Feast tests mock sys.modules['feast'] before import to avoid feast package runtime dependency in test environment
+- [Phase 67]: Use webhook.create=false for Flink Operator Helm install to avoid cert-manager certificate pressure on Minikube (cert-manager already used by Phase 54 KServe)
+- [Phase 67]: MinIO flink-checkpoints prefix created via echo | mc pipe placeholder object — MinIO has no explicit subdirectory creation API
 
 ## Last Session
 
-- **Stopped at:** Completed 67-02-PLAN.md — Indicator Stream UDAF job, Feast Writer job, FlinkDeployment CRs, Grafana Flink dashboard
+- **Stopped at:** Checkpoint: 67-03 Task 3 human-verify — awaiting smoke validation of 3 Flink jobs RUNNING + Kafka restart resilience
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
