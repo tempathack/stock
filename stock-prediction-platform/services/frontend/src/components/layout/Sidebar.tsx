@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import SsidChartIcon from "@mui/icons-material/SsidChart";
 import { useK8sHealth } from "@/api";
@@ -23,6 +24,7 @@ const navItems = [
   { to: "/forecasts", label: "Forecasts", Icon: TrendingUpIcon },
   { to: "/drift", label: "Drift", Icon: BubbleChartIcon },
   { to: "/backtest", label: "Backtest", Icon: SsidChartIcon },
+  { to: "/analytics", label: "Analytics", Icon: BarChartIcon },
 ];
 
 export default function Sidebar() {
