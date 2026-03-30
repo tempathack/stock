@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 68 context gathered
-last_updated: "2026-03-30T10:47:12.895Z"
+stopped_at: Completed 68-02-PLAN.md
+last_updated: "2026-03-30T11:09:01.041Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 67 — apache-flink-real-time-stream-processing
+**Current focus:** Phase 68 — e2e-integration-v3-0-stack-validation
 
 ## Current Status
 
@@ -308,10 +308,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 67]: Feast tests mock sys.modules['feast'] before import to avoid feast package runtime dependency in test environment
 - [Phase 67]: Use webhook.create=false for Flink Operator Helm install to avoid cert-manager certificate pressure on Minikube (cert-manager already used by Phase 54 KServe)
 - [Phase 67]: MinIO flink-checkpoints prefix created via echo | mc pipe placeholder object — MinIO has no explicit subdirectory creation API
+- [Phase 68]: ARGOCD_PASSWORD defaults to empty string — login tests skip gracefully when env var not set
+- [Phase 68]: Flink spec probes /overview REST endpoint (not UI) for beforeAll skip — hash-routing makes UI probes unreliable
+- [Phase 68]: playwright.infra.config.ts now has 7 project entries (5 original + argocd + flink-web-ui)
 
 ## Last Session
 
-- **Stopped at:** Phase 68 context gathered
+- **Stopped at:** Completed 68-02-PLAN.md
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes

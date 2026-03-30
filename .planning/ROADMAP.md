@@ -76,7 +76,7 @@
 | 65 | 2/2 | Complete    | 2026-03-29 | 2 |
 | 66 | 3/3 | Complete    | 2026-03-30 | 3 |
 | 67 | 3/3 | Complete   | 2026-03-30 | 3 |
-| 68 | E2E Integration — v3.0 Validation | Full v3.0 smoke test: Flink→Feast→predict, Argo CD, OLAP | V3INT-01–05 | 2 |
+| 68 | 1/2 | In Progress|  | 2 |
 | 69 | Frontend — /analytics Page | Real-time analytics UI: stream lag, feature freshness, OLAP candle chart, Feast health | UI-RT-01–07 | 2 |
 
 ---
@@ -1398,7 +1398,7 @@ Plans:
 5. **Full Flink pipeline:** Trigger `/ingest/intraday` → Flink Job 1 upserts to TimescaleDB within 10s → Flink Job 2 publishes to `processed-features` → Flink Job 3 updates Feast online store → `/predict/AAPL` returns prediction using fresh features
 
 **Plans:**
-- [ ] 68-01-PLAN.md — OLAP candle query benchmark, Argo CD sync smoke test, Alembic migration validation for OLAP schema
+1/2 plans executed
 - [ ] 68-02-PLAN.md — Feast offline/online integration tests, full Flink pipeline E2E smoke test, Playwright infra spec additions (Argo CD UI + Flink Web UI)
 
 ---
