@@ -78,6 +78,11 @@
 | 67 | 3/3 | Complete   | 2026-03-30 | 3 |
 | 68 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 69 | 2/2 | Complete    | 2026-03-30 | 2 |
+| 70 | Display Flink-computed streaming features in the dashboard | Surface live EMA-20, RSI-14, MACD signal from Feast Redis (Flink) in Dashboard Drawer with polling panel | TBD-01, TBD-02, TBD-03, TBD-04, TBD-05 | 2 |
+
+Plans:
+- [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
+- [ ] 70-02-PLAN.md — StreamingFeaturesPanel React component + Dashboard.tsx Drawer wiring
 
 ---
 
@@ -1423,6 +1428,19 @@ Plans:
 Plans:
 - [ ] 69-01-PLAN.md — FastAPI analytics router: 4 endpoints (/flink/jobs, /feast/freshness, /kafka/lag, /summary), Flink/Feast/Kafka service modules, Pydantic schemas, Redis cache, unit + integration tests
 - [ ] 69-02-PLAN.md — React /analytics page: TypeScript interfaces, React Query hooks, 5 panel components (SystemHealthSummary, StreamHealthPanel, FeatureFreshnessPanel, OLAPCandleChart, StreamLagMonitor), route + sidebar nav wiring
+
+### Phase 70: Display Flink-computed streaming features in the dashboard
+
+**Goal:** Surface the real-time features computed by the Apache Flink streaming pipeline (RSI, MACD, Bollinger Bands, EMA, volatility, momentum indicators) directly in the frontend dashboard — giving traders and operators live visibility into computed signal values per symbol alongside existing price data.
+
+**Requirements:** TBD
+
+**Depends on:** Phase 69
+
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 70 to break down)
 
 ---
 
