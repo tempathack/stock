@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 67-01-PLAN.md — Flink namespace RBAC, OHLCV Normalizer PyFlink job, FlinkDeployment CR
-last_updated: "2026-03-30T08:30:30.058Z"
+stopped_at: Completed 67-02-PLAN.md — Indicator Stream UDAF job, Feast Writer job, FlinkDeployment CRs, Grafana Flink dashboard
+last_updated: "2026-03-30T08:39:19.059Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -302,10 +302,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 67]: JDBC upsert mode triggered by PRIMARY KEY (ticker, timestamp) NOT ENFORCED on sink table DDL — maps to INSERT ON CONFLICT DO UPDATE in PostgreSQL
 - [Phase 67]: s3.access.key/s3.secret.key omitted from flinkConfiguration — flink-s3-fs-presto plugin resolves from AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY env vars injected via minio-secrets secretRef
 - [Phase 67]: stock-platform-secrets and minio-secrets must be copied to flink namespace in deploy-all.sh before FlinkDeployment apply — documented as inline YAML comments with exact kubectl commands
+- [Phase 67]: UDAF logic extracted into indicator_udaf_logic.py (pure Python, no pyflink) — testable without Flink runtime, same pattern as normalizer_logic.py
+- [Phase 67]: feast_writer Dockerfile uses Python 3.10 — Feast 0.61.0 requires Python 3.9+ but flink:1.19 ships Python 3.8
+- [Phase 67]: push_batch_to_feast() defined at module level with store_path param so tests can patch FeatureStore without feast installed
+- [Phase 67]: Feast tests mock sys.modules['feast'] before import to avoid feast package runtime dependency in test environment
 
 ## Last Session
 
-- **Stopped at:** Completed 67-01-PLAN.md — Flink namespace RBAC, OHLCV Normalizer PyFlink job, FlinkDeployment CR
+- **Stopped at:** Completed 67-02-PLAN.md — Indicator Stream UDAF job, Feast Writer job, FlinkDeployment CRs, Grafana Flink dashboard
 - **Timestamp:** 2026-03-29T00:00:00Z
 
 ## Notes
