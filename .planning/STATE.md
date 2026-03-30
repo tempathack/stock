@@ -1,7 +1,7 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Phases — Production-Ready
+milestone: v3.0
+milestone_name: Real-Time Analytics & GitOps
 status: unknown
 stopped_at: Completed 69-02-PLAN.md — frontend analytics page
 last_updated: "2026-03-30T13:16:42.424Z"
@@ -352,3 +352,4 @@ Recommended wave execution:
 - Phase 60 added: Fix model_name unknown in predict response — fetch metadata from MinIO or DB on API startup
 - Phase 63 added: Fix E2E test assertions — require real API data, not mock/empty fallbacks
 - Phases 64–69 added: v3.0 milestone — TimescaleDB OLAP, Argo CD GitOps, Feast feature store, Apache Flink stream processing, E2E integration, /analytics UI page
+- Phase 70 added: Display Flink-computed streaming features in the dashboard
