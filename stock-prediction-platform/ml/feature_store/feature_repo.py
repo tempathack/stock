@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from feast import Entity, FeatureView, Field
+from feast import Entity, FeatureView, Field, PushSource
 from feast.types import Float64, Int64
 from feast.infra.offline_stores.contrib.postgres_offline_store.postgres_source import (
     PostgreSQLSource,
@@ -63,6 +63,14 @@ lag_source = PostgreSQLSource(
     created_timestamp_column="created_at",
 )
 
+# ── PushSource ───────────────────────────────────────────────────────────────
+# Enables Flink feast_writer job to push real-time indicators to Redis via
+# store.push(push_source_name="technical_indicators_push", ..., to=PushMode.ONLINE)
+technical_indicators_push = PushSource(
+    name="technical_indicators_push",
+    batch_source=indicators_source,
+)
+
 # ── FeatureViews ──────────────────────────────────────────────────────────────
 ohlcv_stats_fv = FeatureView(
     name="ohlcv_stats_fv",
@@ -98,6 +106,7 @@ technical_indicators_fv = FeatureView(
     ],
     online=True,
     source=indicators_source,
+    stream_source=technical_indicators_push,
 )
 
 lag_features_fv = FeatureView(
