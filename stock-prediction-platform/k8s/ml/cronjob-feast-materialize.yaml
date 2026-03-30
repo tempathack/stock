@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: feast-materialize
+  namespace: ml
+  labels:
+    app: feast-materialize
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: feast-materialization
+spec:
+  schedule: "30 18 * * 1-5"
+  timeZone: "America/New_York"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 300
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 3600
+      template:
+        metadata:
+          labels:
+            app: feast-materialize
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: feast-materialize
+              image: stock-ml-pipeline:latest
+              imagePullPolicy: Never
+              command:
+                - python
+                - -m
+                - ml.feature_store.materialize
+              envFrom:
+                - configMapRef:
+                    name: ml-pipeline-config
+                - configMapRef:
+                    name: minio-config
+                - secretRef:
+                    name: minio-secrets
+              env:
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: DATABASE_URL_WRITER
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: POSTGRES_PASSWORD
+                - name: POSTGRES_USER
+                  value: "stockuser"
+              resources:
+                requests:
+                  cpu: "500m"
+                  memory: "512Mi"
+                limits:
+                  cpu: "2000m"
+                  memory: "2Gi"
