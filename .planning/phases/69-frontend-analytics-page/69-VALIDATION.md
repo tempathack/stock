@@ -43,7 +43,7 @@ created: 2026-03-30
 | 69-01-03 | 01 | 1 | UI-RT-04 | unit | `pytest tests/test_analytics_kafka.py -x -q` | created inline by Task 1 | ⬜ pending |
 | 69-01-04 | 01 | 1 | UI-RT-05 | unit | `pytest tests/test_analytics_argocd.py -x -q` | created inline by Task 1 | ⬜ pending |
 | 69-01-05 | 01 | 2 | UI-RT-01–07 | integration | `pytest tests/test_analytics_router.py -x -q` | created inline by Task 2 | ⬜ pending |
-| 69-02-01 | 02 | 1 | UI-RT-01–07 | E2E | `npx playwright test analytics.spec.ts` | created inline by Task 1 | ⬜ pending |
+| 69-02-01 | 02 | 1 | UI-RT-01–07 | E2E | `npx playwright test analytics.spec.ts` | created inline by Plan 02 Task 1 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -64,13 +64,24 @@ Files created inline (no separate wave needed):
 
 ---
 
+## Plan 02 Task Structure Note
+
+Plan 02 (frontend) has been split into three tasks to reduce density:
+
+- **Task 1**: TypeScript interfaces + React Query hooks + barrel exports + **analytics.spec.ts** (Playwright spec written here, in the same task that creates the API layer contracts)
+- **Task 2a**: SystemHealthSummary, StreamHealthPanel, FeatureFreshnessPanel components
+- **Task 2b**: OLAPCandleChart, StreamLagMonitor, Analytics.tsx page, App.tsx route, Sidebar.tsx nav item
+- **Checkpoint**: Human visual verification of /analytics page
+
+---
+
 ## Manual-Only Verifications
 
 | Behavior | Requirement | Why Manual | Test Instructions |
 |----------|-------------|------------|-------------------|
 | Flink job status badge colors | UI-RT-01 | Visual rendering of MUI Chip colors | Open `/analytics`, verify RUNNING=green, FAILED=red, RESTARTING=amber |
 | Feature freshness staleness colors | UI-RT-02 | Visual color thresholds (<15min green, <1h amber, >1h red) | Inspect panel with mocked timestamps |
-| Lightweight Charts candle rendering | UI-RT-03 | Canvas-based chart visual validation | Open `/analytics`, switch interval buttons, verify candles render |
+| Lightweight Charts candle rendering | UI-RT-03 | Deferred — see scope reduction note in 69-02-PLAN.md | N/A for Phase 69 |
 | Stream lag rolling window chart | UI-RT-04 | Recharts visual rendering of 30-min rolling window | Open `/analytics`, verify line chart shows per-partition lag accumulating over time |
 | Responsive layout at 375px | UI-RT-07 | Browser viewport testing | Open DevTools → 375px, verify no horizontal scroll, panels stack vertically |
 
