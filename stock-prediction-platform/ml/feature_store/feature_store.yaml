@@ -1,0 +1,24 @@
+project: stock_prediction
+provider: local
+entity_key_serialization_version: 3
+
+registry:
+  registry_type: sql
+  path: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+  cache_ttl_seconds: 60
+  sqlalchemy_config_kwargs:
+    echo: false
+    pool_pre_ping: true
+
+offline_store:
+  type: postgres
+  host: ${POSTGRES_HOST}
+  port: ${POSTGRES_PORT}
+  database: ${POSTGRES_DB}
+  db_schema: public
+  user: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
+
+online_store:
+  type: redis
+  connection_string: "${REDIS_HOST}:${REDIS_PORT}"

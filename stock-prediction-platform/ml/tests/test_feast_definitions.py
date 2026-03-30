@@ -8,10 +8,11 @@ class TestFeatureViewDefinitions:
     """FEAST-02, FEAST-03: FeatureView objects have correct names, entities, fields, TTL."""
 
     def test_ticker_entity_join_key(self):
-        """ticker Entity has join_keys=['ticker']."""
+        """ticker Entity has join_key='ticker'."""
         from ml.feature_store.feature_repo import ticker
         assert ticker.name == "ticker"
-        assert "ticker" in ticker.join_keys
+        # Feast Entity uses join_key (singular str) not join_keys
+        assert ticker.join_key == "ticker"
 
     def test_ohlcv_stats_fv_exists(self):
         """ohlcv_stats_fv FeatureView is importable and named correctly."""
