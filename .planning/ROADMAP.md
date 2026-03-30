@@ -1418,9 +1418,11 @@ Plans:
 6. **SystemHealthSummary**: top-of-page card row showing Argo CD sync status (Synced/OutOfSync), Flink cluster health, Feast online store latency p99, continuous aggregate last-refresh time
 7. All panels have graceful empty states and error boundaries; page fully responsive at 375px
 
-**Plans:**
-- [ ] 69-01-PLAN.md — New API endpoints: `/analytics/flink/jobs`, `/analytics/feast/freshness`, `/analytics/kafka/lag` + backend services; nav + route wiring
-- [ ] 69-02-PLAN.md — StreamHealthPanel, FeatureFreshnessPanel, OLAPCandleChart, StreamLagMonitor, SystemHealthSummary components + Playwright E2E spec
+**Plans:** 2 plans
+
+Plans:
+- [ ] 69-01-PLAN.md — FastAPI analytics router: 4 endpoints (/flink/jobs, /feast/freshness, /kafka/lag, /summary), Flink/Feast/Kafka service modules, Pydantic schemas, Redis cache, unit + integration tests
+- [ ] 69-02-PLAN.md — React /analytics page: TypeScript interfaces, React Query hooks, 5 panel components (SystemHealthSummary, StreamHealthPanel, FeatureFreshnessPanel, OLAPCandleChart, StreamLagMonitor), route + sidebar nav wiring
 
 ---
 
