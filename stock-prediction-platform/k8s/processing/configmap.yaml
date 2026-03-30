@@ -6,7 +6,7 @@ metadata:
 data:
   KAFKA_BOOTSTRAP_SERVERS: "kafka-kafka-bootstrap.storage.svc.cluster.local:9092"
   KAFKA_GROUP_ID: "stock-consumer-group"
-  INTRADAY_TOPIC: "intraday-data"
+  INTRADAY_TOPIC: ""
   HISTORICAL_TOPIC: "historical-data"
   BATCH_SIZE: "100"
   BATCH_TIMEOUT_MS: "5000"
