@@ -31,7 +31,11 @@ from indicator_udaf_logic import compute_rsi, compute_ema, compute_macd_signal
 # ---------------------------------------------------------------------------
 
 class RsiUdaf(AggregateFunction):
-    """RSI-14 UDAF: accumulates close prices, computes Wilder's RSI on flush."""
+    """RSI-14 UDAF: accumulates close prices, computes Wilder's RSI on flush.
+
+    No retract() — HOP windows produce append-only output (each window is
+    a distinct time range), so retraction semantics are not required.
+    """
 
     def create_accumulator(self):
         return []
@@ -40,12 +44,14 @@ class RsiUdaf(AggregateFunction):
         if value is not None:
             acc.append(float(value))
 
-    def retract(self, acc, value):
-        if value is not None and float(value) in acc:
-            acc.remove(float(value))
-
     def get_value(self, acc):
         return compute_rsi(acc)
+
+    def get_accumulator_type(self):
+        return DataTypes.ARRAY(DataTypes.DOUBLE())
+
+    def get_result_type(self):
+        return DataTypes.DOUBLE()
 
 
 class EmaUdaf(AggregateFunction):
@@ -58,12 +64,14 @@ class EmaUdaf(AggregateFunction):
         if value is not None:
             acc.append(float(value))
 
-    def retract(self, acc, value):
-        if value is not None and float(value) in acc:
-            acc.remove(float(value))
-
     def get_value(self, acc):
         return compute_ema(acc, span=20)
+
+    def get_accumulator_type(self):
+        return DataTypes.ARRAY(DataTypes.DOUBLE())
+
+    def get_result_type(self):
+        return DataTypes.DOUBLE()
 
 
 class MacdSignalUdaf(AggregateFunction):
@@ -76,12 +84,14 @@ class MacdSignalUdaf(AggregateFunction):
         if value is not None:
             acc.append(float(value))
 
-    def retract(self, acc, value):
-        if value is not None and float(value) in acc:
-            acc.remove(float(value))
-
     def get_value(self, acc):
         return compute_macd_signal(acc)
+
+    def get_accumulator_type(self):
+        return DataTypes.ARRAY(DataTypes.DOUBLE())
+
+    def get_result_type(self):
+        return DataTypes.DOUBLE()
 
 
 def main() -> None:
@@ -116,7 +126,7 @@ def main() -> None:
             `open`        DECIMAL(12, 4),
             high          DECIMAL(12, 4),
             low           DECIMAL(12, 4),
-            close         DECIMAL(12, 4),
+            `close`       DECIMAL(12, 4),
             adj_close     DECIMAL(12, 4),
             volume        BIGINT,
             vwap          DECIMAL(12, 4),
@@ -128,6 +138,7 @@ def main() -> None:
             'properties.bootstrap.servers'  = '{KAFKA_BOOTSTRAP_SERVERS}',
             'properties.group.id'           = 'flink-indicator-stream',
             'scan.startup.mode'             = 'group-offsets',
+            'properties.auto.offset.reset'  = 'latest',
             'format'                        = 'json',
             'json.ignore-parse-errors'      = 'true'
         )
@@ -136,19 +147,23 @@ def main() -> None:
     # ---------------------------------------------------------------------------
     # Sink: processed-features Kafka topic
     # ---------------------------------------------------------------------------
+    # upsert-kafka is used because Python UDAFs with GROUP BY produce an
+    # update changelog that append-mode kafka does not accept.
+    # upsert-kafka requires a PRIMARY KEY and emits the latest value per key.
     t_env.execute_sql(f"""
         CREATE TABLE processed_features_sink (
             ticker        STRING,
             `timestamp`   TIMESTAMP(3),
             ema_20        DOUBLE,
             rsi_14        DOUBLE,
-            macd_signal   DOUBLE
+            macd_signal   DOUBLE,
+            PRIMARY KEY (ticker, `timestamp`) NOT ENFORCED
         ) WITH (
-            'connector'                     = 'kafka',
+            'connector'                     = 'upsert-kafka',
             'topic'                         = 'processed-features',
             'properties.bootstrap.servers'  = '{KAFKA_BOOTSTRAP_SERVERS}',
-            'properties.group.id'           = 'flink-indicator-producer',
-            'format'                        = 'json'
+            'key.format'                    = 'json',
+            'value.format'                  = 'json'
         )
     """)
 
@@ -161,16 +176,16 @@ def main() -> None:
         SELECT
             ticker,
             window_start AS `timestamp`,
-            ema_udaf(close)         AS ema_20,
-            rsi_udaf(close)         AS rsi_14,
-            macd_signal_udaf(close) AS macd_signal
+            ema_udaf(`close`)         AS ema_20,
+            rsi_udaf(`close`)         AS rsi_14,
+            macd_signal_udaf(`close`) AS macd_signal
         FROM TABLE(
             HOP(TABLE intraday_source, DESCRIPTOR(`timestamp`),
                 INTERVAL '5' MINUTE, INTERVAL '20' MINUTE)
         )
         WHERE fetch_mode = 'intraday'
-          AND close IS NOT NULL
-          AND close > 0
+          AND `close` IS NOT NULL
+          AND `close` > 0
         GROUP BY ticker, window_start, window_end
     """).wait()
 

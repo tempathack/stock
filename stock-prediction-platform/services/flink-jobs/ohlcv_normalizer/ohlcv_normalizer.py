@@ -47,18 +47,20 @@ def main() -> None:
             `open`        DECIMAL(12, 4),
             high          DECIMAL(12, 4),
             low           DECIMAL(12, 4),
-            close         DECIMAL(12, 4),
+            `close`       DECIMAL(12, 4),
             adj_close     DECIMAL(12, 4),
             volume        BIGINT,
             vwap          DECIMAL(12, 4),
             fetch_mode    STRING,
             WATERMARK FOR `timestamp` AS `timestamp` - INTERVAL '10' SECONDS
+        -- source keeps TIMESTAMP_LTZ for watermark; sink uses TIMESTAMP(3) for JDBC compat
         ) WITH (
             'connector'                     = 'kafka',
             'topic'                         = 'intraday-data',
             'properties.bootstrap.servers'  = '{KAFKA_BOOTSTRAP_SERVERS}',
             'properties.group.id'           = 'flink-ohlcv-normalizer',
             'scan.startup.mode'             = 'group-offsets',
+            'properties.auto.offset.reset'  = 'latest',
             'format'                        = 'json',
             'json.ignore-parse-errors'      = 'true'
         )
@@ -70,11 +72,11 @@ def main() -> None:
     t_env.execute_sql(f"""
         CREATE TABLE ohlcv_intraday_sink (
             ticker        STRING,
-            `timestamp`   TIMESTAMP_LTZ(3),
+            `timestamp`   TIMESTAMP(3),
             `open`        DECIMAL(12, 4),
             high          DECIMAL(12, 4),
             low           DECIMAL(12, 4),
-            close         DECIMAL(12, 4),
+            `close`       DECIMAL(12, 4),
             adj_close     DECIMAL(12, 4),
             volume        BIGINT,
             vwap          DECIMAL(12, 4),
@@ -98,19 +100,19 @@ def main() -> None:
         INSERT INTO ohlcv_intraday_sink
         SELECT
             ticker,
-            `timestamp`,
+            CAST(`timestamp` AS TIMESTAMP(3)),
             `open`,
             high,
             low,
-            close,
+            `close`,
             adj_close,
             volume,
-            COALESCE(vwap, close) AS vwap
+            COALESCE(vwap, `close`) AS vwap
         FROM intraday_source
         WHERE fetch_mode = 'intraday'
           AND ticker IS NOT NULL
-          AND close IS NOT NULL
-          AND close > 0
+          AND `close` IS NOT NULL
+          AND `close` > 0
     """).wait()
 
 

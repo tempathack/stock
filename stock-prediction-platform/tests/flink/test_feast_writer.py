@@ -12,14 +12,14 @@ from unittest.mock import MagicMock, call, patch
 # the real feast package (which may not be installed in the test environment).
 # ---------------------------------------------------------------------------
 feast_mock = MagicMock()
-feast_push_source_mock = MagicMock()
+feast_data_source_mock = MagicMock()
 pandas_mock = MagicMock()
 
-# Set up PushMode enum-like mock
-feast_push_source_mock.PushMode.ONLINE = "ONLINE"
+# Set up PushMode enum-like mock (now lives in feast.data_source)
+feast_data_source_mock.PushMode.ONLINE = "ONLINE"
 
 sys.modules.setdefault("feast", feast_mock)
-sys.modules.setdefault("feast.push_source", feast_push_source_mock)
+sys.modules.setdefault("feast.data_source", feast_data_source_mock)
 
 # Add feast_writer directory to sys.path
 sys.path.insert(
@@ -38,7 +38,7 @@ sys.path.insert(
 import pandas as pd
 
 # Patch FeatureStore at import time of feast_writer
-with patch.dict(sys.modules, {"feast": feast_mock, "feast.push_source": feast_push_source_mock}):
+with patch.dict(sys.modules, {"feast": feast_mock, "feast.data_source": feast_data_source_mock}):
     import importlib
     import feast_writer as fw_module
     importlib.reload(fw_module)
@@ -52,8 +52,8 @@ class TestPushBatchToFeast:
     def setup_method(self):
         """Reset mock state before each test."""
         feast_mock.reset_mock()
-        feast_push_source_mock.reset_mock()
-        feast_push_source_mock.PushMode.ONLINE = "ONLINE"
+        feast_data_source_mock.reset_mock()
+        feast_data_source_mock.PushMode.ONLINE = "ONLINE"
 
     def test_single_record_calls_store_push_once(self):
         """Test 1: push_batch_to_feast with one record calls store.push exactly once."""

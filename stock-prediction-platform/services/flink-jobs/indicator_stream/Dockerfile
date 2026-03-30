@@ -5,7 +5,9 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf /usr/bin/python3 /usr/local/bin/python \
+    && ln -sf /usr/bin/python3 /usr/local/bin/python3
 
 # Install PyFlink + pandas + numpy for UDAF helper logic
 RUN pip3 install "apache-flink==1.19.*" pandas numpy

@@ -22,7 +22,7 @@ import os
 import pandas as pd
 
 from feast import FeatureStore
-from feast.push_source import PushMode
+from feast.data_source import PushMode
 
 
 def push_batch_to_feast(
@@ -60,7 +60,7 @@ def main() -> None:
     )
     from pyflink.common.serialization import SimpleStringSchema
     from pyflink.common import WatermarkStrategy
-    from pyflink.datastream.functions import SinkFunction
+    from pyflink.datastream.functions import MapFunction
 
     KAFKA_BOOTSTRAP_SERVERS = os.environ["KAFKA_BOOTSTRAP_SERVERS"]
     FEAST_STORE_PATH = os.environ.get("FEAST_STORE_PATH", "/opt/feast")
@@ -87,24 +87,26 @@ def main() -> None:
     )
 
     # ---------------------------------------------------------------------------
-    # Sink: push each record to Feast Redis online store
+    # Sink: push each record to Feast Redis online store.
+    # MapFunction is used as a side-effecting sink — SinkFunction in PyFlink 1.19
+    # wraps a Java interface and cannot be subclassed directly in Python.
     # ---------------------------------------------------------------------------
-    class FeastPushSink(SinkFunction):
-        """SinkFunction that deserializes a JSON string and pushes to Feast."""
+    class FeastPushMap(MapFunction):
+        """MapFunction that pushes to Feast as a side effect and passes value through."""
 
         def __init__(self, feast_store_path: str):
-            super().__init__()
             self._store_path = feast_store_path
 
-        def invoke(self, value: str, context) -> None:
+        def map(self, value: str) -> str:
             try:
                 record = json.loads(value)
                 push_batch_to_feast([record], store_path=self._store_path)
             except Exception as exc:
                 # Log and continue — do not crash the job on a bad record
-                print(f"[FeastPushSink] Failed to push record: {exc}", flush=True)
+                print(f"[FeastPushMap] Failed to push record: {exc}", flush=True)
+            return value
 
-    ds.add_sink(FeastPushSink(FEAST_STORE_PATH))
+    ds.map(FeastPushMap(FEAST_STORE_PATH)).print()
     env.execute("feast-writer-job")
 
 

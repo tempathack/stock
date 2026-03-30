@@ -61,7 +61,7 @@ spec:
           env:
             # Enable the built-in S3 Presto plugin so Flink can write checkpoints to MinIO
             - name: ENABLE_BUILT_IN_PLUGINS
-              value: "flink-s3-fs-presto-1.19.0.jar"
+              value: "flink-s3-fs-presto-1.19.3.jar"
           envFrom:
             # Application config (Kafka + Postgres addresses, DB name, user)
             - configMapRef:
@@ -84,9 +84,9 @@ spec:
     entryClass: "org.apache.flink.client.python.PythonDriver"
     args:
       - "-pyclientexec"
-      - "/usr/local/bin/python3"
+      - "/usr/bin/python3"
       - "-py"
       - "/opt/flink/usrlib/ohlcv_normalizer.py"
     parallelism: 1
-    upgradeMode: stateful
+    upgradeMode: last-state
     state: running
