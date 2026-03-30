@@ -77,6 +77,28 @@ echo "Waiting for Strimzi operator to be ready..."
 kubectl wait --for=condition=Ready pod -l name=strimzi-cluster-operator -n storage --timeout=300s
 echo "Strimzi operator ready"
 
+# --- Phase 67: Flink Kubernetes Operator ---
+echo "=== [Phase 67] Installing Flink Kubernetes Operator v1.11.0 ==="
+if ! helm list -n flink 2>/dev/null | grep -q flink-kubernetes-operator; then
+  # cert-manager already installed by Phase 54 block in deploy-all.sh
+  helm repo add flink-operator-repo \
+    https://downloads.apache.org/flink/flink-kubernetes-operator-1.11.0/ \
+    2>/dev/null || helm repo update flink-operator-repo 2>/dev/null || true
+  # Use webhook.create=false to avoid cert-manager certificate pressure on Minikube
+  # If webhook.create=true is needed for production, cert-manager is already available
+  helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator \
+    --namespace flink \
+    --create-namespace \
+    --set webhook.create=false \
+    --wait --timeout 120s
+  echo "[Phase 67] Flink Kubernetes Operator installed"
+else
+  echo "[Phase 67] Flink Kubernetes Operator already installed — skipping"
+fi
+echo "[Phase 67] Verifying FlinkDeployment CRD..."
+kubectl get crd flinkdeployments.flink.apache.org
+echo "[Phase 67] Flink Operator ready"
+
 # --- Verification ---
 echo "=== Verifying namespaces ==="
 kubectl get namespaces

@@ -59,8 +59,13 @@ spec:
               echo "Creating buckets..."
               mc mb --ignore-existing local/model-artifacts
               mc mb --ignore-existing local/drift-logs
+              echo "Creating Flink checkpoint prefix..."
+              # MinIO doesn't have explicit subdirectory creation; create a zero-byte placeholder object
+              # so the prefix exists before Flink writes checkpoints to it
+              echo "" | mc pipe local/model-artifacts/flink-checkpoints/.keep
+              echo "Flink checkpoints prefix created"
               echo "Verifying buckets..."
-              mc ls local/
+              mc ls local/model-artifacts/ && mc ls local/drift-logs/ || true
               echo "MinIO bucket initialization complete"
           resources:
             requests:
