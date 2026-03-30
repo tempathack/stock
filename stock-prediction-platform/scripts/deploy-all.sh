@@ -281,6 +281,58 @@ kubectl rollout status deployment/kafka-consumer -n processing --timeout=120s
 
 echo "[Phase 9] ✓ Kafka consumer service deployed"
 
+# --- Phase 67: Apache Flink — Real-Time Stream Processing ---
+echo "[Phase 67] Applying Flink namespace and RBAC..."
+# Note: flink namespace is already in namespaces.yaml applied in Phase 2 block above
+kubectl apply -f "$PROJECT_ROOT/k8s/flink/rbac.yaml"
+
+echo "[Phase 67] Applying processed-features Kafka topic..."
+kubectl apply -f "$PROJECT_ROOT/k8s/kafka/kafka-topic-processed-features.yaml"
+
+echo "[Phase 67] Copying secrets to flink namespace..."
+kubectl delete secret stock-platform-secrets -n flink --ignore-not-found
+kubectl get secret stock-platform-secrets -n storage -o json \
+    | python3 -c "import sys,json; d=json.load(sys.stdin); d['metadata']={k:v for k,v in d['metadata'].items() if k in ('name','labels')}; d['metadata']['namespace']='flink'; print(json.dumps(d))" \
+    | kubectl create -f -
+kubectl delete secret minio-secrets -n flink --ignore-not-found
+kubectl get secret minio-secrets -n storage -o json \
+    | python3 -c "import sys,json; d=json.load(sys.stdin); d['metadata']={k:v for k,v in d['metadata'].items() if k in ('name','labels')}; d['metadata']['namespace']='flink'; print(json.dumps(d))" \
+    | kubectl create -f -
+
+echo "[Phase 67] Applying Flink ConfigMap..."
+kubectl apply -f "$PROJECT_ROOT/k8s/flink/flink-config-configmap.yaml"
+
+echo "[Phase 67] Building Flink Docker images (in minikube docker context)..."
+eval $(minikube docker-env)
+docker build -t stock-flink-ohlcv-normalizer:latest \
+    "$PROJECT_ROOT/services/flink-jobs/ohlcv_normalizer/"
+docker build -t stock-flink-indicator-stream:latest \
+    "$PROJECT_ROOT/services/flink-jobs/indicator_stream/"
+docker build -t stock-flink-feast-writer:latest \
+    "$PROJECT_ROOT/services/flink-jobs/feast_writer/"
+echo "[Phase 67] Flink Docker images built"
+
+echo "[Phase 67] Deploying FlinkDeployment CRs..."
+kubectl apply -f "$PROJECT_ROOT/k8s/flink/flinkdeployment-ohlcv-normalizer.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/flink/flinkdeployment-indicator-stream.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/flink/flinkdeployment-feast-writer.yaml"
+
+echo "[Phase 67] Waiting for Flink jobs to reach RUNNING state (up to 180s)..."
+FLINK_TIMEOUT=180
+FLINK_ELAPSED=0
+FLINK_INTERVAL=10
+until kubectl get flinkdeployment -n flink \
+    -o jsonpath='{range .items[*]}{.status.jobManagerDeploymentStatus}{"\n"}{end}' 2>/dev/null \
+    | grep -v READY | wc -l | grep -q "^0$" 2>/dev/null \
+    || [ $FLINK_ELAPSED -ge $FLINK_TIMEOUT ]; do
+  echo "[Phase 67] Waiting for Flink jobs... ${FLINK_ELAPSED}s elapsed"
+  sleep $FLINK_INTERVAL
+  FLINK_ELAPSED=$((FLINK_ELAPSED + FLINK_INTERVAL))
+done
+echo "[Phase 67] Flink job status:"
+kubectl get flinkdeployment -n flink
+echo "[Phase 67] Apache Flink stream processing deployed"
+
 # --- Phase 33: ML Pipeline Docker Image ---
 echo "[Phase 33] Building ML pipeline Docker image..."
 eval $(minikube docker-env)
@@ -387,6 +439,7 @@ kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboards-configmap.yaml
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboard-api-health.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboard-ml-perf.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboard-kafka.yaml"
+kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboard-flink.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-deployment.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-service.yaml"
 
