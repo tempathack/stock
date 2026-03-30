@@ -8,6 +8,16 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+try:
+    from ml.features.feast_store import get_online_features as _feast_get_online
+    _FEAST_AVAILABLE = True
+except ImportError:
+    _FEAST_AVAILABLE = False
+    _feast_get_online = None  # type: ignore[assignment]
+
+# Expose at module level so tests can patch app.services.prediction_service.get_online_features
+get_online_features = _feast_get_online
+
 
 def load_cached_predictions(
     registry_dir: str = "model_registry",
@@ -743,6 +753,26 @@ async def get_retrain_status_from_db() -> dict | None:
         result_dict["previous_trained_at"] = prev["trained_at"].isoformat() if prev.get("trained_at") else None
 
     return result_dict
+
+
+def get_online_features_for_ticker(ticker: str) -> dict | None:
+    """Retrieve online features from Feast/Redis for a single ticker.
+
+    Returns a dict of feature name -> value list (Feast format) on success,
+    or None when Feast is unavailable or Redis is unreachable.
+
+    FEAST-07: Used by predict router before falling back to live KServe inference.
+    """
+    if not _FEAST_AVAILABLE or get_online_features is None:
+        logger.debug("Feast not available — skipping online feature retrieval for %s", ticker)
+        return None
+    try:
+        return get_online_features(ticker.upper())
+    except Exception as exc:
+        logger.warning(
+            "Feast get_online_features failed for %s (%s) — returning None.", ticker.upper(), exc
+        )
+        return None
 
 
 async def load_ab_results_from_db(days: int = 30) -> dict | None:

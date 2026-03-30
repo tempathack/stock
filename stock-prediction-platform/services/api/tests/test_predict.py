@@ -100,3 +100,57 @@ class TestPredictBulk:
         for pred in data["predictions"]:
             assert "ticker" in pred
             assert "predicted_price" in pred
+
+
+class TestFeastOnlineFeatures:
+    """FEAST-07: prediction_service.get_online_features_for_ticker() wraps Feast online store."""
+
+    def test_returns_dict_with_features(self):
+        """Returns dict with feature values when Feast online store has data."""
+        mock_feast_result = {
+            "ticker": ["AAPL"],
+            "ohlcv_stats_fv__close": [182.5],
+            "ohlcv_stats_fv__daily_return": [0.012],
+            "technical_indicators_fv__rsi_14": [58.3],
+            "lag_features_fv__lag_1": [180.0],
+        }
+        with patch(
+            "app.services.prediction_service.get_online_features",
+            return_value=mock_feast_result,
+        ):
+            from app.services.prediction_service import get_online_features_for_ticker
+            result = get_online_features_for_ticker("AAPL")
+            assert isinstance(result, dict)
+            assert result is not None
+
+    def test_calls_feast_with_ticker(self):
+        """Passes the uppercase ticker to feast_store.get_online_features."""
+        with patch(
+            "app.services.prediction_service.get_online_features",
+        ) as mock_go:
+            mock_go.return_value = {"ticker": ["AAPL"]}
+            from app.services.prediction_service import get_online_features_for_ticker
+            get_online_features_for_ticker("aapl")
+            mock_go.assert_called_once_with("AAPL")
+
+    def test_returns_none_on_feast_unavailable(self):
+        """Returns None gracefully when Feast raises (e.g. Redis unavailable)."""
+        with patch(
+            "app.services.prediction_service.get_online_features",
+            side_effect=Exception("Redis connection refused"),
+        ):
+            from app.services.prediction_service import get_online_features_for_ticker
+            result = get_online_features_for_ticker("AAPL")
+            assert result is None
+
+    def test_feast_not_available_returns_none(self):
+        """Returns None when feast package not installed (_FEAST_AVAILABLE=False)."""
+        import app.services.prediction_service as ps_mod
+        original = ps_mod._FEAST_AVAILABLE
+        try:
+            ps_mod._FEAST_AVAILABLE = False
+            from app.services.prediction_service import get_online_features_for_ticker
+            result = get_online_features_for_ticker("AAPL")
+            assert result is None
+        finally:
+            ps_mod._FEAST_AVAILABLE = original
