@@ -15,7 +15,7 @@ from app.config import settings
 from app.middleware import RequestContextMiddleware
 from app.models.database import dispose_engine, init_engine
 from app.rate_limit import RateLimitMiddleware
-from app.routers import backtest, health, ingest, market, models, predict, ws
+from app.routers import analytics, backtest, health, ingest, market, models, predict, ws
 from app.services.model_metadata_cache import load_active_model_metadata
 from app.services.price_feed import price_feed_loop
 from app.utils.logging import configure_uvicorn_logging, get_logger
@@ -112,5 +112,6 @@ app.include_router(models.router)
 app.include_router(market.router)
 app.include_router(ws.router)
 app.include_router(backtest.router)
+app.include_router(analytics.router)
 
 Instrumentator().instrument(app).expose(app)
