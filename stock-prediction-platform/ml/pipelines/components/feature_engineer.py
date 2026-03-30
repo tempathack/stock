@@ -15,11 +15,26 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# ---------------------------------------------------------------------------
+# Feast import — optional; gracefully degrade when feast is not installed
+# ---------------------------------------------------------------------------
+try:
+    from ml.features.feast_store import get_historical_features as _feast_get_historical
+    _FEAST_AVAILABLE = True
+except ImportError:
+    _FEAST_AVAILABLE = False
+    _feast_get_historical = None  # type: ignore[assignment]
+
+# Module-level alias used by tests to patch via
+# `ml.pipelines.components.feature_engineer.get_historical_features`
+get_historical_features = _feast_get_historical
+
 
 def engineer_features(
     data: dict[str, pd.DataFrame],
     use_feature_store: bool = False,
     db_settings: "DBSettings | None" = None,
+    use_feast: bool = False,
 ) -> dict[str, pd.DataFrame]:
     """Apply all technical indicators, lag features, and rolling stats per ticker.
 
@@ -30,6 +45,31 @@ def engineer_features(
     if not data:
         return {}
 
+    # ── Feast path (FEAST-06) ────────────────────────────────────────────────
+    if use_feast and _FEAST_AVAILABLE and get_historical_features is not None:
+        rows = []
+        for ticker, df in data.items():
+            for ts in df.index:
+                rows.append({
+                    "ticker": ticker,
+                    "event_timestamp": pd.Timestamp(ts, tz="UTC"),
+                })
+        entity_df = pd.DataFrame(rows)
+        try:
+            feast_df = get_historical_features(entity_df)
+            result: dict[str, pd.DataFrame] = {}
+            for ticker in data.keys():
+                t_df = feast_df[feast_df["ticker"] == ticker].set_index("event_timestamp")
+                t_df.index.name = "date"
+                result[ticker] = t_df.drop(columns=["ticker"], errors="ignore")
+            return result
+        except Exception as exc:
+            logger.warning(
+                "Feast get_historical_features failed (%s) — falling back to on-the-fly.", exc
+            )
+            # fall through to existing computation
+
+    # ── Existing EAV feature store path (preserved) ─────────────────────────
     # Attempt to load from feature store
     store_data: dict[str, pd.DataFrame] = {}
     if use_feature_store and db_settings is not None:
