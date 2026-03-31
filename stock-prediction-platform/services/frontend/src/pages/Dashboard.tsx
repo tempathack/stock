@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import {
   Box,
   Chip,
@@ -402,14 +402,14 @@ export default function Dashboard() {
   }, [selected, selectedStock]);
 
   // Scroll to detail panel when stock is selected
-  const handleSelect = (ticker: string | null) => {
+  const handleSelect = useCallback((ticker: string | null) => {
     setSelected(ticker);
     if (ticker) {
       setTimeout(() => {
         detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
-  };
+  }, []);
 
   const wsDotColor = WS_DOT_COLOR[wsStatus];
   const pct        = selectedStock?.daily_change_pct ?? 0;
