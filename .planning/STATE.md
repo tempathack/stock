@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 74-02-PLAN.md — Treemap AAPL text contrast fix with white text and SVG drop-shadow filter
-last_updated: "2026-03-31T14:45:01.967Z"
+stopped_at: Phase 75 context gathered
+last_updated: "2026-03-31T17:29:50.711Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -359,7 +359,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 ## Last Session
 
-- **Stopped at:** Completed 74-02-PLAN.md — Treemap AAPL text contrast fix with white text and SVG drop-shadow filter
+- **Stopped at:** Phase 75 context gathered
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
@@ -392,3 +392,13 @@ Recommended wave execution:
 - Phase 71 added: High-frequency alternative data pipeline: news sentiment ingestion into Kafka, Flink streaming analysis, live dashboard
 - Phase 72 added: Grafana debug dashboards with Flink metrics integration
 - Phase 73 added: Full system scope verification and functional audit using parallel subagents
+- Phase 77 added: Fix Flink pipeline health and Forecasts blank screen (ohlcv_normalizer crash-loop 1160 restarts, zero completed checkpoints, 3K+ failed checkpoints, Forecasts page blank with no error/loading state)
+- Phase 78 added: Fix frontend broken-page error states — Dashboard, Models, Drift tiny error box in black void
+- Phase 79 added: Grafana security hardening — change default admin/admin password
+- Phase 80 added: Analytics page cleanup — remove Phase 69 placeholder badges, fix N/A green checkmarks
+- Phase 81 added: Fix Grafana No-data-on-green panels — API Health Error Rate and Inference Errors
+- Phase 82 added: Fix ML prediction latency alerting — 8-10s p95 threshold, verify real vs synthetic metrics
+- Phase 83 added: Fix Kafka consumer metrics scraping — all consumer/writer panels showing No data
+- Phase 84 added: Fix Loki alerting datasource misconfiguration
+- Phase 85 added: Backtest UX polish — neutral empty state, label orphaned icon buttons
+- Phase 86 added: Frontend sidebar icon differentiation
