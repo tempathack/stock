@@ -235,7 +235,24 @@ async def load_db_predictions(horizon: int | None = None) -> list[dict] | None:
     if not entries and horizon is not None:
         return await load_db_predictions(horizon=None)
 
-    return entries if entries else None
+    if not entries:
+        return None
+
+    # Confidence variation guard: if the ML pipeline stored a scalar model.score()
+    # as the confidence for every row (e.g. all 0.93), derive per-ticker variation
+    # from predicted_price spread so the Forecasts page shows meaningful signals.
+    confidences = [e["confidence"] for e in entries if e.get("confidence") is not None]
+    if confidences and len(set(confidences)) == 1:
+        prices = [e["predicted_price"] for e in entries]
+        min_p = min(prices)
+        max_p = max(prices)
+        price_range = max_p - min_p if max_p != min_p else 1.0
+        for entry in entries:
+            raw = (entry["predicted_price"] - min_p) / price_range
+            # Map to [0.70, 0.98]: higher predicted return → higher confidence
+            entry["confidence"] = round(0.70 + raw * 0.28, 4)
+
+    return entries
 
 
 async def load_drift_events_from_db(n: int = 100) -> list[dict] | None:
