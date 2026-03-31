@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 71-01-PLAN.md — Kafka topics + Reddit PRAW producer
-last_updated: "2026-03-31T08:50:20.574Z"
+stopped_at: Completed 71-02-PLAN.md — Flink sentiment processing layer (sentiment_stream + sentiment_writer + FlinkDeployment CRs)
+last_updated: "2026-03-31T08:55:35.623Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -322,10 +322,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 69-02]: Per-panel ErrorBoundary on all 5 analytics panels — fault isolation prevents single failing backend from blanking /analytics page
 - [Phase 71]: BLOCKLIST applied after SP500_SET check to suppress false positives (IT, AI, DD) that are valid tickers but common English words in Reddit text
 - [Phase 71]: reddit-secrets K8s Secret created manually by operator — REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET never committed to git
+- [Phase 71]: window_start aliased as event_timestamp in sentiment_stream sink DDL to match Feast push column contract without rename in sentiment_writer
+- [Phase 71]: sentiment_stream uses python3 (not 3.10) since no Feast dependency; sentiment_writer mirrors feast_writer pattern with only 4 value changes
 
 ## Last Session
 
-- **Stopped at:** Completed 71-01-PLAN.md — Kafka topics + Reddit PRAW producer
+- **Stopped at:** Completed 71-02-PLAN.md — Flink sentiment processing layer (sentiment_stream + sentiment_writer + FlinkDeployment CRs)
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

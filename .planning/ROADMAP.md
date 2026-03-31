@@ -79,7 +79,7 @@
 | 68 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 69 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 70 | Display Flink-computed streaming features in the dashboard | Surface live EMA-20, RSI-14, MACD signal from Feast Redis (Flink) in Dashboard Drawer with polling panel | TBD-01, TBD-02, TBD-03, TBD-04, TBD-05 | 2 |
-| 71 | 1/4 | In Progress|  | 4 |
+| 71 | 2/4 | In Progress|  | 4 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1448,7 +1448,7 @@ Plans:
 **Goal:** Build end-to-end Reddit sentiment pipeline: PRAW producer polls r/wallstreetbets/stocks/investing, Flink VADER job scores posts with HOP windows, Feast Redis persists aggregates, FastAPI WebSocket serves live sentiment, SentimentPanel shows live gauge in Dashboard Drawer.
 **Requirements**: ALT-01, ALT-02, ALT-03, ALT-04, ALT-05, ALT-06, ALT-07, ALT-08, ALT-09, ALT-10
 **Depends on:** Phase 70
-**Plans:** 1/4 plans executed
+**Plans:** 2/4 plans executed
 
 Plans:
 - [ ] 71-01-PLAN.md — Strimzi KafkaTopic CRs (reddit-raw + sentiment-aggregated) + Reddit PRAW producer service + K8s Deployment
