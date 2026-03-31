@@ -1502,10 +1502,13 @@ Plans:
 **Goal:** Fix data quality issues across the platform: populate missing OOS metrics (RMSE, MAE, R², MAPE, Dir Accuracy) in the models page, investigate and fix forecast constant bias where every stock shows identical 0.93 confidence and ~-6.8% return, fix drift page Previous Model RMSE rendering null as 0.0000, and connect Analytics page integrations (ArgoCD sync, Feast Latency p99, CA Last Refresh).
 **Requirements**: TBD
 **Depends on:** Phase 73
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 75 to break down)
+- [ ] 75-01-PLAN.md — Wave 0: Test scaffolding (kubernetes pkg, K8s CRD ArgoCD tests, Feast latency tests)
+- [ ] 75-02-PLAN.md — Drift RMSE null fix (frontend ?? null + API schema previous_oos_metrics)
+- [ ] 75-03-PLAN.md — Analytics integrations (ArgoCD K8s CRD, Feast latency cached, CA last refresh)
+- [ ] 75-04-PLAN.md — OOS metrics diagnostic + fix, forecast constant bias diagnostic + fix
 
 ### Phase 76: UX polish — empty states, loading feedback, tooltips, missing data fields, analytics charts
 
@@ -1516,6 +1519,106 @@ Plans:
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 76 to break down)
+
+### Phase 77: Fix Flink pipeline health and Forecasts blank screen
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 76
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 64 to break down)
+
+### Phase 78: Fix frontend broken-page error states — Dashboard, Models, Drift show tiny error box in a black void with no empty-state design
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 77
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 78 to break down)
+
+### Phase 79: Grafana security hardening — change default admin password from admin/admin
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 78
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 79 to break down)
+
+### Phase 80: Analytics page cleanup — remove Coming in Phase 69 placeholder badges and fix N/A values showing green checkmarks
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 79
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 80 to break down)
+
+### Phase 81: Fix Grafana No-data-on-green panels — API Health Error Rate and Inference Errors show No data on green background appearing healthy
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 80
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 81 to break down)
+
+### Phase 82: Fix ML prediction latency alerting — add threshold line for 8-10s p95, verify p50/p95/p99 are real histogram metrics not synthetic
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 81
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 82 to break down)
+
+### Phase 83: Fix Kafka consumer metrics scraping — all consumer and writer panels show No data, fix exporter gap
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 82
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 83 to break down)
+
+### Phase 84: Fix Loki alerting datasource misconfiguration — alert rules fail to load from Loki
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 83
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 84 to break down)
+
+### Phase 85: Backtest UX polish — change red empty-state message to neutral, label orphaned download and table-view icon buttons
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 84
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 85 to break down)
+
+### Phase 86: Frontend sidebar icon differentiation — make nav icons visually distinct per section
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 85
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 86 to break down)
 
 ---
 
