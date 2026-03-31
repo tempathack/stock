@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 70-01-PLAN.md — Streaming features API endpoint (GET /market/streaming-features/{ticker})
-last_updated: "2026-03-31T11:58:58.000Z"
+stopped_at: Completed 70-02-PLAN.md — StreamingFeaturesPanel component awaiting human verify checkpoint
+last_updated: "2026-03-31T12:04:38.634Z"
 progress:
   total_phases: 63
   completed_phases: 26
   total_plans: 144
-  completed_plans: 61
+  completed_plans: 60
 ---
 
 # STATE.md — Project Memory
@@ -336,10 +336,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 72-01]: Grafana Prometheus datasource UID pinned to 'prometheus' in provisioning YAML to ensure dashboard JSON uid references resolve correctly via GitOps
 - [Phase 72]: Used kubectl delete+create for ConfigMap update because kubectl apply/replace left stale content in cluster
 - [Phase 72]: api-health, ml-perf, kafka dashboards already had correct lowercase prometheus uid — no content changes needed
+- [Phase 70]: StreamingFeaturesPanel is self-contained — calls useStreamingFeatures internally rather than receiving data as props
+- [Phase 70]: Dashboard.tsx Streaming Features accordion uses defaultExpanded so panel is visible immediately when Drawer opens
 
 ## Last Session
 
-- **Stopped at:** Completed 72-02-PLAN.md — Flink 10-panel dashboard and datasource UID audit
+- **Stopped at:** Completed 70-02-PLAN.md — StreamingFeaturesPanel component awaiting human verify checkpoint
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
