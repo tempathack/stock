@@ -591,6 +591,11 @@ async def _legacy_inference(
 
     # Step 5: Build response
     last_close = float(ohlcv_df["close"].iloc[-1])
+    # Model outputs a percentage return (e.g. -0.066 = -6.6%).
+    # Convert to absolute price so stored values are comparable with
+    # ohlcv_daily.close. Mirrors the KServe inference path.
+    if abs(predicted_price) < 10.0:
+        predicted_price = last_close * (1.0 + predicted_price)
     confidence = max(0.0, min(1.0, 1.0 - abs(predicted_price - last_close) / last_close))
     h = horizon or 7
     predicted_date = date.today() + timedelta(days=h)

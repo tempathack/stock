@@ -116,13 +116,23 @@ def _generate_predictions_single(
             logger.warning("Ticker %s: prediction failed (%s)", ticker, exc)
             continue
 
+        # Model outputs a percentage return (e.g. -0.066 = -6.6%).
+        # Convert to an absolute price so stored values are comparable with
+        # ohlcv_daily.close when backtest/rolling-performance metrics are computed.
+        last_close = float(df["close"].iloc[-1])
+        if abs(pred_value) < 10.0:
+            predicted_abs = last_close * (1.0 + pred_value)
+        else:
+            predicted_abs = pred_value  # already in price space
+        confidence = max(0.0, min(1.0, 1.0 - abs(predicted_abs - last_close) / last_close))
+
         predictions.append({
             "ticker": ticker,
             "prediction_date": today.isoformat(),
             "predicted_date": predicted_date.isoformat(),
-            "predicted_price": round(pred_value, 4),
+            "predicted_price": round(predicted_abs, 4),
             "model_name": model_name,
-            "confidence": None,
+            "confidence": round(confidence, 4),
         })
 
     logger.info(
