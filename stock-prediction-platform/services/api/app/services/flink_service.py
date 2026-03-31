@@ -1,9 +1,16 @@
 """Proxy the Flink REST API for analytics endpoints."""
 from __future__ import annotations
 
+import asyncio
+
 import httpx
+from kubernetes import client as k8s_client, config as k8s_config
+
+from app.cache import build_key, cache_get, cache_set
 from app.config import settings
 from app.models.schemas import FlinkJobEntry, FlinkJobsResponse, AnalyticsSummaryResponse
+
+FEAST_LATENCY_TTL = 60  # seconds — Feast latency measurement is cached to avoid timing on every request
 
 
 def _flink_rest_urls() -> list[str]:
@@ -42,32 +49,60 @@ async def get_flink_jobs() -> FlinkJobsResponse:
     return FlinkJobsResponse(jobs=all_jobs, total_running=running, total_failed=failed)
 
 
+async def _get_argocd_sync_status() -> str | None:
+    """Read ArgoCD Application CRD sync status from K8s API.
+
+    Uses kubernetes Python client with in-cluster config (falls back to kubeconfig for local dev).
+    Returns 'Synced', 'OutOfSync', or None on any error (including RBAC denial).
+    Does NOT use ARGOCD_TOKEN or httpx — reads directly from K8s API server.
+    """
+    try:
+        def _sync() -> str:
+            try:
+                k8s_config.load_incluster_config()
+            except k8s_config.ConfigException:
+                k8s_config.load_kube_config()
+            api = k8s_client.CustomObjectsApi()
+            result = api.list_namespaced_custom_object(
+                group="argoproj.io",
+                version="v1alpha1",
+                namespace="argocd",
+                plural="applications",
+            )
+            statuses = [
+                item.get("status", {}).get("sync", {}).get("status", "Unknown")
+                for item in result.get("items", [])
+            ]
+            return "OutOfSync" if "OutOfSync" in statuses else "Synced"
+        return await asyncio.to_thread(_sync)
+    except Exception:
+        return None
+
+
+async def _get_feast_online_latency_cached() -> float | None:
+    """Return cached Feast latency measurement (TTL=60s). Times a live get_online_features() call."""
+    key = build_key("analytics", "feast", "latency")
+    cached = await cache_get(key)
+    if cached is not None:
+        return cached.get("latency_ms")
+    from app.services.feast_service import measure_feast_online_latency_ms
+    latency_ms = await measure_feast_online_latency_ms()
+    await cache_set(key, {"latency_ms": latency_ms}, FEAST_LATENCY_TTL)
+    return latency_ms
+
+
 async def get_analytics_summary() -> AnalyticsSummaryResponse:
-    """Aggregate Flink cluster health + Argo CD sync + CA last refresh for SystemHealthSummary."""
+    """Aggregate Flink cluster health + ArgoCD sync (K8s CRD) + Feast latency + CA last refresh."""
     import datetime
 
     # --- Flink summary ---
     flink = await get_flink_jobs()
 
-    # --- Argo CD sync status (optional — requires ARGOCD_TOKEN) ---
-    argocd_sync: str | None = None
-    if settings.ARGOCD_TOKEN:
-        try:
-            async with httpx.AsyncClient(timeout=5.0) as client:
-                resp = await client.get(
-                    f"{settings.ARGOCD_URL}/api/v1/applications",
-                    headers={"Authorization": f"Bearer {settings.ARGOCD_TOKEN}"},
-                )
-                resp.raise_for_status()
-                apps = resp.json().get("items", [])
-                # Report OutOfSync if ANY application is out of sync
-                statuses = [
-                    a.get("status", {}).get("sync", {}).get("status", "Unknown")
-                    for a in apps
-                ]
-                argocd_sync = "OutOfSync" if "OutOfSync" in statuses else "Synced"
-        except Exception:
-            argocd_sync = None
+    # --- ArgoCD sync status (K8s CRD — does NOT require ARGOCD_TOKEN) ---
+    argocd_sync = await _get_argocd_sync_status()
+
+    # --- Feast online latency (cached 60s) ---
+    feast_latency = await _get_feast_online_latency_cached()
 
     # --- CA last refresh from TimescaleDB (query information schema) ---
     ca_last_refresh: str | None = None
@@ -76,10 +111,20 @@ async def get_analytics_summary() -> AnalyticsSummaryResponse:
         from sqlalchemy import text
         if get_engine() is not None:
             async with get_async_session() as session:
-                result = await session.execute(text(
-                    "SELECT last_updated_timestamp FROM timescaledb_information.continuous_aggregates "
-                    "ORDER BY last_updated_timestamp DESC LIMIT 1"
-                ))
+                # Try primary column name first (TimescaleDB >= 2.x)
+                # Fall back to 'last_run_started_at' if column name differs
+                try:
+                    result = await session.execute(text(
+                        "SELECT last_updated_timestamp FROM timescaledb_information.continuous_aggregates "
+                        "ORDER BY last_updated_timestamp DESC NULLS LAST LIMIT 1"
+                    ))
+                except Exception:
+                    # Column may be named differently — try the information_schema lookup
+                    result = await session.execute(text(
+                        "SELECT last_run_started_at AS last_updated_timestamp "
+                        "FROM timescaledb_information.continuous_aggregates "
+                        "ORDER BY last_run_started_at DESC NULLS LAST LIMIT 1"
+                    ))
                 row = result.fetchone()
                 if row and row[0]:
                     ca_last_refresh = row[0].isoformat() if hasattr(row[0], "isoformat") else str(row[0])
@@ -90,6 +135,6 @@ async def get_analytics_summary() -> AnalyticsSummaryResponse:
         argocd_sync_status=argocd_sync,
         flink_running_jobs=flink.total_running,
         flink_failed_jobs=flink.total_failed,
-        feast_online_latency_ms=None,  # Phase 69: not measured yet
+        feast_online_latency_ms=feast_latency,
         ca_last_refresh=ca_last_refresh,
     )
