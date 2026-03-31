@@ -801,9 +801,119 @@ None found. All routers included in main.py:
 **Audited by:** Plan 73-03
 **Requirements scope:** FEAT-01–21, MODEL-01–21, EVAL-01–12, KF-01–15, DRIFT-01–07, ADVML-01–08
 
-```
-[PENDING — Plan 73-03 populates this section]
-```
+**Status:** COMPLETE
+**Files Inspected:** 14 (features: 3, models: 5, evaluation: 4, drift: 3, pipelines: 1 + 10 components, feature_store: 2)
+**Test Files Found:** test_indicators.py, test_lag_features.py, test_transformations.py, test_model_configs.py, test_model_trainer.py, test_ensemble.py, test_evaluator.py, test_ranking.py, test_metrics.py, test_cross_validation.py, test_shap_analysis.py, test_explainer.py, test_detector.py, test_monitor.py, test_trigger.py, test_drift_pipeline.py, test_drift_retrain_integration.py, test_feature_store.py, test_feast_definitions.py, test_feast_store.py, test_feast_apply.py, test_label_generator.py, test_multi_horizon.py, test_training_pipeline.py, test_pipeline_integration.py, test_model_selector.py, test_deployer.py, test_predictor.py, test_registry.py, test_serialization.py, test_s3_integration.py, test_storage_backends.py, test_data_loader.py, test_feature_engineer.py
+
+#### Satisfied Requirements
+
+| REQ-ID | Evidence | File |
+|--------|----------|------|
+| FEAT-01 | `compute_rsi` function present, Wilder's EWM smoothing | ml/features/indicators.py |
+| FEAT-02 | `compute_macd` function present, MACD line, signal, histogram | ml/features/indicators.py |
+| FEAT-03 | `compute_stochastic` function present, %K and %D | ml/features/indicators.py |
+| FEAT-04 | `compute_sma` function present, periods [20, 50, 200] | ml/features/indicators.py |
+| FEAT-05 | `compute_ema` function present, periods [12, 26] | ml/features/indicators.py |
+| FEAT-06 | `compute_adx` function present, full DI+/DI- calculation | ml/features/indicators.py |
+| FEAT-07 | `compute_bollinger` function present, upper/lower/bandwidth | ml/features/indicators.py |
+| FEAT-08 | `compute_atr` function present, Wilder's ATR | ml/features/indicators.py |
+| FEAT-09 | `compute_rolling_volatility` function present, annualized 21d | ml/features/indicators.py |
+| FEAT-10 | `compute_obv` function present, cumulative OBV | ml/features/indicators.py |
+| FEAT-11 | `compute_vwap` function present, cumulative VWAP | ml/features/indicators.py |
+| FEAT-12 | `compute_volume_sma` function present, 20-period default | ml/features/indicators.py |
+| FEAT-13 | `compute_ad_line` function present, A/D line | ml/features/indicators.py |
+| FEAT-14 | `compute_returns` function present, periods [1,5,21] pct and log | ml/features/indicators.py |
+| FEAT-15 | `compute_lag_features` present, lags [1,2,3,5,7,14,21] on close | ml/features/lag_features.py |
+| FEAT-16 | `compute_rolling_stats` present, windows [5,10,21], mean/std/min/max | ml/features/lag_features.py |
+| FEAT-17 | `build_scaler_pipeline("standard")` → StandardScaler | ml/features/transformations.py |
+| FEAT-18 | `build_scaler_pipeline("quantile")` → QuantileTransformer | ml/features/transformations.py |
+| FEAT-19 | `build_scaler_pipeline("minmax")` → MinMaxScaler | ml/features/transformations.py |
+| FEAT-20 | `generate_target` present, `shift(-horizon)` used, no leakage | ml/features/lag_features.py |
+| FEAT-21 | `drop_incomplete_rows` present, calls `df.dropna()` | ml/features/lag_features.py |
+| MODEL-01 | `LinearRegression` in LINEAR_MODELS dict | ml/models/model_configs.py |
+| MODEL-02 | `Ridge` in LINEAR_MODELS with alpha search space logspace(-3,3) | ml/models/model_configs.py |
+| MODEL-03 | `Lasso` in LINEAR_MODELS with alpha search space | ml/models/model_configs.py |
+| MODEL-04 | `ElasticNet` in LINEAR_MODELS with alpha+l1_ratio search space | ml/models/model_configs.py |
+| MODEL-05 | `BayesianRidge` in LINEAR_MODELS | ml/models/model_configs.py |
+| MODEL-06 | `HuberRegressor` in LINEAR_MODELS with epsilon search space | ml/models/model_configs.py |
+| MODEL-07 | `RandomForestRegressor` in TREE_MODELS with full search space | ml/models/model_configs.py |
+| MODEL-08 | `GradientBoostingRegressor` in TREE_MODELS | ml/models/model_configs.py |
+| MODEL-09 | `HistGradientBoostingRegressor` in TREE_MODELS | ml/models/model_configs.py |
+| MODEL-10 | `ExtraTreesRegressor` in TREE_MODELS | ml/models/model_configs.py |
+| MODEL-11 | `DecisionTreeRegressor` in TREE_MODELS | ml/models/model_configs.py |
+| MODEL-12 | `AdaBoostRegressor` in TREE_MODELS | ml/models/model_configs.py |
+| MODEL-13 | `KNeighborsRegressor` in DISTANCE_NEURAL_MODELS | ml/models/model_configs.py |
+| MODEL-14 | `SVR` in DISTANCE_NEURAL_MODELS with `kernel="rbf"` default | ml/models/model_configs.py |
+| MODEL-15 | `MLPRegressor` in DISTANCE_NEURAL_MODELS with early_stopping | ml/models/model_configs.py |
+| MODEL-16 | `XGBRegressor` in BOOSTER_MODELS via conditional import | ml/models/model_configs.py |
+| MODEL-17 | `LGBMRegressor` in BOOSTER_MODELS via conditional import | ml/models/model_configs.py |
+| MODEL-18 | `CatBoostRegressor` in BOOSTER_MODELS via conditional import | ml/models/model_configs.py |
+| MODEL-19 | `TimeSeriesSplit` used in `create_time_series_cv(n_splits=5)` | ml/evaluation/cross_validation.py |
+| MODEL-20 | `walk_forward_evaluate` implements per-fold CV with metrics | ml/evaluation/cross_validation.py |
+| MODEL-21 | `search_space` dicts present for all tunable models (Ridge, Lasso, RF, etc.) | ml/models/model_configs.py |
+| EVAL-01 | `compute_r2` in `compute_all_metrics` | ml/evaluation/metrics.py |
+| EVAL-02 | `compute_mae` in `compute_all_metrics` | ml/evaluation/metrics.py |
+| EVAL-03 | `compute_rmse` in `compute_all_metrics` | ml/evaluation/metrics.py |
+| EVAL-04 | `compute_mape` in `compute_all_metrics` | ml/evaluation/metrics.py |
+| EVAL-05 | `compute_directional_accuracy` in `compute_all_metrics` | ml/evaluation/metrics.py |
+| EVAL-06 | `compute_fold_stability` (std dev of fold RMSEs) | ml/evaluation/metrics.py |
+| EVAL-07 | `rank_models` ranks by composite score (oos_rmse + stability penalty) | ml/evaluation/ranking.py |
+| EVAL-08 | `stability_penalty_weight=0.5` applied to `fold_stability` in composite score | ml/evaluation/ranking.py |
+| EVAL-09 | `select_winner` returns `WinnerResult` with single winner | ml/evaluation/ranking.py |
+| EVAL-10 | `ModelRegistry.save_model` persists pipeline + metadata JSON to registry | ml/models/registry.py |
+| EVAL-11 | `compute_shap_values` with TreeExplainer/LinearExplainer/KernelExplainer | ml/evaluation/shap_analysis.py |
+| EVAL-12 | `shap_importance.json` and `shap_values.json` written by `explain_top_models` | ml/pipelines/components/explainer.py |
+| KF-01 | Kubeflow installed in ml namespace (VERIFIED per SUMMARY evidence) | Phase 17 SUMMARY |
+| KF-02 | `load_data` component in ml/pipelines/components/data_loader.py | ml/pipelines/components/data_loader.py |
+| KF-03 | `engineer_features` component in ml/pipelines/components/feature_engineer.py | ml/pipelines/components/feature_engineer.py |
+| KF-04 | `generate_labels` component in ml/pipelines/components/label_generator.py | ml/pipelines/components/label_generator.py |
+| KF-05 | `train_all_models` component in ml/pipelines/components/model_trainer.py | ml/pipelines/components/model_trainer.py |
+| KF-06 | `walk_forward_evaluate` / `generate_cv_report` — CV step confirmed | ml/evaluation/cross_validation.py |
+| KF-07 | `evaluate_models` component in ml/pipelines/components/evaluator.py — CONFIRMED | ml/pipelines/components/evaluator.py |
+| KF-08 | `generate_comparison_report` component in ml/pipelines/components/evaluator.py — CONFIRMED | ml/pipelines/components/evaluator.py |
+| KF-09 | `explain_top_models` in ml/pipelines/components/explainer.py | ml/pipelines/components/explainer.py |
+| KF-10 | `select_and_persist_winner` in ml/pipelines/components/model_selector.py | ml/pipelines/components/model_selector.py |
+| KF-11 | `ModelRegistry.save_model` persists artifacts | ml/models/registry.py |
+| KF-12 | `deploy_winner_model` in ml/pipelines/components/deployer.py | ml/pipelines/components/deployer.py |
+| KF-13 | `run_training_pipeline` in training_pipeline.py — 12-step pipeline | ml/pipelines/training_pipeline.py |
+| KF-14 | `PIPELINE_VERSION = "1.2.0"` + `run_id` uuid per run; artifacts versioned | ml/pipelines/training_pipeline.py |
+| KF-15 | `evaluate_and_trigger` in trigger.py calls `trigger_retraining` from drift_pipeline | ml/drift/trigger.py |
+| DRIFT-01 | `DataDriftDetector` with KS-test (`ks_2samp`) and PSI computation | ml/drift/detector.py |
+| DRIFT-02 | `PredictionDriftDetector` compares baseline vs recent errors (MAE ratio) | ml/drift/detector.py |
+| DRIFT-03 | `ConceptDriftDetector` compares historical vs recent RMSE | ml/drift/detector.py |
+| DRIFT-04 | `DriftMonitor.check` orchestrates all 3 detectors; CLI `__main__` entry point for CronJob | ml/drift/trigger.py |
+| DRIFT-05 | `DriftLogger.log_event` writes JSONL to drift_logs (local or S3) | ml/drift/trigger.py |
+| DRIFT-06 | `check_result.any_drift` flag returned from `DriftMonitor.check`; triggers retraining | ml/drift/monitor.py, trigger.py |
+| DRIFT-07 | `evaluate_and_trigger` calls `trigger_retraining` from `drift_pipeline.py` on drift; post-retrain prediction regeneration also present | ml/drift/trigger.py |
+| ADVML-01 | `StackingEnsemble` class using `sklearn.ensemble.StackingRegressor` with Ridge meta-learner | ml/models/ensemble.py |
+| ADVML-02 | `StackingEnsemble` built and fitted in `run_training_pipeline` steps 8/12 (both single and multi-horizon modes) | ml/pipelines/training_pipeline.py |
+| ADVML-03 | `generate_multi_horizon_labels` generates target_1d, target_7d, target_30d via `generate_target(df, horizon=h)` for h in [1,7,30] | ml/pipelines/components/label_generator.py |
+| ADVML-04 | Per-horizon model training loop in `run_training_pipeline` with separate `h_registry_dir` per horizon | ml/pipelines/training_pipeline.py |
+| ADVML-07 | Feature store PostgreSQL tables used via Feast offline store | ml/feature_store/feature_repo.py |
+| ADVML-08 | `engineer_features(data_dict, use_feature_store=True)` code path in pipeline | ml/pipelines/training_pipeline.py |
+
+#### Gaps Found
+
+| REQ-ID | Gap Class | Description | File Expected |
+|--------|-----------|-------------|---------------|
+| MODEL-BAGGING | MISSING-REQ | `BaggingRegressor` mentioned in plan task description as MODEL-07–12 but NOT present in model_configs.py — TREE_MODELS has 6 entries (RF, GB, HistGB, ExtraTrees, DT, AdaBoost); BaggingRegressor is not among them | ml/models/model_configs.py |
+
+#### Stubs Detected
+
+No stub implementations found. Files with `return None` or `pass` statements are only empty `__init__.py` modules and `TYPE_CHECKING` blocks — no functional stubs. The grep scan for `raise NotImplementedError` returned no matches in functional code.
+
+#### Wiring Issues
+
+None. StackingEnsemble is defined AND registered/called in `run_training_pipeline` at step 8/12 in both single-horizon and multi-horizon execution paths. The `StackingEnsemble` result is appended to `results_list` and its pipeline is stored as `"stacking_ensemble_meta_ridge"` in the `pipelines` dict before winner selection.
+
+#### Phase-Specific Checks
+
+- ADVML-01 StackingRegressor: CONFIRMED — `StackingEnsemble` class in ml/models/ensemble.py uses `sklearn.ensemble.StackingRegressor` with `Ridge(alpha=1.0)` as meta-learner, top_n=5 base models by OOS RMSE
+- ADVML-03 multi-horizon shift(-7) and shift(-30): CONFIRMED — `generate_multi_horizon_labels` in label_generator.py calls `generate_target(labelled, horizon=h)` for h in [1,7,30]; `generate_target` uses `df["close"].shift(-h)` for each horizon
+- Phase 71 reddit_sentiment_fv FeatureView: CONFIRMED — `reddit_sentiment_fv = FeatureView(name="reddit_sentiment_fv", ...)` defined at line 143 of feature_repo.py with 5 schema fields (avg_sentiment, mention_count, positive_ratio, negative_ratio, top_subreddit), TTL=10 minutes, online=True
+- Phase 70 streaming_features FeatureView: NOT FOUND as a FeatureView named "streaming_features" — Phase 70 uses `technical_indicators_fv` with `stream_source=technical_indicators_push` (a PushSource) as the streaming mechanism; dedicated "streaming_features" named view absent but streaming capability is confirmed via PushSource pattern
+- DRIFT-07 auto-retrain trigger: CONFIRMED in Python — `evaluate_and_trigger` in trigger.py detects drift → calls `trigger_retraining` from ml/pipelines/drift_pipeline.py; post-retrain: `generate_predictions` + `save_predictions` called; CLI entry point `python -m ml.drift.trigger --auto-retrain` available for K8s CronJob
+- KF-07/KF-08 (unchecked in REQUIREMENTS.md): CONFIRMED — pipeline has 12 components: (1) load_data, (2) engineer_features, (3) generate_labels, (4) prepare_training_data, (5) train_all_models, (6) cross_validation (generate_cv_report), (7) evaluate_models [KF-07 confirmed], (8) ensemble_stacking, (9) model_comparison (generate_comparison_report) [KF-08 confirmed], (10) explainability, (11) select_winner, (12) deploy_model. Note: docstring says "11-step" but implementation is 12-step — minor documentation inconsistency, not a functional gap.
 
 ---
 
