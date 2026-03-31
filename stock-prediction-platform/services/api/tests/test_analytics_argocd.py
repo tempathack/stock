@@ -117,3 +117,83 @@ async def test_get_analytics_summary_argocd_unreachable():
             result = await get_analytics_summary()
 
     assert result.argocd_sync_status is None
+
+
+# ---------------------------------------------------------------------------
+# K8s CRD path tests — targets _get_argocd_sync_status() (added in Plan 03)
+# Tests are RED until Plan 03 implements the function.
+# ---------------------------------------------------------------------------
+
+SAMPLE_K8S_SYNCED = {
+    "items": [
+        {"status": {"sync": {"status": "Synced"}}},
+        {"status": {"sync": {"status": "Synced"}}},
+    ]
+}
+
+SAMPLE_K8S_OUT_OF_SYNC = {
+    "items": [
+        {"status": {"sync": {"status": "Synced"}}},
+        {"status": {"sync": {"status": "OutOfSync"}}},
+    ]
+}
+
+
+@pytest.mark.asyncio
+async def test_get_argocd_sync_status_synced():
+    """K8s CRD returns all Synced -> _get_argocd_sync_status() returns 'Synced'."""
+    from app.services.flink_service import _get_argocd_sync_status  # RED until Plan 03
+    with patch("app.services.flink_service.k8s_config") as mock_cfg, \
+         patch("app.services.flink_service.k8s_client") as mock_k8s:
+        mock_cfg.load_incluster_config.side_effect = Exception("not in cluster")
+        mock_cfg.ConfigException = Exception
+        mock_custom = MagicMock()
+        mock_custom.list_namespaced_custom_object.return_value = SAMPLE_K8S_SYNCED
+        mock_k8s.CustomObjectsApi.return_value = mock_custom
+        result = await _get_argocd_sync_status()
+    assert result == "Synced"
+
+
+@pytest.mark.asyncio
+async def test_get_argocd_sync_status_out_of_sync():
+    """K8s CRD returns one OutOfSync -> _get_argocd_sync_status() returns 'OutOfSync'."""
+    from app.services.flink_service import _get_argocd_sync_status  # RED until Plan 03
+    with patch("app.services.flink_service.k8s_config") as mock_cfg, \
+         patch("app.services.flink_service.k8s_client") as mock_k8s:
+        mock_cfg.load_incluster_config.side_effect = Exception("not in cluster")
+        mock_cfg.ConfigException = Exception
+        mock_custom = MagicMock()
+        mock_custom.list_namespaced_custom_object.return_value = SAMPLE_K8S_OUT_OF_SYNC
+        mock_k8s.CustomObjectsApi.return_value = mock_custom
+        result = await _get_argocd_sync_status()
+    assert result == "OutOfSync"
+
+
+@pytest.mark.asyncio
+async def test_get_argocd_sync_status_error_returns_none():
+    """When K8s raises an exception, _get_argocd_sync_status() returns None (no propagation)."""
+    from app.services.flink_service import _get_argocd_sync_status  # RED until Plan 03
+    with patch("app.services.flink_service.k8s_config") as mock_cfg, \
+         patch("app.services.flink_service.k8s_client") as mock_k8s:
+        mock_cfg.load_incluster_config.side_effect = Exception("not in cluster")
+        mock_cfg.ConfigException = Exception
+        mock_custom = MagicMock()
+        mock_custom.list_namespaced_custom_object.side_effect = Exception("connection refused")
+        mock_k8s.CustomObjectsApi.return_value = mock_custom
+        result = await _get_argocd_sync_status()
+    assert result is None
+
+
+@pytest.mark.asyncio
+async def test_get_argocd_sync_status_empty_items():
+    """K8s CRD returns empty items list -> _get_argocd_sync_status() returns 'Synced'."""
+    from app.services.flink_service import _get_argocd_sync_status  # RED until Plan 03
+    with patch("app.services.flink_service.k8s_config") as mock_cfg, \
+         patch("app.services.flink_service.k8s_client") as mock_k8s:
+        mock_cfg.load_incluster_config.side_effect = Exception("not in cluster")
+        mock_cfg.ConfigException = Exception
+        mock_custom = MagicMock()
+        mock_custom.list_namespaced_custom_object.return_value = {"items": []}
+        mock_k8s.CustomObjectsApi.return_value = mock_custom
+        result = await _get_argocd_sync_status()
+    assert result == "Synced"
