@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 71 context gathered
-last_updated: "2026-03-31T08:08:18.420Z"
+stopped_at: Completed 71-01-PLAN.md — Kafka topics + Reddit PRAW producer
+last_updated: "2026-03-31T08:50:20.574Z"
 progress:
-  total_phases: 71
-  completed_phases: 32
-  total_plans: 160
-  completed_plans: 74
+  total_phases: 63
+  completed_phases: 26
+  total_plans: 144
+  completed_plans: 60
 ---
 
 # STATE.md — Project Memory
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 69 — frontend-analytics-page
+**Current focus:** Phase 71 — high-frequency-alternative-data-pipeline-news-sentiment-ingestion-into-kafka-flink-streaming-analysis-live-dashboard
 
 ## Current Status
 
@@ -320,10 +320,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 69-02]: Recharts used for candlestick chart over Lightweight Charts — Recharts already in codebase (CandlestickChart.tsx pattern), avoids second charting library
 - [Phase 69-02]: useRef ring buffer (max 120 samples) for StreamLagMonitor — avoids useState re-render churn on 15s Kafka polling, caps memory
 - [Phase 69-02]: Per-panel ErrorBoundary on all 5 analytics panels — fault isolation prevents single failing backend from blanking /analytics page
+- [Phase 71]: BLOCKLIST applied after SP500_SET check to suppress false positives (IT, AI, DD) that are valid tickers but common English words in Reddit text
+- [Phase 71]: reddit-secrets K8s Secret created manually by operator — REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET never committed to git
 
 ## Last Session
 
-- **Stopped at:** Phase 71 context gathered
+- **Stopped at:** Completed 71-01-PLAN.md — Kafka topics + Reddit PRAW producer
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
