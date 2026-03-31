@@ -111,6 +111,7 @@ class RetrainStatusResponse(BaseModel):
     oos_metrics: dict = {}
     previous_model: str | None = None
     previous_trained_at: str | None = None
+    previous_oos_metrics: dict = {}   # OOS metrics for the row before current
 
 
 # ── Market ────────────────────────────────────────────────────────────────

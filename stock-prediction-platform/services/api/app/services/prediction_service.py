@@ -818,6 +818,7 @@ async def get_retrain_status_from_db() -> dict | None:
             "oos_metrics": {},
             "previous_model": None,
             "previous_trained_at": None,
+            "previous_oos_metrics": {},
         }
 
     current = rows[0]
@@ -830,12 +831,15 @@ async def get_retrain_status_from_db() -> dict | None:
         "oos_metrics": {k: v for k, v in metrics.items() if k.startswith("oos_")},
         "previous_model": None,
         "previous_trained_at": None,
+        "previous_oos_metrics": {},
     }
 
     if len(rows) > 1:
         prev = rows[1]
         result_dict["previous_model"] = prev.get("model_name")
         result_dict["previous_trained_at"] = prev["trained_at"].isoformat() if prev.get("trained_at") else None
+        prev_metrics = prev.get("metrics_json") or {}
+        result_dict["previous_oos_metrics"] = {k: v for k, v in prev_metrics.items() if k.startswith("oos_")}
 
     return result_dict
 
