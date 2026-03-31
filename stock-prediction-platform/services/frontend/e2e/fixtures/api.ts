@@ -9,6 +9,7 @@ import type {
   MarketOverviewResponse,
   TickerIndicatorsResponse,
   BacktestResponse,
+  StreamingFeaturesResponse,
 } from "../src/api/types";
 
 // ── Sentinel values deliberately distinct from mock data defaults ──
@@ -211,4 +212,24 @@ export const tickerIndicatorsFixture = (ticker = "AAPL"): TickerIndicatorsRespon
   },
   series: [],
   count: 0,
+});
+
+export const streamingFeaturesFixture = (ticker = "AAPL"): StreamingFeaturesResponse => ({
+  ticker,
+  ema_20: 178.42,
+  rsi_14: 72.5,
+  macd_signal: 1.34,
+  available: true,
+  source: "feast_redis",
+  sampled_at: "2026-03-31T10:00:00Z",
+});
+
+export const streamingFeaturesUnavailableFixture = (ticker = "AAPL"): StreamingFeaturesResponse => ({
+  ticker,
+  ema_20: null,
+  rsi_14: null,
+  macd_signal: null,
+  available: false,
+  source: "unavailable",
+  sampled_at: null,
 });
