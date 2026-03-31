@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 75-03-PLAN.md
-last_updated: "2026-03-31T18:18:40.808Z"
+stopped_at: Completed 75-02-PLAN.md (awaiting Task 3 visual verification)
+last_updated: "2026-03-31T19:28:48.994Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 75 — data-quality-fixes
+**Current focus:** Phase 75 — data-quality-fixes-oos-model-metrics-missing-forecast-constant-bias-identical-confidence-drift-rmse-null-as-zero-analytics-n-a-integrations-argocd-feast-ca
 
 ## Current Status
 
@@ -359,10 +359,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 75-01]: Used lazy import inside test body for Wave 0 RED tests to prevent collection-time ImportError blocking existing passing tests
 - [Phase 75]: ArgoCD status reads from kubernetes.client.CustomObjectsApi (K8s CRD) instead of ARGOCD_TOKEN/httpx — works without a running ArgoCD HTTP API
 - [Phase 75]: Feast latency cached 60s via build_key('analytics','feast','latency') to avoid timing overhead on every analytics summary request
+- [Phase 75]: previous_model_rmse stored in drift event details_json JSONB dict — not a new column
+- [Phase 75]: Drift.tsx null RMSE uses ?? null pattern — RetrainStatusPanel renders null as em-dash
 
 ## Last Session
 
-- **Stopped at:** Completed 75-03-PLAN.md
+- **Stopped at:** Completed 75-02-PLAN.md (awaiting Task 3 visual verification)
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
