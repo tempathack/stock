@@ -273,12 +273,12 @@ INSERT INTO drift_logs (drift_type, severity, details_json, detected_at) VALUES
 ),
 (
     'prediction_drift', 'low',
-    '{"baseline_rmse": 0.022, "recent_rmse": 0.028, "threshold": 0.033, "error_ratio": 1.27}'::jsonb,
+    '{"baseline_rmse": 0.022, "recent_rmse": 0.028, "threshold": 0.033, "error_ratio": 1.27, "previous_model_rmse": 0.022}'::jsonb,
     NOW() - INTERVAL '1 day'
 ),
 (
     'concept_drift', 'high',
-    '{"historical_rmse": 0.021, "recent_rmse": 0.038, "degradation_ratio": 1.81, "threshold": 1.3}'::jsonb,
+    '{"historical_rmse": 0.021, "recent_rmse": 0.038, "degradation_ratio": 1.81, "threshold": 1.3, "previous_model_rmse": 0.021}'::jsonb,
     NOW() - INTERVAL '3 days'
 ),
 (
@@ -288,7 +288,7 @@ INSERT INTO drift_logs (drift_type, severity, details_json, detected_at) VALUES
 ),
 (
     'prediction_drift', 'medium',
-    '{"baseline_rmse": 0.022, "recent_rmse": 0.034, "threshold": 0.033, "error_ratio": 1.55}'::jsonb,
+    '{"baseline_rmse": 0.022, "recent_rmse": 0.034, "threshold": 0.033, "error_ratio": 1.55, "previous_model_rmse": 0.022}'::jsonb,
     NOW() - INTERVAL '7 days'
 )
 ON CONFLICT DO NOTHING;

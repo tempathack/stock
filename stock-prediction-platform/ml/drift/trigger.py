@@ -55,13 +55,30 @@ class DriftLogger:
             return f"s3://{self._bucket}/{self._s3_key}"
         return self._log_dir / "drift_events.jsonl"
 
-    def log_event(self, result: DriftResult) -> None:
-        """Append a single drift event to the JSONL log file."""
+    def log_event(
+        self,
+        result: DriftResult,
+        previous_model_rmse: float | None = None,
+    ) -> None:
+        """Append a single drift event to the JSONL log file.
+
+        Parameters
+        ----------
+        result:
+            The drift detection result to log.
+        previous_model_rmse:
+            OOS RMSE of the previous (pre-drift) model, if available.
+            Injected into ``details.previous_model_rmse`` so downstream
+            consumers (API drift_logs reader, Drift page) can display it.
+        """
+        details = dict(result.details)
+        if previous_model_rmse is not None:
+            details["previous_model_rmse"] = previous_model_rmse
         record = {
             "drift_type": result.drift_type,
             "is_drifted": result.is_drifted,
             "severity": result.severity,
-            "details": result.details,
+            "details": details,
             "timestamp": result.timestamp,
             "features_affected": result.features_affected,
         }
@@ -71,15 +88,26 @@ class DriftLogger:
             result.drift_type, result.is_drifted, result.severity,
         )
 
-    def log_check(self, check_result: DriftCheckResult) -> None:
-        """Log events for all drifted detectors in a check result."""
+    def log_check(
+        self,
+        check_result: DriftCheckResult,
+        previous_model_rmse: float | None = None,
+    ) -> None:
+        """Log events for all drifted detectors in a check result.
+
+        Parameters
+        ----------
+        previous_model_rmse:
+            OOS RMSE of the previous model. Forwarded to
+            :meth:`log_event` so it is persisted in ``details.previous_model_rmse``.
+        """
         for result in (
             check_result.data_drift,
             check_result.prediction_drift,
             check_result.concept_drift,
         ):
             if result.is_drifted:
-                self.log_event(result)
+                self.log_event(result, previous_model_rmse=previous_model_rmse)
 
     def get_recent_events(self, n: int = 50) -> list[dict]:
         """Return the last *n* drift events from the log file."""
@@ -157,7 +185,10 @@ def evaluate_and_trigger(
     )
 
     drift_logger = DriftLogger(log_dir=log_dir)
-    drift_logger.log_check(check_result)
+    # Pass historical_rmse as previous_model_rmse so it is persisted in
+    # details_json for the API and Drift page to display.
+    _prev_rmse: float | None = historical_rmse if historical_rmse > 0 else None
+    drift_logger.log_check(check_result, previous_model_rmse=_prev_rmse)
 
     if check_result.any_drift and auto_retrain:
         reason = _determine_reason(check_result)
