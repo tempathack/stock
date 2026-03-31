@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-03-31 — Phase 73 complete (Full system scope audit via parallel subagents — 1221-line AUDIT.md produced, all 6 domains verified clean, 0 critical gaps found across ~211 requirement IDs; Phase 70/71 streaming feature ambiguities resolved as COMPLETE)*
+*Last updated: 2026-03-31 — Phase 74 complete (Frontend rendering bug fixes — React key collision in ModelComparisonTable resolved with composite getRowId, Dashboard stale closure fixed with useCallback, AAPL treemap text contrast upgraded to WCAG AA via white text + SVG drop-shadow filter)*
