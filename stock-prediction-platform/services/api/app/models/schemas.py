@@ -316,3 +316,15 @@ class SentimentFeaturesResponse(BaseModel):
     top_subreddit: str | None = None
     available: bool
     sampled_at: str | None = None
+
+
+# ── Streaming Features (Phase 70) ─────────────────────────────────────────
+
+class StreamingFeaturesResponse(BaseModel):
+    ticker: str
+    ema_20: float | None = None
+    rsi_14: float | None = None
+    macd_signal: float | None = None
+    available: bool = False
+    source: str = "flink-indicator-stream"
+    sampled_at: str | None = None  # ISO8601 UTC timestamp of the Redis query
