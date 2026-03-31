@@ -81,6 +81,7 @@
 | 70 | 2/2 | Complete   | 2026-03-31 | 2 |
 | 71 | 4/4 | Complete    | 2026-03-31 | 4 |
 | 72 | 2/2 | Complete    | 2026-03-31 | 2 |
+| 73 | 7 plans | Planned | — | 7 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1471,13 +1472,19 @@ Plans:
 
 ### Phase 73: Full system scope verification and functional audit using parallel subagents
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Verify every requirement across all milestones (v1.0–v3.0) is satisfied by auditing actual code files using parallel domain subagents, producing a master AUDIT.md with requirements traceability, gap classification, and cross-phase wiring verification.
+**Requirements**: AUDIT-01–04
 **Depends on:** Phase 72
-**Plans:** 0 plans
+**Plans:** 7 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 73 to break down)
+- [ ] 73-01-PLAN.md — Coordinator: AUDIT.md skeleton, requirements traceability, phase summary, tech debt, E2E chains
+- [ ] 73-02-PLAN.md — Domain 1 audit: FastAPI routers, services, tests (API-01–12, LIVE, FENH, PROD)
+- [ ] 73-03-PLAN.md — Domain 2 audit: ML features, models, eval, drift, pipeline, Feast (FEAT, MODEL, EVAL, KF, DRIFT, ADVML)
+- [ ] 73-04-PLAN.md — Domain 3 audit: Kafka topics, Flink jobs, reddit producer, sentiment pipeline (KAFKA, CONS, Phase 67, 71)
+- [ ] 73-05-PLAN.md — Domain 4 audit: Frontend pages, components, hooks, Playwright E2E (FE, FMOD, FFOR, FDASH, FDRFT, FENH)
+- [ ] 73-06-PLAN.md — Domain 5 audit: Prometheus, Grafana dashboards, Loki, alerting (MON-01–10)
+- [ ] 73-07-PLAN.md — Domain 6 audit: K8s infra, MinIO, KServe, Argo CD, Feast + gap consolidation (OBJST, KSERV, DEPLOY, DBHARD)
 
 ---
 
