@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
         - name: feature-server
-          image: feastdev/feature-server:0.61.0
+          image: feastdev/feature-server:0.46.0
           ports:
             - containerPort: 6566
               name: http
