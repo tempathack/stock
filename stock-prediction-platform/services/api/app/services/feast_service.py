@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import datetime
+import time
 # Import concrete types so isinstance() still works when datetime module is mocked in tests
 from datetime import datetime as _dt_type
 
@@ -10,6 +11,15 @@ from sqlalchemy import text
 from app.config import settings
 from app.models.database import get_async_session, get_engine
 from app.models.schemas import FeastViewFreshness, FeastFreshnessResponse
+
+try:
+    from ml.features.feast_store import get_online_features as _feast_get_online
+    _FEAST_AVAILABLE = True
+except ImportError:
+    _FEAST_AVAILABLE = False
+    _feast_get_online = None  # type: ignore[assignment]
+
+get_online_features = _feast_get_online
 
 
 def _feature_views() -> list[str]:
@@ -84,3 +94,20 @@ async def get_feast_freshness() -> FeastFreshnessResponse:
         ))
 
     return FeastFreshnessResponse(views=result_views, registry_available=True)
+
+
+async def measure_feast_online_latency_ms(ticker: str = "AAPL") -> float | None:
+    """Time a single get_online_features() call. Returns round-trip ms or None if Feast unavailable.
+
+    Uses asyncio.to_thread() because the Feast Redis client is synchronous.
+    Result is a point measurement — the caller should cache it (~60s) to avoid timing on every request.
+    """
+    if not _FEAST_AVAILABLE or get_online_features is None:
+        return None
+    try:
+        import asyncio
+        start = time.perf_counter()
+        await asyncio.to_thread(get_online_features, ticker.upper())
+        return (time.perf_counter() - start) * 1000.0
+    except Exception:
+        return None
