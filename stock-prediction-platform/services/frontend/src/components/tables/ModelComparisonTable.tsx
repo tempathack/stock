@@ -123,7 +123,7 @@ export default function ModelComparisonTable({
   ];
 
   const getRowId = (row: ModelComparisonEntry) =>
-    `${row.model_name}-${row.scaler_variant}-${row.version ?? ""}`;
+    `${row.model_name}__${row.scaler_variant}__${row.version ?? row.saved_at ?? "nv"}`;
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
