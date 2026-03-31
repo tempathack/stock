@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reddit-producer-config
+  namespace: ingestion
+data:
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-kafka-bootstrap.storage.svc.cluster.local:9092"
+  KAFKA_TOPIC: "reddit-raw"
+  POLL_INTERVAL_SECONDS: "60"
+  POSTS_PER_POLL: "25"
+  LOG_LEVEL: "INFO"

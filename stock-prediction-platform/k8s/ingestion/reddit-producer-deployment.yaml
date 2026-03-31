@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reddit-producer
+  namespace: ingestion
+  labels:
+    app: reddit-producer
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: reddit-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reddit-producer
+  template:
+    metadata:
+      labels:
+        app: reddit-producer
+    spec:
+      containers:
+        - name: reddit-producer
+          image: stock-reddit-producer:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: reddit-producer-config
+            - secretRef:
+                name: reddit-secrets
