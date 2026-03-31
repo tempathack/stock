@@ -1489,12 +1489,13 @@ Plans:
 ### Phase 74: Frontend rendering bug fixes — models duplicate rows React key collision, treemap AAPL contrast, stock drawer wrong selection
 
 **Goal:** Fix all frontend rendering bugs identified in dashboard audit: duplicate model rows caused by React key collision, AAPL treemap cell text invisible due to contrast issue, stock drawer opening for wrong stock, and no content below the treemap fold on the dashboard.
-**Requirements**: TBD
+**Requirements**: FDASH-01, FDASH-02, FMOD-01
 **Depends on:** Phase 73
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 74 to break down)
+- [ ] 74-01-PLAN.md — Fix models duplicate rows (getRowId key collision) and wrong-stock drawer (stale handleSelect closure)
+- [ ] 74-02-PLAN.md — Fix treemap AAPL text invisible (pct text contrast — white + drop-shadow)
 
 ### Phase 75: Data quality fixes — OOS model metrics missing, forecast constant bias, drift RMSE null as zero, analytics integrations
 
