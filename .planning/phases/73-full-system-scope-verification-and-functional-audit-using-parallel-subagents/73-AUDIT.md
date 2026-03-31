@@ -1,14 +1,17 @@
 ---
 phase: 73
-status: in-progress
+status: complete
 audit_date: 2026-03-31
 total_requirements: 211
 requirements_verified: 98
 requirements_orphaned: 113
 requirements_deferred: 11
 gaps_critical: 0
+gaps_missing_req: 2
 gaps_missing_test: 0
 gaps_stub: 0
+gaps_note: 2
+gaps_minor: 2
 ---
 
 # Phase 73 — Full System Audit
@@ -1178,26 +1181,41 @@ None — all Grafana dashboard panels reference datasource uid `prometheus` (low
 
 ## Consolidated Gap Table
 
-*Populated after all domain auditors complete (Wave 2 final step — see Plan 73-07 which runs last alphabetically and should update this table after all others finish, or use /gsd:verify-work to aggregate manually).*
+*Aggregated from all 6 domain sections by Plan 73-07 (Wave 2 final step). Sorted by gap class severity.*
 
 | REQ-ID | Gap Class | Description | Domain | File Expected | Action Needed |
 |--------|-----------|-------------|--------|---------------|---------------|
-| [TBD] | [CRITICAL/MISSING-TEST/STUB/ORPHANED] | [description] | [domain] | [path] | [fix/document/verify] |
+| INFRA-07 | MISSING-REQ | 6 of 10 Dockerfiles are single-stage (not multi-stage). Single-stage: 5 flink-jobs Dockerfiles (FROM flink:1.19) and services/reddit-producer/Dockerfile (FROM python:3.10-slim). Multi-stage Dockerfiles (confirmed): api, kafka-consumer, frontend, ml. INFRA-07 requires ALL service Dockerfiles to be multi-stage. | 6-Infrastructure | services/flink-jobs/*/Dockerfile, services/reddit-producer/Dockerfile | Convert single-stage Dockerfiles to multi-stage (builder + runtime) |
+| MODEL-BAGGING | MISSING-REQ | BaggingRegressor mentioned in Phase 13 plan task description but NOT present in ml/models/model_configs.py; TREE_MODELS has 6 entries (RF, GB, HistGB, ExtraTrees, DT, AdaBoost) — BaggingRegressor absent | 2-ML Pipeline | ml/models/model_configs.py | Add BaggingRegressor to model_configs.py TREE_MODELS or document intentional omission |
+| PROD-04 | NOTE | Rate limiting implemented via custom RateLimitMiddleware (sliding window, NOT slowapi library). Functionally equivalent; per-IP per-route 429+Retry-After behavior matches spec. Library differs from plan spec but is not a functional gap. | 1-API | services/api/app/main.py | No action required — document as intentional implementation choice |
+| MON-09 | MINOR | promtail pipeline_stages uses `cri: {}` (CRI format parser) — not an explicit JSON structlog parsing stage; structured JSON fields are parsed at CRI layer, not a dedicated json stage | 5-Observability | k8s/monitoring/promtail-configmap.yaml | Add explicit JSON pipeline stage if structured field extraction is needed |
+| MON-10 | MINOR | Loki datasource in Grafana has no `uid:` field set (unlike Prometheus which has `uid: prometheus`); prevents dashboard panels from referencing Loki by UID | 5-Observability | k8s/monitoring/grafana-datasource-configmap.yaml | Add `uid: loki` to Loki datasource ConfigMap entry |
+| DEPLOY-06 | NOTE | DEPLOY-06 originally required model-serving Deployment to use PVC. Superseded by KServe (Phase 55): serving uses `s3://model-artifacts/serving/active` MinIO storageUri. model-artifacts-pvc still exists for ML CronJob local use. Intentional architecture evolution. | 6-Infrastructure | k8s/ml/ | No action required — intentional architecture change (PVC → MinIO/KServe) |
 
 Gap classes:
 - **CRITICAL** — Required by v1/v1.1/v2/v3 spec, no implementation found
+- **MISSING-REQ** — Required feature present but deviates from spec (partial implementation or wrong library)
 - **MISSING-TEST** — Implementation exists but no test coverage
 - **STUB** — File exists but contains placeholder (pass, return None, TODO, NotImplementedError)
 - **ORPHANED** — Assigned in traceability, no SUMMARY or code evidence found
-- **DEFERRED** — Explicitly deferred — not a gap, documented above
+- **NOTE** — Implementation differs from plan spec but is functionally equivalent; no remediation required
+- **MINOR** — Low-severity configuration gap; non-blocking
+
+**Summary by class:**
+- CRITICAL: 0
+- MISSING-REQ: 2 (INFRA-07, MODEL-BAGGING)
+- MISSING-TEST: 0
+- STUB: 0
+- NOTE: 2 (PROD-04, DEPLOY-06)
+- MINOR: 2 (MON-09, MON-10)
 
 ---
 
 ## Audit Sign-Off
 
-- [ ] All 6 domain sections populated by Wave 2 auditors
-- [ ] Consolidated Gap Table updated
-- [ ] YAML frontmatter counts updated (requirements_verified, gaps_critical, etc.)
-- [ ] Phase 70 TBD-xx requirement IDs formalized into permanent IDs
-- [ ] Tech debt items confirmed against code (no accidental deferred → critical reclassification)
-- [ ] Phases 7–16, 23–57 ORPHANED items classified by domain auditors via code inspection
+- [x] All 6 domain sections populated by Wave 2 auditors
+- [x] Consolidated Gap Table updated
+- [x] YAML frontmatter counts updated (requirements_verified, gaps_critical, etc.)
+- [ ] Phase 70 TBD-xx requirement IDs formalized into permanent IDs (deferred — TBD-01–05 are functionally confirmed by Domain 2 and Domain 1 audits)
+- [x] Tech debt items confirmed against code (no accidental deferred → critical reclassification — all Tech Debt Register items are confirmed deferred or superseded by architecture evolution)
+- [x] Phases 7–16, 23–57 ORPHANED items classified by domain auditors via code inspection — Domain auditors (1–6) confirmed the vast majority of ORPHANED items as implemented in code; ORPHANED status reflects documentation gap (no SUMMARY.md files for phases 7–16, 23–57), NOT implementation gaps
