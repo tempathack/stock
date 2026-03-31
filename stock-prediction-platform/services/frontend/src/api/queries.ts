@@ -18,6 +18,7 @@ import type {
   KafkaLagResponse,
   AnalyticsSummaryResponse,
   CandlePoint,
+  StreamingFeaturesResponse,
 } from "./types";
 
 /* ── query key constants ───────────────────────────────── */
@@ -261,5 +262,22 @@ export function useAnalyticsCandles(ticker: string, interval: "1h" | "1d") {
       return data;
     },
     retry: false,
+  });
+}
+
+// ── Streaming Features (Phase 70) ──────────────────────────────────────────
+
+export function useStreamingFeatures(ticker: string) {
+  return useQuery({
+    queryKey: ["market", "streaming-features", ticker.toUpperCase()],
+    queryFn: async () => {
+      const { data } = await apiClient.get<StreamingFeaturesResponse>(
+        `/market/streaming-features/${encodeURIComponent(ticker.toUpperCase())}`,
+      );
+      return data;
+    },
+    enabled: !!ticker,
+    refetchInterval: 5_000,   // 5s poll — matches Flink HOP window output rate
+    staleTime: 4_000,
   });
 }

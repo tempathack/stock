@@ -403,3 +403,15 @@ export interface AnalyticsSummaryResponse {
   feast_online_latency_ms: number | null;
   ca_last_refresh: string | null;
 }
+
+// ── Streaming Features (Phase 70) ──────────────────────────────────────────
+
+export interface StreamingFeaturesResponse {
+  ticker: string;
+  ema_20: number | null;
+  rsi_14: number | null;
+  macd_signal: number | null;
+  available: boolean;
+  source: string;
+  sampled_at: string | null;
+}
