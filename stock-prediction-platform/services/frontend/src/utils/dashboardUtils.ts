@@ -39,17 +39,19 @@ export function buildTreemapData(
 }
 
 /**
- * Map a daily change percentage to a hex colour on a red→gray→green gradient.
- * -5 % → deep red (#dc2626), 0 % → dark gray (#4b5563), +5 % → bright green (#16a34a).
+ * Map a daily change percentage to a vivid hex colour.
+ * Clamped at ±3% so even small moves show bright colour.
+ * -3%+ → vivid crimson (#EF4444), 0% → dark navy (#1E2A3A), +3%+ → vivid emerald (#22C55E).
  */
 export function changePctToColor(pct: number): string {
-  const clamped = Math.max(-5, Math.min(5, pct));
+  const MAX = 3;
+  const clamped = Math.max(-MAX, Math.min(MAX, pct));
   if (clamped >= 0) {
-    const t = clamped / 5;
-    return lerpColor("#4b5563", "#16a34a", t);
+    const t = clamped / MAX;
+    return lerpColor("#1E2A3A", "#22C55E", t);
   }
-  const t = Math.abs(clamped) / 5;
-  return lerpColor("#4b5563", "#dc2626", t);
+  const t = Math.abs(clamped) / MAX;
+  return lerpColor("#1E2A3A", "#EF4444", t);
 }
 
 function lerpColor(a: string, b: string, t: number): string {
