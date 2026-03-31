@@ -67,13 +67,17 @@ export default function Drift() {
         lastRetrainDate: d.trained_at,
         isRetraining: false,
         oldModel: d.previous_model
-          ? { name: d.previous_model, rmse: 0, mae: 0 }
+          ? {
+              name: d.previous_model,
+              rmse: (d.previous_oos_metrics?.oos_rmse as number) ?? null,
+              mae: (d.previous_oos_metrics?.oos_mae as number) ?? null,
+            }
           : null,
         newModel: d.model_name
           ? {
               name: d.model_name,
-              rmse: (d.oos_metrics?.oos_rmse as number) ?? 0,
-              mae: (d.oos_metrics?.oos_mae as number) ?? 0,
+              rmse: (d.oos_metrics?.oos_rmse as number) ?? null,
+              mae: (d.oos_metrics?.oos_mae as number) ?? null,
             }
           : null,
         improvementPct: null,

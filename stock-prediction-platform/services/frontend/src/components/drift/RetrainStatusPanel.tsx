@@ -83,10 +83,10 @@ export default function RetrainStatusPanel({ status }: RetrainStatusPanelProps) 
                   fontFamily="monospace"
                   color="error.main"
                 >
-                  {status.oldModel!.rmse.toFixed(4)}
+                  {status.oldModel!.rmse != null ? status.oldModel!.rmse.toFixed(4) : "—"}
                 </Typography>
                 <Typography variant="caption" fontFamily="monospace" color="text.secondary">
-                  MAE {status.oldModel!.mae.toFixed(4)}
+                  MAE {status.oldModel!.mae != null ? status.oldModel!.mae.toFixed(4) : "—"}
                 </Typography>
               </Box>
             </Grid>
@@ -110,10 +110,10 @@ export default function RetrainStatusPanel({ status }: RetrainStatusPanelProps) 
                   fontFamily="monospace"
                   color="success.main"
                 >
-                  {status.newModel!.rmse.toFixed(4)}
+                  {status.newModel!.rmse != null ? status.newModel!.rmse.toFixed(4) : "—"}
                 </Typography>
                 <Typography variant="caption" fontFamily="monospace" color="text.secondary">
-                  MAE {status.newModel!.mae.toFixed(4)}
+                  MAE {status.newModel!.mae != null ? status.newModel!.mae.toFixed(4) : "—"}
                 </Typography>
               </Box>
             </Grid>

@@ -104,6 +104,7 @@ export interface RetrainStatusResponse {
   oos_metrics: Record<string, unknown>;
   previous_model: string | null;
   previous_trained_at: string | null;
+  previous_oos_metrics?: Record<string, number>;
 }
 
 export interface MarketOverviewEntry {
@@ -299,8 +300,8 @@ export interface RollingPerformancePoint {
 export interface RetrainStatus {
   lastRetrainDate: string | null;
   isRetraining: boolean;
-  oldModel: { name: string; rmse: number; mae: number } | null;
-  newModel: { name: string; rmse: number; mae: number } | null;
+  oldModel: { name: string; rmse: number | null; mae: number | null } | null;
+  newModel: { name: string; rmse: number | null; mae: number | null } | null;
   improvementPct: number | null;
 }
 
