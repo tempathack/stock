@@ -27,3 +27,4 @@ websockets>=12.0
 pytz>=2024.1
 redis>=5.0.0
 boto3==1.37.5
+kubernetes==29.0.0
