@@ -80,7 +80,7 @@
 | 69 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 70 | 2/2 | Complete   | 2026-03-31 | 2 |
 | 71 | 4/4 | Complete    | 2026-03-31 | 4 |
-| 72 | 2/2 | Complete   | 2026-03-31 | 2 |
+| 72 | 2/2 | Complete    | 2026-03-31 | 2 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
