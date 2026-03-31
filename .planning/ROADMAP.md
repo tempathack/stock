@@ -79,6 +79,7 @@
 | 68 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 69 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 70 | Display Flink-computed streaming features in the dashboard | Surface live EMA-20, RSI-14, MACD signal from Feast Redis (Flink) in Dashboard Drawer with polling panel | TBD-01, TBD-02, TBD-03, TBD-04, TBD-05 | 2 |
+| 71 | High-Frequency Alternative Data Pipeline — Reddit Sentiment | Reddit PRAW producer, Flink VADER sentiment, Feast Redis online store, FastAPI WS endpoint, SentimentPanel dashboard | ALT-01–10 | 4 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1441,6 +1442,19 @@ Plans:
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 70 to break down)
+
+### Phase 71: High-Frequency Alternative Data Pipeline — Reddit Sentiment
+
+**Goal:** Build end-to-end Reddit sentiment pipeline: PRAW producer polls r/wallstreetbets/stocks/investing, Flink VADER job scores posts with HOP windows, Feast Redis persists aggregates, FastAPI WebSocket serves live sentiment, SentimentPanel shows live gauge in Dashboard Drawer.
+**Requirements**: ALT-01, ALT-02, ALT-03, ALT-04, ALT-05, ALT-06, ALT-07, ALT-08, ALT-09, ALT-10
+**Depends on:** Phase 70
+**Plans:** 4 plans
+
+Plans:
+- [ ] 71-01-PLAN.md — Strimzi KafkaTopic CRs (reddit-raw + sentiment-aggregated) + Reddit PRAW producer service + K8s Deployment
+- [ ] 71-02-PLAN.md — sentiment_stream Flink job (VADER HOP window) + sentiment_writer Flink job + Feast reddit_sentiment_fv + FlinkDeployment CRs
+- [ ] 71-03-PLAN.md — FastAPI /ws/sentiment/{ticker} WebSocket endpoint + feast_online_service extension + unit tests
+- [ ] 71-04-PLAN.md — useSentimentSocket hook + SentimentPanel component + Dashboard.tsx Drawer wiring
 
 ---
 
