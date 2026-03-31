@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 71-02-PLAN.md — Flink sentiment processing layer (sentiment_stream + sentiment_writer + FlinkDeployment CRs)
-last_updated: "2026-03-31T08:55:35.623Z"
+stopped_at: Completed 71-03-PLAN.md — FastAPI WebSocket sentiment endpoint and Feast online service
+last_updated: "2026-03-31T09:01:15.063Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -324,10 +324,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 71]: reddit-secrets K8s Secret created manually by operator — REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET never committed to git
 - [Phase 71]: window_start aliased as event_timestamp in sentiment_stream sink DDL to match Feast push column contract without rename in sentiment_writer
 - [Phase 71]: sentiment_stream uses python3 (not 3.10) since no Feast dependency; sentiment_writer mirrors feast_writer pattern with only 4 value changes
+- [Phase 71]: Used run_in_threadpool for synchronous Feast reads inside async WS handler
+- [Phase 71]: Added FEAST_STORE_PATH to config.py Settings (Group 15) — required for FeatureStore instantiation
 
 ## Last Session
 
-- **Stopped at:** Completed 71-02-PLAN.md — Flink sentiment processing layer (sentiment_stream + sentiment_writer + FlinkDeployment CRs)
+- **Stopped at:** Completed 71-03-PLAN.md — FastAPI WebSocket sentiment endpoint and Feast online service
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
