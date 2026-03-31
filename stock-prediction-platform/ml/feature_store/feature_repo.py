@@ -12,7 +12,7 @@ from __future__ import annotations
 from datetime import timedelta
 
 from feast import Entity, FeatureView, Field, PushSource
-from feast.types import Float64, Int64
+from feast.types import Float64, Int64, String
 from feast.infra.offline_stores.contrib.postgres_offline_store.postgres_source import (
     PostgreSQLSource,
 )
@@ -131,4 +131,27 @@ lag_features_fv = FeatureView(
     ],
     online=True,
     source=lag_source,
+)
+
+# ── Phase 71: Reddit Sentiment FeatureView ───────────────────────────────────
+
+reddit_sentiment_push = PushSource(
+    name="reddit_sentiment_push",
+    batch_source=indicators_source,  # Placeholder batch source — push-only in practice
+)
+
+reddit_sentiment_fv = FeatureView(
+    name="reddit_sentiment_fv",
+    entities=[ticker],
+    ttl=timedelta(minutes=10),  # Short TTL — stale if pipeline stops
+    schema=[
+        Field(name="avg_sentiment",   dtype=Float64),
+        Field(name="mention_count",   dtype=Int64),
+        Field(name="positive_ratio",  dtype=Float64),
+        Field(name="negative_ratio",  dtype=Float64),
+        Field(name="top_subreddit",   dtype=String),
+    ],
+    online=True,
+    source=indicators_source,  # Required placeholder batch source
+    stream_source=reddit_sentiment_push,
 )
