@@ -81,7 +81,7 @@
 | 70 | 2/2 | Complete   | 2026-03-31 | 2 |
 | 71 | 4/4 | Complete    | 2026-03-31 | 4 |
 | 72 | 2/2 | Complete    | 2026-03-31 | 2 |
-| 73 | 7 plans | Planned | — | 7 |
+| 73 | 1/7 | In Progress|  | 7 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1475,7 +1475,7 @@ Plans:
 **Goal:** Verify every requirement across all milestones (v1.0–v3.0) is satisfied by auditing actual code files using parallel domain subagents, producing a master AUDIT.md with requirements traceability, gap classification, and cross-phase wiring verification.
 **Requirements**: AUDIT-01–04
 **Depends on:** Phase 72
-**Plans:** 7 plans
+**Plans:** 1/7 plans executed
 
 Plans:
 - [ ] 73-01-PLAN.md — Coordinator: AUDIT.md skeleton, requirements traceability, phase summary, tech debt, E2E chains
