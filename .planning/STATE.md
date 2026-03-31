@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 70-02-PLAN.md — StreamingFeaturesPanel component awaiting human verify checkpoint
-last_updated: "2026-03-31T12:04:38.634Z"
+stopped_at: Completed 72-02-PLAN.md — Grafana Flink dashboard + datasource UID fix, human-verified
+last_updated: "2026-03-31T12:10:34.010Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -338,10 +338,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 72]: api-health, ml-perf, kafka dashboards already had correct lowercase prometheus uid — no content changes needed
 - [Phase 70]: StreamingFeaturesPanel is self-contained — calls useStreamingFeatures internally rather than receiving data as props
 - [Phase 70]: Dashboard.tsx Streaming Features accordion uses defaultExpanded so panel is visible immediately when Drawer opens
+- [Phase 72]: Lowercase uid='prometheus' pattern: all Grafana dashboard ConfigMaps must use this exact UID value to match pinned datasource
+- [Phase 72]: Flink dashboard: kubectl delete+create required instead of apply/replace when ConfigMap was not originally managed by apply
 
 ## Last Session
 
-- **Stopped at:** Completed 70-02-PLAN.md — StreamingFeaturesPanel component awaiting human verify checkpoint
+- **Stopped at:** Completed 72-02-PLAN.md — Grafana Flink dashboard + datasource UID fix, human-verified
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
