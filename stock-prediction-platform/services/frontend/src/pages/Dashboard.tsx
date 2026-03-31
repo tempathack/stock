@@ -5,7 +5,6 @@ import {
   AccordionSummary,
   Box,
   Button,
-  Chip,
   Container,
   Drawer,
   Grid,
@@ -24,6 +23,7 @@ import {
   CandlestickChart,
   HistoricalChart,
   DashboardTAPanel,
+  SentimentPanel,
 } from "@/components/dashboard";
 import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
 import { buildTreemapData, deriveStockMetrics } from "@/utils/dashboardUtils";
@@ -31,69 +31,140 @@ import { generateMockMarketOverview, generateMockIntradayCandles } from "@/utils
 import { generateMockIndicatorSeries } from "@/utils/mockIndicatorData";
 import useWebSocket from "@/hooks/useWebSocket";
 import type { WebSocketStatus } from "@/api";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
-const WS_STATUS_COLOR: Record<WebSocketStatus, "success" | "warning" | "error"> = {
-  connected: "success",
-  connecting: "warning",
-  disconnected: "error",
-  error: "error",
+const WS_DOT_COLOR: Record<WebSocketStatus, string> = {
+  connected:    "#22c983",
+  connecting:   "#f59e0b",
+  disconnected: "#e05454",
+  error:        "#e05454",
 };
 
 function PriceTickerStrip({ stocks }: { stocks: MarketOverviewEntry[] }) {
-  const top10 = useMemo(
+  const top20 = useMemo(
     () =>
       [...stocks]
         .filter((s) => s.market_cap != null && s.last_close != null)
         .sort((a, b) => (b.market_cap ?? 0) - (a.market_cap ?? 0))
-        .slice(0, 10),
+        .slice(0, 20),
     [stocks],
   );
 
-  if (top10.length === 0) return null;
+  if (top20.length === 0) return null;
 
-  const items = top10.map((s) => {
-    const chg = s.daily_change_pct ?? 0;
-    const color = chg >= 0 ? "#4caf50" : "#f44336";
-    const sign = chg >= 0 ? "+" : "";
-    return (
-      <Box
-        key={s.ticker}
-        component="span"
-        sx={{ mr: 4, display: "inline-block", whiteSpace: "nowrap" }}
-      >
-        <Box component="strong" sx={{ color: "primary.main", mr: 0.5 }}>
-          {s.ticker}
+  // Duplicate for seamless infinite loop
+  const renderItems = (keyPrefix: string) =>
+    top20.map((s) => {
+      const chg = s.daily_change_pct ?? 0;
+      const isPos = chg >= 0;
+      const color = isPos ? "#22c983" : "#e05454";
+      const sign  = isPos ? "+" : "";
+      return (
+        <Box
+          key={`${keyPrefix}-${s.ticker}`}
+          component="span"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            mr: "32px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {/* Separator dot */}
+          <Box
+            component="span"
+            sx={{
+              width: 3,
+              height: 3,
+              borderRadius: "50%",
+              bgcolor: "rgba(232,164,39,0.3)",
+              display: "inline-block",
+              mr: "6px",
+            }}
+          />
+          <Box
+            component="span"
+            sx={{
+              fontFamily: '"Syne", sans-serif',
+              fontWeight: 700,
+              fontSize: "0.7rem",
+              letterSpacing: "0.06em",
+              color: "#e8a427",
+            }}
+          >
+            {s.ticker}
+          </Box>
+          <Box
+            component="span"
+            sx={{
+              fontFamily: '"DM Mono", monospace',
+              fontSize: "0.72rem",
+              color: "#f0f2f8",
+              fontWeight: 400,
+            }}
+          >
+            ${s.last_close!.toFixed(2)}
+          </Box>
+          <Box
+            component="span"
+            sx={{
+              fontFamily: '"DM Mono", monospace',
+              fontSize: "0.68rem",
+              color,
+              fontWeight: 500,
+            }}
+          >
+            {sign}{chg.toFixed(2)}%
+          </Box>
         </Box>
-        <Box component="span" sx={{ color: "text.primary", mr: 0.5 }}>
-          ${s.last_close!.toFixed(2)}
-        </Box>
-        <Box component="span" sx={{ color }}>
-          {sign}{chg.toFixed(2)}%
-        </Box>
-      </Box>
-    );
-  });
+      );
+    });
 
   return (
     <Box
       data-testid="price-ticker-strip"
       sx={{
         overflow: "hidden",
-        whiteSpace: "nowrap",
-        borderBottom: "1px solid rgba(0,188,212,0.2)",
-        py: 0.5,
-        mb: 2,
-        bgcolor: "background.paper",
-        borderRadius: 1,
+        borderBottom: "1px solid rgba(232, 164, 39, 0.1)",
+        borderTop: "1px solid rgba(232, 164, 39, 0.1)",
+        bgcolor: "rgba(10, 14, 25, 0.8)",
+        py: "7px",
+        mb: 2.5,
+        position: "relative",
+        // Fade edges
+        "&::before, &::after": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          width: 48,
+          zIndex: 1,
+          pointerEvents: "none",
+        },
+        "&::before": {
+          left: 0,
+          background: "linear-gradient(to right, #07090f, transparent)",
+        },
+        "&::after": {
+          right: 0,
+          background: "linear-gradient(to left, #07090f, transparent)",
+        },
       }}
     >
       <Box
         sx={{
           display: "inline-block",
-          animation: "scroll-left 30s linear infinite",
+          whiteSpace: "nowrap",
+          animation: "scroll-ticker 40s linear infinite",
+          "@keyframes scroll-ticker": {
+            "0%":   { transform: "translateX(0)" },
+            "100%": { transform: "translateX(-50%)" },
+          },
         }}
       >
-        {items}
+        {renderItems("a")}
+        {renderItems("b")}
       </Box>
     </Box>
   );
@@ -104,20 +175,17 @@ export default function Dashboard() {
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [showTA, setShowTA] = useState(false);
 
-  // WebSocket live prices
   const wsUrl = `${(import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/^http/, "ws")}/ws/prices`;
   const { status: wsStatus, prices: livePrices } = useWebSocket(wsUrl);
   const livePrice = selectedTicker ? livePrices.get(selectedTicker) ?? null : null;
 
-  const indicatorQuery = useTickerIndicators(selectedTicker ?? "");
+  const indicatorQuery  = useTickerIndicators(selectedTicker ?? "");
   const predictionQuery = usePrediction(selectedTicker ?? "");
 
-  // Build treemap data — mock only on error (not while loading)
   const stocks = marketQuery.data?.stocks
     ?? (marketQuery.isError ? generateMockMarketOverview() : []);
   const treemapData = useMemo(() => buildTreemapData(stocks), [stocks]);
 
-  // Derive metric card data for selected stock
   const selectedStock = stocks.find((s) => s.ticker === selectedTicker) ?? null;
 
   const indicatorSeries = useMemo(() => {
@@ -136,6 +204,8 @@ export default function Dashboard() {
     return generateMockIntradayCandles(selectedTicker, selectedStock?.last_close ?? undefined);
   }, [selectedTicker, selectedStock]);
 
+  const wsDotColor = WS_DOT_COLOR[wsStatus];
+
   if (marketQuery.isError && !marketQuery.data) {
     return (
       <ErrorFallback
@@ -150,14 +220,51 @@ export default function Dashboard() {
       <PageHeader
         title="Market Dashboard"
         subtitle={
-          <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 1 }}>
+          <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 1.25 }}>
             Real-time S&amp;P 500 overview and stock analysis
-            <Chip
-              size="small"
-              label={`WS: ${wsStatus}`}
-              color={WS_STATUS_COLOR[wsStatus]}
-              sx={{ fontSize: "0.65rem", height: 18 }}
-            />
+            <Box
+              component="span"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.6,
+                border: "1px solid rgba(232,164,39,0.2)",
+                borderRadius: "4px",
+                px: "6px",
+                py: "2px",
+                ml: 0.5,
+              }}
+            >
+              <Box
+                component="span"
+                sx={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  bgcolor: wsDotColor,
+                  boxShadow: `0 0 4px ${wsDotColor}`,
+                  animation: wsStatus === "connected" ? "none" : "pulse-dot 2s infinite",
+                  display: "inline-block",
+                  "@keyframes pulse-dot": {
+                    "0%, 100%": { opacity: 1 },
+                    "50%":      { opacity: 0.3 },
+                  },
+                }}
+              />
+              <Box
+                component="span"
+                sx={{
+                  fontFamily: '"Syne", sans-serif',
+                  fontWeight: 700,
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: wsDotColor,
+                }}
+              >
+                WS {wsStatus}
+              </Box>
+            </Box>
           </Box>
         }
       />
@@ -166,9 +273,9 @@ export default function Dashboard() {
       <PriceTickerStrip stocks={stocks} />
 
       {/* ── Treemap ── */}
-      <Paper sx={{ p: 2, mb: 3 }}>
+      <Paper sx={{ p: 2.5, mb: 3 }}>
         {marketQuery.isLoading ? (
-          <Skeleton variant="rectangular" height={400} />
+          <Skeleton variant="rectangular" height={480} sx={{ bgcolor: "rgba(232,164,39,0.05)", borderRadius: 1 }} />
         ) : (
           <MarketTreemap
             data={treemapData}
@@ -183,20 +290,57 @@ export default function Dashboard() {
         anchor="right"
         open={!!selectedTicker}
         onClose={() => setSelectedTicker(null)}
-        PaperProps={{ sx: { width: { xs: "100%", sm: 480 }, p: 3, bgcolor: "background.default" } }}
+        PaperProps={{
+          sx: {
+            width: { xs: "100%", sm: 500 },
+            p: 3,
+            bgcolor: "#0a0e19",
+            borderLeft: "1px solid rgba(232,164,39,0.12)",
+          },
+        }}
       >
         {selectedTicker && (
           <Box sx={{ height: "100%", overflow: "auto" }}>
-            {/* Header */}
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-              <Typography variant="h6" fontWeight={700}>
-                {selectedTicker} — Detail View
-              </Typography>
+            {/* Drawer header */}
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2.5 }}>
+              <Box>
+                <Typography
+                  sx={{
+                    fontFamily: '"Syne", sans-serif',
+                    fontWeight: 800,
+                    fontSize: "1.1rem",
+                    color: "#f0f2f8",
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  {selectedTicker}
+                </Typography>
+                {selectedStock?.company_name && (
+                  <Typography
+                    sx={{
+                      fontFamily: '"DM Mono", monospace',
+                      fontSize: "0.7rem",
+                      color: "rgba(107,122,159,0.7)",
+                      mt: 0.25,
+                    }}
+                  >
+                    {selectedStock.company_name}
+                  </Typography>
+                )}
+              </Box>
               <Button
                 size="small"
-                startIcon={<CloseIcon />}
+                startIcon={<CloseIcon sx={{ fontSize: "0.85rem !important" }} />}
                 onClick={() => setSelectedTicker(null)}
                 variant="outlined"
+                sx={{
+                  borderColor: "rgba(232,164,39,0.25)",
+                  color: "rgba(107,122,159,0.8)",
+                  "&:hover": { borderColor: "#e8a427", color: "#e8a427" },
+                  fontFamily: '"Syne", sans-serif',
+                  fontSize: "0.65rem",
+                  py: 0.5,
+                }}
               >
                 Close
               </Button>
@@ -232,14 +376,55 @@ export default function Dashboard() {
             <Accordion
               expanded={showTA}
               onChange={(_, expanded) => setShowTA(expanded)}
+              sx={{ bgcolor: "#0d1220" }}
             >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="body2">Technical Indicators</Typography>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ color: "rgba(107,122,159,0.6)", fontSize: "1rem" }} />}
+                sx={{ minHeight: 40, "& .MuiAccordionSummary-content": { my: 0 } }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: '"Syne", sans-serif',
+                    fontWeight: 700,
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "rgba(107,122,159,0.8)",
+                  }}
+                >
+                  Technical Indicators
+                </Typography>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ pt: 0 }}>
                 <DashboardTAPanel series={indicatorSeries} ticker={selectedTicker} />
               </AccordionDetails>
             </Accordion>
+
+            {/* Reddit Sentiment — Phase 71 */}
+            {selectedTicker && (
+              <Accordion sx={{ bgcolor: "#0d1220", mt: 1 }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon sx={{ color: "rgba(107,122,159,0.6)", fontSize: "1rem" }} />}
+                  sx={{ minHeight: 40, "& .MuiAccordionSummary-content": { my: 0 } }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: '"Syne", sans-serif',
+                      fontWeight: 700,
+                      fontSize: "0.68rem",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: "rgba(107,122,159,0.8)",
+                    }}
+                  >
+                    Reddit Sentiment
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ pt: 0 }}>
+                  <SentimentPanel ticker={selectedTicker} />
+                </AccordionDetails>
+              </Accordion>
+            )}
           </Box>
         )}
       </Drawer>
