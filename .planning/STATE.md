@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 75-01-PLAN.md
-last_updated: "2026-03-31T18:15:50.445Z"
+stopped_at: Completed 75-03-PLAN.md
+last_updated: "2026-03-31T18:18:40.808Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -357,10 +357,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 74]: Wrap handleSelect in useCallback with empty deps to prevent stale closure in Recharts Treemap content renderer
 - [Phase 74]: 74-02: Use #FFFFFF unconditionally for treemap pct text with SVG feDropShadow filter — eliminates WCAG contrast failures on all tile colors including dark crimson AAPL #831849
 - [Phase 75-01]: Used lazy import inside test body for Wave 0 RED tests to prevent collection-time ImportError blocking existing passing tests
+- [Phase 75]: ArgoCD status reads from kubernetes.client.CustomObjectsApi (K8s CRD) instead of ARGOCD_TOKEN/httpx — works without a running ArgoCD HTTP API
+- [Phase 75]: Feast latency cached 60s via build_key('analytics','feast','latency') to avoid timing overhead on every analytics summary request
 
 ## Last Session
 
-- **Stopped at:** Completed 75-01-PLAN.md
+- **Stopped at:** Completed 75-03-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
