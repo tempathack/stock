@@ -992,9 +992,82 @@ None detected:
 **Audited by:** Plan 73-05
 **Requirements scope:** FE-01–06, FMOD-01–06, FFOR-01–06, FDASH-01–08, FDRFT-01–05, FENH-03–07
 
-```
-[PENDING — Plan 73-05 populates this section]
-```
+**Status:** COMPLETE
+**Files Inspected:** 28
+**E2E Spec Files Found:** analytics.spec.ts, api-health.spec.ts, backtest-data-sanity.spec.ts, backtest.spec.ts, dashboard.spec.ts, drift-data-sanity.spec.ts, drift.spec.ts, forecasts.spec.ts, models.spec.ts, streaming-features.spec.ts (app) + argocd.spec.ts, flink-web-ui.spec.ts, grafana-flink-72.spec.ts, grafana.spec.ts, k8s-dashboard.spec.ts, kubeflow.spec.ts, minio.spec.ts, prometheus.spec.ts (infra)
+
+#### Satisfied Requirements
+| REQ-ID | Evidence | File |
+|--------|----------|------|
+| FE-01 | React app with React Router BrowserRouter, lazy-loaded routes for all 6 pages | src/App.tsx |
+| FE-02 | MUI dark theme via createTheme with `mode: 'dark'` | src/theme/index.ts |
+| FE-03 | Sidebar (TopNav) navigation bar — Layout wraps all routes with Sidebar | src/components/layout/Sidebar.tsx, Layout.tsx |
+| FE-04 | API client with typed hooks (useModelComparison, useBulkPredictions, etc.) | src/api/client.ts |
+| FE-05 | K8s deployment.yaml and service.yaml present | k8s/frontend/deployment.yaml, service.yaml |
+| FE-06 | Argo CD app manifest for frontend | k8s/argocd/app-frontend.yaml |
+| FMOD-01 | ModelComparisonTable component imported and rendered in Models.tsx | src/pages/Models.tsx:12,127 |
+| FMOD-02 | WinnerCard component with winner indicator | src/pages/Models.tsx:123 |
+| FMOD-03 | ShapBarChart and ShapBeeswarmPlot components imported and used | src/pages/Models.tsx:13 |
+| FMOD-04 | FoldPerformanceChart component present | src/components/charts/FoldPerformanceChart.tsx |
+| FMOD-05 | ModelDetailPanel (SHAP detail panel) imported in Models.tsx | src/pages/Models.tsx:12 |
+| FMOD-06 | ExportButtons component in Models.tsx with exportToCsv/exportTableToPdf | src/pages/Models.tsx:11,17-18 |
+| FFOR-01 | ForecastTable with ForecastFilters — filter state and table component | src/pages/Forecasts.tsx:14-15 |
+| FFOR-02 | StockDetailChart and IndicatorOverlayCharts for stock detail with TA | src/pages/Forecasts.tsx:16,18 |
+| FFOR-03 | StockComparisonPanel present | src/pages/Forecasts.tsx:15 |
+| FFOR-04 | ExportButtons with exportToCsv/exportTableToPdf | src/pages/Forecasts.tsx:12,27-28 |
+| FFOR-05 | StockShapPanel for per-ticker SHAP | src/pages/Forecasts.tsx:19 |
+| FFOR-06 | HorizonToggle component with useAvailableHorizons API hook | src/pages/Forecasts.tsx:20,22 |
+| FDASH-01 | MarketTreemap component imported and rendered in Dashboard.tsx | src/pages/Dashboard.tsx:22,282 |
+| FDASH-02 | CandlestickChart (intraday chart) imported and used in Drawer | src/pages/Dashboard.tsx:24,361 |
+| FDASH-03 | HistoricalChart imported and used in Drawer | src/pages/Dashboard.tsx:25,368 |
+| FDASH-04 | DashboardTAPanel (TA overlay) imported and used in Drawer | src/pages/Dashboard.tsx:26,434 |
+| FDASH-05 | MetricCards panel imported and rendered | src/pages/Dashboard.tsx:23,354 |
+| FDASH-06 | useWebSocket hook integrated in Dashboard.tsx with WS status dot | src/pages/Dashboard.tsx:34,38-43 |
+| FDASH-07 | PriceTickerStrip component with live price display | src/pages/Dashboard.tsx:45 |
+| FDASH-08 | MobileMarketList component present in dashboard index | src/components/dashboard/index.ts:8 |
+| FDRFT-01 | ActiveModelCard imported and used in Drift.tsx | src/pages/Drift.tsx:14,~line 80+ |
+| FDRFT-02 | RollingPerformanceChart imported and used | src/pages/Drift.tsx:16 |
+| FDRFT-03 | DriftTimeline chart imported and rendered | src/pages/Drift.tsx:15,160 |
+| FDRFT-04 | RetrainStatusPanel imported | src/pages/Drift.tsx:17 |
+| FDRFT-05 | FeatureDistributionChart imported | src/pages/Drift.tsx:18 |
+| FENH-03 | HorizonToggle in Forecasts.tsx with 1d/7d/30d-style horizon toggle state | src/pages/Forecasts.tsx:20,horizon state |
+| FENH-04 | Backtest.tsx page exists with BacktestChart and BacktestMetricsSummary | src/pages/Backtest.tsx |
+| FENH-05 | useBacktest API hook wired in Backtest.tsx | src/pages/Backtest.tsx:23 |
+| FENH-06 | CSV export: exportToCsv util used in Models.tsx, Forecasts.tsx, Backtest.tsx | src/utils/exportCsv.ts (via imports) |
+| FENH-06 | PDF export: exportTableToPdf used in Models.tsx, Forecasts.tsx, Backtest.tsx | src/utils/exportPdf.ts (confirmed exists) |
+| FENH-07 | Responsive layout: useMediaQuery, xs:/sm:/md:/lg: grid breakpoints in 15+ files | src/pages/Dashboard.tsx, Layout.tsx, Forecasts.tsx, Models.tsx, Backtest.tsx, etc. |
+| FENH-01 | useWebSocket hook exists | src/hooks/useWebSocket.ts |
+| FENH-02 | Reconnection logic in useWebSocket: reconnectAttempts param, linear backoff on close (delay = reconnectInterval * attempt+1), max attempts guard | src/hooks/useWebSocket.ts:86-94 |
+| Phase 69 | Analytics.tsx exists with OLAPCandleChart, StreamHealthPanel, FeatureFreshnessPanel, StreamLagMonitor, SystemHealthSummary | src/pages/Analytics.tsx |
+| Phase 70 | StreamingFeaturesPanel.tsx exists and is exported from dashboard index | src/components/dashboard/StreamingFeaturesPanel.tsx, index.ts:7 |
+| Phase 70 | StreamingFeaturesPanel imported in Dashboard.tsx line 28 and rendered at line 406 inside Drawer | src/pages/Dashboard.tsx:28,406 |
+| Phase 71 | SentimentPanel.tsx exists and exported from dashboard index | src/components/dashboard/SentimentPanel.tsx, index.ts:9 |
+| Phase 71 | SentimentPanel imported in Dashboard.tsx line 27 and rendered at line 459 inside Drawer | src/pages/Dashboard.tsx:27,459 |
+| Phase 71 | useSentimentSocket hook exists with exponential backoff reconnection | src/hooks/useSentimentSocket.ts |
+
+#### Gaps Found
+| REQ-ID | Gap Class | Description | File Expected |
+|--------|-----------|-------------|---------------|
+| None | — | All frontend requirements satisfied. No gaps detected. | — |
+
+#### Stubs Detected
+None — all components render substantive content. No placeholder JSX observed in inspected files.
+
+#### Wiring Issues
+None — StreamingFeaturesPanel and SentimentPanel are both imported and actively rendered inside Dashboard.tsx Drawer at lines 406 and 459 respectively.
+
+#### Phase-Specific Checks
+- Phase 70 StreamingFeaturesPanel.tsx exists: YES
+- Phase 70 StreamingFeaturesPanel in Dashboard.tsx: CONFIRMED IMPORTED (line 28) AND RENDERED (line 406 in Drawer)
+- Phase 70 STATUS CONCLUSION: COMPLETE — file exists, exported from index, imported and rendered in Dashboard Drawer
+- Phase 71 SentimentPanel.tsx exists: YES
+- Phase 71 SentimentPanel in Dashboard.tsx: CONFIRMED IMPORTED (line 27) AND RENDERED (line 459 in Drawer)
+- Phase 71 useSentimentSocket hook exists: YES — with exponential backoff (Math.pow(2, retryCount), max 30s delay, 5 retries)
+- FENH-02 useWebSocket reconnection logic: CONFIRMED — has reconnectAttempts param (default 5), linear backoff (delay = reconnectInterval * attempt+1), closes cleanly on code 1000
+- FENH-06 CSV/PDF export: CONFIRMED — exportToCsv and exportTableToPdf utilities imported in Models.tsx, Forecasts.tsx, Backtest.tsx; exportPdf.ts confirmed present
+- FENH-07 mobile responsive layout: CONFIRMED — useMediaQuery and grid breakpoints (xs/sm/md/lg) used in 15+ component files including Dashboard, Layout, Forecasts, Models, Backtest
+- Phase 69 Analytics page: CONFIRMED — Analytics.tsx with OLAPCandleChart (TimescaleDB), StreamHealthPanel (Flink), FeatureFreshnessPanel (Feast), StreamLagMonitor, SystemHealthSummary; routed at /analytics in App.tsx
+- Playwright E2E: 10 app specs (analytics, api-health, backtest, backtest-data-sanity, dashboard, drift, drift-data-sanity, forecasts, models, streaming-features) + 8 infra specs (argocd, flink-web-ui, grafana-flink-72, grafana, k8s-dashboard, kubeflow, minio, prometheus) = 18 total spec files
 
 ---
 
