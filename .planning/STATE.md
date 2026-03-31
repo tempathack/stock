@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 72-01-PLAN.md — Prometheus flink-jobs scrape job and Grafana datasource UID pinning
-last_updated: "2026-03-31T11:36:31.185Z"
+stopped_at: Completed 72-02-PLAN.md — Flink 10-panel dashboard and datasource UID audit
+last_updated: "2026-03-31T11:42:37.252Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -331,10 +331,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 71]: useSentimentSocket is an independent hook (not a useWebSocket wrapper) — single-ticker focus, exponential backoff with code-1000 cleanup suppresses reconnect storms on drawer close
 - [Phase 72-01]: Dedicated flink-jobs Prometheus scrape job scoped to flink namespace avoids double-scrape confusion and gives clean job label separation
 - [Phase 72-01]: Grafana Prometheus datasource UID pinned to 'prometheus' in provisioning YAML to ensure dashboard JSON uid references resolve correctly via GitOps
+- [Phase 72]: Used kubectl delete+create for ConfigMap update because kubectl apply/replace left stale content in cluster
+- [Phase 72]: api-health, ml-perf, kafka dashboards already had correct lowercase prometheus uid — no content changes needed
 
 ## Last Session
 
-- **Stopped at:** Completed 72-01-PLAN.md — Prometheus flink-jobs scrape job and Grafana datasource UID pinning
+- **Stopped at:** Completed 72-02-PLAN.md — Flink 10-panel dashboard and datasource UID audit
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

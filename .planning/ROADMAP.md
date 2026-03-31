@@ -80,7 +80,7 @@
 | 69 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 70 | Display Flink-computed streaming features in the dashboard | Surface live EMA-20, RSI-14, MACD signal from Feast Redis (Flink) in Dashboard Drawer with polling panel | TBD-01, TBD-02, TBD-03, TBD-04, TBD-05 | 2 |
 | 71 | 4/4 | Complete    | 2026-03-31 | 4 |
-| 72 | 1/2 | In Progress|  | 2 |
+| 72 | 2/2 | Complete   | 2026-03-31 | 2 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1464,10 +1464,10 @@ Plans:
 **Goal:** [To be planned]
 **Requirements**: TBD
 **Depends on:** Phase 71
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 72 to break down)
+- [x] TBD (run /gsd:plan-phase 72 to break down) (completed 2026-03-31)
 
 ---
 
