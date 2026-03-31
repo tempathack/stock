@@ -40,18 +40,17 @@ export function buildTreemapData(
 
 /**
  * Map a daily change percentage to a vivid hex colour.
- * Clamped at ±3% so even small moves show bright colour.
- * -3%+ → vivid crimson (#EF4444), 0% → dark navy (#1E2A3A), +3%+ → vivid emerald (#22C55E).
+ * Clamped at ±3%. Neutral → deep purple, gain → neon green, loss → hot pink.
  */
 export function changePctToColor(pct: number): string {
   const MAX = 3;
   const clamped = Math.max(-MAX, Math.min(MAX, pct));
   if (clamped >= 0) {
     const t = clamped / MAX;
-    return lerpColor("#1E2A3A", "#22C55E", t);
+    return lerpColor("#110C2E", "#00CC6E", t);
   }
   const t = Math.abs(clamped) / MAX;
-  return lerpColor("#1E2A3A", "#EF4444", t);
+  return lerpColor("#110C2E", "#CC1F5A", t);
 }
 
 function lerpColor(a: string, b: string, t: number): string {

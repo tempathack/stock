@@ -22,29 +22,27 @@ const navItems = [
 
 type DotColor = "success" | "warning" | "error";
 
-const DOT_COLORS: Record<DotColor, string> = {
-  success: "#10B981",
-  warning: "#F59E0B",
-  error:   "#F43F5E",
+const DOT_COLORS: Record<DotColor, { color: string; glow: string }> = {
+  success: { color: "#00FF87", glow: "rgba(0, 255, 135, 0.6)" },
+  warning: { color: "#FFD60A", glow: "rgba(255, 214, 10, 0.6)" },
+  error:   { color: "#FF2D78", glow: "rgba(255, 45, 120, 0.6)" },
 };
 
 function StatusDot({ label, color }: { label: string; color: DotColor }) {
-  const c = DOT_COLORS[color];
+  const { color: c, glow } = DOT_COLORS[color];
   return (
-    <Stack direction="row" spacing={0.6} alignItems="center">
+    <Stack direction="row" spacing={0.75} alignItems="center">
       <Box
         sx={{
-          width: 6,
-          height: 6,
+          width: 7,
+          height: 7,
           borderRadius: "50%",
           bgcolor: c,
-          boxShadow: `0 0 ${color === "success" ? 4 : 8}px ${c}`,
-          animation: color !== "success"
-            ? "pulse-dot 2s ease-in-out infinite"
-            : "none",
+          boxShadow: `0 0 6px ${glow}, 0 0 12px ${glow}`,
+          animation: color !== "success" ? "pulse-dot 2s ease-in-out infinite" : "none",
           "@keyframes pulse-dot": {
-            "0%, 100%": { opacity: 1 },
-            "50%":       { opacity: 0.4 },
+            "0%, 100%": { opacity: 1, boxShadow: `0 0 6px ${glow}` },
+            "50%":       { opacity: 0.4, boxShadow: `0 0 2px ${glow}` },
           },
           flexShrink: 0,
         }}
@@ -52,11 +50,12 @@ function StatusDot({ label, color }: { label: string; color: DotColor }) {
       <Typography
         variant="caption"
         sx={{
-          fontFamily: '"IBM Plex Sans", sans-serif',
+          fontFamily: '"JetBrains Mono", monospace',
           fontWeight: 600,
-          fontSize: "0.62rem",
-          letterSpacing: "0.06em",
-          color: color === "success" ? "rgba(226,232,240,0.5)" : c,
+          fontSize: "0.6rem",
+          letterSpacing: "0.08em",
+          color: color === "success" ? "rgba(240,238,255,0.45)" : c,
+          textShadow: color !== "success" ? `0 0 8px ${glow}` : "none",
         }}
       >
         {label}
@@ -100,52 +99,80 @@ function TopNav() {
     <Box
       component="header"
       sx={{
-        height: 56,
+        height: 60,
         flexShrink: 0,
-        bgcolor: "#060C1A",
-        borderBottom: "1px solid rgba(14, 165, 233, 0.15)",
+        background: "rgba(7, 4, 26, 0.85)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
+        borderBottom: "1px solid rgba(124, 58, 237, 0.2)",
+        boxShadow: "0 1px 0 rgba(124, 58, 237, 0.1), 0 4px 32px rgba(0,0,0,0.5)",
         display: "flex",
         alignItems: "center",
         px: 2.5,
         gap: 3,
         zIndex: (t) => t.zIndex.appBar,
+        position: "relative",
       }}
     >
       {/* Logo */}
-      <Stack direction="row" spacing={1.25} alignItems="center" sx={{ flexShrink: 0 }}>
+      <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexShrink: 0 }}>
         <Box
           sx={{
-            width: 28,
-            height: 28,
-            borderRadius: "6px",
-            background: "linear-gradient(135deg, #0EA5E9 0%, #8B5CF6 100%)",
+            width: 32,
+            height: 32,
+            borderRadius: "10px",
+            background: "linear-gradient(135deg, #7C3AED 0%, #EC4899 50%, #00F5FF 100%)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "0.58rem",
-            fontWeight: 700,
-            color: "#050A14",
-            fontFamily: '"IBM Plex Sans", sans-serif',
-            letterSpacing: "-0.01em",
+            fontSize: "0.62rem",
+            fontWeight: 800,
+            color: "#fff",
+            fontFamily: '"Inter", sans-serif',
+            letterSpacing: "-0.02em",
             flexShrink: 0,
-            boxShadow: "0 2px 12px rgba(14, 165, 233, 0.35)",
+            boxShadow: "0 0 20px rgba(124, 58, 237, 0.6), 0 0 40px rgba(124, 58, 237, 0.2)",
+            animation: "neon-flicker 8s ease-in-out infinite",
+            "@keyframes neon-flicker": {
+              "0%, 100%": { opacity: 1 },
+              "92%": { opacity: 1 },
+              "93%": { opacity: 0.85 },
+              "94%": { opacity: 1 },
+            },
           }}
         >
           SP
         </Box>
-        <Typography
-          sx={{
-            fontFamily: '"IBM Plex Sans", sans-serif',
-            fontWeight: 700,
-            fontSize: "0.82rem",
-            letterSpacing: "0.02em",
-            color: "#E2E8F0",
-            lineHeight: 1.2,
-            whiteSpace: "nowrap",
-          }}
-        >
-          S&amp;P 500 AI
-        </Typography>
+        <Box>
+          <Typography
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 800,
+              fontSize: "0.88rem",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.1,
+              background: "linear-gradient(90deg, #BF5AF2, #00F5FF)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              whiteSpace: "nowrap",
+            }}
+          >
+            S&P 500 AI
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: "0.52rem",
+              letterSpacing: "0.12em",
+              color: "rgba(107, 96, 168, 0.8)",
+              textTransform: "uppercase",
+              lineHeight: 1,
+            }}
+          >
+            Platform
+          </Typography>
+        </Box>
       </Stack>
 
       {/* Nav links */}
@@ -173,24 +200,52 @@ function TopNav() {
                 px: 1.5,
                 height: "100%",
                 textDecoration: "none",
-                color: isActive ? "#E2E8F0" : "#64748B",
-                borderBottom: isActive
-                  ? "2px solid #0EA5E9"
-                  : "2px solid transparent",
-                transition: "color 0.15s ease, border-color 0.15s ease",
+                color: isActive ? "#F0EEFF" : "#4A4270",
+                position: "relative",
+                transition: "color 0.2s ease",
+                "&::after": isActive ? {
+                  content: '""',
+                  position: "absolute",
+                  bottom: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "60%",
+                  height: "2px",
+                  background: "linear-gradient(90deg, #7C3AED, #00F5FF)",
+                  borderRadius: "2px 2px 0 0",
+                  boxShadow: "0 0 8px rgba(0, 245, 255, 0.6)",
+                } : {},
+                "&::before": isActive ? {
+                  content: '""',
+                  position: "absolute",
+                  inset: "8px 4px",
+                  background: "linear-gradient(135deg, rgba(124,58,237,0.12), rgba(0,245,255,0.06))",
+                  borderRadius: "8px",
+                  border: "1px solid rgba(124,58,237,0.2)",
+                } : {},
                 "&:hover": {
-                  color: isActive ? "#E2E8F0" : "#94A3B8",
+                  color: isActive ? "#F0EEFF" : "#9D8FD8",
                 },
               }}
             >
-              <Icon sx={{ fontSize: "0.9rem", opacity: isActive ? 1 : 0.7 }} />
+              <Icon
+                sx={{
+                  fontSize: "0.95rem",
+                  opacity: isActive ? 1 : 0.5,
+                  color: isActive ? "#BF5AF2" : "inherit",
+                  filter: isActive ? "drop-shadow(0 0 4px rgba(191,90,242,0.7))" : "none",
+                  zIndex: 1,
+                }}
+              />
               <Typography
                 sx={{
-                  fontFamily: '"IBM Plex Sans", sans-serif',
-                  fontWeight: isActive ? 600 : 400,
+                  fontFamily: '"Inter", sans-serif',
+                  fontWeight: isActive ? 700 : 400,
                   fontSize: "0.78rem",
                   letterSpacing: "0.01em",
                   whiteSpace: "nowrap",
+                  zIndex: 1,
+                  textShadow: isActive ? "0 0 12px rgba(191,90,242,0.4)" : "none",
                 }}
               >
                 {label}
@@ -200,26 +255,33 @@ function TopNav() {
         })}
       </Stack>
 
-      {/* Right: K8s status + service dots + clock */}
+      {/* Right: K8s + status dots + clock */}
       <Stack direction="row" spacing={2} alignItems="center" sx={{ flexShrink: 0 }}>
-        {/* K8s cluster pod count */}
         {k8s?.available && k8s.running_pods != null && (
-          <Stack direction="row" spacing={0.6} alignItems="center">
+          <Stack direction="row" spacing={0.6} alignItems="center"
+            sx={{
+              px: 1.25,
+              py: 0.4,
+              borderRadius: "6px",
+              background: "rgba(0,255,135,0.06)",
+              border: "1px solid rgba(0,255,135,0.15)",
+            }}
+          >
             <Box
               sx={{
                 width: 5,
                 height: 5,
                 borderRadius: "50%",
-                bgcolor: "#10B981",
-                boxShadow: "0 0 4px #10B981",
+                bgcolor: "#00FF87",
+                boxShadow: "0 0 6px rgba(0,255,135,0.8)",
                 flexShrink: 0,
               }}
             />
             <Typography
               sx={{
                 fontFamily: '"JetBrains Mono", monospace',
-                fontSize: "0.65rem",
-                color: "rgba(100,116,139,0.8)",
+                fontSize: "0.62rem",
+                color: "rgba(0,255,135,0.7)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -228,22 +290,33 @@ function TopNav() {
           </Stack>
         )}
 
-        {/* Service status dots */}
-        <StatusDot label="API"   color={apiColor}   />
-        <StatusDot label="KAFKA" color={kafkaColor} />
-        <StatusDot label="DB"    color={dbColor}    />
+        <Stack direction="row" spacing={1.5} alignItems="center"
+          sx={{
+            px: 1.5,
+            py: 0.5,
+            borderRadius: "8px",
+            background: "rgba(13,10,36,0.6)",
+            border: "1px solid rgba(124,58,237,0.15)",
+          }}
+        >
+          <StatusDot label="API"   color={apiColor}   />
+          <StatusDot label="KAFKA" color={kafkaColor} />
+          <StatusDot label="DB"    color={dbColor}    />
+        </Stack>
 
-        {/* Live clock */}
         {clock && (
           <Typography
             variant="caption"
             sx={{
               fontFamily: '"JetBrains Mono", monospace',
-              color: "rgba(100,116,139,0.7)",
-              fontSize: "0.65rem",
-              borderLeft: "1px solid rgba(14,165,233,0.15)",
-              pl: 2,
+              fontSize: "0.68rem",
+              fontWeight: 600,
+              background: "linear-gradient(90deg, #7C3AED, #00F5FF)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
               whiteSpace: "nowrap",
+              letterSpacing: "0.05em",
             }}
           >
             {clock}

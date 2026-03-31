@@ -1,77 +1,170 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @theme {
-  --color-bg-primary: #050A14;
-  --color-bg-surface: #0A1120;
-  --color-bg-card: #0F1929;
-  --color-text-primary: #E2E8F0;
-  --color-text-secondary: #64748B;
-  --color-accent: #0EA5E9;
-  --color-accent-secondary: #8B5CF6;
-  --color-profit: #10B981;
-  --color-loss: #F43F5E;
-  --color-warning: #F59E0B;
-  --color-border: rgba(14, 165, 233, 0.12);
-  --color-border-subtle: rgba(14, 165, 233, 0.12);
+  --color-bg-primary: #02000A;
+  --color-bg-surface: #07041A;
+  --color-bg-card: #0D0A24;
+  --color-text-primary: #F0EEFF;
+  --color-text-secondary: #6B60A8;
+  --color-accent: #7C3AED;
+  --color-accent-secondary: #EC4899;
+  --color-neon-cyan: #00F5FF;
+  --color-neon-purple: #BF5AF2;
+  --color-neon-pink: #FF2D78;
+  --color-neon-gold: #FFD60A;
+  --color-profit: #00FF87;
+  --color-loss: #FF2D78;
+  --color-warning: #FFD60A;
+  --color-border: rgba(124, 58, 237, 0.25);
 
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
 }
 
-/* Seamless infinite ticker: duplicate items, animate exactly 50% of total width */
+/* ─── Keyframes ─────────────────────────────────────────── */
+
+@keyframes aurora {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.7; filter: blur(40px); }
+  50%       { opacity: 1;   filter: blur(60px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px currentColor, 0 0 12px currentColor; }
+  50%       { opacity: 0.5; box-shadow: 0 0 2px currentColor; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes scroll-ticker {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-@keyframes scroll-left {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(-100%); }
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(124, 58, 237, 0.4); box-shadow: 0 0 15px rgba(124, 58, 237, 0.15); }
+  50%       { border-color: rgba(0, 245, 255, 0.4); box-shadow: 0 0 25px rgba(0, 245, 255, 0.2); }
 }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; }
-  50%       { opacity: 0.5; box-shadow: 0 0 2px currentColor; }
+@keyframes neon-flicker {
+  0%, 100% { opacity: 1; }
+  92%       { opacity: 1; }
+  93%       { opacity: 0.8; }
+  94%       { opacity: 1; }
+  96%       { opacity: 0.9; }
+  97%       { opacity: 1; }
 }
 
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.6; }
-  50%       { opacity: 1; }
-}
+/* ─── Base ───────────────────────────────────────────────── */
 
 @layer base {
   html {
-    background: var(--color-bg-primary);
+    background: #02000A;
   }
 
   body {
-    background-color: var(--color-bg-primary);
+    background-color: #02000A;
     color: var(--color-text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    overflow-x: hidden;
   }
 
-  /* Grain texture overlay for depth */
+  /* Cosmic background with aurora blobs */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: 0;
     pointer-events: none;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(124, 58, 237, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 20%, rgba(0, 245, 255, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 50% 90%, rgba(236, 72, 153, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 70%, rgba(191, 90, 242, 0.10) 0%, transparent 50%),
+      #02000A;
+  }
+
+  /* Grain texture overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 300px 300px;
   }
 
-  /* Thin blue-tinted scrollbars */
+  /* Neon scrollbars */
   ::-webkit-scrollbar        { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track  { background: var(--color-bg-primary); }
-  ::-webkit-scrollbar-thumb  { background: rgba(14, 165, 233, 0.2); border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(14, 165, 233, 0.45); }
+  ::-webkit-scrollbar-track  { background: #02000A; }
+  ::-webkit-scrollbar-thumb  { background: linear-gradient(180deg, #7C3AED, #EC4899); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #9D5CF6, #F06292); }
+
+  /* Make sure content is above the background */
+  #root {
+    position: relative;
+    z-index: 2;
+  }
 }
+
+/* ─── Utility classes ────────────────────────────────────── */
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #7C3AED 0%,
+    #00F5FF 25%,
+    #EC4899 50%,
+    #FFD60A 75%,
+    #7C3AED 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+.glass-card {
+  background: rgba(13, 10, 36, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 245, 255, 0.35);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.15), 0 0 60px rgba(0, 245, 255, 0.05);
+}
+
+.neon-glow-purple { box-shadow: 0 0 20px rgba(124, 58, 237, 0.4), 0 0 40px rgba(124, 58, 237, 0.15); }
+.neon-glow-cyan   { box-shadow: 0 0 20px rgba(0, 245, 255, 0.4),  0 0 40px rgba(0, 245, 255, 0.15); }
+.neon-glow-pink   { box-shadow: 0 0 20px rgba(255, 45, 120, 0.4), 0 0 40px rgba(255, 45, 120, 0.15); }
+
+.fade-up { animation: fade-up 0.4s ease forwards; }
