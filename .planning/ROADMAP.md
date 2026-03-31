@@ -1502,7 +1502,7 @@ Plans:
 **Goal:** Fix data quality issues across the platform: populate missing OOS metrics (RMSE, MAE, R², MAPE, Dir Accuracy) in the models page, investigate and fix forecast constant bias where every stock shows identical 0.93 confidence and ~-6.8% return, fix drift page Previous Model RMSE rendering null as 0.0000, and connect Analytics page integrations (ArgoCD sync, Feast Latency p99, CA Last Refresh).
 **Requirements**: TBD
 **Depends on:** Phase 73
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 - [ ] 75-01-PLAN.md — Wave 0: Test scaffolding (kubernetes pkg, K8s CRD ArgoCD tests, Feast latency tests)

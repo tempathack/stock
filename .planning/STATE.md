@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 75-02-PLAN.md
-last_updated: "2026-03-31T21:12:34.138Z"
+stopped_at: Completed 75-04-PLAN.md
+last_updated: "2026-03-31T21:23:01.843Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -363,10 +363,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 75]: Drift.tsx null RMSE uses ?? null pattern — RetrainStatusPanel renders null as em-dash
 - [Phase 75]: previous_model_rmse stored inside details_json JSONB dict (not a new column) — matches existing schema design
 - [Phase 75]: Null-safe pattern established: (field as number) ?? null with conditional .toFixed(4) or em-dash rendering
+- [Phase 75-04]: OOS metrics: DB has oos_ prefixed keys, local code strips correctly with k[4:] — running pod was stale; no source change needed
+- [Phase 75-04]: Forecast confidence: predictions table empty (path 3) — implemented defensive constant-confidence guard mapping price spread to [0.70, 0.98]
 
 ## Last Session
 
-- **Stopped at:** Completed 75-02-PLAN.md
+- **Stopped at:** Completed 75-04-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
