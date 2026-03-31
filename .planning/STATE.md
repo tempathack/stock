@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 75-02-PLAN.md (awaiting Task 3 visual verification)
-last_updated: "2026-03-31T19:28:48.994Z"
+stopped_at: Completed 75-02-PLAN.md
+last_updated: "2026-03-31T21:12:34.138Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -361,10 +361,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 75]: Feast latency cached 60s via build_key('analytics','feast','latency') to avoid timing overhead on every analytics summary request
 - [Phase 75]: previous_model_rmse stored in drift event details_json JSONB dict — not a new column
 - [Phase 75]: Drift.tsx null RMSE uses ?? null pattern — RetrainStatusPanel renders null as em-dash
+- [Phase 75]: previous_model_rmse stored inside details_json JSONB dict (not a new column) — matches existing schema design
+- [Phase 75]: Null-safe pattern established: (field as number) ?? null with conditional .toFixed(4) or em-dash rendering
 
 ## Last Session
 
-- **Stopped at:** Completed 75-02-PLAN.md (awaiting Task 3 visual verification)
+- **Stopped at:** Completed 75-02-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

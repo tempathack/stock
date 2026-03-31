@@ -57,7 +57,7 @@ completed: 2026-03-31
 - **Duration:** 35 min
 - **Started:** 2026-03-31T20:00:00Z
 - **Completed:** 2026-03-31T20:35:00Z
-- **Tasks:** 3 (Task 0 diagnostic + fix, Task 1 already committed, Task 2 committed; Task 3 awaits human verify)
+- **Tasks:** 4 (Task 0 diagnostic + fix, Task 1 API schema, Task 2 frontend fix, Task 3 visual verification approved)
 - **Files modified:** 7
 
 ## Accomplishments
@@ -115,7 +115,7 @@ Each task was committed atomically:
 None - no external service configuration required.
 
 ## Next Phase Readiness
-- Drift page RMSE null rendering is fixed — visual verification (Task 3) awaits human review
+- Drift page RMSE null rendering verified by human — em-dash displays correctly for null RMSE values
 - RetrainStatusResponse.previous_oos_metrics is live in the API schema
 - DriftLogger will persist previous_model_rmse in future drift detection runs
 - All 11 drift trigger tests and 11 prediction service tests pass
