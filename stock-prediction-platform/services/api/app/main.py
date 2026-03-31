@@ -101,6 +101,8 @@ app.add_middleware(
         "http://localhost:3000",   # Vite dev server / Playwright
         "http://localhost:5173",   # Vite default fallback port
         "http://127.0.0.1:3000",
+        "http://localhost:3010",   # K8s port-forward
+        "http://127.0.0.1:3010",
     ],
     allow_credentials=True,
     allow_methods=["*"],
