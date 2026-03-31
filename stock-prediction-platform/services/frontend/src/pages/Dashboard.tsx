@@ -5,6 +5,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Chip,
   Container,
   Drawer,
   Grid,
@@ -24,6 +25,7 @@ import {
   HistoricalChart,
   DashboardTAPanel,
   SentimentPanel,
+  StreamingFeaturesPanel,
 } from "@/components/dashboard";
 import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
 import { buildTreemapData, deriveStockMetrics } from "@/utils/dashboardUtils";
@@ -371,6 +373,39 @@ export default function Dashboard() {
                 />
               </Grid>
             </Grid>
+
+            {/* Streaming Features Accordion */}
+            <Accordion defaultExpanded sx={{ bgcolor: "#0d1220" }}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon sx={{ color: "rgba(107,122,159,0.6)", fontSize: "1rem" }} />}
+                sx={{ minHeight: 40, "& .MuiAccordionSummary-content": { my: 0 } }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: '"Syne", sans-serif',
+                    fontWeight: 700,
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "rgba(107,122,159,0.8)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  Streaming Features
+                  <Chip
+                    size="small"
+                    label="Flink"
+                    color="success"
+                    sx={{ fontSize: "0.6rem", height: 16 }}
+                  />
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ pt: 0 }}>
+                <StreamingFeaturesPanel ticker={selectedTicker ?? ""} />
+              </AccordionDetails>
+            </Accordion>
 
             {/* TA Panel Accordion */}
             <Accordion

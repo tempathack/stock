@@ -4,5 +4,6 @@ export { default as CandlestickChart } from "./CandlestickChart";
 export { default as TimeframeSelector } from "./TimeframeSelector";
 export { default as HistoricalChart } from "./HistoricalChart";
 export { default as DashboardTAPanel } from "./DashboardTAPanel";
+export { default as StreamingFeaturesPanel } from "./StreamingFeaturesPanel";
 export { default as MobileMarketList } from "./MobileMarketList";
 export { default as SentimentPanel } from "./SentimentPanel";
