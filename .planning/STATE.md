@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 74-01-PLAN.md — ModelComparisonTable duplicate row key fix and Dashboard handleSelect stale closure fix
-last_updated: "2026-03-31T14:36:50.701Z"
+stopped_at: Completed 74-02-PLAN.md — Treemap AAPL text contrast fix with white text and SVG drop-shadow filter
+last_updated: "2026-03-31T14:40:06.793Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -355,10 +355,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 73]: 73-AUDIT.md complete: 0 CRITICAL gaps, 2 MISSING-REQ gaps (INFRA-07, MODEL-BAGGING), 2 MINOR gaps (MON-09/10), 2 NOTE gaps (PROD-04, DEPLOY-06); all 6 infrastructure domains confirmed
 - [Phase 74]: Use row.saved_at as secondary fallback in getRowId to prevent DataGrid row deduplication with null versions
 - [Phase 74]: Wrap handleSelect in useCallback with empty deps to prevent stale closure in Recharts Treemap content renderer
+- [Phase 74]: 74-02: Use #FFFFFF unconditionally for treemap pct text with SVG feDropShadow filter — eliminates WCAG contrast failures on all tile colors including dark crimson AAPL #831849
 
 ## Last Session
 
-- **Stopped at:** Completed 74-01-PLAN.md — ModelComparisonTable duplicate row key fix and Dashboard handleSelect stale closure fix
+- **Stopped at:** Completed 74-02-PLAN.md — Treemap AAPL text contrast fix with white text and SVG drop-shadow filter
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
