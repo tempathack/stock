@@ -1486,6 +1486,36 @@ Plans:
 - [ ] 73-06-PLAN.md — Domain 5 audit: Prometheus, Grafana dashboards, Loki, alerting (MON-01–10)
 - [ ] 73-07-PLAN.md — Domain 6 audit: K8s infra, MinIO, KServe, Argo CD, Feast + gap consolidation (OBJST, KSERV, DEPLOY, DBHARD)
 
+### Phase 74: Frontend rendering bug fixes — models duplicate rows React key collision, treemap AAPL contrast, stock drawer wrong selection
+
+**Goal:** Fix all frontend rendering bugs identified in dashboard audit: duplicate model rows caused by React key collision, AAPL treemap cell text invisible due to contrast issue, stock drawer opening for wrong stock, and no content below the treemap fold on the dashboard.
+**Requirements**: TBD
+**Depends on:** Phase 73
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 74 to break down)
+
+### Phase 75: Data quality fixes — OOS model metrics missing, forecast constant bias, drift RMSE null as zero, analytics integrations
+
+**Goal:** Fix data quality issues across the platform: populate missing OOS metrics (RMSE, MAE, R², MAPE, Dir Accuracy) in the models page, investigate and fix forecast constant bias where every stock shows identical 0.93 confidence and ~-6.8% return, fix drift page Previous Model RMSE rendering null as 0.0000, and connect Analytics page integrations (ArgoCD sync, Feast Latency p99, CA Last Refresh).
+**Requirements**: TBD
+**Depends on:** Phase 73
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 75 to break down)
+
+### Phase 76: UX polish — empty states, loading feedback, tooltips, missing data fields, analytics charts
+
+**Goal:** Polish UX across all pages: add proper empty state and loading feedback to Backtest page, add tooltips to icon-only buttons, populate Sector and Company name fields in Forecasts table, add multi-horizon selector (1D/3D/7D/14D), add content below dashboard treemap fold, add ticker selector to Analytics OLAP candle chart, fix feature freshness unknown state.
+**Requirements**: TBD
+**Depends on:** Phase 73
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 76 to break down)
+
 ---
 
 ## Requirement Traceability
