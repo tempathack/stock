@@ -168,7 +168,7 @@
 
 ### Frontend — /models Page
 
-- [ ] **FMOD-01**: Sortable, filterable table of all trained models
+- [x] **FMOD-01**: Sortable, filterable table of all trained models
 - [ ] **FMOD-02**: In-sample vs. OOS metrics side-by-side columns
 - [ ] **FMOD-03**: Winner model highlighted with reasoning
 - [ ] **FMOD-04**: SHAP feature importance bar charts
@@ -186,8 +186,8 @@
 
 ### Frontend — /dashboard Page
 
-- [ ] **FDASH-01**: S&P 500 treemap by market cap, color-coded by daily performance (green/red gradient)
-- [ ] **FDASH-02**: Treemap cells clickable → opens stock detail
+- [x] **FDASH-01**: S&P 500 treemap by market cap, color-coded by daily performance (green/red gradient)
+- [x] **FDASH-02**: Treemap cells clickable → opens stock detail
 - [ ] **FDASH-03**: Dynamic dropdown to select individual stocks
 - [ ] **FDASH-04**: Intraday candlestick/line chart (minute-level)
 - [ ] **FDASH-05**: Historical OHLCV chart with adjustable timeframe

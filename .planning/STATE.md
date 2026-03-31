@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 73-07-PLAN.md — Domain 6 Infrastructure audit and Consolidated Gap Table finalized; 73-AUDIT.md status=complete
-last_updated: "2026-03-31T13:11:39.276Z"
+stopped_at: Completed 74-01-PLAN.md — ModelComparisonTable duplicate row key fix and Dashboard handleSelect stale closure fix
+last_updated: "2026-03-31T14:36:50.701Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 73 — full-system-scope-verification-and-functional-audit-using-parallel-subagents
+**Current focus:** Phase 74 — frontend-rendering-bug-fixes-models-duplicate-rows-react-key-collision-treemap-aapl-contrast-stock-drawer-wrong-selection
 
 ## Current Status
 
@@ -353,10 +353,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 73]: Phase 72 deliverables confirmed in 73-06 audit: flink-jobs scrape job present, datasource UID pinned to lowercase prometheus, Flink dashboard at 10 panels
 - [Phase 73]: INFRA-07 classified as MISSING-REQ (not CRITICAL): flink-jobs single-stage Dockerfiles (FROM flink:1.19) and reddit-producer single-stage; 4 of 10 service Dockerfiles are multi-stage; platform operates correctly
 - [Phase 73]: 73-AUDIT.md complete: 0 CRITICAL gaps, 2 MISSING-REQ gaps (INFRA-07, MODEL-BAGGING), 2 MINOR gaps (MON-09/10), 2 NOTE gaps (PROD-04, DEPLOY-06); all 6 infrastructure domains confirmed
+- [Phase 74]: Use row.saved_at as secondary fallback in getRowId to prevent DataGrid row deduplication with null versions
+- [Phase 74]: Wrap handleSelect in useCallback with empty deps to prevent stale closure in Recharts Treemap content renderer
 
 ## Last Session
 
-- **Stopped at:** Completed 73-07-PLAN.md — Domain 6 Infrastructure audit and Consolidated Gap Table finalized; 73-AUDIT.md status=complete
+- **Stopped at:** Completed 74-01-PLAN.md — ModelComparisonTable duplicate row key fix and Dashboard handleSelect stale closure fix
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
