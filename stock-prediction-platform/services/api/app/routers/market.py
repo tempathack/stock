@@ -18,9 +18,13 @@ from app.models.schemas import (
     IndicatorValues,
     MarketOverviewEntry,
     MarketOverviewResponse,
+    StreamingFeaturesResponse,
     TickerIndicatorsResponse,
 )
+from app.services.feast_online_service import get_streaming_features
 from app.services.market_service import get_candles, get_market_overview, get_ticker_indicators
+
+STREAMING_FEATURES_TTL = 5  # 5s — matches frontend poll interval
 
 router = APIRouter(prefix="/market", tags=["market"])
 
@@ -126,3 +130,21 @@ async def market_candles(
     )
     await cache_set(key, response.model_dump(), MARKET_CANDLES_TTL)
     return response
+
+
+@router.get("/streaming-features/{ticker}", response_model=StreamingFeaturesResponse)
+async def streaming_features(ticker: str) -> StreamingFeaturesResponse:
+    """Return live Flink-computed streaming features (EMA-20, RSI-14, MACD signal) for a ticker.
+
+    Reads from the Feast Redis online store populated by the Phase 67 feast_writer job.
+    Returns available=False with null values when Feast is unavailable — never raises 500.
+    Cache TTL is 5s to match the frontend poll interval.
+    """
+    upper_ticker = ticker.upper()
+    key = build_key("market", "streaming-features", upper_ticker)
+    cached = await cache_get(key)
+    if cached is not None:
+        return StreamingFeaturesResponse(**cached)
+    result = await get_streaming_features(upper_ticker)
+    await cache_set(key, result.model_dump(), STREAMING_FEATURES_TTL)
+    return result
