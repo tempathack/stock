@@ -94,14 +94,31 @@ function seededRandom(seed: string): () => number {
  * Generate mock MarketOverviewEntry[] for treemap development.
  */
 export function generateMockMarketOverview(): MarketOverviewEntry[] {
-  const rng = seededRandom("dashboard_treemap_28");
+  const rng = seededRandom("dashboard_vivid_v2");
+  // Hardcode vivid daily changes so treemap always looks alive
+  const CHANGES: Record<string, number> = {
+    AAPL:-1.82, MSFT:-0.94, NVDA: 3.41, GOOGL:-0.86, META: 2.17,
+    AVGO: 1.53, ORCL:-1.20, CRM: 2.88, AMD: 4.12, INTC:-3.45,
+    UNH:-2.91, LLY: 1.74, JNJ:-0.56, ABBV: 0.15, MRK:-1.88,
+    TMO: 0.93, ABT:-0.42, PFE: 0.97,
+    JPM:-0.64, V: 0.03, MA: 0.92, BAC: 0.39, WFC: 1.24,
+    GS:-1.31, MS: 0.88, BLK: 2.14,
+    AMZN: 0.07, TSLA:-3.55, HD:-0.86, MCD: 1.43, NKE:-2.67, LOW: 0.72,
+    GE: 2.34, HON:-0.51, CAT: 1.87, BA:-2.43, RTX: 0.66,
+    PG: 1.29, KO: 0.54, PEP:-0.78, COST: 2.31, WMT: 1.05,
+    XOM:-0.43, CVX:-0.41, COP:-1.92, SLB:-2.88,
+    NFLX: 3.72, DIS:-1.14, CMCSA:-0.33,
+    PLD: 1.48, AMT:-0.92,
+    NEE: 0.35, DUK:-0.67,
+    LIN: 0.81, APD:-1.53,
+  };
   return MOCK_STOCKS.map(({ ticker, name, sector, price, marketCap }) => ({
     ticker,
     company_name: name,
     sector,
     market_cap: marketCap,
-    last_close: price,
-    daily_change_pct: Math.round((rng() - 0.45) * 8 * 100) / 100,
+    last_close: price + (CHANGES[ticker] ?? (rng() - 0.5) * 4),
+    daily_change_pct: CHANGES[ticker] ?? Math.round((rng() - 0.5) * 6 * 100) / 100,
   }));
 }
 

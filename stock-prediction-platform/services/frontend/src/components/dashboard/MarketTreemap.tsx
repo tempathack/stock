@@ -134,8 +134,8 @@ function TreemapContent(props: Record<string, unknown>) {
         width={width}
         height={height}
         fill={fill}
-        stroke={isSelected ? "#0EA5E9" : "rgba(5,10,20,0.8)"}
-        strokeWidth={isSelected ? 2 : 1}
+        stroke={isSelected ? "#0EA5E9" : "rgba(255,255,255,0.06)"}
+        strokeWidth={isSelected ? 2 : 0.5}
         rx={3}
       />
 
@@ -183,7 +183,7 @@ function TreemapContent(props: Record<string, unknown>) {
           textAnchor="middle"
           dominantBaseline="central"
           fill="#ffffff"
-          fontSize={Math.min(13, Math.max(8, innerW / 5))}
+          fontSize={Math.min(16, Math.max(9, innerW / 4))}
           fontWeight="700"
           fontFamily="IBM Plex Sans, sans-serif"
           style={{ letterSpacing: "0.05em" }}
@@ -199,8 +199,8 @@ function TreemapContent(props: Record<string, unknown>) {
           y={y + height / 2 + 10}
           textAnchor="middle"
           dominantBaseline="central"
-          fill="rgba(255,255,255,0.92)"
-          fontSize={Math.min(11, Math.max(7, innerW / 7))}
+          fill="rgba(255,255,255,0.95)"
+          fontSize={Math.min(12, Math.max(7, innerW / 6))}
           fontWeight="600"
           fontFamily="JetBrains Mono, monospace"
         >
