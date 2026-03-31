@@ -245,6 +245,9 @@ def compute_returns(
 
 def compute_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
     """Compute all 14 technical indicator families on an OHLCV DataFrame."""
+    for col in ("open", "high", "low", "close", "volume"):
+        if col in df.columns:
+            df[col] = df[col].astype(float)
     df = compute_rsi(df)
     df = compute_macd(df)
     df = compute_stochastic(df)
