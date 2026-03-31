@@ -75,6 +75,9 @@ class Settings(BaseSettings):
     KAFKA_CONSUMER_GROUP: str = "feast-writer-group"
     FEAST_FEATURE_VIEWS: str = "ohlcv_stats_fv,technical_indicators_fv,lag_features_fv"
 
+    # Group 15 — Feast online store (Phase 71+)
+    FEAST_STORE_PATH: str = "/opt/feast"
+
     # Group 6 — ML / Model Serving (Phase 23+)
     MODEL_REGISTRY_DIR: str = "model_registry"
     DRIFT_LOG_DIR: str = "drift_logs"

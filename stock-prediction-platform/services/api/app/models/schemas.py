@@ -301,3 +301,18 @@ class AnalyticsSummaryResponse(BaseModel):
     flink_failed_jobs: int
     feast_online_latency_ms: float | None = None
     ca_last_refresh: str | None = None
+
+
+# ── Sentiment (Phase 71) ───────────────────────────────────────────────────
+
+
+class SentimentFeaturesResponse(BaseModel):
+    """Response schema for /ws/sentiment/{ticker} WebSocket messages."""
+    ticker: str
+    avg_sentiment: float | None = None
+    mention_count: int | None = None
+    positive_ratio: float | None = None
+    negative_ratio: float | None = None
+    top_subreddit: str | None = None
+    available: bool
+    sampled_at: str | None = None
