@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 75 context gathered
-last_updated: "2026-03-31T17:29:50.711Z"
+stopped_at: Completed 75-01-PLAN.md
+last_updated: "2026-03-31T18:15:50.445Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 74 — frontend-rendering-bug-fixes-models-duplicate-rows-react-key-collision-treemap-aapl-contrast-stock-drawer-wrong-selection
+**Current focus:** Phase 75 — data-quality-fixes
 
 ## Current Status
 
@@ -356,10 +356,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 74]: Use row.saved_at as secondary fallback in getRowId to prevent DataGrid row deduplication with null versions
 - [Phase 74]: Wrap handleSelect in useCallback with empty deps to prevent stale closure in Recharts Treemap content renderer
 - [Phase 74]: 74-02: Use #FFFFFF unconditionally for treemap pct text with SVG feDropShadow filter — eliminates WCAG contrast failures on all tile colors including dark crimson AAPL #831849
+- [Phase 75-01]: Used lazy import inside test body for Wave 0 RED tests to prevent collection-time ImportError blocking existing passing tests
 
 ## Last Session
 
-- **Stopped at:** Phase 75 context gathered
+- **Stopped at:** Completed 75-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
