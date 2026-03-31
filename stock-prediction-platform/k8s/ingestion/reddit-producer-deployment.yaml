@@ -26,3 +26,4 @@ spec:
                 name: reddit-producer-config
             - secretRef:
                 name: reddit-secrets
+                optional: true

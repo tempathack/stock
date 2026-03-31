@@ -46,7 +46,7 @@ spec:
 
   taskManager:
     resource:
-      memory: "1024m"
+      memory: "2048m"
       cpu: 0.5
 
   podTemplate:

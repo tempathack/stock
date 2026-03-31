@@ -83,9 +83,16 @@ def poll_subreddit(
 
 
 def main() -> None:
+    client_id = os.environ.get("REDDIT_CLIENT_ID")
+    client_secret = os.environ.get("REDDIT_CLIENT_SECRET")
+    if not client_id or not client_secret:
+        logger.warning("REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET not set — producer sleeping indefinitely")
+        while True:
+            time.sleep(3600)
+
     reddit = praw.Reddit(
-        client_id=os.environ["REDDIT_CLIENT_ID"],
-        client_secret=os.environ["REDDIT_CLIENT_SECRET"],
+        client_id=client_id,
+        client_secret=client_secret,
         user_agent="stock-sentiment-bot/1.0",
         read_only=True,
     )
