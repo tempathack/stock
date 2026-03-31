@@ -1124,9 +1124,55 @@ None — all Grafana dashboard panels reference datasource uid `prometheus` (low
 **Audited by:** Plan 73-07
 **Requirements scope:** INFRA-07–08, OBJST-01–12, KSERV-01–15, DEPLOY-01–08, PROD-01–03, DBHARD-01–08
 
-```
-[PENDING — Plan 73-07 populates this section]
-```
+**Status:** PARTIAL
+**Files Inspected:** 22 (k8s/storage/: 8 manifests; k8s/ml/: 6 manifests + kserve/ 6 manifests; k8s/argocd/: root-app.yaml; ml/feature_store/feature_store.yaml; ml/Dockerfile; services/api/Dockerfile; services/kafka-consumer/Dockerfile; services/frontend/Dockerfile; services/flink-jobs/: 5 Dockerfiles; services/reddit-producer/Dockerfile; scripts/deploy-all.sh)
+
+#### Satisfied Requirements
+| REQ-ID | Evidence | File |
+|--------|----------|------|
+| OBJST-01 | MinIO Deployment CR present — `kind: Deployment name: minio namespace: storage`, image: `minio/minio:RELEASE.2024-06-13T22-53-53Z`, PVC-backed data volume | k8s/storage/minio-deployment.yaml |
+| OBJST-02 | `model-artifacts` bucket created via `mc mb --ignore-existing local/model-artifacts` in init Job | k8s/storage/minio-init-job.yaml |
+| OBJST-03 | `drift-logs` bucket created via `mc mb --ignore-existing local/drift-logs` in init Job | k8s/storage/minio-init-job.yaml |
+| OBJST-04 | K8s Secret `minio-secrets` with `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` keys | k8s/storage/minio-secrets.yaml |
+| OBJST-08 | `STORAGE_BACKEND: "s3"` in ml-pipeline ConfigMap AND `STORAGE_BACKEND: "s3"` env var injected directly into weekly-training CronJob spec | k8s/ml/configmap.yaml:15, k8s/ml/cronjob-training.yaml |
+| KSERV-05 | InferenceService primary `storageUri: "s3://model-artifacts/serving/active"` — points to MinIO bucket | k8s/ml/kserve/kserve-inference-service.yaml |
+| KSERV-05 (canary) | InferenceService canary `storageUri: "s3://model-artifacts/serving/canary"` — canary also points to MinIO | k8s/ml/kserve/kserve-inference-service-canary.yaml |
+| KSERV-04 | `kind: ClusterServingRuntime` name: stock-sklearn-mlserver present | k8s/ml/kserve/sklearn-serving-runtime.yaml |
+| KSERV-03 | KServe S3 Secret `kserve-s3-secret` with AWS_ACCESS_KEY_ID and MinIO endpoint annotation | k8s/ml/kserve/kserve-s3-secret.yaml |
+| DEPLOY-01 | ML pipeline Dockerfile present — 2-stage build (builder: pip install; runtime: appuser + /data dirs) | ml/Dockerfile |
+| DEPLOY-02 | ConfigMap `ml-pipeline-config` in ml namespace — MODEL_REGISTRY_DIR, SERVING_DIR, STORAGE_BACKEND, MinIO bucket env vars | k8s/ml/configmap.yaml |
+| DEPLOY-03 | `kind: CronJob` name: weekly-training, schedule: `"0 3 * * 0"` (Sunday 03:00 UTC), calls `python -m ml.pipelines.training_pipeline` | k8s/ml/cronjob-training.yaml |
+| DEPLOY-04 | `kind: CronJob` name: daily-drift, schedule: `"0 22 * * 1-5"` (weekdays 22:00 UTC), calls drift trigger | k8s/ml/cronjob-drift.yaml |
+| DEPLOY-05 | `kind: PersistentVolumeClaim` name: model-artifacts-pvc, namespace: ml, 5Gi ReadWriteOnce | k8s/ml/model-pvc.yaml |
+| DEPLOY-07 | deploy-all.sh Phase 33 (ML Docker build) and Phase 34 (ML CronJobs) are uncommented active commands — `kubectl apply -f k8s/ml/cronjob-training.yaml`, `kubectl apply -f k8s/ml/cronjob-drift.yaml` at lines 343–346 | scripts/deploy-all.sh:343–346 |
+| DEPLOY-08 | `ml/drift/trigger.py` CLI entry point confirmed by Domain 2 audit; CronJob calls `python -m ml.drift.trigger` | k8s/ml/cronjob-drift.yaml |
+| PROD-01 | Redis Deployment CR `kind: Deployment name: redis namespace: storage`, image: `redis:7-alpine` with maxmemory=256mb LRU policy | k8s/storage/redis-deployment.yaml |
+| DBHARD-06 | K8s Secret `stock-platform-secrets` namespace: storage — POSTGRES_PASSWORD, DATABASE_URL, DATABASE_URL_READONLY, DATABASE_URL_WRITER | k8s/storage/secrets.yaml |
+| DBHARD-07 | RBAC role passwords present: POSTGRES_READONLY_PASSWORD, POSTGRES_WRITER_PASSWORD in `stock-platform-secrets`; actual role CREATE statements confirmed by Phase 36 completion | k8s/storage/secrets.yaml |
+| DBHARD-08 | `kind: CronJob` name: postgresql-backup, schedule: `"0 4 * * *"` (daily 04:00 UTC), runs `pg_dump -Fc` to `/backups/` directory | k8s/storage/cronjob-backup.yaml |
+| Phase 65 | `kind: Application` name: root-app, `spec.source.repoURL: https://github.com/tempathack/stock.git`, spec.source.path: `stock-prediction-platform/k8s/argocd`, spec.destination.server: `https://kubernetes.default.svc`, syncPolicy.automated.selfHeal=true | k8s/argocd/root-app.yaml |
+| Phase 66 | `online_store: type: redis`, `connection_string: "${REDIS_HOST}:${REDIS_PORT}"` — Redis online store configured with env-substituted connection string | ml/feature_store/feature_store.yaml |
+
+#### Gaps Found
+| REQ-ID | Gap Class | Description | File Expected |
+|--------|-----------|-------------|---------------|
+| INFRA-07 | MISSING-REQ | Only 4 of 10 Dockerfiles are multi-stage. Multi-stage: api/Dockerfile (builder+runtime), kafka-consumer/Dockerfile (builder+runtime), frontend/Dockerfile (build+nginx), ml/Dockerfile (builder+runtime). Single-stage (NOT multi-stage): 5 flink-jobs Dockerfiles (FROM flink:1.19 — single base image), services/reddit-producer/Dockerfile (FROM python:3.10-slim — single stage). INFRA-07 requires ALL services Dockerfiles to have multi-stage builds. | services/flink-jobs/*/Dockerfile, services/reddit-producer/Dockerfile |
+| DEPLOY-06 | NOTE | DEPLOY-06 originally required model-serving Deployment to use PVC. This was superseded by KServe (Phase 55) which uses MinIO S3 storageUri instead of PVC. PVC (model-artifacts-pvc) still exists for legacy CronJob use. The old PVC-based model-serving Deployment was removed as part of Phase 57 migration. This is an intentional architecture change (PVC → MinIO/KServe), not a functional gap. | k8s/ml/ |
+
+#### Phase-Specific Checks
+- INFRA-07 multi-stage Dockerfiles: PARTIAL — 4 of 10 Dockerfiles are multi-stage (api, kafka-consumer, frontend, ml); missing: services/flink-jobs/ohlcv_normalizer/Dockerfile, services/flink-jobs/indicator_stream/Dockerfile, services/flink-jobs/feast_writer/Dockerfile, services/flink-jobs/sentiment_stream/Dockerfile, services/flink-jobs/sentiment_writer/Dockerfile (all single FROM flink:1.19), services/reddit-producer/Dockerfile (single FROM python:3.10-slim)
+- OBJST-01 MinIO Deployment: CONFIRMED — Deployment + ClusterIP Service in k8s/storage/minio-deployment.yaml
+- OBJST-02 model-artifacts bucket: CONFIRMED — mc mb --ignore-existing local/model-artifacts in minio-init-job.yaml
+- OBJST-03 drift-logs bucket: CONFIRMED — mc mb --ignore-existing local/drift-logs in minio-init-job.yaml
+- OBJST-08 STORAGE_BACKEND env var toggle: CONFIRMED — `STORAGE_BACKEND: "s3"` in k8s/ml/configmap.yaml and direct env in cronjob-training.yaml; model_metadata_cache.py also reads STORAGE_BACKEND for MinIO vs local dispatch
+- KSERV-05 InferenceService points to MinIO: CONFIRMED — storageUri: "s3://model-artifacts/serving/active" (primary), "s3://model-artifacts/serving/canary" (canary)
+- DEPLOY-03 training CronJob: CONFIRMED — k8s/ml/cronjob-training.yaml (weekly-training, Sunday 03:00 UTC)
+- DEPLOY-04 drift check CronJob: CONFIRMED — k8s/ml/cronjob-drift.yaml (daily-drift, weekdays 22:00 UTC)
+- DEPLOY-07 deploy-all.sh ML phases 17–25 uncommented: CONFIRMED — Phase 33 (ML Docker build), Phase 34 (ML CronJobs: kubectl apply cronjob-training.yaml, cronjob-drift.yaml), Phase 20 (Kubeflow Pipelines install), Phase 54 (KServe), Phase 55 (InferenceService) are all active uncommented commands in scripts/deploy-all.sh
+- PROD-01 Redis K8s manifest: CONFIRMED — k8s/storage/redis-deployment.yaml (redis:7-alpine, 256mb maxmemory, LRU policy)
+- DBHARD-08 pg_dump CronJob: CONFIRMED — k8s/storage/cronjob-backup.yaml (postgresql-backup, daily 04:00 UTC, pg_dump -Fc)
+- Phase 65 Argo CD Application CR: CONFIRMED — repoURL: https://github.com/tempathack/stock.git; app-of-apps pattern with root-app.yaml + 8 child Application CRs (app-ml.yaml, app-storage.yaml, app-flink.yaml, app-frontend.yaml, app-ingestion.yaml, app-kafka.yaml, app-monitoring.yaml, app-processing.yaml)
+- Phase 66 Feast feature_store.yaml Redis online store: CONFIRMED — online_store: type: redis, connection_string: "${REDIS_HOST}:${REDIS_PORT}"
 
 ---
 
