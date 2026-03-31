@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 72-02-PLAN.md — Grafana Flink dashboard + datasource UID fix, human-verified
-last_updated: "2026-03-31T12:13:20.414Z"
+stopped_at: Completed 70-02-PLAN.md — Streaming Features panel in Dashboard Drawer, human-verified
+last_updated: "2026-03-31T12:34:19.139Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 70 — display-flink-computed-streaming-features-in-the-dashboard
+**Current focus:** Phase 73 — full-system-scope-verification-and-functional-audit-using-parallel-subagents
 
 ## Current Status
 
@@ -340,10 +340,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 70]: Dashboard.tsx Streaming Features accordion uses defaultExpanded so panel is visible immediately when Drawer opens
 - [Phase 72]: Lowercase uid='prometheus' pattern: all Grafana dashboard ConfigMaps must use this exact UID value to match pinned datasource
 - [Phase 72]: Flink dashboard: kubectl delete+create required instead of apply/replace when ConfigMap was not originally managed by apply
+- [Phase 70]: StreamingFeaturesPanel is self-contained — calls useStreamingFeatures internally, no prop-drilling from Dashboard.tsx
 
 ## Last Session
 
-- **Stopped at:** Completed 72-02-PLAN.md — Grafana Flink dashboard + datasource UID fix, human-verified
+- **Stopped at:** Completed 70-02-PLAN.md — Streaming Features panel in Dashboard Drawer, human-verified
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
