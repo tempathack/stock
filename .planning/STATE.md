@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 73-01-PLAN.md — 73-AUDIT.md skeleton created with requirements traceability and 6 PENDING domain sections
-last_updated: "2026-03-31T12:38:01.803Z"
+stopped_at: Completed 73-02-PLAN.md — Domain 1 FastAPI API section of 73-AUDIT.md populated
+last_updated: "2026-03-31T12:39:28.701Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -343,10 +343,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 70]: StreamingFeaturesPanel is self-contained — calls useStreamingFeatures internally, no prop-drilling from Dashboard.tsx
 - [Phase 73]: Phase 73-01: Phases 31-57 have no SUMMARY.md files — all ~60 requirements for those phases are ORPHANED in audit (documentation gap, not implementation gap)
 - [Phase 73]: Phase 73-01: v3.0 requirement domains (TSDB, GITOPS, FEAST, FLINK, V3INT, UI-RT, ALT, TBD) appear in SUMMARY.md frontmatter but absent from REQUIREMENTS.md — VERIFIED via SUMMARY evidence
+- [Phase 73]: Domain 1 FastAPI API rated COMPLETE: all 12 endpoints confirmed wired to live services; PROD-04 custom RateLimitMiddleware (not slowapi) functionally equivalent
 
 ## Last Session
 
-- **Stopped at:** Completed 73-01-PLAN.md — 73-AUDIT.md skeleton created with requirements traceability and 6 PENDING domain sections
+- **Stopped at:** Completed 73-02-PLAN.md — Domain 1 FastAPI API section of 73-AUDIT.md populated
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
