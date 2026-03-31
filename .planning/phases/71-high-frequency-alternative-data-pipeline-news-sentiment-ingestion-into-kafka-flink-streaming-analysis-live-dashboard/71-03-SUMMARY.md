@@ -81,7 +81,7 @@ Each task was committed atomically:
 1. **Task 1: FastAPI WebSocket endpoint + feast_online_service extension + Pydantic schema** - `8463738` (feat)
 2. **Task 2: Unit tests for WebSocket sentiment endpoint and service** - `d76ae8b` (test)
 
-**Plan metadata:** (docs commit below)
+**Plan metadata:** `ea08786` (docs: complete plan)
 
 ## Files Created/Modified
 

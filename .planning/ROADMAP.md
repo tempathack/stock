@@ -1469,6 +1469,16 @@ Plans:
 Plans:
 - [x] TBD (run /gsd:plan-phase 72 to break down) (completed 2026-03-31)
 
+### Phase 73: Full system scope verification and functional audit using parallel subagents
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 72
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 73 to break down)
+
 ---
 
 ## Requirement Traceability

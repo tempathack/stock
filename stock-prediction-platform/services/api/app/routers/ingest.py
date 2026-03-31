@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+import threading
+
+from fastapi import APIRouter, BackgroundTasks, HTTPException
 
 from app.config import settings
 from app.models.schemas import IngestRequest, IngestResponse
@@ -15,73 +17,90 @@ logger = get_logger(__name__)
 router = APIRouter(prefix="/ingest", tags=["ingestion"])
 
 
-def _run_ingestion(mode: str, tickers: list[str] | None) -> IngestResponse:
-    """Shared logic for intraday and historical ingestion.
+def _run_ingestion_task(mode: str, tickers: list[str]) -> None:
+    """Background task: fetch tickers in batches and produce to Kafka.
 
-    Args:
-        mode: Either ``"intraday"`` or ``"historical"``.
-        tickers: Explicit ticker list, or None for defaults.
-
-    Returns:
-        IngestResponse with fetch and produce counts.
-
-    Raises:
-        HTTPException: On Yahoo Finance or Kafka failures.
+    Runs in a thread so the HTTP response returns immediately and the
+    FastAPI event loop / liveness probe stay unblocked.
     """
     yf_service = YahooFinanceService()
-    resolved_tickers = tickers or yf_service.tickers
+    batch_size = 50
+    total_fetched = 0
+    total_produced = 0
 
-    try:
-        if mode == "intraday":
-            records = yf_service.fetch_intraday(tickers=resolved_tickers)
-        else:
-            records = yf_service.fetch_historical(tickers=resolved_tickers)
-    except Exception as exc:
-        logger.error("yahoo_finance_error", mode=mode, error=str(exc))
-        raise HTTPException(
-            status_code=502,
-            detail=f"Yahoo Finance fetch failed: {exc}",
-        ) from exc
+    for i in range(0, len(tickers), batch_size):
+        batch = tickers[i : i + batch_size]
+        logger.info("ingestion_batch_start", mode=mode, batch=i // batch_size + 1, size=len(batch))
 
-    records_fetched = len(records)
+        try:
+            if mode == "intraday":
+                records = yf_service.fetch_intraday(tickers=batch)
+            else:
+                records = yf_service.fetch_historical(tickers=batch)
+        except Exception as exc:
+            logger.error("yahoo_finance_batch_error", mode=mode, batch_start=i, error=str(exc))
+            continue
 
-    if records_fetched == 0:
-        return IngestResponse(
-            status="completed",
+        if not records:
+            continue
+
+        try:
+            producer = OHLCVProducer()
+            produced = producer.produce_records(records)
+            total_fetched += len(records)
+            total_produced += produced
+        except Exception as exc:
+            logger.error("kafka_produce_batch_error", mode=mode, batch_start=i, error=str(exc))
+            continue
+
+        logger.info(
+            "ingestion_batch_complete",
             mode=mode,
-            tickers_requested=len(resolved_tickers),
-            records_fetched=0,
-            records_produced=0,
+            batch_start=i,
+            fetched=len(records),
+            produced=produced,
         )
 
-    try:
-        producer = OHLCVProducer()
-        records_produced = producer.produce_records(records)
-    except Exception as exc:
-        logger.error("kafka_produce_error", mode=mode, error=str(exc))
-        raise HTTPException(
-            status_code=502,
-            detail=f"Kafka produce failed: {exc}",
-        ) from exc
-
-    return IngestResponse(
-        status="completed",
+    logger.info(
+        "ingestion_complete",
         mode=mode,
-        tickers_requested=len(resolved_tickers),
-        records_fetched=records_fetched,
-        records_produced=records_produced,
+        total_tickers=len(tickers),
+        total_fetched=total_fetched,
+        total_produced=total_produced,
     )
 
 
 @router.post("/intraday", response_model=IngestResponse)
-async def ingest_intraday(body: IngestRequest | None = None) -> IngestResponse:
-    """Trigger intraday OHLCV fetch from Yahoo Finance and publish to Kafka."""
-    tickers = body.tickers if body else None
-    return _run_ingestion(mode="intraday", tickers=tickers)
+async def ingest_intraday(
+    body: IngestRequest | None = None,
+    background_tasks: BackgroundTasks = BackgroundTasks(),
+) -> IngestResponse:
+    """Trigger intraday OHLCV fetch — returns immediately, runs in background."""
+    yf_service = YahooFinanceService()
+    tickers = (body.tickers if body else None) or yf_service.tickers
+    background_tasks.add_task(_run_ingestion_task, mode="intraday", tickers=tickers)
+    return IngestResponse(
+        status="accepted",
+        mode="intraday",
+        tickers_requested=len(tickers),
+        records_fetched=0,
+        records_produced=0,
+    )
 
 
 @router.post("/historical", response_model=IngestResponse)
-async def ingest_historical(body: IngestRequest | None = None) -> IngestResponse:
-    """Trigger historical OHLCV fetch from Yahoo Finance and publish to Kafka."""
-    tickers = body.tickers if body else None
-    return _run_ingestion(mode="historical", tickers=tickers)
+async def ingest_historical(
+    body: IngestRequest | None = None,
+    background_tasks: BackgroundTasks = BackgroundTasks(),
+) -> IngestResponse:
+    """Trigger historical OHLCV fetch — returns immediately, runs in background."""
+    yf_service = YahooFinanceService()
+    tickers = (body.tickers if body else None) or yf_service.tickers
+    background_tasks.add_task(_run_ingestion_task, mode="historical", tickers=tickers)
+    return IngestResponse(
+        status="accepted",
+        mode="historical",
+        tickers_requested=len(tickers),
+        records_fetched=0,
+        records_produced=0,
+    )

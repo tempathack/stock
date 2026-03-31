@@ -15,7 +15,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends libpq5 libgomp1 && \
     rm -rf /var/lib/apt/lists/*
 
-RUN useradd --create-home --uid 1000 appuser
+RUN useradd --create-home --uid 1000 appuser && \
+    mkdir -p /data/model_registry /data/models/active /data/drift_logs && \
+    chown -R appuser:appuser /data
 
 WORKDIR /app
 

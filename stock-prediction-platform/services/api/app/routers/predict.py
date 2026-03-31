@@ -32,6 +32,7 @@ from app.services.prediction_service import (
     get_prediction_for_ticker,
     load_available_horizons,
     load_cached_predictions,
+    load_db_predictions,
 )
 
 logger = logging.getLogger(__name__)
@@ -114,6 +115,13 @@ async def predict_bulk(
         predictions = raw if raw else None
         status = "cached"
 
+    # Last-resort DB fallback — serve stored predictions
+    if not predictions:
+        logger.info("File-based predictions unavailable — querying DB predictions table")
+        predictions = await load_db_predictions(horizon=horizon)
+        if predictions:
+            status = "db_fallback"
+
     if not predictions:
         prediction_requests_total.labels(
             ticker="bulk", model="none", status="error",
@@ -195,6 +203,18 @@ async def predict_ticker(
         )
         status = "cached"
         model_name = pred.get("model_name") if pred else None
+
+    # Last-resort DB fallback — find ticker in stored predictions
+    if pred is None:
+        logger.info("File-based prediction unavailable for %s — querying DB", ticker.upper())
+        db_preds = await load_db_predictions(horizon=horizon)
+        if db_preds:
+            ticker_upper = ticker.upper()
+            matching = [p for p in db_preds if p["ticker"] == ticker_upper]
+            if matching:
+                pred = matching[0]
+                status = "db_fallback"
+                model_name = pred.get("model_name")
 
     if pred is None:
         prediction_requests_total.labels(

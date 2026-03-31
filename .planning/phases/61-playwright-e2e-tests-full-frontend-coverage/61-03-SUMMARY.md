@@ -109,6 +109,12 @@ None beyond the auto-fixed assertion mismatches above.
 - `stubForecastsRoutes` helper pattern established for other pages that have similar multi-route dependencies
 - Ready for Plan 61-04 (Models page tests)
 
+## Self-Check: PASSED
+
+- `stock-prediction-platform/services/frontend/e2e/forecasts.spec.ts` — FOUND
+- `.planning/phases/61-playwright-e2e-tests-full-frontend-coverage/61-03-SUMMARY.md` — FOUND
+- Commit `e5ae64a` — FOUND
+
 ---
 *Phase: 61-playwright-e2e-tests-full-frontend-coverage*
 *Completed: 2026-03-25*

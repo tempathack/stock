@@ -1,9 +1,11 @@
 """Yahoo Finance data fetching service."""
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import time
+from datetime import datetime, timedelta, timezone
 
 import pandas as pd
+import pandas_datareader.data as pdr
 import requests
 import yfinance as yf
 from tenacity import (
@@ -29,9 +31,9 @@ DEFAULT_TICKERS = [
 
 @retry(
     stop=stop_after_attempt(3),
-    wait=wait_exponential(multiplier=2, min=2, max=8),
+    wait=wait_exponential(multiplier=3, min=5, max=30),
     retry=retry_if_exception_type(
-        (requests.ConnectionError, requests.Timeout, requests.HTTPError)
+        (requests.ConnectionError, requests.Timeout, requests.HTTPError, ValueError)
     ),
     reraise=True,
 )
@@ -43,6 +45,23 @@ def _fetch_ticker_data(
     # yfinance >= 1.0 returns MultiIndex columns even for single ticker
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.droplevel(1)
+    return df
+
+
+def _fetch_ticker_stooq(ticker: str, period: str) -> pd.DataFrame:
+    """Fallback: fetch daily OHLCV from Stooq via pandas-datareader.
+
+    Stooq only supports daily bars, so this is used for historical mode only.
+    Period is converted from yfinance-style (e.g. '5y') to a date range.
+    """
+    period_days = {"1d": 1, "5d": 5, "1mo": 30, "3mo": 90, "6mo": 180,
+                   "1y": 365, "2y": 730, "5y": 1825, "10y": 3650}
+    days = period_days.get(period, 365)
+    end = datetime.now(timezone.utc).date()
+    start = end - timedelta(days=days)
+    df = pdr.DataReader(ticker, "stooq", start, end)
+    # Stooq returns newest-first; normalize to ascending
+    df = df.sort_index()
     return df
 
 
@@ -99,6 +118,7 @@ class YahooFinanceService:
         all_records: list[dict] = []
 
         for ticker in tickers:
+            time.sleep(2.0)
             try:
                 df = _fetch_ticker_data(ticker, period=period, interval=interval)
             except RetryError:
@@ -111,13 +131,29 @@ class YahooFinanceService:
                 continue
 
             if df.empty:
-                logger.info(
-                    "empty_dataframe_skipped",
-                    ticker=ticker,
-                    period=period,
-                    interval=interval,
-                )
-                continue
+                if fetch_mode == "historical":
+                    logger.warning(
+                        "yahoo_empty_trying_stooq",
+                        ticker=ticker,
+                        period=period,
+                    )
+                    try:
+                        df = _fetch_ticker_stooq(ticker, period)
+                    except Exception as exc:
+                        logger.error(
+                            "stooq_fallback_failed",
+                            ticker=ticker,
+                            error=str(exc),
+                        )
+                        continue
+                if df.empty:
+                    logger.info(
+                        "empty_dataframe_skipped",
+                        ticker=ticker,
+                        period=period,
+                        interval=interval,
+                    )
+                    continue
 
             valid_records, skip_count = self.validate_ohlcv(df, ticker)
 

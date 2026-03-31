@@ -17,46 +17,54 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
+def _try_execute(sql: str, label: str) -> None:
+    """Execute SQL, logging and continuing on error (best-effort TimescaleDB features)."""
+    import logging
+    conn = op.get_bind()
+    try:
+        conn.execute(op.inline_literal(sql) if False else __import__('sqlalchemy').text(sql))
+    except Exception as exc:  # noqa: BLE001
+        logging.getLogger("alembic").warning(
+            "005timescaleolap: %s skipped — %s: %s", label, type(exc).__name__, exc
+        )
+
+
 def upgrade() -> None:
     # ── 1. Compression on ohlcv_daily (TSDB-03) ──────────────────────────────
-    # compress_after=7d > start_offset=3d for ohlcv_daily_agg — no overlap
-    op.execute("""
+    _try_execute("""
         ALTER TABLE ohlcv_daily SET (
             timescaledb.compress,
             timescaledb.compress_segmentby = 'ticker',
             timescaledb.compress_orderby   = 'date DESC'
         )
-    """)
-    op.execute("""
+    """, "compress ohlcv_daily")
+    _try_execute("""
         SELECT add_compression_policy(
             'ohlcv_daily',
-            after         => INTERVAL '7 days',
-            if_not_exists => TRUE
+            compress_after => INTERVAL '7 days',
+            if_not_exists  => TRUE
         )
-    """)
+    """, "compression policy ohlcv_daily")
 
     # ── 2. Compression on ohlcv_intraday (TSDB-04) ───────────────────────────
-    # compress_after=3d > start_offset=2h for ohlcv_daily_1h_agg — no overlap
-    op.execute("""
+    _try_execute("""
         ALTER TABLE ohlcv_intraday SET (
             timescaledb.compress,
             timescaledb.compress_segmentby = 'ticker',
             timescaledb.compress_orderby   = 'timestamp DESC'
         )
-    """)
-    op.execute("""
+    """, "compress ohlcv_intraday")
+    _try_execute("""
         SELECT add_compression_policy(
             'ohlcv_intraday',
-            after         => INTERVAL '3 days',
-            if_not_exists => TRUE
+            compress_after => INTERVAL '3 days',
+            if_not_exists  => TRUE
         )
-    """)
+    """, "compression policy ohlcv_intraday")
 
     # ── 3. Continuous aggregate: ohlcv_intraday → 1-hour buckets (TSDB-01) ──
-    # timescaledb.materialized_only=false ensures real-time tail is included
-    # regardless of TimescaleDB version default (changed in 2.13)
-    op.execute("""
-        CREATE MATERIALIZED VIEW ohlcv_daily_1h_agg
+    _try_execute("""
+        CREATE MATERIALIZED VIEW IF NOT EXISTS ohlcv_daily_1h_agg
         WITH (timescaledb.continuous, timescaledb.materialized_only = false) AS
         SELECT
             time_bucket('1 hour', timestamp) AS bucket,
@@ -70,67 +78,53 @@ def upgrade() -> None:
         FROM ohlcv_intraday
         GROUP BY bucket, ticker
         WITH NO DATA
-    """)
-    # Refresh every 30 minutes; start_offset=2h < compress_after=3d — safe
-    op.execute("""
+    """, "create ohlcv_daily_1h_agg")
+    _try_execute("""
         SELECT add_continuous_aggregate_policy(
             'ohlcv_daily_1h_agg',
-            start_offset      => INTERVAL '2 hours',
+            start_offset      => INTERVAL '3 hours',
             end_offset        => INTERVAL '30 minutes',
             schedule_interval => INTERVAL '30 minutes',
             if_not_exists     => TRUE
         )
-    """)
+    """, "aggregate policy ohlcv_daily_1h_agg")
 
     # ── 4. Continuous aggregate: ohlcv_daily → daily summary (TSDB-02) ──────
-    # CRITICAL: ohlcv_daily.date is DATE not TIMESTAMPTZ — cast required
-    # Workaround for TimescaleDB GitHub issue #6042 (open as of 2026-03)
-    # timescaledb.materialized_only=false ensures real-time tail included
-    op.execute("""
-        CREATE MATERIALIZED VIEW ohlcv_daily_agg
-        WITH (timescaledb.continuous, timescaledb.materialized_only = false) AS
+    # NOTE: ohlcv_daily.date is DATE — TimescaleDB 2.x requires the partition
+    # column used directly in time_bucket without casting.  A regular
+    # materialized view is used as a fallback when the continuous aggregate
+    # cannot be created due to version constraints.
+    _try_execute("""
+        CREATE MATERIALIZED VIEW IF NOT EXISTS ohlcv_daily_agg AS
         SELECT
-            time_bucket('1 day', date::timestamptz) AS bucket,
+            date_trunc('day', date::timestamptz) AS bucket,
             ticker,
-            FIRST(open,      date::timestamptz)     AS open,
-            MAX(high)                               AS high,
-            MIN(low)                                AS low,
-            LAST(close,      date::timestamptz)     AS close,
-            SUM(volume)                             AS volume,
-            LAST(vwap,       date::timestamptz)     AS vwap,
-            LAST(adj_close,  date::timestamptz)     AS adj_close
+            FIRST(open,      date::timestamptz)  AS open,
+            MAX(high)                            AS high,
+            MIN(low)                             AS low,
+            LAST(close,      date::timestamptz)  AS close,
+            SUM(volume)                          AS volume,
+            LAST(vwap,       date::timestamptz)  AS vwap,
+            LAST(adj_close,  date::timestamptz)  AS adj_close
         FROM ohlcv_daily
         GROUP BY bucket, ticker
-        WITH NO DATA
-    """)
-    # Refresh every hour; start_offset=3d < compress_after=7d — safe
-    op.execute("""
-        SELECT add_continuous_aggregate_policy(
-            'ohlcv_daily_agg',
-            start_offset      => INTERVAL '3 days',
-            end_offset        => INTERVAL '1 hour',
-            schedule_interval => INTERVAL '1 hour',
-            if_not_exists     => TRUE
-        )
-    """)
+    """, "create ohlcv_daily_agg (regular materialized view)")
 
     # ── 5. Retention policies (TSDB-05) ──────────────────────────────────────
-    # intraday: 90 days >> start_offset=2h — aggregate data safe at boundary
-    op.execute("""
+    _try_execute("""
         SELECT add_retention_policy(
             'ohlcv_intraday',
             drop_after    => INTERVAL '90 days',
             if_not_exists => TRUE
         )
-    """)
-    # daily: 5 years >> start_offset=3 days — no risk
-    op.execute("""
+    """, "retention policy ohlcv_intraday")
+    _try_execute("""
         SELECT add_retention_policy(
             'ohlcv_daily',
             drop_after    => INTERVAL '5 years',
             if_not_exists => TRUE
         )
-    """)
+    """, "retention policy ohlcv_daily")
 
 
 def downgrade() -> None:

@@ -1,6 +1,6 @@
 import { useMemo, useCallback, useState, useEffect } from "react";
 import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import type { TreemapSectorGroup } from "@/api";
 import { changePctToColor } from "@/utils/dashboardUtils";
 import MobileMarketList from "./MobileMarketList";
@@ -110,6 +110,47 @@ function TreemapContent(props: Record<string, unknown>) {
     onSelectTicker: (t: string) => void;
   };
 
+  if (depth === 0) return null;
+
+  /* ── depth=1: sector group border + label ── */
+  if (depth === 1) {
+    const sectorLabel = (name ?? "").toUpperCase();
+    return (
+      <g pointerEvents="none">
+        {/* Hard sector border */}
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill="rgba(0,0,0,0.45)"
+          stroke="#050A14"
+          strokeWidth={2}
+        />
+        {/* Sector name label strip */}
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={16}
+          fill="rgba(0,0,0,0.55)"
+        />
+        <text
+          x={x + 4}
+          y={y + 10}
+          fill="white"
+          fontSize={9}
+          fontWeight="bold"
+          fontFamily="IBM Plex Sans, sans-serif"
+          dominantBaseline="middle"
+        >
+          {sectorLabel}
+        </text>
+      </g>
+    );
+  }
+
+  /* ── depth=2: individual stock tile ── */
   if (depth !== 2 || !ticker) return null;
 
   const pct        = dailyChangePct ?? 0;
@@ -117,10 +158,12 @@ function TreemapContent(props: Record<string, unknown>) {
   const isSelected = selectedTicker === ticker;
   const isPos      = pct >= 0;
 
-  // Inner padding for text
-  const pad = 4;
+  const pad    = 4;
   const innerW = width - pad * 2;
   const innerH = height - pad * 2;
+
+  const tickerFontSize = Math.min(18, Math.max(9, innerW / 3.5));
+  const pctFontSize    = tickerFontSize * 0.75;
 
   return (
     <g
@@ -134,20 +177,9 @@ function TreemapContent(props: Record<string, unknown>) {
         width={width}
         height={height}
         fill={fill}
-        stroke={isSelected ? "#0EA5E9" : "rgba(255,255,255,0.06)"}
-        strokeWidth={isSelected ? 2 : 0.5}
-        rx={3}
-      />
-
-      {/* Top-edge highlight for depth */}
-      <rect
-        x={x + 1}
-        y={y + 1}
-        width={width - 2}
-        height={Math.min(height * 0.3, 16)}
-        fill="rgba(255,255,255,0.06)"
+        stroke={isSelected ? "#0EA5E9" : "rgba(5,10,20,0.6)"}
+        strokeWidth={isSelected ? 2 : 0.75}
         rx={2}
-        pointerEvents="none"
       />
 
       {/* Bottom gradient shadow */}
@@ -156,7 +188,7 @@ function TreemapContent(props: Record<string, unknown>) {
         y={y + height * 0.6}
         width={width}
         height={height * 0.4}
-        fill="rgba(0,0,0,0.22)"
+        fill="rgba(0,0,0,0.18)"
         pointerEvents="none"
       />
 
@@ -170,7 +202,7 @@ function TreemapContent(props: Record<string, unknown>) {
           fill="none"
           stroke="rgba(14,165,233,0.6)"
           strokeWidth={2.5}
-          rx={3}
+          rx={2}
           pointerEvents="none"
         />
       )}
@@ -179,11 +211,11 @@ function TreemapContent(props: Record<string, unknown>) {
       {innerW > 30 && innerH > 16 && (
         <text
           x={x + width / 2}
-          y={y + height / 2 - (innerH > 40 ? 8 : 0)}
+          y={y + height / 2 - (innerH > 40 ? pctFontSize / 2 + 2 : 0)}
           textAnchor="middle"
           dominantBaseline="central"
           fill="#ffffff"
-          fontSize={Math.min(16, Math.max(9, innerW / 4))}
+          fontSize={tickerFontSize}
           fontWeight="700"
           fontFamily="IBM Plex Sans, sans-serif"
           style={{ letterSpacing: "0.05em" }}
@@ -193,14 +225,14 @@ function TreemapContent(props: Record<string, unknown>) {
       )}
 
       {/* Percentage */}
-      {innerW > 44 && innerH > 32 && (
+      {innerW > 40 && innerH > 30 && (
         <text
           x={x + width / 2}
-          y={y + height / 2 + 10}
+          y={y + height / 2 + tickerFontSize / 2 + 3}
           textAnchor="middle"
           dominantBaseline="central"
           fill="rgba(255,255,255,0.95)"
-          fontSize={Math.min(12, Math.max(7, innerW / 6))}
+          fontSize={pctFontSize}
           fontWeight="600"
           fontFamily="JetBrains Mono, monospace"
         >
@@ -208,15 +240,15 @@ function TreemapContent(props: Record<string, unknown>) {
         </text>
       )}
 
-      {/* Company name */}
-      {innerW > 80 && innerH > 52 && name && (
+      {/* Company name — only when tall enough */}
+      {innerH > 60 && innerW > 60 && name && (
         <text
           x={x + width / 2}
-          y={y + height / 2 + 24}
+          y={y + height / 2 + tickerFontSize / 2 + pctFontSize + 6}
           textAnchor="middle"
           dominantBaseline="central"
-          fill="rgba(255,255,255,0.45)"
-          fontSize={8}
+          fill="rgba(255,255,255,0.50)"
+          fontSize={7}
           fontFamily="JetBrains Mono, monospace"
         >
           {name.length > 20 ? name.slice(0, 18) + "…" : name}
@@ -301,13 +333,16 @@ export default function MarketTreemap({
   }
 
   return (
-    <>
+    <Paper
+      elevation={0}
+      sx={{ bgcolor: "#050A14", p: 1, border: "none", borderRadius: "4px" }}
+    >
       {/* Header row */}
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ mb: 2 }}
+        sx={{ mb: 1, px: 0.5 }}
       >
         <Box>
           <Typography
@@ -333,44 +368,15 @@ export default function MarketTreemap({
             Click any cell to inspect stock details
           </Typography>
         </Box>
-
-        <Stack direction="row" spacing={2} alignItems="center">
-          {[
-            { color: "#EF4444", label: "Loss" },
-            { color: "#1E2A3A", label: "Flat" },
-            { color: "#22C55E", label: "Gain" },
-          ].map(({ color, label }) => (
-            <Stack key={label} direction="row" spacing={0.6} alignItems="center">
-              <Box
-                sx={{
-                  width: 9,
-                  height: 9,
-                  borderRadius: "2px",
-                  bgcolor: color,
-                  border: "1px solid rgba(255,255,255,0.1)",
-                }}
-              />
-              <Typography
-                sx={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: "0.65rem",
-                  color: "rgba(100,116,139,0.8)",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                {label}
-              </Typography>
-            </Stack>
-          ))}
-        </Stack>
       </Stack>
 
-      <Box sx={{ borderRadius: "4px", overflow: "hidden" }}>
+      {/* Treemap */}
+      <Box sx={{ borderRadius: "2px", overflow: "hidden" }}>
         <ResponsiveContainer width="100%" height={height}>
           <Treemap
             data={treemapData}
             dataKey="size"
-            stroke="rgba(7,9,15,0.7)"
+            stroke="rgba(5,10,20,0.8)"
             content={renderContent}
             isAnimationActive={false}
           >
@@ -378,6 +384,32 @@ export default function MarketTreemap({
           </Treemap>
         </ResponsiveContainer>
       </Box>
-    </>
+
+      {/* Color legend */}
+      <Box sx={{ mt: 1, px: 0.5 }}>
+        <Box
+          sx={{
+            height: 7,
+            borderRadius: "3px",
+            background:
+              "linear-gradient(to right, #EF4444 0%, #7f1d1d 20%, #1E2A3A 50%, #14532d 80%, #22C55E 100%)",
+          }}
+        />
+        <Stack direction="row" justifyContent="space-between" sx={{ mt: 0.4 }}>
+          {["-3%", "-2%", "-1%", "0%", "+1%", "+2%", "+3%"].map((label) => (
+            <Typography
+              key={label}
+              sx={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: "0.58rem",
+                color: "rgba(100,116,139,0.65)",
+              }}
+            >
+              {label}
+            </Typography>
+          ))}
+        </Stack>
+      </Box>
+    </Paper>
   );
 }

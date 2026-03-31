@@ -93,9 +93,15 @@ async def get_ticker_indicators(
     else:
         subset.insert(0, "date", None)
 
-    # Replace NaN/inf with None
+    # Replace NaN/inf with None (pandas pass + Python float guard)
+    import math
     subset = subset.replace([np.inf, -np.inf], np.nan)
     records = subset.where(subset.notna(), None).to_dict(orient="records")
+    records = [
+        {k: (None if isinstance(v, float) and (math.isnan(v) or math.isinf(v)) else v)
+         for k, v in row.items()}
+        for row in records
+    ]
 
     latest = records[-1] if records else None
 
@@ -128,6 +134,9 @@ async def _load_ohlcv_from_db(
             return None
         df = pd.DataFrame([dict(r) for r in rows])
         df = df.sort_values("date").reset_index(drop=True)
+        for col in ("open", "high", "low", "close", "volume"):
+            if col in df.columns:
+                df[col] = df[col].astype(float)
         return df
     except Exception:
         logger.exception("Failed to load OHLCV for %s", ticker)

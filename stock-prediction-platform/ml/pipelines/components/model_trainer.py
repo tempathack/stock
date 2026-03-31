@@ -84,7 +84,7 @@ def train_single_model(
             cv=cv,
             scoring="neg_root_mean_squared_error",
             random_state=42,
-            n_jobs=1,
+            n_jobs=-1,
             error_score="raise",
         )
         search.fit(X_train, y_train)

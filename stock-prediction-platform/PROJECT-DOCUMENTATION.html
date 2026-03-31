@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Prediction Platform - Comprehensive Documentation</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent: #58a6ff;
+    --accent2: #7ee787;
+    --accent3: #d2a8ff;
+    --accent4: #ffa657;
+    --accent5: #ff7b72;
+    --accent6: #79c0ff;
+    --green: #238636;
+    --red: #da3633;
+    --yellow: #d29922;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+  /* Navigation */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,17,23,0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border); padding: 12px 20px;
+  }
+  nav .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  nav a:hover { color: var(--accent); }
+  nav .logo { color: var(--accent); font-weight: 700; font-size: 18px; }
+
+  /* Sections */
+  section { margin-top: 80px; padding: 40px 0; }
+  h1 { font-size: 36px; color: #fff; margin-bottom: 8px; border-bottom: 2px solid var(--accent); padding-bottom: 12px; }
+  h2 { font-size: 28px; color: var(--accent); margin: 40px 0 16px; }
+  h3 { font-size: 22px; color: var(--accent3); margin: 24px 0 12px; }
+  h4 { font-size: 18px; color: var(--accent4); margin: 16px 0 8px; }
+  p { margin: 8px 0; color: var(--text); }
+  .subtitle { color: var(--text-muted); font-size: 18px; margin-bottom: 32px; }
+
+  /* Cards */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px; margin: 16px 0;
+  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; }
+  .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .card-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .card-title { font-size: 20px; font-weight: 700; color: #fff; }
+  .card-subtitle { font-size: 13px; color: var(--text-muted); }
+
+  /* Tags */
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 600; margin: 2px 4px 2px 0;
+  }
+  .tag-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .tag-green { background: rgba(126,231,135,0.15); color: var(--accent2); }
+  .tag-purple { background: rgba(210,168,255,0.15); color: var(--accent3); }
+  .tag-orange { background: rgba(255,166,87,0.15); color: var(--accent4); }
+  .tag-red { background: rgba(255,123,114,0.15); color: var(--accent5); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  th { background: var(--surface2); color: var(--accent); text-align: left; padding: 12px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  tr:hover td { background: rgba(88,166,255,0.04); }
+  code {
+    background: var(--surface2); padding: 2px 6px; border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: var(--accent6);
+  }
+  pre {
+    background: var(--surface2); padding: 16px; border-radius: 8px;
+    overflow-x: auto; font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px; line-height: 1.5; margin: 12px 0; border: 1px solid var(--border);
+  }
+
+  /* Diagrams */
+  .diagram-container {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px; margin: 24px 0; overflow-x: auto;
+  }
+  .diagram-title { font-size: 16px; color: var(--accent); font-weight: 700; margin-bottom: 16px; text-align: center; }
+  svg text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+
+  /* Stats */
+  .stats-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 24px 0; }
+  .stat-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px; flex: 1; min-width: 160px; text-align: center;
+  }
+  .stat-number { font-size: 36px; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  /* Expandable */
+  details { margin: 8px 0; }
+  details summary {
+    cursor: pointer; padding: 12px 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 6px;
+    font-weight: 600; color: var(--text); list-style: none;
+  }
+  details summary::before { content: '+ '; color: var(--accent); }
+  details[open] summary::before { content: '- '; }
+  details[open] summary { border-radius: 6px 6px 0 0; }
+  details .detail-content {
+    padding: 16px; background: var(--surface2);
+    border: 1px solid var(--border); border-top: none; border-radius: 0 0 6px 6px;
+  }
+
+  /* Interaction list */
+  .interaction-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .interaction-arrow { color: var(--accent4); font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .expansion-list { padding-left: 20px; margin: 8px 0; }
+  .expansion-list li { margin: 6px 0; color: var(--text-muted); }
+  .expansion-list li strong { color: var(--text); }
+
+  /* Flow steps */
+  .flow-steps { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 16px 0; }
+  .flow-step {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: 600;
+  }
+  .flow-arrow { color: var(--accent4); font-size: 20px; }
+
+  /* TOC */
+  .toc { columns: 2; column-gap: 40px; }
+  .toc a { display: block; padding: 6px 0; color: var(--text-muted); text-decoration: none; font-size: 15px; }
+  .toc a:hover { color: var(--accent); }
+  .toc-num { color: var(--accent); font-weight: 700; margin-right: 8px; }
+
+  @media (max-width: 768px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .toc { columns: 1; }
+    nav .nav-inner { gap: 12px; }
+    h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="logo">Stock Prediction Platform</span>
+    <a href="#overview">Overview</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#data-flow">Data Flow</a>
+    <a href="#api">API Service</a>
+    <a href="#frontend">Frontend</a>
+    <a href="#ml">ML Pipeline</a>
+    <a href="#kafka">Kafka</a>
+    <a href="#flink">Flink</a>
+    <a href="#storage">Storage</a>
+    <a href="#monitoring">Monitoring</a>
+    <a href="#k8s">Kubernetes</a>
+    <a href="#gitops">GitOps</a>
+    <a href="#tech-stack">Tech Stack</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!-- OVERVIEW -->
+<!-- ============================================================ -->
+<section id="overview">
+  <h1>Stock Prediction Platform</h1>
+  <p class="subtitle">Production-grade ML-powered stock prediction system with real-time streaming, feature store, model serving, A/B testing, drift detection, and full observability.</p>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-number">11</div><div class="stat-label">Microservices</div></div>
+    <div class="stat-box"><div class="stat-number">12</div><div class="stat-label">K8s Namespaces</div></div>
+    <div class="stat-box"><div class="stat-number">80+</div><div class="stat-label">YAML Manifests</div></div>
+    <div class="stat-box"><div class="stat-number">60+</div><div class="stat-label">ML Model Configs</div></div>
+    <div class="stat-box"><div class="stat-number">6</div><div class="stat-label">Frontend Pages</div></div>
+    <div class="stat-box"><div class="stat-number">20+</div><div class="stat-label">API Endpoints</div></div>
+    <div class="stat-box"><div class="stat-number">3</div><div class="stat-label">Flink Stream Jobs</div></div>
+    <div class="stat-box"><div class="stat-number">4</div><div class="stat-label">Grafana Dashboards</div></div>
+  </div>
+
+  <h2>Table of Contents</h2>
+  <div class="toc">
+    <a href="#architecture"><span class="toc-num">1</span> System Architecture Diagram</a>
+    <a href="#data-flow"><span class="toc-num">2</span> Data Flow Pipeline</a>
+    <a href="#api"><span class="toc-num">3</span> FastAPI Service (Ingestion &amp; Prediction)</a>
+    <a href="#frontend"><span class="toc-num">4</span> React Frontend (Dashboard UI)</a>
+    <a href="#ml"><span class="toc-num">5</span> ML Training Pipeline (Kubeflow)</a>
+    <a href="#feast"><span class="toc-num">6</span> Feast Feature Store</a>
+    <a href="#kserve"><span class="toc-num">7</span> KServe Model Serving</a>
+    <a href="#kafka"><span class="toc-num">8</span> Apache Kafka (Message Broker)</a>
+    <a href="#flink"><span class="toc-num">9</span> Apache Flink (Stream Processing)</a>
+    <a href="#kafka-consumer"><span class="toc-num">10</span> Kafka Consumer (Batch Writer)</a>
+    <a href="#storage"><span class="toc-num">11</span> Storage Layer (TimescaleDB, Redis, MinIO)</a>
+    <a href="#monitoring"><span class="toc-num">12</span> Monitoring Stack (Prometheus, Grafana, Loki)</a>
+    <a href="#k8s"><span class="toc-num">13</span> Kubernetes Infrastructure</a>
+    <a href="#gitops"><span class="toc-num">14</span> ArgoCD GitOps</a>
+    <a href="#database"><span class="toc-num">15</span> Database Schema &amp; Migrations</a>
+    <a href="#drift"><span class="toc-num">16</span> Drift Detection &amp; Auto-Retraining</a>
+    <a href="#ab-testing"><span class="toc-num">17</span> A/B Testing Infrastructure</a>
+    <a href="#scripts"><span class="toc-num">18</span> Deployment &amp; Operational Scripts</a>
+    <a href="#testing"><span class="toc-num">19</span> Testing Infrastructure</a>
+    <a href="#tech-stack"><span class="toc-num">20</span> Complete Technology Stack</a>
+    <a href="#expansion"><span class="toc-num">21</span> Expansion Opportunities</a>
+    <a href="#project-chart"><span class="toc-num">22</span> Project Gantt Chart &amp; Dependency Map</a>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- ARCHITECTURE DIAGRAM -->
+<!-- ============================================================ -->
+<section id="architecture">
+  <h2>1. System Architecture Diagram</h2>
+  <p>The platform follows a microservices architecture deployed on Kubernetes, with 12 namespaces isolating concerns from data ingestion through ML serving to frontend delivery.</p>
+
+  <div class="diagram-container">
+    <div class="diagram-title">High-Level System Architecture</div>
+    <svg viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#58a6ff"/></marker>
+        <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#ffa657"/></marker>
+        <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#7ee787"/></marker>
+        <marker id="arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#d2a8ff"/></marker>
+      </defs>
+
+      <!-- Background sections -->
+      <rect x="10" y="10" width="1180" height="120" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="30" y="35" fill="#8b949e" font-size="12" font-weight="700">EXTERNAL DATA SOURCES</text>
+
+      <rect x="10" y="145" width="580" height="180" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="30" y="170" fill="#8b949e" font-size="12" font-weight="700">INGESTION LAYER (ns: ingestion)</text>
+
+      <rect x="610" y="145" width="580" height="180" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="630" y="170" fill="#8b949e" font-size="12" font-weight="700">MESSAGE BROKER (ns: storage)</text>
+
+      <rect x="10" y="345" width="580" height="200" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="30" y="370" fill="#8b949e" font-size="12" font-weight="700">STREAM PROCESSING (ns: flink)</text>
+
+      <rect x="610" y="345" width="580" height="200" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="630" y="370" fill="#8b949e" font-size="12" font-weight="700">STORAGE LAYER (ns: storage)</text>
+
+      <rect x="10" y="565" width="580" height="160" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="30" y="590" fill="#8b949e" font-size="12" font-weight="700">ML LAYER (ns: ml)</text>
+
+      <rect x="610" y="565" width="580" height="160" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="630" y="590" fill="#8b949e" font-size="12" font-weight="700">SERVING &amp; FRONTEND (ns: frontend, ml)</text>
+
+      <rect x="10" y="745" width="1180" height="140" rx="8" fill="#1a2332" stroke="#30363d"/>
+      <text x="30" y="770" fill="#8b949e" font-size="12" font-weight="700">OBSERVABILITY (ns: monitoring)</text>
+
+      <!-- External Sources -->
+      <rect x="100" y="50" width="180" height="60" rx="6" fill="#2d333b" stroke="#ffa657"/>
+      <text x="190" y="75" fill="#ffa657" font-size="14" font-weight="700" text-anchor="middle">Yahoo Finance API</text>
+      <text x="190" y="95" fill="#8b949e" font-size="11" text-anchor="middle">yfinance / Stooq fallback</text>
+
+      <rect x="350" y="50" width="180" height="60" rx="6" fill="#2d333b" stroke="#ffa657"/>
+      <text x="440" y="75" fill="#ffa657" font-size="14" font-weight="700" text-anchor="middle">S&amp;P 500 Universe</text>
+      <text x="440" y="95" fill="#8b949e" font-size="11" text-anchor="middle">500+ stock tickers</text>
+
+      <rect x="600" y="50" width="180" height="60" rx="6" fill="#2d333b" stroke="#ffa657"/>
+      <text x="690" y="75" fill="#ffa657" font-size="14" font-weight="700" text-anchor="middle">Market Calendar</text>
+      <text x="690" y="95" fill="#8b949e" font-size="11" text-anchor="middle">Trading hours/holidays</text>
+
+      <!-- Ingestion Layer -->
+      <rect x="40" y="190" width="200" height="60" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="140" y="215" fill="#7ee787" font-size="14" font-weight="700" text-anchor="middle">FastAPI Service</text>
+      <text x="140" y="235" fill="#8b949e" font-size="11" text-anchor="middle">:8000 | 8 routers, 14 services</text>
+
+      <rect x="280" y="190" width="140" height="55" rx="6" fill="#2d333b" stroke="#58a6ff"/>
+      <text x="350" y="212" fill="#58a6ff" font-size="12" font-weight="700" text-anchor="middle">CronJob</text>
+      <text x="350" y="230" fill="#8b949e" font-size="10" text-anchor="middle">Historical (Sun 2AM)</text>
+
+      <rect x="440" y="190" width="140" height="55" rx="6" fill="#2d333b" stroke="#58a6ff"/>
+      <text x="510" y="212" fill="#58a6ff" font-size="12" font-weight="700" text-anchor="middle">CronJob</text>
+      <text x="510" y="230" fill="#8b949e" font-size="10" text-anchor="middle">Intraday (5min M-F)</text>
+
+      <rect x="40" y="260" width="540" height="45" rx="6" fill="#2d333b" stroke="#79c0ff"/>
+      <text x="310" y="287" fill="#79c0ff" font-size="12" font-weight="600" text-anchor="middle">Endpoints: /health | /ingest | /predict | /models | /market | /analytics | /backtest | /ws</text>
+
+      <!-- Kafka -->
+      <rect x="650" y="190" width="200" height="50" rx="6" fill="#3b2218" stroke="#ffa657"/>
+      <text x="750" y="210" fill="#ffa657" font-size="14" font-weight="700" text-anchor="middle">Apache Kafka 3.7</text>
+      <text x="750" y="228" fill="#8b949e" font-size="11" text-anchor="middle">Strimzi Operator (KRaft)</text>
+
+      <rect x="650" y="250" width="130" height="40" rx="4" fill="#2d333b" stroke="#ffa657" stroke-dasharray="4"/>
+      <text x="715" y="273" fill="#ffa657" font-size="11" text-anchor="middle">intraday-data</text>
+      <rect x="790" y="250" width="130" height="40" rx="4" fill="#2d333b" stroke="#ffa657" stroke-dasharray="4"/>
+      <text x="855" y="273" fill="#ffa657" font-size="11" text-anchor="middle">historical-data</text>
+      <rect x="930" y="250" width="130" height="40" rx="4" fill="#2d333b" stroke="#ffa657" stroke-dasharray="4"/>
+      <text x="995" y="273" fill="#ffa657" font-size="11" text-anchor="middle">processed-features</text>
+
+      <!-- Flink -->
+      <rect x="40" y="390" width="160" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="120" y="412" fill="#d2a8ff" font-size="12" font-weight="700" text-anchor="middle">OHLCV Normalizer</text>
+      <text x="120" y="430" fill="#8b949e" font-size="10" text-anchor="middle">Validate &amp; normalize</text>
+
+      <rect x="220" y="390" width="160" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="300" y="412" fill="#d2a8ff" font-size="12" font-weight="700" text-anchor="middle">Indicator Stream</text>
+      <text x="300" y="430" fill="#8b949e" font-size="10" text-anchor="middle">EMA, RSI, MACD</text>
+
+      <rect x="400" y="390" width="160" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="480" y="412" fill="#d2a8ff" font-size="12" font-weight="700" text-anchor="middle">Feast Writer</text>
+      <text x="480" y="430" fill="#8b949e" font-size="10" text-anchor="middle">Push to Redis online</text>
+
+      <rect x="40" y="460" width="520" height="65" rx="6" fill="#2d333b" stroke="#d2a8ff" stroke-dasharray="4"/>
+      <text x="300" y="480" fill="#d2a8ff" font-size="12" font-weight="600" text-anchor="middle">Apache Flink 1.19 (PyFlink)</text>
+      <text x="300" y="498" fill="#8b949e" font-size="11" text-anchor="middle">RocksDB state | EXACTLY_ONCE checkpoints to MinIO | Prometheus metrics :9249</text>
+      <text x="300" y="514" fill="#8b949e" font-size="11" text-anchor="middle">Exponential backoff restart | 30s checkpoint interval | 2 task slots/TM</text>
+
+      <!-- Processing (Kafka Consumer) -->
+      <rect x="40" y="455" width="0" height="0"/>
+
+      <!-- Storage -->
+      <rect x="650" y="390" width="150" height="60" rx="6" fill="#1a2d1a" stroke="#7ee787"/>
+      <text x="725" y="415" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">TimescaleDB</text>
+      <text x="725" y="435" fill="#8b949e" font-size="10" text-anchor="middle">PostgreSQL 15 | :5432</text>
+
+      <rect x="820" y="390" width="150" height="60" rx="6" fill="#2d1a1a" stroke="#ff7b72"/>
+      <text x="895" y="415" fill="#ff7b72" font-size="13" font-weight="700" text-anchor="middle">Redis 7</text>
+      <text x="895" y="435" fill="#8b949e" font-size="10" text-anchor="middle">Cache + Feast online | :6379</text>
+
+      <rect x="990" y="390" width="150" height="60" rx="6" fill="#3b2218" stroke="#ffa657"/>
+      <text x="1065" y="415" fill="#ffa657" font-size="13" font-weight="700" text-anchor="middle">MinIO</text>
+      <text x="1065" y="435" fill="#8b949e" font-size="10" text-anchor="middle">S3 Object Store | :9000</text>
+
+      <rect x="650" y="470" width="150" height="55" rx="6" fill="#2d333b" stroke="#79c0ff"/>
+      <text x="725" y="492" fill="#79c0ff" font-size="11" font-weight="600" text-anchor="middle">Kafka Consumer</text>
+      <text x="725" y="508" fill="#8b949e" font-size="10" text-anchor="middle">2 replicas | batch writer</text>
+
+      <rect x="820" y="470" width="320" height="55" rx="6" fill="#2d333b" stroke="#8b949e" stroke-dasharray="4"/>
+      <text x="980" y="488" fill="#8b949e" font-size="11" text-anchor="middle">Tables: stocks | ohlcv_daily | ohlcv_intraday | model_registry</text>
+      <text x="980" y="504" fill="#8b949e" font-size="11" text-anchor="middle">predictions | drift_logs | ab_test_assignments | feast_*</text>
+
+      <!-- ML Layer -->
+      <rect x="40" y="610" width="200" height="60" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="140" y="635" fill="#d2a8ff" font-size="14" font-weight="700" text-anchor="middle">Training Pipeline</text>
+      <text x="140" y="652" fill="#8b949e" font-size="10" text-anchor="middle">11 Kubeflow steps | Sun 3AM</text>
+
+      <rect x="260" y="610" width="150" height="60" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="335" y="635" fill="#d2a8ff" font-size="14" font-weight="700" text-anchor="middle">Feast Store</text>
+      <text x="335" y="652" fill="#8b949e" font-size="10" text-anchor="middle">3 FeatureViews | :6566</text>
+
+      <rect x="430" y="610" width="150" height="60" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="505" y="635" fill="#d2a8ff" font-size="14" font-weight="700" text-anchor="middle">Drift Detector</text>
+      <text x="505" y="652" fill="#8b949e" font-size="10" text-anchor="middle">KS-test + PSI | Daily 10PM</text>
+
+      <rect x="40" y="685" width="540" height="35" rx="4" fill="#2d333b" stroke="#d2a8ff" stroke-dasharray="4"/>
+      <text x="310" y="707" fill="#8b949e" font-size="11" text-anchor="middle">Models: Ridge, Lasso, ElasticNet, RF, ExtraTrees, GBM, XGBoost, LightGBM, CatBoost, KNN, SVR, MLP | Stacking Ensemble</text>
+
+      <!-- Serving & Frontend -->
+      <rect x="650" y="610" width="180" height="60" rx="6" fill="#1a2d1a" stroke="#7ee787"/>
+      <text x="740" y="635" fill="#7ee787" font-size="14" font-weight="700" text-anchor="middle">KServe Inference</text>
+      <text x="740" y="652" fill="#8b949e" font-size="10" text-anchor="middle">sklearn V2 | primary + canary</text>
+
+      <rect x="850" y="610" width="180" height="60" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="940" y="635" fill="#7ee787" font-size="14" font-weight="700" text-anchor="middle">React Frontend</text>
+      <text x="940" y="652" fill="#8b949e" font-size="10" text-anchor="middle">6 pages | Vite + TailwindCSS</text>
+
+      <rect x="1050" y="610" width="120" height="60" rx="6" fill="#2d333b" stroke="#58a6ff"/>
+      <text x="1110" y="635" fill="#58a6ff" font-size="12" font-weight="700" text-anchor="middle">WebSocket</text>
+      <text x="1110" y="652" fill="#8b949e" font-size="10" text-anchor="middle">Live prices</text>
+
+      <!-- Monitoring -->
+      <rect x="40" y="790" width="200" height="55" rx="6" fill="#3b3518" stroke="#d29922"/>
+      <text x="140" y="815" fill="#d29922" font-size="14" font-weight="700" text-anchor="middle">Prometheus 2.51</text>
+      <text x="140" y="833" fill="#8b949e" font-size="10" text-anchor="middle">15s scrape | 15d retention</text>
+
+      <rect x="260" y="790" width="200" height="55" rx="6" fill="#3b3518" stroke="#d29922"/>
+      <text x="360" y="815" fill="#d29922" font-size="14" font-weight="700" text-anchor="middle">Grafana 10.4</text>
+      <text x="360" y="833" fill="#8b949e" font-size="10" text-anchor="middle">4 dashboards | :3000</text>
+
+      <rect x="480" y="790" width="200" height="55" rx="6" fill="#3b3518" stroke="#d29922"/>
+      <text x="580" y="815" fill="#d29922" font-size="14" font-weight="700" text-anchor="middle">Loki 2.9</text>
+      <text x="580" y="833" fill="#8b949e" font-size="10" text-anchor="middle">Log aggregation | :3100</text>
+
+      <rect x="700" y="790" width="200" height="55" rx="6" fill="#3b3518" stroke="#d29922"/>
+      <text x="800" y="815" fill="#d29922" font-size="14" font-weight="700" text-anchor="middle">AlertManager</text>
+      <text x="800" y="833" fill="#8b949e" font-size="10" text-anchor="middle">3 alert rules | :9093</text>
+
+      <rect x="920" y="790" width="200" height="55" rx="6" fill="#3b3518" stroke="#d29922"/>
+      <text x="1020" y="815" fill="#d29922" font-size="14" font-weight="700" text-anchor="middle">Promtail</text>
+      <text x="1020" y="833" fill="#8b949e" font-size="10" text-anchor="middle">DaemonSet log forwarder</text>
+
+      <rect x="40" y="855" width="1100" height="25" rx="4" fill="#2d333b" stroke="#d29922" stroke-dasharray="4"/>
+      <text x="590" y="872" fill="#8b949e" font-size="11" text-anchor="middle">Alert Rules: HighDriftSeverity (inference errors > 0.1/s) | HighAPIErrorRate (5xx > 5%) | HighConsumerLag (lag > 1000 msgs)</text>
+
+      <!-- Arrows - Data Flow -->
+      <line x1="190" y1="110" x2="140" y2="188" stroke="#ffa657" stroke-width="2" marker-end="url(#arrow-orange)"/>
+      <line x1="240" y1="220" x2="278" y2="215" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="580" y1="270" x2="648" y2="270" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Kafka to Flink -->
+      <line x1="715" y1="292" x2="120" y2="388" stroke="#d2a8ff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <line x1="715" y1="292" x2="300" y2="388" stroke="#d2a8ff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <line x1="995" y1="292" x2="480" y2="388" stroke="#d2a8ff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+      <!-- Kafka to Consumer -->
+      <line x1="715" y1="292" x2="725" y2="468" stroke="#79c0ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Flink to Storage -->
+      <line x1="120" y1="447" x2="648" y2="420" stroke="#7ee787" stroke-width="2" marker-end="url(#arrow-green)"/>
+      <line x1="300" y1="447" x2="928" y2="265" stroke="#ffa657" stroke-width="1.5" marker-end="url(#arrow-orange)" stroke-dasharray="6"/>
+      <line x1="480" y1="447" x2="895" y2="388" stroke="#ff7b72" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Storage to ML -->
+      <line x1="725" y1="452" x2="140" y2="608" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="895" y1="452" x2="335" y2="608" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+      <!-- ML to Serving -->
+      <line x1="580" y1="640" x2="648" y2="640" stroke="#7ee787" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+      <!-- Serving to Frontend -->
+      <line x1="832" y1="640" x2="848" y2="640" stroke="#7ee787" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+      <!-- API to Frontend -->
+      <line x1="140" y1="305" x2="940" y2="608" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="6" marker-end="url(#arrow)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- DATA FLOW -->
+<!-- ============================================================ -->
+<section id="data-flow">
+  <h2>2. Data Flow Pipeline</h2>
+  <p>Data flows from external sources through multiple processing stages before reaching the end user.</p>
+
+  <div class="diagram-container">
+    <div class="diagram-title">End-to-End Data Pipeline</div>
+    <svg viewBox="0 0 1200 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Row 1: Ingestion -->
+      <rect x="20" y="20" width="160" height="70" rx="6" fill="#3b2218" stroke="#ffa657"/>
+      <text x="100" y="50" fill="#ffa657" font-size="13" font-weight="700" text-anchor="middle">Yahoo Finance</text>
+      <text x="100" y="68" fill="#8b949e" font-size="10" text-anchor="middle">OHLCV + metadata</text>
+
+      <line x1="182" y1="55" x2="218" y2="55" stroke="#ffa657" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+      <rect x="220" y="20" width="160" height="70" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="300" y="50" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">FastAPI Ingest</text>
+      <text x="300" y="68" fill="#8b949e" font-size="10" text-anchor="middle">/ingest endpoint</text>
+
+      <line x1="382" y1="55" x2="418" y2="55" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <rect x="420" y="20" width="160" height="70" rx="6" fill="#3b2218" stroke="#ffa657"/>
+      <text x="500" y="50" fill="#ffa657" font-size="13" font-weight="700" text-anchor="middle">Kafka Producer</text>
+      <text x="500" y="68" fill="#8b949e" font-size="10" text-anchor="middle">confluent-kafka</text>
+
+      <line x1="582" y1="55" x2="618" y2="55" stroke="#ffa657" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+      <rect x="620" y="10" width="200" height="90" rx="6" fill="#3b2218" stroke="#ffa657"/>
+      <text x="720" y="35" fill="#ffa657" font-size="13" font-weight="700" text-anchor="middle">Kafka Broker</text>
+      <text x="720" y="55" fill="#8b949e" font-size="10" text-anchor="middle">intraday-data (3 partitions)</text>
+      <text x="720" y="72" fill="#8b949e" font-size="10" text-anchor="middle">historical-data (3 partitions)</text>
+      <text x="720" y="89" fill="#8b949e" font-size="10" text-anchor="middle">processed-features (3 partitions)</text>
+
+      <!-- Row 2: Stream Processing -->
+      <line x1="720" y1="102" x2="720" y2="138" stroke="#d2a8ff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+
+      <rect x="20" y="140" width="260" height="70" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="150" y="165" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">Flink: OHLCV Normalizer</text>
+      <text x="150" y="185" fill="#8b949e" font-size="10" text-anchor="middle">Validate, normalize, JDBC sink to PG</text>
+
+      <rect x="300" y="140" width="260" height="70" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="430" y="165" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">Flink: Indicator Stream</text>
+      <text x="430" y="185" fill="#8b949e" font-size="10" text-anchor="middle">HOP windows: EMA-20, RSI-14, MACD</text>
+
+      <rect x="580" y="140" width="260" height="70" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="710" y="165" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">Flink: Feast Writer</text>
+      <text x="710" y="185" fill="#8b949e" font-size="10" text-anchor="middle">Push indicators to Redis online store</text>
+
+      <rect x="860" y="140" width="260" height="70" rx="6" fill="#1a2332" stroke="#79c0ff"/>
+      <text x="990" y="165" fill="#79c0ff" font-size="13" font-weight="700" text-anchor="middle">Kafka Consumer</text>
+      <text x="990" y="185" fill="#8b949e" font-size="10" text-anchor="middle">Batch writer (100 rows/5s) to PG</text>
+
+      <line x1="720" y1="102" x2="150" y2="138" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="720" y1="102" x2="430" y2="138" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="720" y1="102" x2="990" y2="138" stroke="#79c0ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <!-- Row 3: Storage -->
+      <line x1="150" y1="212" x2="150" y2="258" stroke="#7ee787" stroke-width="2" marker-end="url(#arrow-green)"/>
+      <line x1="990" y1="212" x2="300" y2="258" stroke="#7ee787" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+      <line x1="710" y1="212" x2="530" y2="258" stroke="#ff7b72" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <rect x="20" y="260" width="200" height="70" rx="6" fill="#1a2d1a" stroke="#7ee787"/>
+      <text x="120" y="285" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">TimescaleDB</text>
+      <text x="120" y="305" fill="#8b949e" font-size="10" text-anchor="middle">ohlcv_daily / ohlcv_intraday</text>
+      <text x="120" y="320" fill="#8b949e" font-size="10" text-anchor="middle">Hypertables + Continuous Aggs</text>
+
+      <rect x="240" y="260" width="200" height="70" rx="6" fill="#1a2d1a" stroke="#7ee787"/>
+      <text x="340" y="285" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">Feast Offline Store</text>
+      <text x="340" y="305" fill="#8b949e" font-size="10" text-anchor="middle">PostgreSQL tables</text>
+      <text x="340" y="320" fill="#8b949e" font-size="10" text-anchor="middle">ohlcv_stats, indicators, lags</text>
+
+      <rect x="460" y="260" width="200" height="70" rx="6" fill="#2d1a1a" stroke="#ff7b72"/>
+      <text x="560" y="285" fill="#ff7b72" font-size="13" font-weight="700" text-anchor="middle">Redis (Online Store)</text>
+      <text x="560" y="305" fill="#8b949e" font-size="10" text-anchor="middle">Feast feature vectors</text>
+      <text x="560" y="320" fill="#8b949e" font-size="10" text-anchor="middle">Prediction cache | Rate limits</text>
+
+      <rect x="680" y="260" width="200" height="70" rx="6" fill="#3b2218" stroke="#ffa657"/>
+      <text x="780" y="285" fill="#ffa657" font-size="13" font-weight="700" text-anchor="middle">MinIO (S3)</text>
+      <text x="780" y="305" fill="#8b949e" font-size="10" text-anchor="middle">model-artifacts bucket</text>
+      <text x="780" y="320" fill="#8b949e" font-size="10" text-anchor="middle">drift-logs | Flink checkpoints</text>
+
+      <!-- Row 4: ML & Serving -->
+      <line x1="120" y1="332" x2="120" y2="378" stroke="#d2a8ff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <line x1="340" y1="332" x2="300" y2="378" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="560" y1="332" x2="600" y2="378" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+      <rect x="20" y="380" width="350" height="70" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="195" y="405" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">ML Training Pipeline (Kubeflow)</text>
+      <text x="195" y="422" fill="#8b949e" font-size="10" text-anchor="middle">Load > Features > Labels > Train > Evaluate > Select > Ensemble > SHAP > Deploy</text>
+      <text x="195" y="438" fill="#8b949e" font-size="10" text-anchor="middle">60+ model configs | 3 horizons (1d/7d/30d) | Weekly CronJob</text>
+
+      <line x1="372" y1="415" x2="418" y2="415" stroke="#7ee787" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+      <rect x="420" y="380" width="200" height="70" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="520" y="405" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">KServe Inference</text>
+      <text x="520" y="422" fill="#8b949e" font-size="10" text-anchor="middle">sklearn V2 protocol | MLServer</text>
+      <text x="520" y="438" fill="#8b949e" font-size="10" text-anchor="middle">Primary + Canary (A/B)</text>
+
+      <line x1="622" y1="415" x2="658" y2="415" stroke="#7ee787" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+      <rect x="660" y="380" width="200" height="70" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="760" y="405" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">FastAPI /predict</text>
+      <text x="760" y="422" fill="#8b949e" font-size="10" text-anchor="middle">Redis-cached results</text>
+      <text x="760" y="438" fill="#8b949e" font-size="10" text-anchor="middle">KServe or file fallback</text>
+
+      <line x1="862" y1="415" x2="898" y2="415" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <rect x="900" y="380" width="220" height="70" rx="6" fill="#1a2332" stroke="#58a6ff"/>
+      <text x="1010" y="405" fill="#58a6ff" font-size="13" font-weight="700" text-anchor="middle">React Frontend</text>
+      <text x="1010" y="422" fill="#8b949e" font-size="10" text-anchor="middle">Dashboard | Forecasts | Models</text>
+      <text x="1010" y="438" fill="#8b949e" font-size="10" text-anchor="middle">Drift | Backtest | Analytics</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- API SERVICE -->
+<!-- ============================================================ -->
+<section id="api">
+  <h2>3. FastAPI Service (Ingestion &amp; Prediction API)</h2>
+  <p>The central API service is the primary gateway for data ingestion, model predictions, market data, and system analytics. Built with FastAPI (Python 3.11), it connects to every other component in the platform.</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(126,231,135,0.15)">&#9889;</div>
+      <div>
+        <div class="card-title">FastAPI Stock Prediction API</div>
+        <div class="card-subtitle">services/api/ | Port 8000 | 8 routers, 14 services, 8 ORM models</div>
+      </div>
+    </div>
+    <div>
+      <span class="tag tag-green">Python 3.11</span>
+      <span class="tag tag-green">FastAPI 0.111</span>
+      <span class="tag tag-blue">SQLAlchemy 2.0</span>
+      <span class="tag tag-blue">asyncpg</span>
+      <span class="tag tag-orange">Confluent Kafka</span>
+      <span class="tag tag-purple">scikit-learn</span>
+      <span class="tag tag-red">Redis</span>
+    </div>
+  </div>
+
+  <h3>API Endpoints</h3>
+  <table>
+    <tr><th>Route</th><th>Method</th><th>Purpose</th><th>Interacts With</th></tr>
+    <tr><td><code>/health</code></td><td>GET</td><td>Liveness probe: DB pool, Redis, component freshness</td><td>PostgreSQL, Redis</td></tr>
+    <tr><td><code>/health/deep</code></td><td>GET</td><td>Deep health check: query DB, check Kafka, validate models</td><td>PostgreSQL, Redis, Kafka, MinIO</td></tr>
+    <tr><td><code>/health/k8s</code></td><td>GET</td><td>Kubernetes cluster info (graceful fallback outside K8s)</td><td>K8s API</td></tr>
+    <tr><td><code>/ingest/intraday</code></td><td>POST</td><td>Trigger intraday OHLCV fetch from Yahoo Finance, publish to Kafka</td><td>Yahoo Finance, Kafka</td></tr>
+    <tr><td><code>/ingest/historical</code></td><td>POST</td><td>Trigger historical backfill (2 years), publish to Kafka</td><td>Yahoo Finance, Kafka</td></tr>
+    <tr><td><code>/predict/{ticker}</code></td><td>GET</td><td>Single stock prediction with confidence interval (1d/7d/30d)</td><td>KServe, Redis, MinIO, PostgreSQL</td></tr>
+    <tr><td><code>/predict/bulk</code></td><td>GET</td><td>Bulk predictions for all tickers, cached in Redis</td><td>KServe, Redis, PostgreSQL</td></tr>
+    <tr><td><code>/predict/horizons</code></td><td>GET</td><td>Available prediction horizons</td><td>Config</td></tr>
+    <tr><td><code>/models/comparison</code></td><td>GET</td><td>Model registry: all trained models with metrics, SHAP, fold stability</td><td>PostgreSQL, MinIO</td></tr>
+    <tr><td><code>/models/drift</code></td><td>GET</td><td>Drift detection events: KS-test, PSI, concept drift</td><td>PostgreSQL</td></tr>
+    <tr><td><code>/models/drift/rolling-performance</code></td><td>GET</td><td>30-day rolling RMSE, MAE, directional accuracy</td><td>PostgreSQL</td></tr>
+    <tr><td><code>/models/retrain-status</code></td><td>GET</td><td>Latest training run metadata and improvement metrics</td><td>PostgreSQL, MinIO</td></tr>
+    <tr><td><code>/models/ab-results</code></td><td>GET</td><td>A/B test model assignments and performance comparisons</td><td>PostgreSQL</td></tr>
+    <tr><td><code>/market/overview</code></td><td>GET</td><td>S&P 500 treemap: sector, market cap, daily change for all tickers</td><td>PostgreSQL</td></tr>
+    <tr><td><code>/market/indicators/{ticker}</code></td><td>GET</td><td>20+ technical indicators (RSI, MACD, Bollinger, ATR, ADX, VWAP, OBV)</td><td>PostgreSQL</td></tr>
+    <tr><td><code>/market/candles</code></td><td>GET</td><td>OHLCV candle bars from TimescaleDB continuous aggregates</td><td>PostgreSQL (caggs)</td></tr>
+    <tr><td><code>/analytics/flink/jobs</code></td><td>GET</td><td>Active Flink job status across all deployments (10s cache)</td><td>Flink REST API</td></tr>
+    <tr><td><code>/analytics/feast/freshness</code></td><td>GET</td><td>Feast FeatureView staleness from SQL registry (30s cache)</td><td>PostgreSQL (Feast registry)</td></tr>
+    <tr><td><code>/analytics/kafka/lag</code></td><td>GET</td><td>Per-partition consumer lag for processed-features (15s cache)</td><td>Kafka Admin API</td></tr>
+    <tr><td><code>/analytics/summary</code></td><td>GET</td><td>Aggregated system health: Flink + ArgoCD + Feast (30s cache)</td><td>Flink, PostgreSQL</td></tr>
+    <tr><td><code>/backtest/{ticker}</code></td><td>GET</td><td>Historical model performance (RMSE, MAE, MAPE, dir. accuracy)</td><td>PostgreSQL</td></tr>
+    <tr><td><code>/ws</code></td><td>WS</td><td>WebSocket live price feed (yfinance polling, market-aware)</td><td>Yahoo Finance</td></tr>
+    <tr><td><code>/metrics</code></td><td>GET</td><td>Prometheus metrics (request count, latency, error rate)</td><td>Prometheus</td></tr>
+  </table>
+
+  <h3>Service Modules (14 total)</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4>yahoo_finance.py</h4>
+      <p>Fetches OHLCV data from Yahoo Finance API with Stooq fallback. Implements exponential backoff (3 retries), batch ticker processing, and market calendar awareness. Produces structured DataFrames ready for Kafka.</p>
+      <p><strong>Expansion:</strong> Add alternative data sources (Alpha Vantage, Polygon.io), support crypto/forex feeds, add news sentiment data.</p>
+    </div>
+    <div class="card">
+      <h4>kafka_producer.py</h4>
+      <p>Confluent Kafka producer publishing OHLCV records to <code>intraday-data</code> and <code>historical-data</code> topics. Handles serialization, delivery callbacks, and error reporting.</p>
+      <p><strong>Expansion:</strong> Add schema registry (Avro), dead letter queue, exactly-once semantics with idempotent producer.</p>
+    </div>
+    <div class="card">
+      <h4>prediction_service.py</h4>
+      <p>Orchestrates model inference: tries KServe first, falls back to local file-based model. Redis-caches predictions (1h TTL). Supports multi-horizon (1d/7d/30d), bulk predictions, and A/B routing.</p>
+      <p><strong>Expansion:</strong> Add ensemble averaging across horizons, confidence calibration, prediction explanation caching.</p>
+    </div>
+    <div class="card">
+      <h4>kserve_client.py</h4>
+      <p>Async HTTP client for KServe V2 inference protocol. Sends feature vectors, parses V2 response format. Configurable timeout (30s default), graceful degradation on failure.</p>
+      <p><strong>Expansion:</strong> Add gRPC support, model warm-up requests, batch inference optimization.</p>
+    </div>
+    <div class="card">
+      <h4>market_service.py</h4>
+      <p>Market data aggregation from TimescaleDB. Computes technical indicators (RSI, MACD, Bollinger, ATR, ADX, VWAP, OBV, returns) on-demand from continuous aggregates.</p>
+      <p><strong>Expansion:</strong> Pre-compute indicators via materialized views, add sector rotation analysis, market regime detection.</p>
+    </div>
+    <div class="card">
+      <h4>feast_service.py</h4>
+      <p>Queries Feast SQL registry for FeatureView metadata and last_updated timestamps. Monitors feature staleness to alert when materialization jobs fail.</p>
+      <p><strong>Expansion:</strong> Add feature lineage tracking, data quality metrics, feature importance correlation.</p>
+    </div>
+    <div class="card">
+      <h4>health_service.py</h4>
+      <p>Deep health checks: DB connectivity, Redis ping, model freshness validation, component staleness detection. Returns structured health response for K8s probes.</p>
+    </div>
+    <div class="card">
+      <h4>backtest_service.py</h4>
+      <p>Historical model validation: loads cached predictions, compares against actual prices, computes RMSE, MAE, MAPE, directional accuracy over configurable windows.</p>
+    </div>
+    <div class="card">
+      <h4>ab_service.py</h4>
+      <p>A/B test infrastructure: routes requests to primary vs. canary model based on traffic weights, logs assignments, tracks per-model performance for comparison.</p>
+    </div>
+    <div class="card">
+      <h4>flink_service.py</h4>
+      <p>Queries Flink REST API for active job statuses across all three deployments. Results cached (10s TTL) to avoid overwhelming Flink JobManager.</p>
+    </div>
+    <div class="card">
+      <h4>kafka_lag_service.py</h4>
+      <p>Computes per-partition consumer lag for the <code>processed-features</code> topic using Kafka Admin API. Cached at 15s intervals.</p>
+    </div>
+    <div class="card">
+      <h4>price_feed.py</h4>
+      <p>WebSocket background task that polls Yahoo Finance for live prices during market hours. Broadcasts to all connected clients. Market-status aware (pauses outside trading hours).</p>
+    </div>
+  </div>
+
+  <h3>Middleware &amp; Infrastructure</h3>
+  <table>
+    <tr><th>Module</th><th>Purpose</th><th>Details</th></tr>
+    <tr><td><code>rate_limit.py</code></td><td>Token-bucket rate limiting</td><td>Global: 100/min, /predict: 30/min, /ingest: 10/min</td></tr>
+    <tr><td><code>cache.py</code></td><td>Redis caching layer</td><td>Configurable TTLs per endpoint type (1h predictions, 5min market, 30s analytics)</td></tr>
+    <tr><td><code>metrics.py</code></td><td>Prometheus instrumentation</td><td>Request count, latency histograms, inference errors, model cache hits</td></tr>
+    <tr><td><code>middleware.py</code></td><td>Request context</td><td>Injects correlation IDs for distributed tracing</td></tr>
+    <tr><td><code>config.py</code></td><td>Environment configuration</td><td>14 config groups: DB, Kafka, Redis, KServe, Feast, MinIO, rate limits, etc.</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- FRONTEND -->
+<!-- ============================================================ -->
+<section id="frontend">
+  <h2>4. React Frontend (Dashboard UI)</h2>
+  <p>A modern React 18 single-page application providing real-time market data visualization, ML model insights, drift monitoring, and infrastructure analytics. Built with Vite, styled with TailwindCSS + Material UI.</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(88,166,255,0.15)">&#128202;</div>
+      <div>
+        <div class="card-title">React Frontend Application</div>
+        <div class="card-subtitle">services/frontend/ | Port 80 (Nginx) | 6 pages, 39 components</div>
+      </div>
+    </div>
+    <div>
+      <span class="tag tag-blue">React 18.3</span>
+      <span class="tag tag-blue">TypeScript</span>
+      <span class="tag tag-blue">Vite 6</span>
+      <span class="tag tag-purple">TailwindCSS 4</span>
+      <span class="tag tag-purple">MUI 7</span>
+      <span class="tag tag-green">Recharts 3.8</span>
+      <span class="tag tag-orange">React Query 5</span>
+      <span class="tag tag-red">Playwright 1.58</span>
+    </div>
+  </div>
+
+  <h3>Pages (6 total)</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h4>Dashboard (/dashboard)</h4>
+      <p>Market overview page featuring a sector-weighted treemap of the S&P 500, candlestick OHLCV charts, technical analysis panel (RSI, MACD, Bollinger Bands), price ticker strip, and metric cards showing portfolio summary.</p>
+      <p><strong>Components:</strong> MarketTreemap, CandlestickChart, HistoricalChart, DashboardTAPanel, MetricCards, TimeframeSelector, MobileMarketList</p>
+      <p><strong>Data source:</strong> <code>/market/overview</code>, <code>/market/candles</code>, <code>/market/indicators/{ticker}</code>, WebSocket <code>/ws</code></p>
+      <p><strong>Shows:</strong> Real-time market heatmap by sector, individual stock price history, technical indicator overlays, live price updates via WebSocket.</p>
+    </div>
+    <div class="card">
+      <h4>Forecasts (/forecasts)</h4>
+      <p>ML prediction viewer with bulk forecast table, sector/ticker filtering, stock detail charts with confidence bands, SHAP feature importance explanations, indicator overlays (RSI, MACD), and multi-horizon toggle (1d/7d/30d).</p>
+      <p><strong>Components:</strong> ForecastTable, ForecastFilters, HorizonToggle, StockDetailChart, StockComparisonPanel, StockShapPanel, IndicatorOverlayCharts</p>
+      <p><strong>Data source:</strong> <code>/predict/bulk</code>, <code>/predict/{ticker}</code>, <code>/market/indicators/{ticker}</code></p>
+      <p><strong>Shows:</strong> All stock predictions at a glance, drill into individual stock forecasts, understand model reasoning via SHAP values.</p>
+    </div>
+    <div class="card">
+      <h4>Models (/models)</h4>
+      <p>Model registry comparison page showing all trained model variants, their performance metrics (RMSE, MAE, R&sup2;), fold stability across CV splits, SHAP bar charts and beeswarm plots, and the current winner model card.</p>
+      <p><strong>Components:</strong> ModelComparisonTable, WinnerCard, ShapBarChart, ShapBeeswarmPlot, FoldPerformanceChart</p>
+      <p><strong>Data source:</strong> <code>/models/comparison</code></p>
+      <p><strong>Shows:</strong> Which ML model is best, how stable models are across time splits, which features matter most.</p>
+    </div>
+    <div class="card">
+      <h4>Drift (/drift)</h4>
+      <p>Model drift monitoring page with the active model card, drift event timeline (data drift, concept drift, prediction drift), feature distribution comparison charts, rolling 30-day performance tracker, and retrain status panel.</p>
+      <p><strong>Components:</strong> ActiveModelCard, DriftTimeline, FeatureDistributionChart, RollingPerformanceChart, RetrainStatusPanel</p>
+      <p><strong>Data source:</strong> <code>/models/drift</code>, <code>/models/drift/rolling-performance</code>, <code>/models/retrain-status</code></p>
+      <p><strong>Shows:</strong> Whether the model is degrading, which features are shifting, when the last retraining occurred and how much it improved.</p>
+    </div>
+    <div class="card">
+      <h4>Backtest (/backtest)</h4>
+      <p>Historical model validation page showing predicted vs. actual price charts over a configurable lookback window, error metrics summary (RMSE, MAE, MAPE, directional accuracy), and time-series error distribution.</p>
+      <p><strong>Components:</strong> BacktestChart, BacktestMetricsSummary</p>
+      <p><strong>Data source:</strong> <code>/backtest/{ticker}</code></p>
+      <p><strong>Shows:</strong> How well the model would have performed historically, helping assess reliability before trusting predictions.</p>
+    </div>
+    <div class="card">
+      <h4>Analytics (/analytics)</h4>
+      <p>Infrastructure analytics page monitoring system health across the streaming stack: Flink job statuses, Kafka consumer lag per partition, Feast feature freshness per FeatureView, OLAP candle charts from continuous aggregates, and ArgoCD sync status.</p>
+      <p><strong>Components:</strong> SystemHealthSummary, StreamHealthPanel, StreamLagMonitor, FeatureFreshnessPanel, OLAPCandleChart</p>
+      <p><strong>Data source:</strong> <code>/analytics/summary</code>, <code>/analytics/flink/jobs</code>, <code>/analytics/kafka/lag</code>, <code>/analytics/feast/freshness</code></p>
+      <p><strong>Shows:</strong> Whether the data pipeline is healthy, if features are stale, whether Kafka consumers are falling behind.</p>
+    </div>
+  </div>
+
+  <h3>Component Architecture</h3>
+  <div class="diagram-container">
+    <div class="diagram-title">Frontend Component Tree</div>
+    <svg viewBox="0 0 1000 420" xmlns="http://www.w3.org/2000/svg">
+      <!-- Root -->
+      <rect x="420" y="10" width="160" height="40" rx="6" fill="#2d333b" stroke="#58a6ff"/>
+      <text x="500" y="35" fill="#58a6ff" font-size="13" font-weight="700" text-anchor="middle">App.tsx (Router)</text>
+
+      <!-- Layout -->
+      <rect x="420" y="70" width="160" height="40" rx="6" fill="#2d333b" stroke="#79c0ff"/>
+      <text x="500" y="95" fill="#79c0ff" font-size="13" font-weight="700" text-anchor="middle">Layout (Sidebar+Nav)</text>
+      <line x1="500" y1="52" x2="500" y2="68" stroke="#58a6ff" stroke-width="1.5"/>
+
+      <!-- Pages -->
+      <rect x="10" y="140" width="140" height="36" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="80" y="163" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">Dashboard</text>
+
+      <rect x="170" y="140" width="140" height="36" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="240" y="163" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">Forecasts</text>
+
+      <rect x="330" y="140" width="140" height="36" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="400" y="163" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">Models</text>
+
+      <rect x="490" y="140" width="140" height="36" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="560" y="163" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">Drift</text>
+
+      <rect x="650" y="140" width="140" height="36" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="720" y="163" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">Backtest</text>
+
+      <rect x="810" y="140" width="140" height="36" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="880" y="163" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">Analytics</text>
+
+      <!-- Lines to pages -->
+      <line x1="500" y1="112" x2="80" y2="138" stroke="#7ee787" stroke-width="1"/>
+      <line x1="500" y1="112" x2="240" y2="138" stroke="#7ee787" stroke-width="1"/>
+      <line x1="500" y1="112" x2="400" y2="138" stroke="#7ee787" stroke-width="1"/>
+      <line x1="500" y1="112" x2="560" y2="138" stroke="#7ee787" stroke-width="1"/>
+      <line x1="500" y1="112" x2="720" y2="138" stroke="#7ee787" stroke-width="1"/>
+      <line x1="500" y1="112" x2="880" y2="138" stroke="#7ee787" stroke-width="1"/>
+
+      <!-- Dashboard components -->
+      <rect x="5" y="200" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="70" y="216" fill="#8b949e" font-size="9" text-anchor="middle">MarketTreemap</text>
+      <rect x="5" y="228" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="70" y="244" fill="#8b949e" font-size="9" text-anchor="middle">CandlestickChart</text>
+      <rect x="5" y="256" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="70" y="272" fill="#8b949e" font-size="9" text-anchor="middle">HistoricalChart</text>
+      <rect x="5" y="284" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="70" y="300" fill="#8b949e" font-size="9" text-anchor="middle">DashboardTAPanel</text>
+      <rect x="5" y="312" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="70" y="328" fill="#8b949e" font-size="9" text-anchor="middle">MobileMarketList</text>
+
+      <!-- Forecast components -->
+      <rect x="165" y="200" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="230" y="216" fill="#8b949e" font-size="9" text-anchor="middle">ForecastTable</text>
+      <rect x="165" y="228" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="230" y="244" fill="#8b949e" font-size="9" text-anchor="middle">ForecastFilters</text>
+      <rect x="165" y="256" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="230" y="272" fill="#8b949e" font-size="9" text-anchor="middle">StockDetailChart</text>
+      <rect x="165" y="284" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="230" y="300" fill="#8b949e" font-size="9" text-anchor="middle">StockShapPanel</text>
+      <rect x="165" y="312" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="230" y="328" fill="#8b949e" font-size="9" text-anchor="middle">IndicatorOverlays</text>
+      <rect x="165" y="340" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="230" y="356" fill="#8b949e" font-size="9" text-anchor="middle">HorizonToggle</text>
+      <rect x="165" y="368" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="230" y="384" fill="#8b949e" font-size="9" text-anchor="middle">ComparisonPanel</text>
+
+      <!-- Model components -->
+      <rect x="325" y="200" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="390" y="216" fill="#8b949e" font-size="9" text-anchor="middle">ComparisonTable</text>
+      <rect x="325" y="228" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="390" y="244" fill="#8b949e" font-size="9" text-anchor="middle">WinnerCard</text>
+      <rect x="325" y="256" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="390" y="272" fill="#8b949e" font-size="9" text-anchor="middle">ShapBarChart</text>
+      <rect x="325" y="284" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="390" y="300" fill="#8b949e" font-size="9" text-anchor="middle">ShapBeeswarm</text>
+      <rect x="325" y="312" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="390" y="328" fill="#8b949e" font-size="9" text-anchor="middle">FoldPerformance</text>
+
+      <!-- Drift components -->
+      <rect x="485" y="200" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="550" y="216" fill="#8b949e" font-size="9" text-anchor="middle">ActiveModelCard</text>
+      <rect x="485" y="228" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="550" y="244" fill="#8b949e" font-size="9" text-anchor="middle">DriftTimeline</text>
+      <rect x="485" y="256" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="550" y="272" fill="#8b949e" font-size="9" text-anchor="middle">FeatureDistribution</text>
+      <rect x="485" y="284" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="550" y="300" fill="#8b949e" font-size="9" text-anchor="middle">RollingPerformance</text>
+      <rect x="485" y="312" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="550" y="328" fill="#8b949e" font-size="9" text-anchor="middle">RetrainStatus</text>
+
+      <!-- Backtest components -->
+      <rect x="645" y="200" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="710" y="216" fill="#8b949e" font-size="9" text-anchor="middle">BacktestChart</text>
+      <rect x="645" y="228" width="130" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="710" y="244" fill="#8b949e" font-size="9" text-anchor="middle">MetricsSummary</text>
+
+      <!-- Analytics components -->
+      <rect x="805" y="200" width="140" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="875" y="216" fill="#8b949e" font-size="9" text-anchor="middle">SystemHealthSummary</text>
+      <rect x="805" y="228" width="140" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="875" y="244" fill="#8b949e" font-size="9" text-anchor="middle">StreamHealthPanel</text>
+      <rect x="805" y="256" width="140" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="875" y="272" fill="#8b949e" font-size="9" text-anchor="middle">StreamLagMonitor</text>
+      <rect x="805" y="284" width="140" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="875" y="300" fill="#8b949e" font-size="9" text-anchor="middle">FeatureFreshness</text>
+      <rect x="805" y="312" width="140" height="24" rx="4" fill="#2d333b" stroke="#30363d"/>
+      <text x="875" y="328" fill="#8b949e" font-size="9" text-anchor="middle">OLAPCandleChart</text>
+
+      <!-- Shared layer -->
+      <rect x="200" y="400" width="600" height="30" rx="4" fill="#2d333b" stroke="#58a6ff" stroke-dasharray="4"/>
+      <text x="500" y="420" fill="#58a6ff" font-size="11" text-anchor="middle">Shared: LoadingSpinner | ErrorFallback | ExportButtons (CSV/PDF) | PlaceholderCard | API Client (Axios + React Query)</text>
+    </svg>
+  </div>
+
+  <h3>Frontend Expansion Opportunities</h3>
+  <ul class="expansion-list">
+    <li><strong>Dark/Light Theme Toggle:</strong> TailwindCSS theme system is in place; add a toggle to switch between themes.</li>
+    <li><strong>Portfolio Tracker:</strong> Add user portfolio management with position tracking, P&L calculations, and alert thresholds.</li>
+    <li><strong>News Feed Integration:</strong> Add a news/sentiment panel correlating market moves with news events.</li>
+    <li><strong>Alert Configuration:</strong> Let users set custom drift/price alerts that push browser notifications.</li>
+    <li><strong>Mobile PWA:</strong> MobileMarketList component already exists; wrap as a Progressive Web App for mobile traders.</li>
+    <li><strong>Options Chain Viewer:</strong> Extend market data to include options pricing and implied volatility surfaces.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- ML PIPELINE -->
+<!-- ============================================================ -->
+<section id="ml">
+  <h2>5. ML Training Pipeline (Kubeflow)</h2>
+  <p>An 11-step Kubeflow pipeline that trains 60+ model configurations across 3 prediction horizons (1d, 7d, 30d), builds stacking ensembles, generates SHAP explanations, and deploys the winner to KServe or MinIO.</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(210,168,255,0.15)">&#129504;</div>
+      <div>
+        <div class="card-title">ML Training Pipeline</div>
+        <div class="card-subtitle">ml/ | 10 pipeline components | 60+ model configs | CronJob: Sunday 3AM UTC</div>
+      </div>
+    </div>
+    <div>
+      <span class="tag tag-purple">scikit-learn 1.4</span>
+      <span class="tag tag-purple">XGBoost 3.2</span>
+      <span class="tag tag-purple">LightGBM 4.6</span>
+      <span class="tag tag-purple">CatBoost 1.2</span>
+      <span class="tag tag-green">SHAP 0.51</span>
+      <span class="tag tag-orange">Feast 0.61</span>
+      <span class="tag tag-blue">boto3</span>
+    </div>
+  </div>
+
+  <h3>Pipeline Steps</h3>
+  <div class="diagram-container">
+    <div class="diagram-title">11-Step Training Pipeline</div>
+    <svg viewBox="0 0 1100 340" xmlns="http://www.w3.org/2000/svg">
+      <!-- Step boxes -->
+      <rect x="10" y="20" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="100" y="42" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">1. Data Loader</text>
+      <text x="100" y="58" fill="#8b949e" font-size="9" text-anchor="middle">OHLCV + Feast features from PG</text>
+
+      <rect x="210" y="20" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="300" y="42" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">2. Feature Engineer</text>
+      <text x="300" y="58" fill="#8b949e" font-size="9" text-anchor="middle">20+ indicators + lag features</text>
+
+      <rect x="410" y="20" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="500" y="42" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">3. Label Generator</text>
+      <text x="500" y="58" fill="#8b949e" font-size="9" text-anchor="middle">Multi-horizon targets 1d/7d/30d</text>
+
+      <rect x="610" y="20" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="700" y="42" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">4. Model Trainer</text>
+      <text x="700" y="58" fill="#8b949e" font-size="9" text-anchor="middle">60+ configs, RandomizedSearchCV</text>
+
+      <rect x="810" y="20" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="900" y="42" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">5. Evaluator</text>
+      <text x="900" y="58" fill="#8b949e" font-size="9" text-anchor="middle">CV + OOS metrics + fold stability</text>
+
+      <!-- Row 2 -->
+      <rect x="10" y="120" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="100" y="142" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">6. Model Selector</text>
+      <text x="100" y="158" fill="#8b949e" font-size="9" text-anchor="middle">Top-5 by RMSE, persist winner</text>
+
+      <rect x="210" y="120" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="300" y="142" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">7. Ensemble Builder</text>
+      <text x="300" y="158" fill="#8b949e" font-size="9" text-anchor="middle">Stacking: top-5 + Ridge meta</text>
+
+      <rect x="410" y="120" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="500" y="142" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">8. Explainer (SHAP)</text>
+      <text x="500" y="158" fill="#8b949e" font-size="9" text-anchor="middle">Feature importance + beeswarm</text>
+
+      <rect x="610" y="120" width="180" height="55" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="700" y="142" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">9. Predictor</text>
+      <text x="700" y="158" fill="#8b949e" font-size="9" text-anchor="middle">Generate holdout predictions</text>
+
+      <rect x="810" y="120" width="180" height="55" rx="6" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="900" y="142" fill="#7ee787" font-size="11" font-weight="700" text-anchor="middle">10. Deployer</text>
+      <text x="900" y="158" fill="#8b949e" font-size="9" text-anchor="middle">KServe or MinIO pickle store</text>
+
+      <!-- Arrows row 1 -->
+      <line x1="192" y1="47" x2="208" y2="47" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="392" y1="47" x2="408" y2="47" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="592" y1="47" x2="608" y2="47" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="792" y1="47" x2="808" y2="47" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+      <!-- Down and back -->
+      <line x1="900" y1="77" x2="900" y2="90" stroke="#d2a8ff" stroke-width="1.5"/>
+      <line x1="900" y1="90" x2="100" y2="90" stroke="#d2a8ff" stroke-width="1.5"/>
+      <line x1="100" y1="90" x2="100" y2="118" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+
+      <!-- Arrows row 2 -->
+      <line x1="192" y1="147" x2="208" y2="147" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="392" y1="147" x2="408" y2="147" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="592" y1="147" x2="608" y2="147" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+      <line x1="792" y1="147" x2="808" y2="147" stroke="#7ee787" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+      <!-- Model families -->
+      <rect x="10" y="210" width="1080" height="120" rx="6" fill="#1a2332" stroke="#30363d"/>
+      <text x="30" y="235" fill="#d2a8ff" font-size="13" font-weight="700">Model Families (60+ configurations)</text>
+
+      <rect x="30" y="250" width="160" height="60" rx="4" fill="#2d333b" stroke="#58a6ff"/>
+      <text x="110" y="270" fill="#58a6ff" font-size="11" font-weight="700" text-anchor="middle">LINEAR (6)</text>
+      <text x="110" y="288" fill="#8b949e" font-size="9" text-anchor="middle">Ridge, Lasso, ElasticNet</text>
+      <text x="110" y="300" fill="#8b949e" font-size="9" text-anchor="middle">BayesianRidge, Huber, LR</text>
+
+      <rect x="210" y="250" width="160" height="60" rx="4" fill="#2d333b" stroke="#7ee787"/>
+      <text x="290" y="270" fill="#7ee787" font-size="11" font-weight="700" text-anchor="middle">TREE (3)</text>
+      <text x="290" y="288" fill="#8b949e" font-size="9" text-anchor="middle">RandomForest, ExtraTrees</text>
+      <text x="290" y="300" fill="#8b949e" font-size="9" text-anchor="middle">DecisionTree</text>
+
+      <rect x="390" y="250" width="200" height="60" rx="4" fill="#2d333b" stroke="#ffa657"/>
+      <text x="490" y="270" fill="#ffa657" font-size="11" font-weight="700" text-anchor="middle">BOOSTING (6)</text>
+      <text x="490" y="288" fill="#8b949e" font-size="9" text-anchor="middle">XGBoost, LightGBM, CatBoost</text>
+      <text x="490" y="300" fill="#8b949e" font-size="9" text-anchor="middle">GBM, AdaBoost, HistGBM</text>
+
+      <rect x="610" y="250" width="160" height="60" rx="4" fill="#2d333b" stroke="#ff7b72"/>
+      <text x="690" y="270" fill="#ff7b72" font-size="11" font-weight="700" text-anchor="middle">DISTANCE/NEURAL (3)</text>
+      <text x="690" y="288" fill="#8b949e" font-size="9" text-anchor="middle">KNN, SVR, MLP</text>
+
+      <rect x="790" y="250" width="200" height="60" rx="4" fill="#2d333b" stroke="#d2a8ff"/>
+      <text x="890" y="270" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">ENSEMBLE</text>
+      <text x="890" y="288" fill="#8b949e" font-size="9" text-anchor="middle">StackingEnsemble: top-5 base</text>
+      <text x="890" y="300" fill="#8b949e" font-size="9" text-anchor="middle">models + Ridge meta-learner</text>
+    </svg>
+  </div>
+
+  <h3>Feature Engineering (20+ indicators)</h3>
+  <table>
+    <tr><th>Category</th><th>Features</th><th>Implementation</th></tr>
+    <tr><td>Momentum</td><td>RSI-14, Stochastic %K/%D, Stochastic RSI</td><td>Wilder's smoothing, 14/3 periods</td></tr>
+    <tr><td>Trend</td><td>MACD (line + signal + histogram), ADX-14</td><td>EMA 12/26/9, Wilder's DI+/DI-</td></tr>
+    <tr><td>Moving Averages</td><td>SMA-20/50/200, EMA-12/26</td><td>Rolling window, exponential decay</td></tr>
+    <tr><td>Volatility</td><td>Bollinger Bands (upper/lower), ATR-14</td><td>20-period SMA &plusmn; 2&sigma;, True Range avg</td></tr>
+    <tr><td>Volume</td><td>VWAP, OBV, Volume SMA-20, AD Line</td><td>Cumulative volume-weighted price</td></tr>
+    <tr><td>Returns</td><td>1d, 5d, 21d log returns</td><td>np.log(close/close.shift(n))</td></tr>
+    <tr><td>Lag Features</td><td>lag_close_{1,2,3,5,7,14,21}</td><td>Shifted close prices</td></tr>
+    <tr><td>Rolling Stats</td><td>rolling_mean/std/min/max (5d, 10d, 21d)</td><td>Pandas rolling windows</td></tr>
+    <tr><td>Labels</td><td>Forward % return (1d/7d/30d)</td><td>(future_close - close) / close</td></tr>
+  </table>
+
+  <h3>ML Expansion Opportunities</h3>
+  <ul class="expansion-list">
+    <li><strong>Deep Learning:</strong> Add LSTM, Transformer (temporal fusion), and attention-based models for sequence prediction.</li>
+    <li><strong>Alternative Data:</strong> Incorporate news sentiment (FinBERT), social media signals, options flow, insider trading data.</li>
+    <li><strong>Reinforcement Learning:</strong> Add RL-based portfolio optimization (PPO/A2C) for position sizing.</li>
+    <li><strong>Online Learning:</strong> River/Vowpal Wabbit for incremental model updates without full retraining.</li>
+    <li><strong>Multi-Asset:</strong> Extend to crypto, forex, commodities, fixed income with per-asset feature sets.</li>
+    <li><strong>Regime Detection:</strong> Hidden Markov Models for market regime classification (bull/bear/sideways).</li>
+  </ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- FEAST -->
+<!-- ============================================================ -->
+<section id="feast">
+  <h2>6. Feast Feature Store</h2>
+  <p>Feast 0.61 provides a unified feature serving layer with PostgreSQL as the offline store (historical training data) and Redis as the online store (real-time inference). Three FeatureViews cover OHLCV stats, technical indicators, and lag features.</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(255,166,87,0.15)">&#128451;</div>
+      <div>
+        <div class="card-title">Feast Feature Store</div>
+        <div class="card-subtitle">ml/feature_store/ | 3 FeatureViews | Online: Redis | Offline: PostgreSQL | REST: :6566</div>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>FeatureView</th><th>Features</th><th>Source</th><th>TTL</th></tr>
+    <tr><td><code>ohlcv_stats_fv</code></td><td>open, high, low, close, volume, daily_return, vwap</td><td>feast_ohlcv_stats (PG)</td><td>365 days</td></tr>
+    <tr><td><code>technical_indicators_fv</code></td><td>rsi_14, macd_line, macd_signal, bb_upper, bb_lower, atr_14, adx_14, ema_20, obv</td><td>feast_technical_indicators (PG) + push source</td><td>365 days</td></tr>
+    <tr><td><code>lag_features_fv</code></td><td>lag_1 through lag_21, rolling_mean/std for windows 5/10/21</td><td>feast_lag_features (PG)</td><td>365 days</td></tr>
+  </table>
+
+  <p><strong>Real-time path:</strong> Flink Feast Writer pushes computed indicators directly to Redis online store via <code>PushMode.ONLINE</code>, bypassing the batch materialization cycle for low-latency features.</p>
+  <p><strong>Batch materialization:</strong> CronJob runs weekdays at 6:30 PM ET to incrementally materialize all FeatureViews from PostgreSQL to Redis.</p>
+  <p><strong>Expansion:</strong> Add on-demand transformations, feature validation rules, data quality monitoring, and feature lineage tracking via Feast's transformation server.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- KSERVE -->
+<!-- ============================================================ -->
+<section id="kserve">
+  <h2>7. KServe Model Serving</h2>
+  <p>KServe provides production-grade model serving with auto-scaling, canary deployments for A/B testing, and the V2 inference protocol. Models are loaded from MinIO (S3-compatible) and served via MLServer with the sklearn runtime.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>Primary InferenceService</h4>
+      <p>Name: <code>stock-model-serving</code>. Loads the active winner model from <code>s3://model-artifacts/serving/active</code>. Auto-scales 1-3 replicas based on load. Resources: 500m-2000m CPU, 1-4Gi RAM.</p>
+      <p><strong>Endpoint:</strong> <code>POST /v2/models/stock-model-serving/infer</code></p>
+    </div>
+    <div class="card">
+      <h4>Canary InferenceService</h4>
+      <p>Name: <code>stock-model-serving-canary</code>. Loads candidate model from <code>s3://model-artifacts/serving/canary</code>. Scales to 0 when not in use. Used for A/B testing new models before full promotion.</p>
+      <p><strong>Endpoint:</strong> <code>POST /v2/models/stock-model-serving-canary/infer</code></p>
+    </div>
+    <div class="card">
+      <h4>Custom Serving Runtime</h4>
+      <p><code>stock-sklearn-mlserver</code> using MLServer 1.6.1 with <code>mlserver_sklearn.SKLearnModel</code> implementation. Supports V2 protocol on HTTP (:8080) and gRPC (:8081).</p>
+    </div>
+    <div class="card">
+      <h4>Certificate Management</h4>
+      <p>Cert-Manager handles TLS certificates for KServe webhook endpoints, ensuring secure internal communication.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- KAFKA -->
+<!-- ============================================================ -->
+<section id="kafka">
+  <h2>8. Apache Kafka (Message Broker)</h2>
+  <p>Kafka 3.7 (via Strimzi operator) provides the event streaming backbone with 3 topics carrying OHLCV data and processed features. KRaft mode eliminates ZooKeeper dependency in Kubernetes (docker-compose still uses ZooKeeper for local dev).</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(255,166,87,0.15)">&#128233;</div>
+      <div>
+        <div class="card-title">Apache Kafka 3.7 (Strimzi)</div>
+        <div class="card-subtitle">k8s/kafka/ | KRaft mode | 1 broker | 3 topics | Bootstrap: :9092</div>
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>Topic</th><th>Partitions</th><th>Retention</th><th>Producer</th><th>Consumers</th></tr>
+    <tr><td><code>intraday-data</code></td><td>3</td><td>7 days</td><td>FastAPI /ingest</td><td>Kafka Consumer, OHLCV Normalizer, Indicator Stream</td></tr>
+    <tr><td><code>historical-data</code></td><td>3</td><td>30 days</td><td>FastAPI /ingest</td><td>Kafka Consumer</td></tr>
+    <tr><td><code>processed-features</code></td><td>3</td><td>7 days</td><td>Indicator Stream (Flink)</td><td>Feast Writer (Flink)</td></tr>
+  </table>
+
+  <p><strong>Expansion:</strong> Add Schema Registry (Avro/Protobuf), increase broker count for HA, add Kafka Connect for CDC from PostgreSQL, add dead letter topics for failed processing, enable TLS for inter-broker communication.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- FLINK -->
+<!-- ============================================================ -->
+<section id="flink">
+  <h2>9. Apache Flink (Stream Processing)</h2>
+  <p>Three PyFlink 1.19 jobs process streaming data in real-time with EXACTLY_ONCE semantics, RocksDB state backend, and checkpoints persisted to MinIO. Each runs as a FlinkDeployment CRD managed by the Flink Kubernetes Operator.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>OHLCV Normalizer</h4>
+      <p><strong>Input:</strong> Kafka <code>intraday-data</code></p>
+      <p><strong>Processing:</strong> Validates and normalizes OHLCV records (price sanity checks, volume normalization, timestamp alignment).</p>
+      <p><strong>Output:</strong> JDBC sink to PostgreSQL <code>ohlcv_intraday</code> hypertable (PRIMARY KEY upsert).</p>
+      <p><strong>Shows:</strong> Clean, validated intraday data flowing into TimescaleDB for downstream aggregation and ML training.</p>
+      <p><strong>Interacts with:</strong> Kafka (source), PostgreSQL (sink), MinIO (checkpoints).</p>
+    </div>
+    <div class="card">
+      <h4>Indicator Stream</h4>
+      <p><strong>Input:</strong> Kafka <code>intraday-data</code></p>
+      <p><strong>Processing:</strong> HOP windows (5-minute slide, 20-minute size) computing EMA-20, RSI-14, MACD signal line using custom UDAFs.</p>
+      <p><strong>Output:</strong> Kafka <code>processed-features</code> topic.</p>
+      <p><strong>Shows:</strong> Real-time technical indicator computation as market data streams in, enabling low-latency feature serving.</p>
+      <p><strong>Interacts with:</strong> Kafka (source + sink), MinIO (checkpoints).</p>
+    </div>
+    <div class="card">
+      <h4>Feast Writer</h4>
+      <p><strong>Input:</strong> Kafka <code>processed-features</code></p>
+      <p><strong>Processing:</strong> Parses feature batches, constructs DataFrames, pushes to Feast online store.</p>
+      <p><strong>Output:</strong> Redis (Feast online store) via <code>PushMode.ONLINE</code>.</p>
+      <p><strong>Shows:</strong> Feature vectors available in Redis within seconds of market data arriving, enabling real-time inference.</p>
+      <p><strong>Interacts with:</strong> Kafka (source), Redis/Feast (sink), MinIO (checkpoints).</p>
+    </div>
+  </div>
+
+  <h3>Flink Infrastructure Configuration</h3>
+  <table>
+    <tr><th>Setting</th><th>Value</th><th>Purpose</th></tr>
+    <tr><td>State Backend</td><td>RocksDB (incremental)</td><td>Disk-based state for large window operations</td></tr>
+    <tr><td>Checkpoint Interval</td><td>30 seconds</td><td>Balance between latency and recovery time</td></tr>
+    <tr><td>Checkpoint Mode</td><td>EXACTLY_ONCE</td><td>No duplicate or lost records</td></tr>
+    <tr><td>Checkpoint Storage</td><td>s3://model-artifacts/flink-checkpoints/</td><td>MinIO for durable checkpoint storage</td></tr>
+    <tr><td>Restart Strategy</td><td>Exponential backoff (1s-60s)</td><td>Automatic recovery from transient failures</td></tr>
+    <tr><td>Task Slots</td><td>2 per TaskManager</td><td>Parallelism within each TM</td></tr>
+    <tr><td>Metrics</td><td>Prometheus @ :9249</td><td>Scraped by Prometheus for Grafana dashboards</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- KAFKA CONSUMER -->
+<!-- ============================================================ -->
+<section id="kafka-consumer">
+  <h2>10. Kafka Consumer (Batch Writer)</h2>
+  <p>A dedicated Python service that consumes Kafka messages in batches and writes them to PostgreSQL hypertables. Runs 2 replicas for load distribution across partitions.</p>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:rgba(121,192,255,0.15)">&#128230;</div>
+      <div>
+        <div class="card-title">Kafka Consumer Service</div>
+        <div class="card-subtitle">services/kafka-consumer/ | 2 replicas | Batch: 100 rows / 5s timeout</div>
+      </div>
+    </div>
+    <p>Consumes from <code>intraday-data</code> and <code>historical-data</code> topics. Batches 100 records or flushes every 5 seconds (whichever comes first). Performs upsert operations to <code>ohlcv_daily</code> and <code>ohlcv_intraday</code> hypertables with conflict resolution on (ticker, date/timestamp).</p>
+    <p><strong>Modules:</strong> main.py (consumer loop, signal handling), processor.py (message batching), db_writer.py (DB upsert), metrics.py (Prometheus @ :9090), config.py (env-based config), logging.py (structured logs).</p>
+    <p><strong>Expansion:</strong> Add Kafka Streams for richer processing, implement exactly-once with transactional consumer, add DLQ for failed records, support Avro deserialization.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- STORAGE -->
+<!-- ============================================================ -->
+<section id="storage">
+  <h2>11. Storage Layer</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(126,231,135,0.15)">&#128451;</div>
+        <div>
+          <div class="card-title">TimescaleDB (PostgreSQL 15)</div>
+          <div class="card-subtitle">Port 5432 | 20Gi PVC | 2 Hypertables + 2 Continuous Aggregates</div>
+        </div>
+      </div>
+      <p>Time-series optimized PostgreSQL extension with hypertable partitioning, continuous aggregates for pre-computed rollups, compression policies, and 2-year retention. Serves as the primary data store, Feast offline store, and model registry.</p>
+      <p><strong>Hypertables:</strong> <code>ohlcv_daily</code> (monthly chunks, 7d compression), <code>ohlcv_intraday</code> (daily chunks, 3d compression).</p>
+      <p><strong>Continuous Aggregates:</strong> <code>ohlcv_daily_1h_agg</code> (1-hour buckets, 30min refresh), <code>ohlcv_daily_agg</code> (daily summary).</p>
+      <p><strong>Expansion:</strong> Add read replicas, partitioned model_registry by version, materialized views for complex analytics, pgvector for embedding search.</p>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(255,123,114,0.15)">&#9889;</div>
+        <div>
+          <div class="card-title">Redis 7</div>
+          <div class="card-subtitle">Port 6379 | 256MB LRU | Cache + Feast Online Store</div>
+        </div>
+      </div>
+      <p>Dual-purpose in-memory store: (1) API response caching (predictions, market data, analytics) with TTL-based expiry, and (2) Feast online feature store for low-latency feature serving during inference.</p>
+      <p><strong>Cache keys:</strong> prediction:{ticker}:{horizon}, market:overview, analytics:flink:jobs, analytics:feast:freshness.</p>
+      <p><strong>Expansion:</strong> Redis Cluster for HA, Redis Streams for pub/sub, Sentinel for failover, separate instances for cache vs. feature store.</p>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(255,166,87,0.15)">&#128230;</div>
+        <div>
+          <div class="card-title">MinIO (S3-Compatible Object Storage)</div>
+          <div class="card-subtitle">API: :9000 | Console: :9001 | 10Gi PVC</div>
+        </div>
+      </div>
+      <p>S3-compatible object storage for ML model artifacts, drift logs, and Flink checkpoint data. Accessed via boto3 SDK with path-style URLs.</p>
+      <p><strong>Buckets:</strong> <code>model-artifacts</code> (model registry, serving/active, serving/canary, Flink checkpoints), <code>drift-logs</code> (drift detection outputs).</p>
+      <p><strong>Init Job:</strong> Kubernetes Job creates buckets on first deployment using <code>mc</code> (MinIO Client).</p>
+      <p><strong>Expansion:</strong> Enable versioning, lifecycle policies for old artifacts, cross-region replication, encryption at rest.</p>
+    </div>
+  </div>
+
+  <h3>Database Backup</h3>
+  <p>A daily CronJob (<code>cronjob-backup.yaml</code>) performs PostgreSQL backups to MinIO, ensuring data durability beyond the primary PVC.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- MONITORING -->
+<!-- ============================================================ -->
+<section id="monitoring">
+  <h2>12. Monitoring Stack</h2>
+  <p>Full observability with metrics (Prometheus), dashboards (Grafana), logs (Loki + Promtail), and alerting (AlertManager). Every metrics-emitting service has Prometheus scrape annotations.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(210,153,34,0.15)">&#128200;</div>
+        <div>
+          <div class="card-title">Prometheus 2.51</div>
+          <div class="card-subtitle">Port 9090 | 15s scrape | 15d retention</div>
+        </div>
+      </div>
+      <p>Central metrics collection from all platform services. Scrapes FastAPI (:8000/metrics), Kafka Consumer (:9090/metrics), Flink (:9249), and itself. Stores 15 days of time-series data.</p>
+      <p><strong>Scrape targets:</strong> kubernetes-pods (annotation-based discovery), kafka-exporter, strimzi-kafka.</p>
+      <p><strong>Shows:</strong> Request rates, error rates, latency percentiles, inference performance, Kafka throughput, Flink backpressure.</p>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(210,153,34,0.15)">&#128202;</div>
+        <div>
+          <div class="card-title">Grafana 10.4</div>
+          <div class="card-subtitle">Port 3000 (NodePort 30300) | 4 dashboards</div>
+        </div>
+      </div>
+      <p>Visualization layer with pre-provisioned dashboards and datasources (Prometheus + Loki). Anonymous access enabled for local dev.</p>
+      <p><strong>Dashboards:</strong></p>
+      <ul class="expansion-list">
+        <li><strong>API Health:</strong> Request rate, error rate, latency histograms, endpoint breakdown</li>
+        <li><strong>ML Performance:</strong> Model accuracy, prediction latency, cache hit rates, SHAP values</li>
+        <li><strong>Kafka Infrastructure:</strong> Topic throughput, partition lag, broker health, consumer group status</li>
+        <li><strong>Flink Streaming:</strong> Job status, records processed, backpressure, checkpoint duration</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(210,153,34,0.15)">&#128220;</div>
+        <div>
+          <div class="card-title">Loki 2.9 + Promtail</div>
+          <div class="card-subtitle">Loki :3100 | Promtail DaemonSet</div>
+        </div>
+      </div>
+      <p>Log aggregation system. Promtail runs as a DaemonSet on every node, tailing container logs and forwarding to Loki. Queryable from Grafana via LogQL.</p>
+      <p><strong>Shows:</strong> Application logs from all pods, filterable by namespace, pod, container. Correlate logs with metrics for incident investigation.</p>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon" style="background:rgba(210,153,34,0.15)">&#128276;</div>
+        <div>
+          <div class="card-title">AlertManager</div>
+          <div class="card-subtitle">Port 9093 | 3 alert rules</div>
+        </div>
+      </div>
+      <p>Alert routing and deduplication. Receives alerts from Prometheus and routes them based on severity.</p>
+      <p><strong>Alert rules:</strong></p>
+      <ul class="expansion-list">
+        <li><strong>HighDriftSeverity:</strong> Model inference errors &gt; 0.1/s for 5 minutes</li>
+        <li><strong>HighAPIErrorRate:</strong> HTTP 5xx errors &gt; 5% for 5 minutes</li>
+        <li><strong>HighConsumerLag:</strong> Kafka consumer lag &gt; 1000 messages for 10 minutes</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><strong>Expansion:</strong> Add PagerDuty/Slack/email integrations for AlertManager, Jaeger/Tempo for distributed tracing, custom Grafana dashboards for business metrics (prediction accuracy per sector), SLO/SLA monitoring.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- KUBERNETES -->
+<!-- ============================================================ -->
+<section id="k8s">
+  <h2>13. Kubernetes Infrastructure</h2>
+  <p>The platform deploys across 12 namespaces on Kubernetes (Minikube for local dev), with each namespace isolating a functional domain.</p>
+
+  <div class="diagram-container">
+    <div class="diagram-title">Kubernetes Namespace Map</div>
+    <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Cluster boundary -->
+      <rect x="10" y="10" width="980" height="480" rx="12" fill="none" stroke="#58a6ff" stroke-width="2" stroke-dasharray="8"/>
+      <text x="500" y="35" fill="#58a6ff" font-size="16" font-weight="700" text-anchor="middle">Kubernetes Cluster (Minikube)</text>
+
+      <!-- Row 1 -->
+      <rect x="30" y="55" width="220" height="130" rx="6" fill="#1a2332" stroke="#7ee787"/>
+      <text x="140" y="75" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">storage</text>
+      <text x="140" y="95" fill="#8b949e" font-size="10" text-anchor="middle">PostgreSQL (TimescaleDB)</text>
+      <text x="140" y="110" fill="#8b949e" font-size="10" text-anchor="middle">Redis 7 (cache + features)</text>
+      <text x="140" y="125" fill="#8b949e" font-size="10" text-anchor="middle">MinIO (S3 object store)</text>
+      <text x="140" y="140" fill="#8b949e" font-size="10" text-anchor="middle">Kafka (Strimzi operator)</text>
+      <text x="140" y="155" fill="#8b949e" font-size="10" text-anchor="middle">Secrets + ConfigMaps</text>
+      <text x="140" y="170" fill="#8b949e" font-size="10" text-anchor="middle">Daily backup CronJob</text>
+
+      <rect x="270" y="55" width="220" height="130" rx="6" fill="#1a2332" stroke="#ffa657"/>
+      <text x="380" y="75" fill="#ffa657" font-size="13" font-weight="700" text-anchor="middle">ingestion</text>
+      <text x="380" y="95" fill="#8b949e" font-size="10" text-anchor="middle">FastAPI Deployment (1 replica)</text>
+      <text x="380" y="110" fill="#8b949e" font-size="10" text-anchor="middle">Service (ClusterIP :8000)</text>
+      <text x="380" y="125" fill="#8b949e" font-size="10" text-anchor="middle">CronJob: Historical (Sun 2AM)</text>
+      <text x="380" y="140" fill="#8b949e" font-size="10" text-anchor="middle">CronJob: Intraday (5min M-F)</text>
+      <text x="380" y="155" fill="#8b949e" font-size="10" text-anchor="middle">ConfigMap (500+ tickers)</text>
+
+      <rect x="510" y="55" width="220" height="130" rx="6" fill="#1a2332" stroke="#79c0ff"/>
+      <text x="620" y="75" fill="#79c0ff" font-size="13" font-weight="700" text-anchor="middle">processing</text>
+      <text x="620" y="95" fill="#8b949e" font-size="10" text-anchor="middle">Kafka Consumer (2 replicas)</text>
+      <text x="620" y="110" fill="#8b949e" font-size="10" text-anchor="middle">Batch write to hypertables</text>
+      <text x="620" y="125" fill="#8b949e" font-size="10" text-anchor="middle">Prometheus metrics :9090</text>
+
+      <rect x="750" y="55" width="220" height="130" rx="6" fill="#1a2332" stroke="#d2a8ff"/>
+      <text x="860" y="75" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">flink</text>
+      <text x="860" y="95" fill="#8b949e" font-size="10" text-anchor="middle">OHLCV Normalizer (FD)</text>
+      <text x="860" y="110" fill="#8b949e" font-size="10" text-anchor="middle">Indicator Stream (FD)</text>
+      <text x="860" y="125" fill="#8b949e" font-size="10" text-anchor="middle">Feast Writer (FD)</text>
+      <text x="860" y="140" fill="#8b949e" font-size="10" text-anchor="middle">RBAC (SA + ClusterRole)</text>
+      <text x="860" y="155" fill="#8b949e" font-size="10" text-anchor="middle">ConfigMap (broker, DB)</text>
+
+      <!-- Row 2 -->
+      <rect x="30" y="205" width="320" height="130" rx="6" fill="#1a2332" stroke="#d2a8ff"/>
+      <text x="190" y="225" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">ml</text>
+      <text x="190" y="245" fill="#8b949e" font-size="10" text-anchor="middle">Training CronJob (Sun 3AM, 4-16 CPU, 8-16Gi)</text>
+      <text x="190" y="260" fill="#8b949e" font-size="10" text-anchor="middle">Drift Detection CronJob (daily 10PM)</text>
+      <text x="190" y="275" fill="#8b949e" font-size="10" text-anchor="middle">Feast Feature Server (:6566)</text>
+      <text x="190" y="290" fill="#8b949e" font-size="10" text-anchor="middle">Feast Materialization CronJob (daily 6:30PM)</text>
+      <text x="190" y="305" fill="#8b949e" font-size="10" text-anchor="middle">KServe InferenceService (primary + canary)</text>
+      <text x="190" y="320" fill="#8b949e" font-size="10" text-anchor="middle">Model PVC (shared registry storage)</text>
+
+      <rect x="370" y="205" width="220" height="100" rx="6" fill="#1a2332" stroke="#58a6ff"/>
+      <text x="480" y="225" fill="#58a6ff" font-size="13" font-weight="700" text-anchor="middle">frontend</text>
+      <text x="480" y="245" fill="#8b949e" font-size="10" text-anchor="middle">React Deployment (1 replica)</text>
+      <text x="480" y="260" fill="#8b949e" font-size="10" text-anchor="middle">Nginx (nginx:alpine)</text>
+      <text x="480" y="275" fill="#8b949e" font-size="10" text-anchor="middle">Service (NodePort 30080)</text>
+      <text x="480" y="290" fill="#8b949e" font-size="10" text-anchor="middle">VITE_API_URL configured</text>
+
+      <rect x="610" y="205" width="360" height="100" rx="6" fill="#1a2332" stroke="#d29922"/>
+      <text x="790" y="225" fill="#d29922" font-size="13" font-weight="700" text-anchor="middle">monitoring</text>
+      <text x="790" y="245" fill="#8b949e" font-size="10" text-anchor="middle">Prometheus 2.51 (:9090) | Grafana 10.4 (NodePort 30300)</text>
+      <text x="790" y="260" fill="#8b949e" font-size="10" text-anchor="middle">Loki 2.9 (:3100) | AlertManager (:9093)</text>
+      <text x="790" y="275" fill="#8b949e" font-size="10" text-anchor="middle">Promtail DaemonSet | 4 Grafana dashboards</text>
+      <text x="790" y="290" fill="#8b949e" font-size="10" text-anchor="middle">RBAC (SA + ClusterRole for scraping)</text>
+
+      <!-- Row 3 -->
+      <rect x="30" y="355" width="250" height="80" rx="6" fill="#1a2332" stroke="#58a6ff"/>
+      <text x="155" y="375" fill="#58a6ff" font-size="13" font-weight="700" text-anchor="middle">argocd</text>
+      <text x="155" y="395" fill="#8b949e" font-size="10" text-anchor="middle">Root Application (GitOps)</text>
+      <text x="155" y="410" fill="#8b949e" font-size="10" text-anchor="middle">7 child apps (ingestion, processing,</text>
+      <text x="155" y="425" fill="#8b949e" font-size="10" text-anchor="middle">storage, kafka, ml, frontend, monitoring)</text>
+
+      <rect x="300" y="355" width="200" height="80" rx="6" fill="#1a2332" stroke="#8b949e"/>
+      <text x="400" y="375" fill="#8b949e" font-size="13" font-weight="700" text-anchor="middle">dashboard</text>
+      <text x="400" y="395" fill="#8b949e" font-size="10" text-anchor="middle">Kubernetes Dashboard</text>
+      <text x="400" y="410" fill="#8b949e" font-size="10" text-anchor="middle">Web UI for cluster mgmt</text>
+
+      <rect x="520" y="355" width="200" height="80" rx="6" fill="#1a2332" stroke="#8b949e"/>
+      <text x="620" y="375" fill="#8b949e" font-size="13" font-weight="700" text-anchor="middle">kserve</text>
+      <text x="620" y="395" fill="#8b949e" font-size="10" text-anchor="middle">KServe controller</text>
+      <text x="620" y="410" fill="#8b949e" font-size="10" text-anchor="middle">Cert-Manager</text>
+
+      <rect x="740" y="355" width="230" height="80" rx="6" fill="#1a2332" stroke="#8b949e"/>
+      <text x="855" y="375" fill="#8b949e" font-size="13" font-weight="700" text-anchor="middle">kafka (Strimzi)</text>
+      <text x="855" y="395" fill="#8b949e" font-size="10" text-anchor="middle">Strimzi Operator</text>
+      <text x="855" y="410" fill="#8b949e" font-size="10" text-anchor="middle">Kafka + KafkaNodePool CRDs</text>
+      <text x="855" y="425" fill="#8b949e" font-size="10" text-anchor="middle">KafkaTopic CRDs</text>
+
+      <!-- External access -->
+      <rect x="30" y="455" width="940" height="30" rx="4" fill="#2d333b" stroke="#ffa657" stroke-dasharray="4"/>
+      <text x="500" y="475" fill="#ffa657" font-size="11" text-anchor="middle">External Access: Frontend (NodePort 30080) | Grafana (NodePort 30300) | MinIO Console (port-forward :9001)</text>
+    </svg>
+  </div>
+
+  <h3>CronJob Schedule</h3>
+  <table>
+    <tr><th>CronJob</th><th>Namespace</th><th>Schedule</th><th>Purpose</th><th>Resources</th></tr>
+    <tr><td>Historical Ingest</td><td>ingestion</td><td>Sun 02:00 UTC</td><td>Weekly historical backfill</td><td>200m-1000m CPU, 512Mi-1Gi</td></tr>
+    <tr><td>Intraday Ingest</td><td>ingestion</td><td>*/5 M-F market hours</td><td>5-minute intraday quotes</td><td>100m-500m CPU, 256Mi-512Mi</td></tr>
+    <tr><td>ML Training</td><td>ml</td><td>Sun 03:00 UTC</td><td>Weekly model training (60+ configs)</td><td>4-16 CPU, 8-16Gi RAM</td></tr>
+    <tr><td>Drift Detection</td><td>ml</td><td>M-F 22:00 UTC</td><td>Daily drift check + auto-retrain</td><td>200m-1000m CPU, 512Mi-1Gi</td></tr>
+    <tr><td>Feast Materialize</td><td>ml</td><td>M-F 18:30 ET</td><td>Incremental feature materialization</td><td>500m-2000m CPU, 512Mi-2Gi</td></tr>
+    <tr><td>DB Backup</td><td>storage</td><td>Daily</td><td>PostgreSQL backup to MinIO</td><td>Configurable</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- GITOPS -->
+<!-- ============================================================ -->
+<section id="gitops">
+  <h2>14. ArgoCD GitOps</h2>
+  <p>ArgoCD manages declarative deployment of all Kubernetes resources from the Git repository. A root application syncs 7 child applications, each targeting a specific namespace and manifest directory.</p>
+
+  <div class="card">
+    <table>
+      <tr><th>Application</th><th>Namespace</th><th>Source Path</th><th>Manages</th></tr>
+      <tr><td>root-app</td><td>argocd</td><td>k8s/argocd/</td><td>All child applications</td></tr>
+      <tr><td>app-ingestion</td><td>ingestion</td><td>k8s/ingestion/</td><td>FastAPI, CronJobs</td></tr>
+      <tr><td>app-processing</td><td>processing</td><td>k8s/processing/</td><td>Kafka Consumer</td></tr>
+      <tr><td>app-storage</td><td>storage</td><td>k8s/storage/</td><td>PostgreSQL, Redis, MinIO</td></tr>
+      <tr><td>app-kafka</td><td>storage</td><td>k8s/kafka/</td><td>Strimzi, Kafka cluster, topics</td></tr>
+      <tr><td>app-ml</td><td>ml</td><td>k8s/ml/</td><td>Training, KServe, Feast</td></tr>
+      <tr><td>app-frontend</td><td>frontend</td><td>k8s/frontend/</td><td>React deployment</td></tr>
+      <tr><td>app-monitoring</td><td>monitoring</td><td>k8s/monitoring/</td><td>Prometheus, Grafana, Loki, AlertManager</td></tr>
+    </table>
+  </div>
+  <p><strong>Expansion:</strong> Add Argo Rollouts for canary/blue-green deployments, ArgoCD notifications for Slack, image updater for automatic image tag promotion, ApplicationSets for multi-cluster deployment.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- DATABASE -->
+<!-- ============================================================ -->
+<section id="database">
+  <h2>15. Database Schema &amp; Migrations</h2>
+
+  <div class="diagram-container">
+    <div class="diagram-title">Database Entity Relationship Diagram</div>
+    <svg viewBox="0 0 1000 450" xmlns="http://www.w3.org/2000/svg">
+      <!-- stocks -->
+      <rect x="20" y="20" width="220" height="130" rx="6" fill="#1a2d1a" stroke="#7ee787"/>
+      <text x="130" y="42" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">stocks</text>
+      <line x1="20" y1="50" x2="240" y2="50" stroke="#30363d"/>
+      <text x="35" y="68" fill="#ffa657" font-size="10">PK ticker VARCHAR</text>
+      <text x="35" y="84" fill="#8b949e" font-size="10">company_name, sector</text>
+      <text x="35" y="100" fill="#8b949e" font-size="10">industry, market_cap</text>
+      <text x="35" y="116" fill="#8b949e" font-size="10">is_active, created_at</text>
+
+      <!-- ohlcv_daily -->
+      <rect x="280" y="20" width="220" height="130" rx="6" fill="#1a2d1a" stroke="#7ee787"/>
+      <text x="390" y="42" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">ohlcv_daily [Hypertable]</text>
+      <line x1="280" y1="50" x2="500" y2="50" stroke="#30363d"/>
+      <text x="295" y="68" fill="#ffa657" font-size="10">PK (ticker, date)</text>
+      <text x="295" y="84" fill="#8b949e" font-size="10">open, high, low, close</text>
+      <text x="295" y="100" fill="#8b949e" font-size="10">volume, vwap</text>
+      <text x="295" y="116" fill="#8b949e" font-size="10">Chunk: monthly | Compress: 7d</text>
+      <text x="295" y="132" fill="#8b949e" font-size="10">Retention: 2 years</text>
+
+      <!-- ohlcv_intraday -->
+      <rect x="540" y="20" width="220" height="130" rx="6" fill="#1a2d1a" stroke="#7ee787"/>
+      <text x="650" y="42" fill="#7ee787" font-size="13" font-weight="700" text-anchor="middle">ohlcv_intraday [Hypertable]</text>
+      <line x1="540" y1="50" x2="760" y2="50" stroke="#30363d"/>
+      <text x="555" y="68" fill="#ffa657" font-size="10">PK (ticker, timestamp)</text>
+      <text x="555" y="84" fill="#8b949e" font-size="10">open, high, low, close</text>
+      <text x="555" y="100" fill="#8b949e" font-size="10">volume, vwap</text>
+      <text x="555" y="116" fill="#8b949e" font-size="10">Chunk: daily | Compress: 3d</text>
+
+      <!-- model_registry -->
+      <rect x="20" y="180" width="220" height="130" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="130" y="202" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">model_registry</text>
+      <line x1="20" y1="210" x2="240" y2="210" stroke="#30363d"/>
+      <text x="35" y="228" fill="#ffa657" font-size="10">PK model_id SERIAL</text>
+      <text x="35" y="244" fill="#8b949e" font-size="10">model_name, version</text>
+      <text x="35" y="260" fill="#8b949e" font-size="10">metrics_json, is_active</text>
+      <text x="35" y="276" fill="#8b949e" font-size="10">traffic_weight (A/B)</text>
+      <text x="35" y="292" fill="#8b949e" font-size="10">created_at, updated_at</text>
+
+      <!-- predictions -->
+      <rect x="280" y="180" width="220" height="130" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="390" y="202" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">predictions</text>
+      <line x1="280" y1="210" x2="500" y2="210" stroke="#30363d"/>
+      <text x="295" y="228" fill="#ffa657" font-size="10">PK id SERIAL</text>
+      <text x="295" y="244" fill="#8b949e" font-size="10">ticker, model_id (FK)</text>
+      <text x="295" y="260" fill="#8b949e" font-size="10">prediction_date, predicted_date</text>
+      <text x="295" y="276" fill="#8b949e" font-size="10">predicted_price, confidence</text>
+      <text x="295" y="292" fill="#8b949e" font-size="10">horizon_days</text>
+
+      <!-- drift_logs -->
+      <rect x="540" y="180" width="220" height="130" rx="6" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="650" y="202" fill="#d2a8ff" font-size="13" font-weight="700" text-anchor="middle">drift_logs</text>
+      <line x1="540" y1="210" x2="760" y2="210" stroke="#30363d"/>
+      <text x="555" y="228" fill="#ffa657" font-size="10">PK id SERIAL</text>
+      <text x="555" y="244" fill="#8b949e" font-size="10">drift_type (data/concept/pred)</text>
+      <text x="555" y="260" fill="#8b949e" font-size="10">severity (low/medium/high)</text>
+      <text x="555" y="276" fill="#8b949e" font-size="10">details_json (features, stats)</text>
+      <text x="555" y="292" fill="#8b949e" font-size="10">detected_at</text>
+
+      <!-- ab_test_assignments -->
+      <rect x="20" y="340" width="220" height="100" rx="6" fill="#1a2332" stroke="#79c0ff"/>
+      <text x="130" y="362" fill="#79c0ff" font-size="13" font-weight="700" text-anchor="middle">ab_test_assignments</text>
+      <line x1="20" y1="370" x2="240" y2="370" stroke="#30363d"/>
+      <text x="35" y="388" fill="#ffa657" font-size="10">PK id SERIAL</text>
+      <text x="35" y="404" fill="#8b949e" font-size="10">ticker, model_id, horizon_days</text>
+      <text x="35" y="420" fill="#8b949e" font-size="10">predicted_price, actual_price</text>
+
+      <!-- Feast tables -->
+      <rect x="280" y="340" width="480" height="100" rx="6" fill="#3b2218" stroke="#ffa657"/>
+      <text x="520" y="362" fill="#ffa657" font-size="13" font-weight="700" text-anchor="middle">Feast Offline Store Tables</text>
+      <line x1="280" y1="370" x2="760" y2="370" stroke="#30363d"/>
+      <text x="295" y="388" fill="#8b949e" font-size="10">feast_ohlcv_stats (ticker, date, open, high, low, close, volume, daily_return, vwap)</text>
+      <text x="295" y="404" fill="#8b949e" font-size="10">feast_technical_indicators (ticker, date, rsi_14, macd_line, macd_signal, bb_*, atr_14, adx_14, ema_20, obv)</text>
+      <text x="295" y="420" fill="#8b949e" font-size="10">feast_lag_features (ticker, date, lag_1..lag_21, rolling_mean/std_5/10/21)</text>
+
+      <!-- Continuous aggregates -->
+      <rect x="800" y="20" width="180" height="90" rx="6" fill="#2d333b" stroke="#58a6ff" stroke-dasharray="4"/>
+      <text x="890" y="42" fill="#58a6ff" font-size="11" font-weight="700" text-anchor="middle">Continuous Aggregates</text>
+      <text x="890" y="62" fill="#8b949e" font-size="10" text-anchor="middle">ohlcv_daily_1h_agg</text>
+      <text x="890" y="78" fill="#8b949e" font-size="10" text-anchor="middle">ohlcv_daily_agg</text>
+      <text x="890" y="94" fill="#8b949e" font-size="10" text-anchor="middle">(auto-refresh 30min)</text>
+
+      <!-- Relationships -->
+      <line x1="240" y1="85" x2="278" y2="85" stroke="#7ee787" stroke-width="1.5" stroke-dasharray="4"/>
+      <line x1="240" y1="245" x2="278" y2="245" stroke="#d2a8ff" stroke-width="1.5" stroke-dasharray="4"/>
+    </svg>
+  </div>
+
+  <h3>Alembic Migrations</h3>
+  <table>
+    <tr><th>Migration</th><th>File</th><th>Purpose</th></tr>
+    <tr><td>001</td><td>services/api/alembic/versions/001_initial_schema.py</td><td>Create all tables + TimescaleDB hypertables</td></tr>
+    <tr><td>002</td><td>db/migrations/002_rbac_roles.sql</td><td>Database roles (stockuser, stock_readonly, stock_writer)</td></tr>
+    <tr><td>003</td><td>db/migrations/003_feature_store.sql</td><td>Feast offline store preparation</td></tr>
+    <tr><td>004</td><td>db/migrations/004_ab_testing.sql</td><td>A/B test tracking schema</td></tr>
+    <tr><td>005</td><td>services/api/alembic/versions/005_timescaledb_olap.py</td><td>Continuous aggregates, compression, retention policies</td></tr>
+    <tr><td>F001</td><td>ml/alembic/versions/0001_feast_wide_format_tables.py</td><td>Feast wide-format offline tables</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- DRIFT DETECTION -->
+<!-- ============================================================ -->
+<section id="drift">
+  <h2>16. Drift Detection &amp; Auto-Retraining</h2>
+  <p>Daily drift detection runs at 10 PM UTC on weekdays, checking for data drift, concept drift, and prediction drift. When drift exceeds thresholds, automatic retraining is triggered.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>DataDriftDetector</h4>
+      <p>Compares recent feature distributions against the training baseline using KS-test (p-value &lt; 0.01 threshold) and PSI (Population Stability Index &gt; 0.2 threshold). Reports severity based on % of features drifted.</p>
+    </div>
+    <div class="card">
+      <h4>ConceptDriftDetector</h4>
+      <p>Monitors the relationship between features and target variable. Detects when the underlying pattern (e.g., which features predict returns) changes, even if individual feature distributions remain stable.</p>
+    </div>
+    <div class="card">
+      <h4>PredictionDriftDetector</h4>
+      <p>Compares prediction distribution against recent actuals. High prediction drift without data drift suggests model degradation.</p>
+    </div>
+    <div class="card">
+      <h4>Auto-Retraining Trigger</h4>
+      <p>When drift exceeds thresholds, the trigger module launches a full training pipeline with <code>--skip-shap</code> for faster turnaround. Logs all decisions to <code>drift_logs</code> table.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- A/B TESTING -->
+<!-- ============================================================ -->
+<section id="ab-testing">
+  <h2>17. A/B Testing Infrastructure</h2>
+  <p>The platform supports canary model deployments via KServe's dual InferenceService setup. The API routes requests to primary vs. canary based on configurable traffic weights stored in the <code>model_registry</code> table.</p>
+
+  <div class="flow-steps">
+    <div class="flow-step" style="border-color:#ffa657">Request arrives</div>
+    <span class="flow-arrow">&#8594;</span>
+    <div class="flow-step" style="border-color:#d2a8ff">AB Service selects model</div>
+    <span class="flow-arrow">&#8594;</span>
+    <div class="flow-step" style="border-color:#58a6ff">Route to KServe endpoint</div>
+    <span class="flow-arrow">&#8594;</span>
+    <div class="flow-step" style="border-color:#7ee787">Log assignment</div>
+    <span class="flow-arrow">&#8594;</span>
+    <div class="flow-step" style="border-color:#ff7b72">Evaluate later (actual vs predicted)</div>
+  </div>
+
+  <p><strong>Configuration:</strong> <code>AB_TESTING_ENABLED</code> env var, <code>traffic_weight</code> column in model_registry, separate KServe endpoints for primary and canary.</p>
+  <p><strong>Expansion:</strong> Multi-armed bandit for automatic traffic allocation, Thompson sampling, per-ticker experiments, statistical significance testing before promotion.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SCRIPTS -->
+<!-- ============================================================ -->
+<section id="scripts">
+  <h2>18. Deployment &amp; Operational Scripts</h2>
+  <table>
+    <tr><th>Script</th><th>Purpose</th><th>When to Use</th></tr>
+    <tr><td><code>setup-minikube.sh</code></td><td>Bootstrap Minikube cluster with required addons (CNI, CRI, storage)</td><td>First-time cluster setup</td></tr>
+    <tr><td><code>deploy-all.sh</code></td><td>Deploy all K8s manifests in dependency order (Strimzi &rarr; Storage &rarr; Kafka &rarr; Ingestion &rarr; ML &rarr; Frontend &rarr; Monitoring)</td><td>Full deployment or major updates</td></tr>
+    <tr><td><code>seed-data.sh</code></td><td>Populate stock universe and trigger initial historical backfill</td><td>After fresh deployment</td></tr>
+    <tr><td><code>submit-pipeline.sh</code></td><td>Trigger Kubeflow training pipeline manually</td><td>Ad-hoc model retraining</td></tr>
+    <tr><td><code>validate-v3.sh</code></td><td>E2E validation: data ingestion, inference, drift detection</td><td>Post-deployment smoke test</td></tr>
+    <tr><td><code>validate-argocd.sh</code></td><td>Check ArgoCD sync status for all applications</td><td>GitOps health check</td></tr>
+    <tr><td><code>test-production.sh</code></td><td>Production environment testing suite</td><td>Before/after production changes</td></tr>
+    <tr><td><code>run-production-e2e.sh</code></td><td>Full production E2E test suite (Playwright)</td><td>Regression testing</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- TESTING -->
+<!-- ============================================================ -->
+<section id="testing">
+  <h2>19. Testing Infrastructure</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>API Unit Tests (21 files)</h4>
+      <p>pytest-based tests covering all routers, services, and integration points. Includes health checks, prediction logic, Kafka producer, KServe client, analytics endpoints, market data, and Yahoo Finance fetching.</p>
+    </div>
+    <div class="card">
+      <h4>Kafka Consumer Tests (5 files)</h4>
+      <p>Tests for consumer main loop, message processor batching, DB writer upserts, metrics exposure, and configuration loading.</p>
+    </div>
+    <div class="card">
+      <h4>Flink Job Tests (11 files)</h4>
+      <p>Unit tests for OHLCV normalizer logic, indicator computation (EMA, RSI, MACD), and Feast writer batch pushing. Tests pure Python logic extracted from Flink jobs.</p>
+    </div>
+    <div class="card">
+      <h4>Integration Tests (4 suites)</h4>
+      <p>End-to-end flows: ingest-to-db, pipeline-to-serving, api-to-frontend, drift-cycle. Validate cross-service data flow.</p>
+    </div>
+    <div class="card">
+      <h4>E2E Tests (Playwright 1.58)</h4>
+      <p>Browser-based tests for frontend pages, API responses, Grafana dashboard rendering, Prometheus target health, and production environment validation.</p>
+    </div>
+    <div class="card">
+      <h4>ML Tests</h4>
+      <p>Tests for Feast apply, model registry operations, cross-validation, ensemble building, and predictor output format.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- TECH STACK -->
+<!-- ============================================================ -->
+<section id="tech-stack">
+  <h2>20. Complete Technology Stack</h2>
+
+  <div class="diagram-container">
+    <div class="diagram-title">Technology Stack Overview</div>
+    <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+      <!-- Layers -->
+      <rect x="20" y="20" width="960" height="80" rx="8" fill="#1a2332" stroke="#58a6ff"/>
+      <text x="50" y="50" fill="#58a6ff" font-size="15" font-weight="700">FRONTEND</text>
+      <text x="50" y="72" fill="#8b949e" font-size="12">React 18.3 | TypeScript | Vite 6 | TailwindCSS 4 | MUI 7 | Recharts 3.8 | React Query 5 | Axios | React Router 7 | Playwright 1.58</text>
+      <text x="50" y="88" fill="#8b949e" font-size="12">MUI X DataGrid 8.28 | MUI X Charts 8.28 | Nginx (production serving)</text>
+
+      <rect x="20" y="120" width="960" height="80" rx="8" fill="#1a2332" stroke="#7ee787"/>
+      <text x="50" y="150" fill="#7ee787" font-size="15" font-weight="700">API LAYER</text>
+      <text x="50" y="172" fill="#8b949e" font-size="12">Python 3.11 | FastAPI 0.111 | Uvicorn 0.29 | Pydantic | SQLAlchemy 2.0 | asyncpg | Confluent Kafka 2.4 | httpx</text>
+      <text x="50" y="188" fill="#8b949e" font-size="12">Redis 5+ | boto3 1.37 | WebSockets | Prometheus Instrumentator 7.0 | yfinance 0.2.38 | Alembic 1.13</text>
+
+      <rect x="20" y="220" width="960" height="80" rx="8" fill="#1a2332" stroke="#d2a8ff"/>
+      <text x="50" y="250" fill="#d2a8ff" font-size="15" font-weight="700">ML / DATA SCIENCE</text>
+      <text x="50" y="272" fill="#8b949e" font-size="12">scikit-learn 1.4 | XGBoost 3.2 | LightGBM 4.6 | CatBoost 1.2 | SHAP 0.51 | Pandas 2.2 | NumPy 2.0 | PyArrow 23</text>
+      <text x="50" y="288" fill="#8b949e" font-size="12">Feast 0.61 (feature store) | Kubeflow Pipelines (orchestration) | MLServer 1.6 (KServe runtime)</text>
+
+      <rect x="20" y="320" width="960" height="80" rx="8" fill="#1a2332" stroke="#ffa657"/>
+      <text x="50" y="350" fill="#ffa657" font-size="15" font-weight="700">STREAM PROCESSING</text>
+      <text x="50" y="372" fill="#8b949e" font-size="12">Apache Kafka 3.7 (Strimzi operator, KRaft) | Apache Flink 1.19 (PyFlink, Table API, DataStream)</text>
+      <text x="50" y="388" fill="#8b949e" font-size="12">RocksDB state backend | EXACTLY_ONCE checkpoints | Custom UDAFs (EMA, RSI, MACD)</text>
+
+      <rect x="20" y="420" width="960" height="60" rx="8" fill="#1a2332" stroke="#ff7b72"/>
+      <text x="50" y="450" fill="#ff7b72" font-size="15" font-weight="700">STORAGE</text>
+      <text x="50" y="470" fill="#8b949e" font-size="12">PostgreSQL 15 + TimescaleDB (hypertables, continuous aggregates, compression) | Redis 7 (LRU cache + Feast online) | MinIO (S3 object store)</text>
+
+      <rect x="20" y="500" width="960" height="80" rx="8" fill="#1a2332" stroke="#d29922"/>
+      <text x="50" y="530" fill="#d29922" font-size="15" font-weight="700">INFRASTRUCTURE &amp; OBSERVABILITY</text>
+      <text x="50" y="552" fill="#8b949e" font-size="12">Kubernetes (Minikube) | Docker | ArgoCD (GitOps) | KServe (model serving) | Cert-Manager | Kubernetes Dashboard</text>
+      <text x="50" y="568" fill="#8b949e" font-size="12">Prometheus 2.51 | Grafana 10.4 | Loki 2.9 | AlertManager | Promtail (DaemonSet) | Strimzi Operator | Flink Operator</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- EXPANSION -->
+<!-- ============================================================ -->
+<section id="expansion">
+  <h2>21. Expansion Opportunities</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>Multi-Asset Support</h4>
+      <p>Extend beyond equities to cryptocurrencies (Binance/Coinbase API), forex (OANDA), commodities (CME), and fixed income. Each asset class needs its own feature engineering pipeline and market calendar.</p>
+    </div>
+    <div class="card">
+      <h4>Deep Learning Models</h4>
+      <p>Add LSTM networks, Temporal Fusion Transformers, N-BEATS, and attention-based architectures. Requires GPU nodes in K8s (nvidia-device-plugin) and ONNX export for serving.</p>
+    </div>
+    <div class="card">
+      <h4>Alternative Data Integration</h4>
+      <p>Incorporate news sentiment (FinBERT), social media signals (Twitter/Reddit NLP), options flow data, insider trading filings (SEC EDGAR), and satellite imagery for commodity predictions.</p>
+    </div>
+    <div class="card">
+      <h4>Portfolio Optimization</h4>
+      <p>Add a portfolio management layer with mean-variance optimization, risk parity, Black-Litterman, and RL-based position sizing (PPO/A2C agents).</p>
+    </div>
+    <div class="card">
+      <h4>Real-Time Inference</h4>
+      <p>Move from batch predictions to real-time inference triggered by Flink events. Feature vectors computed by Indicator Stream can feed directly into KServe for sub-second predictions.</p>
+    </div>
+    <div class="card">
+      <h4>Multi-Cluster Deployment</h4>
+      <p>Extend beyond Minikube to EKS/GKE/AKS with Terraform IaC, multi-region failover, and ArgoCD ApplicationSets for fleet management.</p>
+    </div>
+    <div class="card">
+      <h4>Distributed Tracing</h4>
+      <p>Add Jaeger or Grafana Tempo for end-to-end request tracing across services. OpenTelemetry instrumentation for FastAPI, Flink, and Kafka consumer.</p>
+    </div>
+    <div class="card">
+      <h4>Data Quality Framework</h4>
+      <p>Add Great Expectations or Deequ for automated data quality checks at ingestion, after Flink processing, and before ML training.</p>
+    </div>
+    <div class="card">
+      <h4>Feature Platform</h4>
+      <p>Extend Feast with on-demand transformations, feature validation, data quality monitoring, feature lineage, and a feature discovery UI.</p>
+    </div>
+    <div class="card">
+      <h4>CI/CD Pipeline</h4>
+      <p>Add GitHub Actions or Tekton for automated testing, image building, vulnerability scanning, and promotion through staging environments.</p>
+    </div>
+    <div class="card">
+      <h4>User Authentication</h4>
+      <p>Add OAuth2/OIDC (Keycloak, Auth0) for user authentication, RBAC for API access, and JWT tokens for frontend session management.</p>
+    </div>
+    <div class="card">
+      <h4>Horizontal Scaling</h4>
+      <p>Add Horizontal Pod Autoscalers (HPA) for API, Kafka consumer, and KServe. KEDA for event-driven scaling based on Kafka lag or prediction queue depth.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PROJECT CHART -->
+<!-- ============================================================ -->
+<section id="project-chart">
+  <h2>22. Project Dependency &amp; Component Interaction Map</h2>
+
+  <div class="diagram-container">
+    <div class="diagram-title">Service Dependency Graph</div>
+    <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="dep-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#58a6ff"/></marker>
+      </defs>
+
+      <!-- Nodes -->
+      <circle cx="500" cy="80" r="45" fill="#3b2218" stroke="#ffa657" stroke-width="2"/>
+      <text x="500" y="76" fill="#ffa657" font-size="11" font-weight="700" text-anchor="middle">Yahoo</text>
+      <text x="500" y="92" fill="#ffa657" font-size="10" text-anchor="middle">Finance</text>
+
+      <circle cx="300" cy="200" r="50" fill="#1f3a1f" stroke="#7ee787" stroke-width="2"/>
+      <text x="300" y="196" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">FastAPI</text>
+      <text x="300" y="212" fill="#8b949e" font-size="10" text-anchor="middle">:8000</text>
+
+      <circle cx="700" cy="200" r="45" fill="#3b2218" stroke="#ffa657" stroke-width="2"/>
+      <text x="700" y="196" fill="#ffa657" font-size="12" font-weight="700" text-anchor="middle">Kafka</text>
+      <text x="700" y="212" fill="#8b949e" font-size="10" text-anchor="middle">:9092</text>
+
+      <circle cx="500" cy="320" r="50" fill="#1a2d1a" stroke="#7ee787" stroke-width="2"/>
+      <text x="500" y="316" fill="#7ee787" font-size="12" font-weight="700" text-anchor="middle">Timescale</text>
+      <text x="500" y="332" fill="#8b949e" font-size="10" text-anchor="middle">DB :5432</text>
+
+      <circle cx="150" cy="320" r="40" fill="#2d1a1a" stroke="#ff7b72" stroke-width="2"/>
+      <text x="150" y="316" fill="#ff7b72" font-size="12" font-weight="700" text-anchor="middle">Redis</text>
+      <text x="150" y="332" fill="#8b949e" font-size="10" text-anchor="middle">:6379</text>
+
+      <circle cx="850" cy="320" r="40" fill="#3b2218" stroke="#ffa657" stroke-width="2"/>
+      <text x="850" y="316" fill="#ffa657" font-size="12" font-weight="700" text-anchor="middle">MinIO</text>
+      <text x="850" y="332" fill="#8b949e" font-size="10" text-anchor="middle">:9000</text>
+
+      <circle cx="700" cy="380" r="35" fill="#2d1a3b" stroke="#d2a8ff" stroke-width="2"/>
+      <text x="700" y="376" fill="#d2a8ff" font-size="10" font-weight="700" text-anchor="middle">Flink</text>
+      <text x="700" y="390" fill="#8b949e" font-size="9" text-anchor="middle">3 jobs</text>
+
+      <circle cx="900" cy="200" r="35" fill="#1a2332" stroke="#79c0ff" stroke-width="2"/>
+      <text x="900" y="196" fill="#79c0ff" font-size="10" font-weight="700" text-anchor="middle">Kafka</text>
+      <text x="900" y="210" fill="#8b949e" font-size="9" text-anchor="middle">Consumer</text>
+
+      <circle cx="300" cy="450" r="45" fill="#2d1a3b" stroke="#d2a8ff" stroke-width="2"/>
+      <text x="300" y="446" fill="#d2a8ff" font-size="12" font-weight="700" text-anchor="middle">ML</text>
+      <text x="300" y="462" fill="#8b949e" font-size="10" text-anchor="middle">Pipeline</text>
+
+      <circle cx="500" cy="480" r="40" fill="#2d1a3b" stroke="#d2a8ff" stroke-width="2"/>
+      <text x="500" y="476" fill="#d2a8ff" font-size="11" font-weight="700" text-anchor="middle">Feast</text>
+      <text x="500" y="492" fill="#8b949e" font-size="10" text-anchor="middle">:6566</text>
+
+      <circle cx="700" cy="500" r="40" fill="#1f3a1f" stroke="#7ee787" stroke-width="2"/>
+      <text x="700" y="496" fill="#7ee787" font-size="11" font-weight="700" text-anchor="middle">KServe</text>
+      <text x="700" y="512" fill="#8b949e" font-size="10" text-anchor="middle">:80</text>
+
+      <circle cx="100" cy="180" r="40" fill="#1a2332" stroke="#58a6ff" stroke-width="2"/>
+      <text x="100" y="176" fill="#58a6ff" font-size="11" font-weight="700" text-anchor="middle">React</text>
+      <text x="100" y="192" fill="#8b949e" font-size="10" text-anchor="middle">Frontend</text>
+
+      <circle cx="150" cy="530" r="35" fill="#3b3518" stroke="#d29922" stroke-width="2"/>
+      <text x="150" y="526" fill="#d29922" font-size="10" font-weight="700" text-anchor="middle">Prometheus</text>
+      <text x="150" y="540" fill="#8b949e" font-size="9" text-anchor="middle">Grafana</text>
+
+      <!-- Edges -->
+      <line x1="500" y1="127" x2="320" y2="155" stroke="#ffa657" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="350" y1="200" x2="653" y2="200" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="700" y1="247" x2="700" y2="343" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="700" y1="247" x2="540" y2="282" stroke="#7ee787" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="747" y1="200" x2="863" y2="200" stroke="#79c0ff" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="900" y1="237" x2="540" y2="292" stroke="#7ee787" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+
+      <line x1="700" y1="417" x2="530" y2="450" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="700" y1="417" x2="850" y2="362" stroke="#ffa657" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="665" y1="395" x2="190" y2="330" stroke="#ff7b72" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+
+      <line x1="300" y1="252" x2="480" y2="275" stroke="#7ee787" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="260" y1="220" x2="190" y2="290" stroke="#ff7b72" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+
+      <line x1="470" y1="356" x2="320" y2="407" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="300" y1="407" x2="480" y2="445" stroke="#d2a8ff" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="300" y1="497" x2="660" y2="500" stroke="#7ee787" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="345" y1="450" x2="810" y2="340" stroke="#ffa657" stroke-width="1" stroke-dasharray="4"/>
+
+      <line x1="140" y1="190" x2="250" y2="200" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+      <line x1="260" y1="230" x2="700" y2="462" stroke="#7ee787" stroke-width="1" stroke-dasharray="4"/>
+
+      <line x1="150" y1="497" x2="300" y2="250" stroke="#d29922" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="185" y1="530" x2="660" y2="395" stroke="#d29922" stroke-width="1" stroke-dasharray="4"/>
+      <line x1="185" y1="540" x2="860" y2="210" stroke="#d29922" stroke-width="1" stroke-dasharray="4"/>
+
+      <!-- Legend -->
+      <rect x="20" y="570" width="960" height="25" rx="4" fill="#1a2332" stroke="#30363d"/>
+      <line x1="40" y1="582" x2="70" y2="582" stroke="#58a6ff" stroke-width="2"/>
+      <text x="78" y="587" fill="#8b949e" font-size="10">Direct dependency</text>
+      <line x1="200" y1="582" x2="230" y2="582" stroke="#d29922" stroke-width="1" stroke-dasharray="4"/>
+      <text x="238" y="587" fill="#8b949e" font-size="10">Metrics scraping</text>
+      <circle cx="370" r="6" cy="582" fill="#1f3a1f" stroke="#7ee787"/>
+      <text x="382" y="587" fill="#8b949e" font-size="10">Service</text>
+      <circle cx="450" r="6" cy="582" fill="#2d1a3b" stroke="#d2a8ff"/>
+      <text x="462" y="587" fill="#8b949e" font-size="10">ML/Processing</text>
+      <circle cx="560" r="6" cy="582" fill="#3b2218" stroke="#ffa657"/>
+      <text x="572" y="587" fill="#8b949e" font-size="10">Data/Storage</text>
+    </svg>
+  </div>
+
+  <h3>Docker Compose Port Mapping</h3>
+  <table>
+    <tr><th>Service</th><th>Host Port</th><th>Container Port</th><th>URL</th></tr>
+    <tr><td>FastAPI</td><td>8010</td><td>8000</td><td>http://localhost:8010</td></tr>
+    <tr><td>Frontend</td><td>3002</td><td>80</td><td>http://localhost:3002</td></tr>
+    <tr><td>PostgreSQL</td><td>5436</td><td>5432</td><td>postgresql://localhost:5436</td></tr>
+    <tr><td>Redis</td><td>6380</td><td>6379</td><td>redis://localhost:6380</td></tr>
+    <tr><td>Kafka</td><td>9092</td><td>9092</td><td>localhost:9092</td></tr>
+    <tr><td>Zookeeper</td><td>2181</td><td>2181</td><td>localhost:2181</td></tr>
+    <tr><td>Prometheus</td><td>9091</td><td>9090</td><td>http://localhost:9091</td></tr>
+    <tr><td>Grafana</td><td>3003</td><td>3000</td><td>http://localhost:3003</td></tr>
+    <tr><td>Loki</td><td>3101</td><td>3100</td><td>http://localhost:3101</td></tr>
+  </table>
+
+  <h3>Kubernetes NodePort Mapping</h3>
+  <table>
+    <tr><th>Service</th><th>NodePort</th><th>Access via Minikube</th></tr>
+    <tr><td>Frontend</td><td>30080</td><td><code>minikube service frontend -n frontend</code></td></tr>
+    <tr><td>Grafana</td><td>30300</td><td><code>minikube service grafana -n monitoring</code></td></tr>
+  </table>
+</section>
+
+<!-- Footer -->
+<div style="margin-top:80px; padding:40px 0; border-top:1px solid var(--border); text-align:center; color:var(--text-muted);">
+  <p>Stock Prediction Platform - Comprehensive Documentation</p>
+  <p style="font-size:13px;">Generated 2026-03-30 | 11 Microservices | 12 K8s Namespaces | 80+ YAML Manifests | 60+ ML Models</p>
+  <p style="font-size:13px;">FastAPI + React + Kafka + Flink + TimescaleDB + KServe + Feast + Prometheus + Grafana + ArgoCD</p>
+</div>
+
+</div>
+</body>
+</html>

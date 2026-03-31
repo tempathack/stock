@@ -128,7 +128,12 @@ async def load_model_comparison_from_db() -> list[dict] | None:
 
     query = sa_text("""
         SELECT model_name, version, metrics_json, trained_at, is_active
-        FROM model_registry
+        FROM (
+            SELECT DISTINCT ON (model_name, metrics_json->>'scaler_variant')
+                model_name, version, metrics_json, trained_at, is_active
+            FROM model_registry
+            ORDER BY model_name, metrics_json->>'scaler_variant', trained_at DESC NULLS LAST
+        ) deduped
         ORDER BY (metrics_json->>'oos_rmse')::numeric ASC NULLS LAST
     """)
 
@@ -150,7 +155,7 @@ async def load_model_comparison_from_db() -> list[dict] | None:
             "is_winner": metrics.get("is_winner", False),
             "is_active": raw.get("is_active", False),
             "oos_metrics": {
-                k: v for k, v in metrics.items()
+                k[4:]: v for k, v in metrics.items()
                 if k.startswith("oos_")
             },
             "fold_stability": metrics.get("fold_stability"),
