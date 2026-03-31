@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 71-03-PLAN.md — FastAPI WebSocket sentiment endpoint and Feast online service
-last_updated: "2026-03-31T09:01:15.063Z"
+stopped_at: Completed 71-04-PLAN.md — SentimentPanel frontend component, awaiting human checkpoint verification
+last_updated: "2026-03-31T09:05:41.370Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -326,10 +326,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 71]: sentiment_stream uses python3 (not 3.10) since no Feast dependency; sentiment_writer mirrors feast_writer pattern with only 4 value changes
 - [Phase 71]: Used run_in_threadpool for synchronous Feast reads inside async WS handler
 - [Phase 71]: Added FEAST_STORE_PATH to config.py Settings (Group 15) — required for FeatureStore instantiation
+- [Phase 71]: useSentimentSocket is independent hook (not useWebSocket wrapper) — per-ticker WS with exponential backoff and code-1000 cleanup
+- [Phase 71]: VADER compound score [-1, +1] mapped to LinearProgress [0, 100] via (score+1)/2*100 — neutral at 50% midpoint
 
 ## Last Session
 
-- **Stopped at:** Completed 71-03-PLAN.md — FastAPI WebSocket sentiment endpoint and Feast online service
+- **Stopped at:** Completed 71-04-PLAN.md — SentimentPanel frontend component, awaiting human checkpoint verification
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
