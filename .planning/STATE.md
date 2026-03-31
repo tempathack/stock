@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 73-04-PLAN.md — Domain 3 Kafka/Flink/Streaming section of 73-AUDIT.md populated
-last_updated: "2026-03-31T12:48:23.738Z"
+stopped_at: Completed 73-05-PLAN.md — Domain 4 Frontend section of 73-AUDIT.md populated
+last_updated: "2026-03-31T12:54:25.513Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -348,10 +348,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 73-03]: BaggingRegressor not in model_configs.py TREE_MODELS — 6 tree models present (RF, GB, HistGB, ExtraTrees, DT, AdaBoost); minor gap documented in Domain 2 audit
 - [Phase 73-03]: KF-07/KF-08 orphaned in REQUIREMENTS.md but confirmed present: evaluate_models and generate_comparison_report both in ml/pipelines/components/evaluator.py
 - [Phase 73]: Domain 3 Kafka/Flink audit: COMPLETE status — all 5 FlinkDeployment CRs, 5 Flink Python jobs, 4 KafkaTopic CRs, Phase 71 sentiment pipeline all confirmed
+- [Phase 73]: Phase 70 STATUS CONCLUSION: COMPLETE — StreamingFeaturesPanel confirmed imported and rendered in Dashboard.tsx Drawer by code inspection
+- [Phase 73]: Phase 71 STATUS: COMPLETE — SentimentPanel.tsx and useSentimentSocket.ts both exist and wired in Dashboard.tsx Drawer with exponential backoff reconnection
 
 ## Last Session
 
-- **Stopped at:** Completed 73-04-PLAN.md — Domain 3 Kafka/Flink/Streaming section of 73-AUDIT.md populated
+- **Stopped at:** Completed 73-05-PLAN.md — Domain 4 Frontend section of 73-AUDIT.md populated
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
