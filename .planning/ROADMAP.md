@@ -1488,7 +1488,7 @@ Plans:
 
 ### Phase 74: Frontend rendering bug fixes — models duplicate rows React key collision, treemap AAPL contrast, stock drawer wrong selection
 
-**Goal:** Fix all frontend rendering bugs identified in dashboard audit: duplicate model rows caused by React key collision, AAPL treemap cell text invisible due to contrast issue, stock drawer opening for wrong stock, and no content below the treemap fold on the dashboard.
+**Goal:** Fix all frontend rendering bugs identified in dashboard audit: duplicate model rows caused by React key collision, AAPL treemap cell text invisible due to contrast issue, and stock drawer opening for wrong stock. (Below-fold dashboard content deferred to Phase 76.)
 **Requirements**: FDASH-01, FDASH-02, FMOD-01
 **Depends on:** Phase 73
 **Plans:** 2 plans
