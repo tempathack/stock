@@ -168,6 +168,11 @@ function TreemapContent(props: Record<string, unknown>) {
 
   return (
     <g onClick={() => onSelectTicker(ticker)} style={{ cursor: "pointer" }}>
+      <defs>
+        <filter id="tile-text-shadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor="rgba(0,0,0,0.9)" floodOpacity="1" />
+        </filter>
+      </defs>
       {/* Base tile */}
       <rect
         x={x} y={y} width={width} height={height}
@@ -225,10 +230,11 @@ function TreemapContent(props: Record<string, unknown>) {
           y={y + height / 2 - (innerH > 38 ? pctFontSize / 2 + 2 : 0)}
           textAnchor="middle"
           dominantBaseline="central"
-          fill="#ffffff"
+          fill="#FFFFFF"
           fontSize={tickerFontSize}
           fontWeight="800"
           fontFamily="Inter, sans-serif"
+          filter="url(#tile-text-shadow)"
           style={{ letterSpacing: "0.04em" }}
         >
           {ticker}
@@ -242,10 +248,11 @@ function TreemapContent(props: Record<string, unknown>) {
           y={y + height / 2 + tickerFontSize / 2 + 4}
           textAnchor="middle"
           dominantBaseline="central"
-          fill={isPos ? "rgba(0,255,135,0.95)" : "rgba(255,100,140,0.95)"}
+          fill="#FFFFFF"
           fontSize={pctFontSize}
           fontWeight="700"
           fontFamily="JetBrains Mono, monospace"
+          filter="url(#tile-text-shadow)"
         >
           {isPos ? "+" : ""}{pct.toFixed(2)}%
         </text>
@@ -258,9 +265,10 @@ function TreemapContent(props: Record<string, unknown>) {
           y={y + height / 2 + tickerFontSize / 2 + pctFontSize + 7}
           textAnchor="middle"
           dominantBaseline="central"
-          fill="rgba(191,90,242,0.55)"
+          fill="rgba(191,90,242,0.8)"
           fontSize={7}
           fontFamily="Inter, sans-serif"
+          filter="url(#tile-text-shadow)"
           style={{ letterSpacing: "0.03em" }}
         >
           {name.length > 20 ? name.slice(0, 18) + "…" : name}
