@@ -363,3 +363,4 @@ Recommended wave execution:
 - Phases 64–69 added: v3.0 milestone — TimescaleDB OLAP, Argo CD GitOps, Feast feature store, Apache Flink stream processing, E2E integration, /analytics UI page
 - Phase 70 added: Display Flink-computed streaming features in the dashboard
 - Phase 71 added: High-frequency alternative data pipeline: news sentiment ingestion into Kafka, Flink streaming analysis, live dashboard
+- Phase 72 added: Grafana debug dashboards with Flink metrics integration
