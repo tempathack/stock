@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 72-02-PLAN.md — Flink 10-panel dashboard and datasource UID audit
-last_updated: "2026-03-31T11:54:35.620Z"
+stopped_at: Completed 70-01-PLAN.md — Streaming features API endpoint (GET /market/streaming-features/{ticker})
+last_updated: "2026-03-31T11:58:58.000Z"
 progress:
   total_phases: 63
   completed_phases: 26
   total_plans: 144
-  completed_plans: 60
+  completed_plans: 61
 ---
 
 # STATE.md — Project Memory
@@ -96,6 +96,9 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 ## Decisions
 
+- **Phase 70 Plan 01:** run_in_threadpool wraps synchronous Feast Redis client so get_streaming_features() is safe to call from async FastAPI handlers
+- **Phase 70 Plan 01:** available=True only when at least one of ema_20/rsi_14/macd_signal is non-None — handles Flink job not yet producing data
+- **Phase 70 Plan 01:** STREAMING_FEATURES_TTL=5 declared locally in market.py; separate from MARKET_INDICATORS_TTL=30
 - **Phase 1 Plan 01:** Created __init__.py for all ml/ subdirectories to ensure importability as Python packages
 - **Phase 1 Plan 01:** Used minimal stub pattern (docstring + future annotations only) per specification
 - [Phase 01]: Replaced full docker-compose.yml with stub-only definitions (image+ports) per plan specification

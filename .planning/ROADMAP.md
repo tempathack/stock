@@ -78,7 +78,7 @@
 | 67 | 3/3 | Complete   | 2026-03-30 | 3 |
 | 68 | 2/2 | Complete    | 2026-03-30 | 2 |
 | 69 | 2/2 | Complete    | 2026-03-30 | 2 |
-| 70 | Display Flink-computed streaming features in the dashboard | Surface live EMA-20, RSI-14, MACD signal from Feast Redis (Flink) in Dashboard Drawer with polling panel | TBD-01, TBD-02, TBD-03, TBD-04, TBD-05 | 2 |
+| 70 | 1/2 | In Progress|  | 2 |
 | 71 | 4/4 | Complete    | 2026-03-31 | 4 |
 | 72 | 2/2 | Complete   | 2026-03-31 | 2 |
 
@@ -1441,7 +1441,7 @@ Plans:
 
 **Depends on:** Phase 69
 
-**Plans:** 0 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 70 to break down)
