@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 71-04-PLAN.md — SentimentPanel frontend component human-verified
-last_updated: "2026-03-31T09:18:48.232Z"
+stopped_at: Completed 72-01-PLAN.md — Prometheus flink-jobs scrape job and Grafana datasource UID pinning
+last_updated: "2026-03-31T11:36:31.185Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 71 — high-frequency-alternative-data-pipeline-news-sentiment-ingestion-into-kafka-flink-streaming-analysis-live-dashboard
+**Current focus:** Phase 72 — grafana-debug-dashboards-with-flink-metrics-integration
 
 ## Current Status
 
@@ -329,10 +329,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 71]: useSentimentSocket is independent hook (not useWebSocket wrapper) — per-ticker WS with exponential backoff and code-1000 cleanup
 - [Phase 71]: VADER compound score [-1, +1] mapped to LinearProgress [0, 100] via (score+1)/2*100 — neutral at 50% midpoint
 - [Phase 71]: useSentimentSocket is an independent hook (not a useWebSocket wrapper) — single-ticker focus, exponential backoff with code-1000 cleanup suppresses reconnect storms on drawer close
+- [Phase 72-01]: Dedicated flink-jobs Prometheus scrape job scoped to flink namespace avoids double-scrape confusion and gives clean job label separation
+- [Phase 72-01]: Grafana Prometheus datasource UID pinned to 'prometheus' in provisioning YAML to ensure dashboard JSON uid references resolve correctly via GitOps
 
 ## Last Session
 
-- **Stopped at:** Completed 71-04-PLAN.md — SentimentPanel frontend component human-verified
+- **Stopped at:** Completed 72-01-PLAN.md — Prometheus flink-jobs scrape job and Grafana datasource UID pinning
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
