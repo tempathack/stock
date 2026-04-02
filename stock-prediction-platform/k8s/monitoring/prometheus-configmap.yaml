@@ -169,3 +169,17 @@ data:
             annotations:
               summary: "Kafka consumer lag is high on {{ $labels.topic }}/{{ $labels.partition }}"
               description: "Consumer lag for topic {{ $labels.topic }} partition {{ $labels.partition }} has exceeded 1000 messages for 10 minutes. Current lag: {{ $value }}."
+
+          - alert: HighPredictionLatencyP95
+            expr: |
+              histogram_quantile(
+                0.95,
+                sum(rate(prediction_latency_seconds_bucket[5m])) by (le)
+              ) > 8
+            for: 5m
+            labels:
+              severity: warning
+              team: platform
+            annotations:
+              summary: "ML prediction p95 latency exceeds 8s SLO"
+              description: "The p95 prediction latency has exceeded 8 seconds for 5 minutes. Current value: {{ $value | printf \"%.2f\" }}s."
