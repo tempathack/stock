@@ -1608,7 +1608,7 @@ Plans:
 **Goal:** Pin Loki datasource UID, provision Grafana unified alert rules via ConfigMap, and fix Promtail path glob so logs flow to Loki — enabling end-to-end Loki-backed alerting
 **Requirements**: LOKI-ALERT-01, LOKI-ALERT-02, LOKI-ALERT-03, LOKI-ALERT-04, LOKI-ALERT-05
 **Depends on:** Phase 83
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 84-01-PLAN.md — TDD test scaffold (5 tests for all LOKI-ALERT requirements)

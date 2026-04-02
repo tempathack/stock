@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 83-01-PLAN.md
-last_updated: "2026-04-02T22:55:58.598Z"
+stopped_at: Completed 84-01-PLAN.md
+last_updated: "2026-04-02T23:12:59.944Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 83 — fix-kafka-consumer-metrics-scraping-all-consumer-and-writer-panels-show-no-data-fix-exporter-gap
+**Current focus:** Phase 84 — fix-loki-alerting-datasource-misconfiguration-alert-rules-fail-to-load-from-loki
 
 ## Current Status
 
@@ -392,10 +392,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 82]: All 5 dashboard tests passed green immediately since plan 01 changes were already applied to grafana-dashboard-ml-perf.yaml
 - [Phase 83]: No RBAC changes needed: existing ClusterRole is cluster-scoped covering all namespaces including processing
 - [Phase 83]: Used ClusterIP Service (not NodePort/LoadBalancer) for kafka-consumer metrics — internal scraping only
+- [Phase 84-fix-loki-alerting-datasource-misconfiguration-alert-rules-fail-to-load-from-loki]: K8S_MONITORING resolved via 4x pathlib parent from tests/ — consistent with test_dashboard_json.py pattern
 
 ## Last Session
 
-- **Stopped at:** Completed 83-01-PLAN.md
+- **Stopped at:** Completed 84-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
