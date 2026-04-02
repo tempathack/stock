@@ -82,12 +82,16 @@
 | 71 | 4/4 | Complete    | 2026-03-31 | 4 |
 | 72 | 2/2 | Complete    | 2026-03-31 | 2 |
 | 73 | 7/7 | Complete    | 2026-03-31 | 7 |
+| 74–81 | Various hotfixes & Grafana fixes | Complete | 2026-04-02 | — |
+| 82 | Fix ML Prediction Latency Alerting — threshold line + histogram verify | MON-06, MON-08, MON-02 | 2 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
 - [ ] 70-02-PLAN.md — StreamingFeaturesPanel React component + Dashboard.tsx Drawer wiring
 - [ ] 72-01-PLAN.md — Prometheus flink-jobs scrape job + Grafana datasource UID pin
 - [ ] 72-02-PLAN.md — Flink dashboard 10-panel expansion + human verification
+- [ ] 82-01-PLAN.md — Grafana ML perf panel 2 threshold line + HighPredictionLatencyP95 alert rule
+- [ ] 82-02-PLAN.md — test_dashboard_json.py: 5 tests verifying threshold line + histogram sources
 
 ---
 
