@@ -5,6 +5,9 @@ import {
   Container,
   Drawer,
   Grid,
+  Skeleton,
+  TableCell,
+  TableRow,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -159,7 +162,34 @@ export default function Forecasts() {
     marketQuery.refetch();
   };
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return (
+      <Container maxWidth="xl">
+        <PageHeader
+          title="Stock Forecasts"
+          subtitle={`${horizon}-day price predictions for S&P 500 tickers`}
+        />
+        <Box sx={{ mb: 2, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
+          <HorizonToggle
+            horizons={availableHorizons}
+            selected={horizon}
+            onChange={setHorizon}
+            loading
+          />
+        </Box>
+        <Box sx={{ mt: 2 }}>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              variant="rectangular"
+              height={52}
+              sx={{ mb: 0.5, borderRadius: 1 }}
+            />
+          ))}
+        </Box>
+      </Container>
+    );
+  }
   if (isError)
     return (
       <ErrorFallback
