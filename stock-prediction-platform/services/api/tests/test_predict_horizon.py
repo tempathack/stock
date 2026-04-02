@@ -131,6 +131,46 @@ class TestLoadAvailableHorizons:
         assert result == {"horizons": [7], "default": 7}
 
 
+class TestHorizon14Support:
+    """Tests confirming that horizon=14 is accepted (76-03: add 14D horizon support)."""
+
+    @patch("app.routers.predict.get_bulk_live_predictions", return_value=None)
+    @patch("app.routers.predict.load_cached_predictions")
+    @patch("app.routers.predict.load_db_predictions")
+    def test_bulk_horizon_14_accepted(self, mock_db, mock_load, mock_live):
+        """GET /predict/bulk?horizon=14 returns HTTP 200 when AVAILABLE_HORIZONS includes 14.
+
+        This test exercises _validate_horizon against the real settings object.
+        It will FAIL (RED) while AVAILABLE_HORIZONS='1,7,30' and PASS (GREEN)
+        after config.py is updated to AVAILABLE_HORIZONS='1,7,14,30'.
+        """
+        sample_pred = {
+            "ticker": "AAPL",
+            "prediction_date": "2026-03-20",
+            "predicted_date": "2026-04-03",
+            "predicted_price": 0.0234,
+            "model_name": "Ridge_standard",
+            "confidence": None,
+            "horizon_days": 14,
+        }
+        mock_load.return_value = [sample_pred]
+        mock_db.return_value = None
+        resp = client.get("/predict/bulk?horizon=14")
+        assert resp.status_code == 200, (
+            f"Expected 200 for horizon=14 but got {resp.status_code}. "
+            "Update AVAILABLE_HORIZONS in config.py to '1,7,14,30'."
+        )
+
+    @patch("app.routers.predict.get_bulk_live_predictions", return_value=None)
+    def test_bulk_horizon_99_rejected(self, mock_live):
+        """GET /predict/bulk?horizon=99 returns HTTP 400 — confirms validation logic is active."""
+        resp = client.get("/predict/bulk?horizon=99")
+        assert resp.status_code == 400, (
+            f"Expected 400 for horizon=99 but got {resp.status_code}."
+        )
+        assert "99" in resp.json()["detail"]
+
+
 class TestCachedPredictionHorizon:
     """Unit tests for horizon-aware cached prediction loading."""
 
