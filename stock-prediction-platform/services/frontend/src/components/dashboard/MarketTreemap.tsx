@@ -1,8 +1,7 @@
-import { useMemo, useCallback, useState, useEffect } from "react";
-import { ResponsiveContainer, Treemap, Tooltip } from "recharts";
-import { Box, Stack, Typography } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import * as echarts from "echarts";
+import { Box, Chip, Stack, Typography } from "@mui/material";
 import type { TreemapSectorGroup } from "@/api";
-import { changePctToColor } from "@/utils/dashboardUtils";
 import MobileMarketList from "./MobileMarketList";
 
 interface MarketTreemapProps {
@@ -12,279 +11,12 @@ interface MarketTreemapProps {
   height?: number;
 }
 
-/* ── Tooltip ───────────────────────────────────────────── */
-function TreemapTooltipContent({
-  active,
-  payload,
-}: {
-  active?: boolean;
-  payload?: Array<{ payload: Record<string, unknown> }>;
-}) {
-  if (!active || !payload?.length) return null;
-  const d = payload[0]?.payload as Record<string, unknown> | undefined;
-  if (!d) return null;
-  const ticker = d.ticker as string | undefined;
-  if (!ticker) return null;
-
-  const name      = d.name as string;
-  const sector    = d.sector as string;
-  const lastClose = d.lastClose as number;
-  const pct       = d.dailyChangePct as number;
-  const isPos     = pct >= 0;
-  const pctColor  = isPos ? "#00E5FF" : "#BF5AF2";
-  const pctGlow   = isPos ? "rgba(0,229,255,0.6)" : "rgba(191,90,242,0.6)";
-
-  return (
-    <Box
-      sx={{
-        background: "rgba(13,10,36,0.95)",
-        backdropFilter: "blur(20px)",
-        border: `1px solid ${isPos ? "rgba(0,229,255,0.3)" : "rgba(191,90,242,0.3)"}`,
-        borderRadius: "12px",
-        px: 2,
-        py: 1.5,
-        boxShadow: `0 8px 32px rgba(0,0,0,0.7), 0 0 20px ${isPos ? "rgba(0,229,255,0.1)" : "rgba(191,90,242,0.1)"}`,
-      }}
-    >
-      <Typography
-        sx={{
-          fontFamily: '"Inter", sans-serif',
-          fontWeight: 800,
-          fontSize: "1rem",
-          color: "#F0EEFF",
-          letterSpacing: "0.05em",
-        }}
-      >
-        {ticker}
-      </Typography>
-      <Typography
-        sx={{
-          fontFamily: '"JetBrains Mono", monospace',
-          fontSize: "0.62rem",
-          color: "rgba(107,96,168,0.9)",
-          mb: 1,
-          maxWidth: 200,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {name} · {sector}
-      </Typography>
-      <Box sx={{ display: "flex", alignItems: "baseline", gap: 1.25 }}>
-        <Typography
-          sx={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: "0.9rem",
-            fontWeight: 600,
-            color: "#F0EEFF",
-          }}
-        >
-          ${lastClose.toFixed(2)}
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: "0.85rem",
-            fontWeight: 700,
-            color: pctColor,
-            textShadow: `0 0 8px ${pctGlow}`,
-          }}
-        >
-          {isPos ? "+" : ""}{pct.toFixed(2)}%
-        </Typography>
-      </Box>
-    </Box>
-  );
-}
-
-/* ── Cell renderer ─────────────────────────────────────── */
-function TreemapContent(props: Record<string, unknown>) {
-  const {
-    x, y, width, height,
-    ticker, name, dailyChangePct,
-    depth, selectedTicker, onSelectTicker,
-  } = props as {
-    x: number; y: number; width: number; height: number;
-    ticker?: string; name?: string; dailyChangePct?: number;
-    depth: number;
-    selectedTicker: string | null;
-    onSelectTicker: (t: string) => void;
-  };
-
-  if (depth === 0) return null;
-
-  /* depth=1: sector group */
-  if (depth === 1) {
-    return (
-      <g pointerEvents="none">
-        <rect
-          x={x} y={y} width={width} height={height}
-          fill="transparent"
-          stroke="rgba(13,10,36,0.9)"
-          strokeWidth={3}
-        />
-        {/* Sector label pill */}
-        {width > 60 && (
-          <>
-            <rect
-              x={x + 4} y={y + 4}
-              width={Math.min(width - 8, (name?.length ?? 0) * 6.5 + 12)}
-              height={16}
-              fill="rgba(13,10,36,0.75)"
-              rx={4}
-            />
-            <text
-              x={x + 10}
-              y={y + 13}
-              fill="rgba(191,90,242,0.9)"
-              fontSize={8}
-              fontWeight="700"
-              fontFamily="Inter, sans-serif"
-              letterSpacing="0.08em"
-            >
-              {(name ?? "").toUpperCase()}
-            </text>
-          </>
-        )}
-      </g>
-    );
-  }
-
-  /* depth=2: stock tile */
-  if (depth !== 2 || !ticker) return null;
-
-  const pct        = dailyChangePct ?? 0;
-  const fill       = changePctToColor(pct);
-  const isSelected = selectedTicker === ticker;
-  const isPos      = pct >= 0;
-
-  const pad    = 3;
-  const innerW = width - pad * 2;
-  const innerH = height - pad * 2;
-
-  const tickerFontSize = Math.min(18, Math.max(9, innerW / 3.5));
-  const pctFontSize    = tickerFontSize * 0.72;
-
-  return (
-    <g onClick={() => onSelectTicker(ticker)} style={{ cursor: "pointer" }}>
-      <defs>
-        <filter id="tile-text-shadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor="rgba(0,0,0,0.9)" floodOpacity="1" />
-        </filter>
-      </defs>
-      {/* Base tile */}
-      <rect
-        x={x} y={y} width={width} height={height}
-        fill={fill}
-        stroke="rgba(13,10,36,0.8)"
-        strokeWidth={1}
-        rx={3}
-      />
-
-      {/* Subtle top-edge shine */}
-      <rect
-        x={x + 1} y={y + 1} width={width - 2} height={2}
-        fill="rgba(255,255,255,0.08)"
-        rx={2}
-        pointerEvents="none"
-      />
-
-      {/* Bottom gradient overlay for text contrast */}
-      <rect
-        x={x} y={y + height * 0.55}
-        width={width} height={height * 0.45}
-        fill="rgba(0,0,0,0.22)"
-        pointerEvents="none"
-      />
-
-      {/* Selected: neon cyan border */}
-      {isSelected && (
-        <>
-          <rect
-            x={x + 1} y={y + 1}
-            width={width - 2} height={height - 2}
-            fill="rgba(0,245,255,0.06)"
-            stroke="#00F5FF"
-            strokeWidth={2}
-            rx={3}
-            pointerEvents="none"
-          />
-          {/* Glow filter approximation via extra strokes */}
-          <rect
-            x={x + 2} y={y + 2}
-            width={width - 4} height={height - 4}
-            fill="none"
-            stroke="rgba(0,245,255,0.3)"
-            strokeWidth={1.5}
-            rx={2}
-            pointerEvents="none"
-          />
-        </>
-      )}
-
-      {/* Ticker */}
-      {innerW > 30 && innerH > 16 && (
-        <text
-          x={x + width / 2}
-          y={y + height / 2 - (innerH > 38 ? pctFontSize / 2 + 2 : 0)}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill="rgba(255,255,255,0.95)"
-          fontSize={tickerFontSize}
-          fontWeight="700"
-          fontFamily="Inter, sans-serif"
-          filter="url(#tile-text-shadow)"
-          style={{ letterSpacing: "0.06em" }}
-        >
-          {ticker}
-        </text>
-      )}
-
-      {/* Pct change */}
-      {innerW > 38 && innerH > 28 && (
-        <text
-          x={x + width / 2}
-          y={y + height / 2 + tickerFontSize / 2 + 4}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill="rgba(255,255,255,0.75)"
-          fontSize={pctFontSize}
-          fontWeight="500"
-          fontFamily="Inter, sans-serif"
-          filter="url(#tile-text-shadow)"
-          style={{ letterSpacing: "0.02em" }}
-        >
-          {isPos ? "+" : ""}{pct.toFixed(2)}%
-        </text>
-      )}
-
-      {/* Company name */}
-      {innerH > 62 && innerW > 60 && name && (
-        <text
-          x={x + width / 2}
-          y={y + height / 2 + tickerFontSize / 2 + pctFontSize + 7}
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill="rgba(200,180,255,0.6)"
-          fontSize={7}
-          fontFamily="Inter, sans-serif"
-          filter="url(#tile-text-shadow)"
-          style={{ letterSpacing: "0.04em" }}
-        >
-          {name.length > 20 ? name.slice(0, 18) + "…" : name}
-        </text>
-      )}
-    </g>
-  );
-}
-
 function useIsMobile(breakpoint = 640) {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < breakpoint : false,
   );
   useEffect(() => {
-    const mql     = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const mql = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     setIsMobile(mql.matches);
     mql.addEventListener("change", handler);
@@ -293,6 +25,17 @@ function useIsMobile(breakpoint = 640) {
   return isMobile;
 }
 
+const getColorByChange = (pct: number): string => {
+  // Purple (loss) → dark navy (neutral) → cyan (gain)
+  if (pct >= 3)  return "#00C2D4";
+  if (pct >= 2)  return "#0097A7";
+  if (pct >= 1)  return "#00838F";
+  if (pct >= 0)  return "#1A3A4A";
+  if (pct >= -1) return "#2A1A4A";
+  if (pct >= -2) return "#5B2490";
+  return "#8B2FC9";
+};
+
 export default function MarketTreemap({
   data,
   selectedTicker,
@@ -300,6 +43,186 @@ export default function MarketTreemap({
   height = 560,
 }: MarketTreemapProps) {
   const isMobile = useIsMobile();
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstanceRef = useRef<echarts.ECharts | null>(null);
+
+  useEffect(() => {
+    if (!chartRef.current || data.length === 0) return;
+
+    if (!chartInstanceRef.current) {
+      chartInstanceRef.current = echarts.init(chartRef.current, "dark");
+    }
+    const chart = chartInstanceRef.current;
+
+    const treeData = data.map((group) => ({
+      name: group.name,
+      children: group.children.map((stock) => ({
+        name: stock.ticker,
+        value: Math.max(stock.marketCap, 1_000_000_000),
+        fullName: stock.name,
+        price: stock.lastClose,
+        changePct: stock.dailyChangePct,
+        itemStyle: { color: getColorByChange(stock.dailyChangePct) },
+      })),
+    }));
+
+    const option: echarts.EChartsOption = {
+      backgroundColor: "transparent",
+      tooltip: {
+        backgroundColor: "rgba(13,10,36,0.96)",
+        borderColor: "rgba(124,58,237,0.4)",
+        borderWidth: 1,
+        textStyle: { color: "#F0EEFF", fontSize: 13, fontFamily: "Inter, sans-serif" },
+        formatter: (params: any) => {
+          if (params.data.children) {
+            return `<div style="padding:8px 10px">
+              <div style="font-weight:700;font-size:14px;color:#F0EEFF">${params.name}</div>
+              <div style="color:#9B8FC0;font-size:11px;margin-top:2px">${params.data.children.length} stocks</div>
+            </div>`;
+          }
+          const sign = params.data.changePct >= 0 ? "+" : "";
+          const color = params.data.changePct >= 0 ? "#00E5FF" : "#BF5AF2";
+          const cap = params.data.value >= 1e12
+            ? `$${(params.data.value / 1e12).toFixed(2)}T`
+            : params.data.value >= 1e9
+            ? `$${(params.data.value / 1e9).toFixed(1)}B`
+            : `$${(params.data.value / 1e6).toFixed(0)}M`;
+          return `<div style="padding:10px 12px;min-width:180px;font-family:Inter,sans-serif">
+            <div style="font-weight:700;font-size:16px;color:#F0EEFF;margin-bottom:2px">${params.name}</div>
+            <div style="color:#9B8FC0;font-size:11px;margin-bottom:10px">${params.data.fullName || ""}</div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="color:#6B60A8">Price</span>
+              <span style="font-weight:600;color:#F0EEFF">$${params.data.price?.toFixed(2)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="color:#6B60A8">Change</span>
+              <span style="font-weight:700;color:${color}">${sign}${params.data.changePct?.toFixed(2)}%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <span style="color:#6B60A8">Market Cap</span>
+              <span style="color:#F0EEFF">${cap}</span>
+            </div>
+          </div>`;
+        },
+      },
+      series: [
+        {
+          type: "treemap",
+          data: treeData,
+          width: "100%",
+          height: "100%",
+          roam: "move",
+          nodeClick: "zoomToNode",
+          breadcrumb: {
+            show: true,
+            top: 5,
+            left: "center",
+            itemStyle: { color: "rgba(13,10,36,0.85)", borderColor: "rgba(124,58,237,0.4)" },
+            textStyle: { color: "#BF5AF2", fontSize: 12, fontFamily: "Inter, sans-serif" },
+          },
+          label: {
+            show: true,
+            position: "insideTopLeft",
+            formatter: (params: any) => {
+              if (params.data.children) {
+                return `{sector|${params.name}}`;
+              }
+              const sign = params.data.changePct >= 0 ? "+" : "";
+              return `{symbol|${params.name}}\n{change|${sign}${params.data.changePct?.toFixed(1)}%}`;
+            },
+            rich: {
+              sector: {
+                fontSize: 13,
+                fontWeight: "bold",
+                color: "#F0EEFF",
+                fontFamily: "Inter, sans-serif",
+                padding: [4, 0, 0, 6],
+              },
+              symbol: {
+                fontSize: 12,
+                fontWeight: "700",
+                color: "#FFFFFF",
+                fontFamily: "Inter, sans-serif",
+                lineHeight: 18,
+              },
+              change: {
+                fontSize: 10,
+                color: "rgba(255,255,255,0.75)",
+                fontFamily: "Inter, sans-serif",
+                lineHeight: 14,
+              },
+            },
+          },
+          upperLabel: {
+            show: true,
+            height: 28,
+            color: "#F0EEFF",
+            backgroundColor: "rgba(13,10,36,0.6)",
+            fontFamily: "Inter, sans-serif",
+            fontWeight: "bold",
+          },
+          itemStyle: {
+            borderColor: "rgba(13,10,36,0.9)",
+            borderWidth: 1,
+            gapWidth: 1,
+          },
+          levels: [
+            {
+              itemStyle: {
+                borderColor: "rgba(124,58,237,0.35)",
+                borderWidth: 2,
+                gapWidth: 2,
+              },
+              upperLabel: { show: true },
+            },
+            {
+              itemStyle: {
+                borderColor: "rgba(13,10,36,0.7)",
+                borderWidth: 1,
+                gapWidth: 1,
+              },
+              colorSaturation: [0.6, 0.9],
+            },
+          ],
+          emphasis: {
+            itemStyle: {
+              borderColor: "#00F5FF",
+              borderWidth: 2,
+            },
+          },
+        },
+      ],
+    };
+
+    chart.setOption(option);
+
+    // Click to select ticker
+    chart.off("click");
+    chart.on("click", (params: any) => {
+      if (params.data && !params.data.children && params.name) {
+        onSelectTicker(params.name);
+      }
+    });
+
+    const handleResize = () => chart.resize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [data, onSelectTicker]);
+
+  // Highlight selected ticker by re-dispatching highlight action
+  useEffect(() => {
+    if (!chartInstanceRef.current || !selectedTicker) return;
+    chartInstanceRef.current.dispatchAction({
+      type: "highlight",
+      name: selectedTicker,
+    });
+  }, [selectedTicker]);
+
+  useEffect(() => {
+    return () => {
+      chartInstanceRef.current?.dispose();
+    };
+  }, []);
 
   if (isMobile) {
     return (
@@ -311,47 +234,8 @@ export default function MarketTreemap({
     );
   }
 
-  const treemapData = useMemo(
-    () =>
-      data.map((group) => ({
-        name: group.name,
-        children: group.children.map((child) => ({
-          ...child,
-          size: child.marketCap,
-        })),
-      })),
-    [data],
-  );
-
-  const renderContent = useCallback(
-    (props: Record<string, unknown>) => (
-      <TreemapContent
-        {...props}
-        selectedTicker={selectedTicker}
-        onSelectTicker={onSelectTicker}
-      />
-    ),
-    [selectedTicker, onSelectTicker],
-  );
-
-  if (data.length === 0) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          border: "1px dashed rgba(124,58,237,0.2)",
-          borderRadius: "12px",
-          p: 6,
-        }}
-      >
-        <Typography sx={{ color: "rgba(107,96,168,0.5)", fontFamily: '"JetBrains Mono", monospace', fontSize: "0.8rem" }}>
-          No market data available
-        </Typography>
-      </Box>
-    );
-  }
+  const gainers = data.flatMap((g) => g.children).filter((s) => s.dailyChangePct > 0).length;
+  const losers  = data.flatMap((g) => g.children).filter((s) => s.dailyChangePct < 0).length;
 
   return (
     <Box
@@ -366,12 +250,7 @@ export default function MarketTreemap({
       }}
     >
       {/* Header */}
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mb: 1.5, px: 0.5 }}
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5, px: 0.5 }}>
         <Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Box
@@ -401,87 +280,70 @@ export default function MarketTreemap({
           </Box>
           <Typography
             sx={{
-              fontFamily: '"JetBrains Mono", monospace',
+              fontFamily: '"Inter", sans-serif',
               fontSize: "0.62rem",
               color: "rgba(107,96,168,0.65)",
               mt: 0.3,
               pl: "19px",
-              letterSpacing: "0.02em",
             }}
           >
-            Click any cell to inspect stock details
+            Click to zoom · drag to pan · click stock to inspect
           </Typography>
         </Box>
 
-        {/* Legend chips */}
-        <Stack direction="row" spacing={1} alignItems="center">
-          {[
-            { label: "Loss", color: "#BF5AF2", bg: "rgba(191,90,242,0.12)" },
-            { label: "Flat", color: "rgba(160,130,210,0.6)", bg: "rgba(160,130,210,0.08)" },
-            { label: "Gain", color: "#00E5FF", bg: "rgba(0,229,255,0.12)" },
-          ].map(({ label, color, bg }) => (
-            <Box
-              key={label}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 0.5,
-                px: 1,
-                py: 0.35,
-                borderRadius: "6px",
-                background: bg,
-                border: `1px solid ${color}30`,
-              }}
-            >
-              <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: color, boxShadow: `0 0 4px ${color}` }} />
-              <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.58rem", color, fontWeight: 600 }}>
-                {label}
-              </Typography>
-            </Box>
-          ))}
+        <Stack direction="row" spacing={1}>
+          {data.length > 0 && (
+            <>
+              <Chip
+                label={`${gainers} Gainers`}
+                size="small"
+                sx={{
+                  bgcolor: "rgba(0,194,212,0.12)",
+                  color: "#00C2D4",
+                  border: "1px solid rgba(0,194,212,0.25)",
+                  fontFamily: '"Inter", sans-serif',
+                  fontSize: "0.65rem",
+                  height: 22,
+                }}
+              />
+              <Chip
+                label={`${losers} Losers`}
+                size="small"
+                sx={{
+                  bgcolor: "rgba(139,47,201,0.12)",
+                  color: "#BF5AF2",
+                  border: "1px solid rgba(139,47,201,0.25)",
+                  fontFamily: '"Inter", sans-serif',
+                  fontSize: "0.65rem",
+                  height: 22,
+                }}
+              />
+            </>
+          )}
         </Stack>
-      </Stack>
-
-      {/* Treemap */}
-      <Box sx={{ borderRadius: "12px", overflow: "hidden" }}>
-        <ResponsiveContainer width="100%" height={height}>
-          <Treemap
-            data={treemapData}
-            dataKey="size"
-            stroke="rgba(13,10,36,0.8)"
-            content={renderContent}
-            isAnimationActive={false}
-          >
-            <Tooltip content={<TreemapTooltipContent />} />
-          </Treemap>
-        </ResponsiveContainer>
       </Box>
 
-      {/* Color scale bar */}
-      <Box sx={{ mt: 1.5, px: 0.5 }}>
+      {data.length === 0 ? (
         <Box
           sx={{
-            height: 5,
-            borderRadius: "3px",
-            background: "linear-gradient(to right, #8B2FC9 0%, #3D1A6B 25%, #110C2E 50%, #0A3040 75%, #00C2D4 100%)",
-            boxShadow: "0 0 12px rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height,
+            border: "1px dashed rgba(124,58,237,0.2)",
+            borderRadius: "12px",
           }}
+        >
+          <Typography sx={{ color: "rgba(107,96,168,0.5)", fontFamily: '"Inter", sans-serif', fontSize: "0.8rem" }}>
+            No market data available
+          </Typography>
+        </Box>
+      ) : (
+        <Box
+          ref={chartRef}
+          sx={{ width: "100%", height, borderRadius: "12px", overflow: "hidden" }}
         />
-        <Stack direction="row" justifyContent="space-between" sx={{ mt: 0.5 }}>
-          {["-3%", "-2%", "-1%", "0%", "+1%", "+2%", "+3%"].map((label) => (
-            <Typography
-              key={label}
-              sx={{
-                fontFamily: '"JetBrains Mono", monospace',
-                fontSize: "0.55rem",
-                color: "rgba(107,96,168,0.55)",
-              }}
-            >
-              {label}
-            </Typography>
-          ))}
-        </Stack>
-      </Box>
+      )}
     </Box>
   );
 }
