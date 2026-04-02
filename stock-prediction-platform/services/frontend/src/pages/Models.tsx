@@ -5,6 +5,7 @@ import {
   Divider,
   Grid,
   Paper,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { PageHeader } from "@/components/layout";
@@ -33,8 +34,39 @@ export default function Models() {
     [selectedModel],
   );
 
-  if (isLoading) return null;
-  if (isError) return <ErrorFallback message="Failed to load model data" onRetry={refetch} />;
+  if (isLoading) {
+    return (
+      <Container maxWidth="xl">
+        <PageHeader
+          title="Model Comparison"
+          subtitle="Compare ML model performance across evaluation metrics"
+        />
+        <Box sx={{ mt: 2 }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Skeleton
+              key={i}
+              variant="rectangular"
+              height={52}
+              sx={{ mb: 0.5, borderRadius: 1 }}
+            />
+          ))}
+        </Box>
+      </Container>
+    );
+  }
+  if (isError) {
+    return (
+      <Container maxWidth="xl">
+        <PageHeader
+          title="Model Comparison"
+          subtitle="Compare ML model performance across evaluation metrics"
+        />
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+          <ErrorFallback message="Failed to load model data" onRetry={refetch} />
+        </Box>
+      </Container>
+    );
+  }
 
   if (!data?.models.length) {
     return (
