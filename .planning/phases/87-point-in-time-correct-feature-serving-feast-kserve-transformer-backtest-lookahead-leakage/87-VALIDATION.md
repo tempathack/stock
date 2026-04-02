@@ -2,8 +2,8 @@
 phase: 87
 slug: point-in-time-correct-feature-serving-feast-kserve-transformer-backtest-lookahead-leakage
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-03
 ---
 
@@ -18,9 +18,9 @@ created: 2026-04-03
 | Property | Value |
 |----------|-------|
 | **Framework** | pytest 7.x |
-| **Config file** | {path or "none — Wave 0 installs"} |
-| **Quick run command** | `pytest tests/ -x -q --timeout=30` |
-| **Full suite command** | `pytest tests/ -q --timeout=60` |
+| **Config file** | `stock-prediction-platform/services/api/pytest.ini` |
+| **Quick run command** | `cd stock-prediction-platform/services/api && pytest tests/ -x -q --timeout=30` |
+| **Full suite command** | `cd stock-prediction-platform/services/api && pytest tests/ -q --timeout=60` |
 | **Estimated runtime** | ~60 seconds |
 
 ---
@@ -36,11 +36,14 @@ created: 2026-04-03
 
 ## Per-Task Verification Map
 
-| Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
-|---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 87-01-01 | 01 | 1 | TBD | unit | `pytest tests/test_feast_transformer.py -x -q` | ❌ W0 | ⬜ pending |
-| 87-01-02 | 01 | 1 | TBD | integration | `pytest tests/test_kserve_transformer.py -x -q` | ❌ W0 | ⬜ pending |
-| 87-02-01 | 02 | 2 | TBD | unit | `pytest tests/test_backtest_pit.py -x -q` | ❌ W0 | ⬜ pending |
+| Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Created By | Status |
+|---------|------|------|-------------|-----------|-------------------|-----------------|--------|
+| 87-01-T1 | 01 | 1 | PIT-02, PIT-03 | structural | `grep -q "class FeastTransformer" services/feast-transformer/feast_transformer.py && echo PASS` | Plan 01 Task 1 | ⬜ pending |
+| 87-01-T2 | 01 | 1 | PIT-02, PIT-03 | unit | `cd services/api && pytest tests/test_feast_transformer.py -x -q` | Plan 01 Task 2 | ⬜ pending |
+| 87-02-T1 | 02 | 1 | PIT-01 | structural | `grep -q "def assert_no_future_leakage" ml/feature_store/pit_validator.py && echo PASS` | Plan 02 Task 1 | ⬜ pending |
+| 87-02-T2 | 02 | 1 | PIT-01, PIT-04 | unit | `cd services/api && pytest tests/test_pit_correctness.py -x -q` | Plan 02 Task 2 | ⬜ pending |
+| 87-03-T1 | 03 | 2 | PIT-05 | structural | `grep -q "feast-snapshot-date" k8s/ml/cronjob-feast-materialize.yaml && grep -q "feast-transformer" k8s/ml/kserve/kserve-inference-service.yaml && echo PASS` | Plan 03 Task 1 | ⬜ pending |
+| 87-03-T2 | 03 | 2 | PIT-02, PIT-03, PIT-04 | unit | `cd services/api && pytest tests/test_pit_correctness.py tests/test_feast_transformer.py -q` | Plan 03 Task 2 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -48,12 +51,11 @@ created: 2026-04-03
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_feast_transformer.py` — stubs for KServe Transformer + Feast online feature fetch
-- [ ] `tests/test_kserve_transformer.py` — stubs for Transformer container preprocess() routing
-- [ ] `tests/test_backtest_pit.py` — stubs for point-in-time backtest leakage validation
-- [ ] `tests/conftest.py` — shared fixtures (Feast mock, feature vector fixture)
+Wave 0 is satisfied by the plans themselves — test files are created as part of Plan 01 Task 2 (test_feast_transformer.py) and Plan 02 Task 2 (test_pit_correctness.py). No separate Wave 0 scaffold step is needed.
 
-*If none: "Existing infrastructure covers all phase requirements."*
+Test files created by this phase:
+- `services/api/tests/test_feast_transformer.py` — KServe Transformer unit tests (Plan 01 Task 2)
+- `services/api/tests/test_pit_correctness.py` — PIT correctness validator tests (Plan 02 Task 2)
 
 ---
 
@@ -61,20 +63,19 @@ created: 2026-04-03
 
 | Behavior | Requirement | Why Manual | Test Instructions |
 |----------|-------------|------------|-------------------|
-| KServe Transformer routes requests through preprocess() in RawDeployment mode | TBD | Requires live KServe cluster | Deploy Transformer, send inference request, verify Feast is called via logs |
-| Backtest returns no future OHLCV rows for historical dates | TBD | Requires production data | Run backtest for a past date, verify no feature rows with timestamp > prediction date |
-
-*If none: "All phase behaviors have automated verification."*
+| KServe Transformer routes requests through preprocess() in RawDeployment mode | PIT-02 | Requires live KServe cluster | Deploy Transformer, send inference request, verify Feast is called via pod logs |
+| Backtest returns no future OHLCV rows for historical dates | PIT-01 | Requires production data | Run backtest for a past date, verify no feature rows with timestamp > prediction date |
+| ONLINE_FEATURES column order matches trained sklearn pipeline | PIT-02 | Requires MinIO access to read features.json | Read s3://model-artifacts/serving/active/features.json, confirm order matches ONLINE_FEATURES list in feast_transformer.py |
 
 ---
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 60s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify commands
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covered: test files created by plan tasks (not pre-existing)
+- [x] No watch-mode flags
+- [x] Feedback latency < 60s
+- [x] `nyquist_compliant: true` set in frontmatter
 
 **Approval:** pending
