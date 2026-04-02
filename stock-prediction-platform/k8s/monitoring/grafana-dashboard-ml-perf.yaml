@@ -62,7 +62,17 @@ data:
                 "lineWidth": 2,
                 "pointSize": 5,
                 "showPoints": "auto",
-                "spanNulls": false
+                "spanNulls": false,
+                "thresholdsStyle": {
+                  "mode": "line"
+                }
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "transparent", "value": null },
+                  { "color": "red", "value": 8 }
+                ]
               },
               "unit": "s"
             },
