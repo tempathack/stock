@@ -65,6 +65,8 @@ spec:
             - name: grafana-dashboard-flink
               mountPath: /var/lib/grafana/dashboards/flink-stream.json
               subPath: flink-stream.json
+            - name: grafana-alerting
+              mountPath: /etc/grafana/provisioning/alerting
       volumes:
         - name: grafana-datasources
           configMap:
@@ -84,3 +86,6 @@ spec:
         - name: grafana-dashboard-flink
           configMap:
             name: grafana-dashboard-flink
+        - name: grafana-alerting
+          configMap:
+            name: grafana-alerting-rules
