@@ -14,7 +14,7 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 
 - [x] Minikube-based Kubernetes cluster with namespace separation (ingestion, processing, storage, ml, frontend) — Validated in Phase 2
 - [x] Every service has a Dockerfile with multi-stage builds — Validated in Phase 3
-- [x] All config via environment variables — no hardcoded secrets — Validated in Phase 3
+- [x] All config via environment variables — no hardcoded secrets — Validated in Phase 3; re-validated in Phase 79 (Grafana admin password moved to K8s Secret + secretKeyRef)
 - [x] FastAPI service with /health endpoint — Validated in Phase 3
 - [x] PostgreSQL with TimescaleDB: stocks, ohlcv_daily, ohlcv_intraday, predictions, model_registry, drift_logs tables — Validated in Phase 4: live cluster confirmed 6 tables, hypertables, indexes, TimescaleDB 2.25.2
 
@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-02 — Phase 77 complete (Forecasts page now shows skeleton loading instead of blank screen; ohlcv-normalizer Flink job crash-loop fixed — root cause was minio-secrets injecting wrong env var names for S3 plugin, replaced with minio-s3-credentials providing AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY; MinIO checkpoints now writing successfully)*
+*Last updated: 2026-04-02 — Phase 79 complete (Grafana security hardening: hardcoded admin/admin credentials removed from all configs; K8s Deployment now reads password via secretKeyRef from grafana-credentials Secret; docker-compose uses ${GRAFANA_ADMIN_PASSWORD} env var; INFRA-08 satisfied)*
