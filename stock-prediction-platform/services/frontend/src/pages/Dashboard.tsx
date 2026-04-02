@@ -19,7 +19,6 @@ import { ErrorFallback } from "@/components/ui";
 import {
   MarketTreemap,
   MetricCards,
-  CandlestickChart,
   HistoricalChart,
   DashboardTAPanel,
   SentimentPanel,
@@ -28,8 +27,6 @@ import {
 } from "@/components/dashboard";
 import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
 import { buildTreemapData, deriveStockMetrics } from "@/utils/dashboardUtils";
-import { generateMockMarketOverview, generateMockIntradayCandles } from "@/utils/mockDashboardData";
-import { generateMockIndicatorSeries } from "@/utils/mockIndicatorData";
 import useWebSocket from "@/hooks/useWebSocket";
 import type { WebSocketStatus } from "@/api";
 
@@ -374,32 +371,25 @@ export default function Dashboard() {
 
   const wsUrl = `${(import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/^http/, "ws")}/ws/prices`;
   const { status: wsStatus, prices: livePrices } = useWebSocket(wsUrl);
-  const livePrice = selected ? livePrices.get(selected) ?? null : null;
+  void livePrices;
 
   const indicatorQuery  = useTickerIndicators(selected ?? "");
   const predictionQuery = usePrediction(selected ?? "");
 
-  const stocks = marketQuery.data?.stocks
-    ?? (marketQuery.isError ? generateMockMarketOverview() : []);
+  const stocks = marketQuery.data?.stocks ?? [];
   const treemapData = useMemo(() => buildTreemapData(stocks), [stocks]);
 
   const selectedStock = stocks.find((s) => s.ticker === selected) ?? null;
 
   const indicatorSeries = useMemo(() => {
     if (indicatorQuery.data?.series?.length) return indicatorQuery.data.series;
-    if (selected && indicatorQuery.isError) return generateMockIndicatorSeries(selected);
     return [];
-  }, [indicatorQuery.data, indicatorQuery.isError, selected]);
+  }, [indicatorQuery.data]);
 
   const metrics = useMemo(() => {
     if (!selectedStock) return null;
     return deriveStockMetrics(selectedStock, indicatorSeries);
   }, [selectedStock, indicatorSeries]);
-
-  const intradayCandles = useMemo(() => {
-    if (!selected) return [];
-    return generateMockIntradayCandles(selected, selectedStock?.last_close ?? undefined);
-  }, [selected, selectedStock]);
 
   // Scroll to detail panel when stock is selected
   const handleSelect = useCallback((ticker: string | null) => {
@@ -416,7 +406,36 @@ export default function Dashboard() {
   const isPos      = pct >= 0;
 
   if (marketQuery.isError && !marketQuery.data) {
-    return <ErrorFallback message="Failed to load market data" onRetry={() => marketQuery.refetch()} />;
+    return (
+      <Container maxWidth="xl">
+        {/* ── Page Header (same as normal render) ── */}
+        <Box sx={{ mb: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+              <Box sx={{ width: 4, height: 28, borderRadius: "3px", background: "linear-gradient(180deg, #7C3AED 0%, #00F5FF 100%)", boxShadow: "0 0 12px rgba(124,58,237,0.7)", flexShrink: 0 }} />
+              <Typography
+                sx={{
+                  fontFamily: '"Inter", sans-serif',
+                  fontWeight: 800,
+                  fontSize: { xs: "1.4rem", sm: "1.75rem" },
+                  letterSpacing: "-0.03em",
+                  background: "linear-gradient(90deg, #F0EEFF 0%, #BF5AF2 50%, #00F5FF 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                Market Dashboard
+              </Typography>
+            </Box>
+          </Box>
+          <Box sx={{ mt: 1.5, height: "1px", background: "linear-gradient(to right, rgba(124,58,237,0.6), rgba(0,245,255,0.3), transparent)" }} />
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+          <ErrorFallback message="Failed to load market data" onRetry={() => marketQuery.refetch()} />
+        </Box>
+      </Container>
+    );
   }
 
   return (
@@ -566,11 +585,23 @@ export default function Dashboard() {
                 <SectionLabel icon={<ShowChartIcon />} label="Price Charts" accent="#00F5FF" />
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, lg: 6 }}>
-                    <CandlestickChart
-                      candles={intradayCandles}
-                      ticker={selected}
-                      livePrice={livePrice}
-                    />
+                    {selected ? (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: "2px dashed",
+                          borderColor: "divider",
+                          borderRadius: 1,
+                          p: 6,
+                        }}
+                      >
+                        <Typography variant="body2" color="text.secondary">
+                          Intraday candle data unavailable
+                        </Typography>
+                      </Box>
+                    ) : null}
                   </Grid>
                   <Grid size={{ xs: 12, lg: 6 }}>
                     <HistoricalChart
@@ -595,7 +626,11 @@ export default function Dashboard() {
               <Box sx={{ mb: 3 }}>
                 <SectionLabel icon={<ShowChartIcon />} label="Technical Indicators" accent="#BF5AF2" />
                 <Box sx={{ background: "rgba(7,4,26,0.5)", border: "1px solid rgba(191,90,242,0.15)", borderRadius: "12px", p: 2 }}>
-                  <DashboardTAPanel series={indicatorSeries} ticker={selected} />
+                  {indicatorQuery.isError && !indicatorQuery.data ? (
+                    <ErrorFallback message="Failed to load indicators" onRetry={() => indicatorQuery.refetch()} />
+                  ) : (
+                    <DashboardTAPanel series={indicatorSeries} ticker={selected} />
+                  )}
                 </Box>
               </Box>
 
