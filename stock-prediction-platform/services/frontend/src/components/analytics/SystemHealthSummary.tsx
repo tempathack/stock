@@ -1,4 +1,5 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import WarningIcon from "@mui/icons-material/Warning";
 import { Box, CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { useAnalyticsSummary } from "../../api/queries";
@@ -60,7 +61,11 @@ export default function SystemHealthSummary() {
         <MetricCard
           label="Flink Cluster"
           value={flinkValue}
-          icon={<CheckCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          icon={
+            data != null
+              ? <CheckCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              : <HelpOutlineIcon sx={{ color: "text.disabled", fontSize: 20 }} />
+          }
           isLoading={isLoading}
         />
       </Grid>
@@ -68,7 +73,11 @@ export default function SystemHealthSummary() {
         <MetricCard
           label="Feast Latency p99"
           value={feastValue}
-          icon={<CheckCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          icon={
+            data?.feast_online_latency_ms != null
+              ? <CheckCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              : <HelpOutlineIcon sx={{ color: "text.disabled", fontSize: 20 }} />
+          }
           isLoading={isLoading}
         />
       </Grid>
@@ -76,7 +85,11 @@ export default function SystemHealthSummary() {
         <MetricCard
           label="CA Last Refresh"
           value={caValue}
-          icon={<CheckCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />}
+          icon={
+            data?.ca_last_refresh != null
+              ? <CheckCircleIcon sx={{ color: "primary.main", fontSize: 20 }} />
+              : <HelpOutlineIcon sx={{ color: "text.disabled", fontSize: 20 }} />
+          }
           isLoading={isLoading}
         />
       </Grid>
