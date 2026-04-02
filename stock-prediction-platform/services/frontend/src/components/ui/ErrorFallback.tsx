@@ -1,3 +1,4 @@
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Box, Button, Typography } from "@mui/material";
 
 interface ErrorFallbackProps {
@@ -20,13 +21,15 @@ export default function ErrorFallback({
         borderColor: "divider",
         borderRadius: 1,
         p: 4,
+        gap: 1,
       }}
     >
+      <ErrorOutlineIcon sx={{ color: "error.main", fontSize: 40 }} />
       <Typography color="error.main" variant="body1" fontWeight={500}>
         {message}
       </Typography>
       {onRetry && (
-        <Button variant="contained" onClick={onRetry} sx={{ mt: 2 }}>
+        <Button variant="contained" onClick={onRetry} sx={{ mt: 1 }}>
           Retry
         </Button>
       )}
