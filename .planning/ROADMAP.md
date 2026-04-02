@@ -83,7 +83,7 @@
 | 72 | 2/2 | Complete    | 2026-03-31 | 2 |
 | 73 | 7/7 | Complete    | 2026-03-31 | 7 |
 | 74–81 | Various hotfixes & Grafana fixes | Complete | 2026-04-02 | — |
-| 82 | 2/2 | Complete   | 2026-04-02 |
+| 82 | 2/2 | Complete    | 2026-04-02 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
