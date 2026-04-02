@@ -83,7 +83,7 @@
 | 72 | 2/2 | Complete    | 2026-03-31 | 2 |
 | 73 | 7/7 | Complete    | 2026-03-31 | 7 |
 | 74–81 | Various hotfixes & Grafana fixes | Complete | 2026-04-02 | — |
-| 82 | 1/2 | In Progress|  |
+| 82 | 2/2 | Complete   | 2026-04-02 |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1586,10 +1586,10 @@ Plans:
 **Goal:** [To be planned]
 **Requirements**: TBD
 **Depends on:** Phase 81
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 82 to break down)
+- [x] TBD (run /gsd:plan-phase 82 to break down) (completed 2026-04-02)
 
 ### Phase 83: Fix Kafka consumer metrics scraping — all consumer and writer panels show No data, fix exporter gap
 
@@ -1650,6 +1650,16 @@ Plans:
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 88 to break down)
+
+### Phase 89: Live sentiment timeseries chart in Dashboard tab — Flink-streamed Reddit/news sentiment per stock, 2-min intervals, 10-hour rolling window, replaces static unavailable placeholder
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 88
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 89 to break down)
 
 ---
 
