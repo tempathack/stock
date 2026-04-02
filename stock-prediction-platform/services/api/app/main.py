@@ -103,6 +103,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://localhost:3010",   # K8s port-forward
         "http://127.0.0.1:3010",
+        "http://192.168.49.2:30080",  # Minikube NodePort
     ],
     allow_credentials=True,
     allow_methods=["*"],

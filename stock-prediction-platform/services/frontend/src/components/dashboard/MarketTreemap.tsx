@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as echarts from "echarts";
 import { Box, Chip, Stack, Typography } from "@mui/material";
 import type { TreemapSectorGroup } from "@/api";
+import { changePctToColor } from "@/utils/dashboardUtils";
 import MobileMarketList from "./MobileMarketList";
 
 interface MarketTreemapProps {
@@ -10,20 +11,6 @@ interface MarketTreemapProps {
   onSelectTicker: (ticker: string) => void;
   height?: number;
 }
-
-const getColorByChange = (pct: number): string => {
-  if (pct >= 5)   return "#00C853";
-  if (pct >= 3)   return "#00E676";
-  if (pct >= 2)   return "#69F0AE";
-  if (pct >= 1)   return "#A5D6A7";
-  if (pct >= 0.5) return "#C8E6C9";
-  if (pct >= 0)   return "#2E7D32";
-  if (pct >= -0.5) return "#C62828";
-  if (pct >= -1)  return "#E57373";
-  if (pct >= -2)  return "#EF5350";
-  if (pct >= -3)  return "#F44336";
-  return "#D32F2F";
-};
 
 function useIsMobile(breakpoint = 640) {
   const [isMobile, setIsMobile] = useState(
@@ -43,7 +30,7 @@ export default function MarketTreemap({
   data,
   selectedTicker,
   onSelectTicker,
-  height = 560,
+  height = 580,
 }: MarketTreemapProps) {
   const isMobile = useIsMobile();
   const chartRef = useRef<HTMLDivElement>(null);
@@ -69,34 +56,49 @@ export default function MarketTreemap({
         fullName: stock.name,
         price: stock.lastClose,
         changePct: stock.dailyChangePct,
-        itemStyle: { color: getColorByChange(stock.dailyChangePct) },
+        itemStyle: { color: changePctToColor(stock.dailyChangePct) },
       })),
     }));
 
     const option = {
       backgroundColor: "transparent",
       tooltip: {
-        backgroundColor: "rgba(13,10,36,0.96)",
-        borderColor: "rgba(124,58,237,0.4)",
+        backgroundColor: "rgba(13,10,36,0.97)",
+        borderColor: "rgba(124,58,237,0.5)",
         borderWidth: 1,
-        textStyle: { color: "#fff", fontSize: 13 },
+        padding: 0,
+        textStyle: { color: "#F0EEFF", fontFamily: "Inter, sans-serif" },
         formatter: (params: any) => {
           if (params.data?.children) {
-            return `<div style="padding:8px"><div style="font-weight:bold;font-size:15px;margin-bottom:4px;">${params.name}</div><div style="color:#aaa;">${params.data.children.length} stocks</div></div>`;
+            return `<div style="padding:10px 14px">
+              <div style="font-weight:800;font-size:13px;color:#F0EEFF;letter-spacing:0.05em">${params.name.toUpperCase()}</div>
+              <div style="font-size:11px;color:#6B60A8;margin-top:3px">${params.data.children.length} stocks</div>
+            </div>`;
           }
-          const sign = params.data.changePct >= 0 ? "+" : "";
-          const color = params.data.changePct >= 0 ? "#00E676" : "#FF5252";
+          const pct = params.data.changePct ?? 0;
+          const sign = pct >= 0 ? "+" : "";
+          const pctColor = pct >= 0 ? "#00E5FF" : "#BF5AF2";
+          const borderAccent = pct >= 0 ? "rgba(0,229,255,0.4)" : "rgba(191,90,242,0.4)";
           const cap = params.data.value >= 1e12
             ? `$${(params.data.value / 1e12).toFixed(2)}T`
             : params.data.value >= 1e9
             ? `$${(params.data.value / 1e9).toFixed(1)}B`
             : `$${(params.data.value / 1e6).toFixed(0)}M`;
-          return `<div style="padding:10px;min-width:180px">
-            <div style="font-weight:bold;font-size:16px;margin-bottom:2px;">${params.name}</div>
-            <div style="color:#aaa;font-size:12px;margin-bottom:8px;">${params.data.fullName ?? ""}</div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#888">Price:</span><span style="font-weight:bold">$${params.data.price?.toFixed(2)}</span></div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:#888">Change:</span><span style="color:${color};font-weight:bold">${sign}${params.data.changePct?.toFixed(2)}%</span></div>
-            <div style="display:flex;justify-content:space-between"><span style="color:#888">Mkt Cap:</span><span>${cap}</span></div>
+          return `<div style="padding:12px 14px;min-width:180px;border-left:3px solid ${borderAccent}">
+            <div style="font-weight:800;font-size:15px;color:#F0EEFF;letter-spacing:0.06em">${params.name}</div>
+            <div style="font-size:11px;color:#6B60A8;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px">${params.data.fullName ?? ""}</div>
+            <div style="display:flex;justify-content:space-between;gap:16px;margin-bottom:5px">
+              <span style="color:#6B60A8;font-size:11px">Price</span>
+              <span style="color:#F0EEFF;font-weight:600;font-size:12px">$${params.data.price?.toFixed(2)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:16px;margin-bottom:5px">
+              <span style="color:#6B60A8;font-size:11px">Change</span>
+              <span style="color:${pctColor};font-weight:700;font-size:13px;text-shadow:0 0 8px ${pctColor}55">${sign}${pct.toFixed(2)}%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:16px">
+              <span style="color:#6B60A8;font-size:11px">Mkt Cap</span>
+              <span style="color:#F0EEFF;font-size:11px">${cap}</span>
+            </div>
           </div>`;
         },
       },
@@ -104,56 +106,105 @@ export default function MarketTreemap({
         {
           type: "treemap",
           data: treeData,
-          width: "100%",
-          height: "100%",
+          left: 0,
+          right: 0,
+          top: 30,    // leave room for breadcrumb
+          bottom: 0,
           roam: "move",
           nodeClick: "zoomToNode",
           breadcrumb: {
             show: true,
-            top: 5,
+            top: 0,
             left: "center",
-            itemStyle: { color: "#1a1a2e", borderColor: "#444" },
-            textStyle: { color: "#fff", fontSize: 12 },
+            height: 26,
+            itemStyle: {
+              color: "rgba(13,10,36,0.95)",
+              borderColor: "rgba(124,58,237,0.35)",
+              borderWidth: 1,
+            },
+            textStyle: {
+              color: "#BF5AF2",
+              fontSize: 11,
+              fontWeight: "bold",
+              fontFamily: "Inter, sans-serif",
+            },
           },
+          // Stock tile labels — rich text works correctly here
           label: {
             show: true,
             position: "insideTopLeft",
             formatter: (params: any) => {
-              if (params.data?.children) return `{sector|${params.name}}`;
+              // Sector nodes: label hidden behind children tiles, only upperLabel matters
+              if (params.data?.children) return params.name;
               const sign = params.data.changePct >= 0 ? "+" : "";
-              return `{symbol|${params.name}}\n{change|${sign}${params.data.changePct?.toFixed(1)}%}`;
+              return `{sym|${params.name}}\n{chg|${sign}${params.data.changePct?.toFixed(1)}%}`;
             },
             rich: {
-              sector: { fontSize: 13, fontWeight: "bold", color: "#fff", padding: [4, 0, 0, 4] },
-              symbol: { fontSize: 11, fontWeight: "bold", color: "#fff", lineHeight: 16 },
-              change:  { fontSize: 10, color: "rgba(255,255,255,0.85)", lineHeight: 14 },
+              sym: {
+                fontSize: 11,
+                fontWeight: "bold",
+                color: "rgba(240,238,255,0.95)",
+                lineHeight: 16,
+                fontFamily: "Inter, sans-serif",
+              },
+              chg: {
+                fontSize: 10,
+                color: "rgba(240,238,255,0.72)",
+                lineHeight: 14,
+                fontFamily: "Inter, sans-serif",
+              },
             },
           },
+          // Sector group header bar — plain text, no rich text inheritance
           upperLabel: {
             show: true,
-            height: 28,
-            color: "#fff",
-            backgroundColor: "rgba(0,0,0,0.5)",
+            height: 22,
+            formatter: (params: any) => params.name.toUpperCase(),
+            color: "#BF5AF2",
+            fontSize: 10,
+            fontWeight: "bold",
+            fontFamily: "Inter, sans-serif",
+            backgroundColor: "rgba(13,10,36,0.85)",
           },
           itemStyle: {
-            borderColor: "#0d0a24",
+            borderColor: "rgba(13,10,36,0.9)",
             borderWidth: 1,
             gapWidth: 1,
           },
           levels: [
             {
-              itemStyle: { borderColor: "#333", borderWidth: 2, gapWidth: 2 },
-              upperLabel: { show: true },
+              // Sector level
+              itemStyle: {
+                borderColor: "rgba(124,58,237,0.45)",
+                borderWidth: 2,
+                gapWidth: 2,
+              },
+              upperLabel: {
+                show: true,
+                height: 22,
+                formatter: (params: any) => params.name.toUpperCase(),
+                color: "#BF5AF2",
+                fontSize: 10,
+                fontWeight: "bold",
+                fontFamily: "Inter, sans-serif",
+                backgroundColor: "rgba(13,10,36,0.85)",
+              },
             },
             {
-              itemStyle: { borderColor: "#222", borderWidth: 1, gapWidth: 1 },
-              colorSaturation: [0.6, 0.9],
+              // Stock tile level
+              itemStyle: {
+                borderColor: "rgba(13,10,36,0.8)",
+                borderWidth: 1,
+                gapWidth: 1,
+              },
             },
           ],
           emphasis: {
             itemStyle: {
-              borderColor: selectedTicker ? "#00F5FF" : "#fff",
+              borderColor: "#00F5FF",
               borderWidth: 2,
+              shadowBlur: 10,
+              shadowColor: "rgba(0,245,255,0.35)",
             },
           },
         },
@@ -161,13 +212,11 @@ export default function MarketTreemap({
     } as any;
 
     chart.setOption(option, true);
-
-    // Force resize so the chart fills the container after setOption
     requestAnimationFrame(() => chart.resize());
 
   }, [data, selectedTicker, isMobile]);
 
-  // Click handler — bridge echarts click to onSelectTicker
+  // Bridge echarts click → onSelectTicker
   useEffect(() => {
     const chart = chartInstanceRef.current;
     if (!chart) return;
@@ -180,7 +229,7 @@ export default function MarketTreemap({
     return () => { chart.off("click", handler); };
   }, [onSelectTicker]);
 
-  // Resize observer
+  // ResizeObserver keeps canvas in sync with container
   useEffect(() => {
     if (!chartRef.current) return;
     const ro = new ResizeObserver(() => chartInstanceRef.current?.resize());
@@ -220,8 +269,11 @@ export default function MarketTreemap({
         border: "1px solid rgba(124,58,237,0.22)",
         borderRadius: "18px",
         p: 2,
-        transition: "border-color 0.3s ease",
-        "&:hover": { borderColor: "rgba(0,245,255,0.25)" },
+        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+        "&:hover": {
+          borderColor: "rgba(0,245,255,0.25)",
+          boxShadow: "0 0 24px rgba(124,58,237,0.08)",
+        },
       }}
     >
       {/* Header */}
@@ -238,20 +290,36 @@ export default function MarketTreemap({
           </Typography>
         </Box>
         <Stack direction="row" spacing={1} alignItems="center">
-          <Chip label={`${gainers} Gainers`} size="small" sx={{ bgcolor: "rgba(0,200,83,0.12)", color: "#00E676", border: "1px solid rgba(0,200,83,0.25)", fontFamily: '"Inter", sans-serif', fontSize: "0.65rem", height: 22 }} />
-          <Chip label={`${losers} Losers`} size="small" sx={{ bgcolor: "rgba(244,67,54,0.12)", color: "#FF5252", border: "1px solid rgba(244,67,54,0.25)", fontFamily: '"Inter", sans-serif', fontSize: "0.65rem", height: 22 }} />
+          <Chip
+            label={`${gainers} Gainers`}
+            size="small"
+            sx={{ bgcolor: "rgba(0,194,212,0.10)", color: "#00C2D4", border: "1px solid rgba(0,194,212,0.28)", fontFamily: '"Inter", sans-serif', fontSize: "0.65rem", height: 22 }}
+          />
+          <Chip
+            label={`${losers} Losers`}
+            size="small"
+            sx={{ bgcolor: "rgba(139,47,201,0.10)", color: "#BF5AF2", border: "1px solid rgba(139,47,201,0.28)", fontFamily: '"Inter", sans-serif', fontSize: "0.65rem", height: 22 }}
+          />
         </Stack>
       </Stack>
 
-      {/* Chart */}
-      <Box ref={chartRef} sx={{ width: "100%", height, borderRadius: "12px", overflow: "hidden" }} />
+      {/* Chart canvas */}
+      <Box
+        ref={chartRef}
+        sx={{ width: "100%", height, borderRadius: "10px", overflow: "hidden" }}
+      />
 
-      {/* Colour scale bar */}
+      {/* Colour legend */}
       <Box sx={{ mt: 1.5, px: 0.5 }}>
-        <Box sx={{ height: 5, borderRadius: "3px", background: "linear-gradient(to right, #D32F2F 0%, #F44336 25%, #2E7D32 50%, #69F0AE 75%, #00C853 100%)", boxShadow: "0 0 12px rgba(0,0,0,0.4)" }} />
+        <Box sx={{
+          height: 4,
+          borderRadius: "3px",
+          background: "linear-gradient(to right, #8B2FC9 0%, #3D1A6B 30%, #110C2E 50%, #0A3040 70%, #00C2D4 100%)",
+          opacity: 0.85,
+        }} />
         <Stack direction="row" justifyContent="space-between" sx={{ mt: 0.5 }}>
           {["-3%+", "-2%", "-1%", "0%", "+1%", "+2%", "+3%+"].map((label) => (
-            <Typography key={label} sx={{ fontFamily: '"Inter", sans-serif', fontSize: "0.55rem", color: "rgba(107,96,168,0.55)" }}>
+            <Typography key={label} sx={{ fontFamily: '"Inter", sans-serif', fontSize: "0.52rem", color: "rgba(107,96,168,0.5)" }}>
               {label}
             </Typography>
           ))}
