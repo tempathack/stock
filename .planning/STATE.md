@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 78-03-PLAN.md
-last_updated: "2026-04-02T19:22:21.557Z"
+stopped_at: Completed 78-04-PLAN.md
+last_updated: "2026-04-02T19:26:51.892Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -378,10 +378,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 78]: Models.tsx: 8 skeleton rows + centered ErrorFallback with PageHeader in both loading and error states
 - [Phase 78]: Removed CandlestickChart entirely from Dashboard; intraday data was mock-only, replaced with dashed-border empty state
 - [Phase 78]: Used void livePrices to suppress unused variable TS error while retaining WebSocket hook for wsStatus badge
+- [Phase 78-04]: FeatureDistributionChart receives empty array on Drift page after mock removal — component handles gracefully without deletion
+- [Phase 78-04]: retrainStatus fallback returns typed empty object instead of mock: { lastRetrainDate: null, isRetraining: false, oldModel: null, newModel: null, improvementPct: null }
 
 ## Last Session
 
-- **Stopped at:** Completed 78-03-PLAN.md
+- **Stopped at:** Completed 78-04-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
