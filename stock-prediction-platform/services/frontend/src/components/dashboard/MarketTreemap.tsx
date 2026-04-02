@@ -31,19 +31,19 @@ function TreemapTooltipContent({
   const lastClose = d.lastClose as number;
   const pct       = d.dailyChangePct as number;
   const isPos     = pct >= 0;
-  const pctColor  = isPos ? "#00FF87" : "#FF2D78";
-  const pctGlow   = isPos ? "rgba(0,255,135,0.6)" : "rgba(255,45,120,0.6)";
+  const pctColor  = isPos ? "#00E5FF" : "#BF5AF2";
+  const pctGlow   = isPos ? "rgba(0,229,255,0.6)" : "rgba(191,90,242,0.6)";
 
   return (
     <Box
       sx={{
         background: "rgba(13,10,36,0.95)",
         backdropFilter: "blur(20px)",
-        border: `1px solid ${isPos ? "rgba(0,255,135,0.3)" : "rgba(255,45,120,0.3)"}`,
+        border: `1px solid ${isPos ? "rgba(0,229,255,0.3)" : "rgba(191,90,242,0.3)"}`,
         borderRadius: "12px",
         px: 2,
         py: 1.5,
-        boxShadow: `0 8px 32px rgba(0,0,0,0.7), 0 0 20px ${isPos ? "rgba(0,255,135,0.1)" : "rgba(255,45,120,0.1)"}`,
+        boxShadow: `0 8px 32px rgba(0,0,0,0.7), 0 0 20px ${isPos ? "rgba(0,229,255,0.1)" : "rgba(191,90,242,0.1)"}`,
       }}
     >
       <Typography
@@ -230,12 +230,12 @@ function TreemapContent(props: Record<string, unknown>) {
           y={y + height / 2 - (innerH > 38 ? pctFontSize / 2 + 2 : 0)}
           textAnchor="middle"
           dominantBaseline="central"
-          fill="#FFFFFF"
+          fill="rgba(255,255,255,0.95)"
           fontSize={tickerFontSize}
-          fontWeight="800"
+          fontWeight="700"
           fontFamily="Inter, sans-serif"
           filter="url(#tile-text-shadow)"
-          style={{ letterSpacing: "0.04em" }}
+          style={{ letterSpacing: "0.06em" }}
         >
           {ticker}
         </text>
@@ -248,11 +248,12 @@ function TreemapContent(props: Record<string, unknown>) {
           y={y + height / 2 + tickerFontSize / 2 + 4}
           textAnchor="middle"
           dominantBaseline="central"
-          fill="#FFFFFF"
+          fill="rgba(255,255,255,0.75)"
           fontSize={pctFontSize}
-          fontWeight="700"
-          fontFamily="JetBrains Mono, monospace"
+          fontWeight="500"
+          fontFamily="Inter, sans-serif"
           filter="url(#tile-text-shadow)"
+          style={{ letterSpacing: "0.02em" }}
         >
           {isPos ? "+" : ""}{pct.toFixed(2)}%
         </text>
@@ -265,11 +266,11 @@ function TreemapContent(props: Record<string, unknown>) {
           y={y + height / 2 + tickerFontSize / 2 + pctFontSize + 7}
           textAnchor="middle"
           dominantBaseline="central"
-          fill="rgba(191,90,242,0.8)"
+          fill="rgba(200,180,255,0.6)"
           fontSize={7}
           fontFamily="Inter, sans-serif"
           filter="url(#tile-text-shadow)"
-          style={{ letterSpacing: "0.03em" }}
+          style={{ letterSpacing: "0.04em" }}
         >
           {name.length > 20 ? name.slice(0, 18) + "…" : name}
         </text>
@@ -415,9 +416,9 @@ export default function MarketTreemap({
         {/* Legend chips */}
         <Stack direction="row" spacing={1} alignItems="center">
           {[
-            { label: "Loss", color: "#FF2D78", bg: "rgba(255,45,120,0.12)" },
-            { label: "Flat", color: "rgba(191,90,242,0.6)", bg: "rgba(191,90,242,0.08)" },
-            { label: "Gain", color: "#00FF87", bg: "rgba(0,255,135,0.12)" },
+            { label: "Loss", color: "#BF5AF2", bg: "rgba(191,90,242,0.12)" },
+            { label: "Flat", color: "rgba(160,130,210,0.6)", bg: "rgba(160,130,210,0.08)" },
+            { label: "Gain", color: "#00E5FF", bg: "rgba(0,229,255,0.12)" },
           ].map(({ label, color, bg }) => (
             <Box
               key={label}
@@ -462,7 +463,7 @@ export default function MarketTreemap({
           sx={{
             height: 5,
             borderRadius: "3px",
-            background: "linear-gradient(to right, #CC1F5A 0%, #6B2040 25%, #110C2E 50%, #0A5C35 75%, #00CC6E 100%)",
+            background: "linear-gradient(to right, #8B2FC9 0%, #3D1A6B 25%, #110C2E 50%, #0A3040 75%, #00C2D4 100%)",
             boxShadow: "0 0 12px rgba(0,0,0,0.4)",
           }}
         />

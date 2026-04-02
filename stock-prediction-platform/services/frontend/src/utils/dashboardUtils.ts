@@ -39,18 +39,18 @@ export function buildTreemapData(
 }
 
 /**
- * Map a daily change percentage to a vivid hex colour.
- * Clamped at ±3%. Neutral → deep purple, gain → neon green, loss → hot pink.
+ * Map a daily change percentage to a hex colour.
+ * Clamped at ±3%. Neutral → deep navy, gain → neon cyan, loss → bright purple.
  */
 export function changePctToColor(pct: number): string {
   const MAX = 3;
   const clamped = Math.max(-MAX, Math.min(MAX, pct));
   if (clamped >= 0) {
     const t = clamped / MAX;
-    return lerpColor("#110C2E", "#00CC6E", t);
+    return lerpColor("#110C2E", "#00C2D4", t);
   }
   const t = Math.abs(clamped) / MAX;
-  return lerpColor("#110C2E", "#CC1F5A", t);
+  return lerpColor("#110C2E", "#8B2FC9", t);
 }
 
 function lerpColor(a: string, b: string, t: number): string {
