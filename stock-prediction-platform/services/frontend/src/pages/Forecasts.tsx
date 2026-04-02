@@ -6,8 +6,6 @@ import {
   Drawer,
   Grid,
   Skeleton,
-  TableCell,
-  TableRow,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -25,7 +23,6 @@ import {
 import { useBulkPredictions, useMarketOverview, useTickerIndicators, useAvailableHorizons } from "@/api";
 import type { ForecastRow, ForecastFiltersState, IndicatorValues } from "@/api";
 import { joinForecastData, extractSectors } from "@/utils/forecastUtils";
-import { generateMockForecasts } from "@/utils/mockForecastData";
 import { generateMockIndicatorSeries } from "@/utils/mockIndicatorData";
 import { exportToCsv } from "@/utils/exportCsv";
 import { exportTableToPdf } from "@/utils/exportPdf";
@@ -116,19 +113,14 @@ export default function Forecasts() {
 
   const availableHorizons = horizonsQuery.data?.horizons ?? [7];
 
-  // Join predictions + market data; mock only on error (not while loading)
+  // Join predictions + market data; partial failure: market data missing → em-dash for company/sector
   const allRows = useMemo<ForecastRow[]>(() => {
-    if (bulkQuery.data && marketQuery.data) {
-      return joinForecastData(
-        bulkQuery.data.predictions,
-        marketQuery.data.stocks,
-      );
-    }
-    if (bulkQuery.isError || marketQuery.isError) {
-      return generateMockForecasts(horizon);
+    if (bulkQuery.data) {
+      const marketStocks = marketQuery.data?.stocks ?? [];
+      return joinForecastData(bulkQuery.data.predictions, marketStocks);
     }
     return [];
-  }, [bulkQuery.data, marketQuery.data, bulkQuery.isError, marketQuery.isError, horizon]);
+  }, [bulkQuery.data, marketQuery.data]);
 
   const sectors = useMemo(() => extractSectors(allRows), [allRows]);
 
@@ -156,7 +148,6 @@ export default function Forecasts() {
   };
 
   const isLoading = bulkQuery.isLoading || marketQuery.isLoading;
-  const isError = bulkQuery.isError && marketQuery.isError;
   const refetch = () => {
     bulkQuery.refetch();
     marketQuery.refetch();
@@ -190,13 +181,14 @@ export default function Forecasts() {
       </Container>
     );
   }
-  if (isError)
+  if (bulkQuery.isError) {
     return (
       <ErrorFallback
         message="Failed to load forecast data"
         onRetry={refetch}
       />
     );
+  }
 
   const selectedRow =
     selectedTicker != null
