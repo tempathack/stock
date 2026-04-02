@@ -77,10 +77,12 @@ spec:
             #     | kubectl apply -f -
             - secretRef:
                 name: stock-platform-secrets
-            # MinIO credentials required by the flink-s3-fs-presto plugin for checkpoint access.
-            # NOTE: minio-secrets must also be copied to the flink namespace in deploy-all.sh.
+            # MinIO credentials mapped to the AWS env var names required by flink-s3-fs-presto.
+            # minio-secrets uses MINIO_ROOT_USER/MINIO_ROOT_PASSWORD which the S3 plugin cannot
+            # discover. minio-s3-credentials uses AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY directly.
+            # NOTE: minio-s3-credentials must be created in the flink namespace by deploy-all.sh.
             - secretRef:
-                name: minio-secrets
+                name: minio-s3-credentials
 
   job:
     entryClass: "org.apache.flink.client.python.PythonDriver"

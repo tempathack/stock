@@ -298,6 +298,15 @@ kubectl delete secret minio-secrets -n flink --ignore-not-found
 kubectl get secret minio-secrets -n storage -o json \
     | python3 -c "import sys,json; d=json.load(sys.stdin); d['metadata']={k:v for k,v in d['metadata'].items() if k in ('name','labels')}; d['metadata']['namespace']='flink'; print(json.dumps(d))" \
     | kubectl create -f -
+# Create minio-s3-credentials with AWS-named keys required by flink-s3-fs-presto plugin.
+# secretRef for minio-secrets injects MINIO_ROOT_USER/MINIO_ROOT_PASSWORD which the S3 plugin
+# cannot discover; this secret provides AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY instead.
+MINIO_USER=$(kubectl get secret minio-secrets -n storage -o jsonpath='{.data.MINIO_ROOT_USER}' | base64 -d)
+MINIO_PASS=$(kubectl get secret minio-secrets -n storage -o jsonpath='{.data.MINIO_ROOT_PASSWORD}' | base64 -d)
+kubectl delete secret minio-s3-credentials -n flink --ignore-not-found
+kubectl create secret generic minio-s3-credentials -n flink \
+    --from-literal=AWS_ACCESS_KEY_ID="$MINIO_USER" \
+    --from-literal=AWS_SECRET_ACCESS_KEY="$MINIO_PASS"
 
 echo "[Phase 67] Applying Flink ConfigMap..."
 kubectl apply -f "$PROJECT_ROOT/k8s/flink/flink-config-configmap.yaml"
