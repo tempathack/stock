@@ -84,7 +84,7 @@
 | 73 | 7/7 | Complete    | 2026-03-31 | 7 |
 | 74–81 | Various hotfixes & Grafana fixes | Complete | 2026-04-02 | — |
 | 82 | 2/2 | Complete    | 2026-04-02 |
-| 83 | Fix Kafka consumer metrics scraping | Fix port mismatch + INTRADAY_TOPIC + Service | MON-03 | 1 plan |
+| 83 | 1/1 | Complete   | 2026-04-02 | 1 plan |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1598,10 +1598,10 @@ Plans:
 **Goal:** [To be planned]
 **Requirements**: TBD
 **Depends on:** Phase 82
-**Plans:** 0 plans
+**Plans:** 1/1 plans complete
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 83 to break down)
+- [x] TBD (run /gsd:plan-phase 83 to break down) (completed 2026-04-02)
 
 ### Phase 84: Fix Loki alerting datasource misconfiguration — alert rules fail to load from Loki
 

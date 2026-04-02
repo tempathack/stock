@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 82-02-PLAN.md
-last_updated: "2026-04-02T22:32:54.526Z"
+stopped_at: Completed 83-01-PLAN.md
+last_updated: "2026-04-02T22:45:17.699Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 82 — fix-ml-prediction-latency-alerting-add-threshold-line-for-8-10s-p95-verify-p50-p95-p99-are-real-histogram-metrics-not-synthetic
+**Current focus:** Phase 83 — fix-kafka-consumer-metrics-scraping-all-consumer-and-writer-panels-show-no-data-fix-exporter-gap
 
 ## Current Status
 
@@ -390,10 +390,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 82]: Prometheus histogram alert uses prediction_latency_seconds_bucket with sum by (le) for correct histogram_quantile aggregation
 - [Phase 82]: Used 4 levels of .parent from test file path to locate stock-prediction-platform/k8s/monitoring/ root
 - [Phase 82]: All 5 dashboard tests passed green immediately since plan 01 changes were already applied to grafana-dashboard-ml-perf.yaml
+- [Phase 83]: No RBAC changes needed: existing ClusterRole is cluster-scoped covering all namespaces including processing
+- [Phase 83]: Used ClusterIP Service (not NodePort/LoadBalancer) for kafka-consumer metrics — internal scraping only
 
 ## Last Session
 
-- **Stopped at:** Completed 82-02-PLAN.md
+- **Stopped at:** Completed 83-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
