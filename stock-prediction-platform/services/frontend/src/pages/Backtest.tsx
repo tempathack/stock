@@ -18,7 +18,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import { ErrorFallback } from "@/components/ui";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
+import { ExportButtons } from "@/components/ui";
 import { BacktestChart, BacktestMetricsSummary } from "@/components/backtest";
 import { useBacktest, useMarketOverview } from "@/api";
 import { exportToCsv } from "@/utils/exportCsv";
@@ -200,11 +201,23 @@ export default function Backtest() {
         </Grid>
       </Paper>
 
-      {/* Error State */}
+      {/* Error / No-Data State */}
       {backtestQuery.isError && (
-        <ErrorFallback
-          message={`No backtest data available for ${activeTicker} in the selected range.`}
-        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            py: 10,
+            gap: 2,
+            color: "text.secondary",
+          }}
+        >
+          <SearchOffIcon sx={{ fontSize: 56, opacity: 0.25 }} />
+          <Typography variant="body1" sx={{ opacity: 0.55 }}>
+            No backtest data found for {activeTicker} in the selected date range.
+          </Typography>
+        </Box>
       )}
 
       {/* Idle State — shown before any run is initiated */}
