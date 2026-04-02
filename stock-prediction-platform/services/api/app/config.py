@@ -83,7 +83,7 @@ class Settings(BaseSettings):
     DRIFT_LOG_DIR: str = "drift_logs"
     SERVING_DIR: str = "/models/active"
     DEFAULT_HORIZON: int = 7
-    AVAILABLE_HORIZONS: str = "1,7,30"
+    AVAILABLE_HORIZONS: str = "1,7,14,30"
 
     @property
     def available_horizons_list(self) -> list[int]:

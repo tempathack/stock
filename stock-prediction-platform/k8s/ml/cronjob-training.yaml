@@ -34,6 +34,8 @@ spec:
                 - "--serving-dir"
                 - "$(SERVING_DIR)"
                 - "--skip-shap"
+                - "--horizons"
+                - "1,7,14,30"
               envFrom:
                 - configMapRef:
                     name: ml-pipeline-config
