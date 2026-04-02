@@ -1,7 +1,6 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import {
   Box,
-  Chip,
   Container,
   Grid,
   Skeleton,
@@ -25,6 +24,7 @@ import {
   DashboardTAPanel,
   SentimentPanel,
   StreamingFeaturesPanel,
+  TopMoversPanel,
 } from "@/components/dashboard";
 import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
 import { buildTreemapData, deriveStockMetrics } from "@/utils/dashboardUtils";
@@ -470,6 +470,13 @@ export default function Dashboard() {
           />
         )}
       </Box>
+
+      {/* ── Top Movers ── */}
+      <TopMoversPanel
+        stocks={stocks}
+        loading={marketQuery.isLoading}
+        onSelectTicker={handleSelect}
+      />
 
       {/* ── Stock Selector ── */}
       <StockSelector
