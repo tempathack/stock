@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-02 — Phase 79 complete (Grafana security hardening: hardcoded admin/admin credentials removed from all configs; K8s Deployment now reads password via secretKeyRef from grafana-credentials Secret; docker-compose uses ${GRAFANA_ADMIN_PASSWORD} env var; INFRA-08 satisfied)*
+*Last updated: 2026-04-02 — Phase 80 complete (Analytics page cleanup: removed stale "Coming in Phase 69" Chip badges from all empty-state panels; N/A metric cards now show neutral grey HelpOutlineIcon instead of misleading green CheckCircleIcon)*
