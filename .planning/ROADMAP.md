@@ -1539,7 +1539,7 @@ Plans:
 **Goal:** Fix Models, Dashboard, and Drift pages so API failures and loading states never produce a black void — every page renders PageHeader first, then structured skeleton/error content below.
 **Requirements**: ERR-FALLBACK-ICON, MODELS-LOADING-SKELETON, MODELS-ERROR-STATE, DASHBOARD-ERROR-STATE, DASHBOARD-MOCK-REMOVAL, DASHBOARD-INTRADAY-PLACEHOLDER, DRIFT-ERROR-STATE, DRIFT-LOADING-SKELETON, DRIFT-MOCK-REMOVAL, DRIFT-PANEL-ERRORS
 **Depends on:** Phase 77
-**Plans:** 2/4 plans executed
+**Plans:** 3/4 plans executed
 
 Plans:
 - [ ] 78-01-PLAN.md — Enhance ErrorFallback component: add ErrorOutline icon above message text
