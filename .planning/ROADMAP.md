@@ -1515,7 +1515,7 @@ Plans:
 **Goal:** Polish UX across all pages: add proper empty state and loading feedback to Backtest page, add tooltips to icon-only buttons, populate Sector and Company name fields in Forecasts table, add multi-horizon selector (1D/3D/7D/14D), add content below dashboard treemap fold, add ticker selector to Analytics OLAP candle chart, fix feature freshness unknown state.
 **Requirements**: TBD
 **Depends on:** Phase 73
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Plans:
 - [ ] 76-01-PLAN.md — Backtest idle state + icon tooltip audit
