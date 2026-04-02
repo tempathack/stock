@@ -4,7 +4,7 @@ milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
 stopped_at: "Checkpoint:human-verify 84-02-PLAN.md Task 3 — apply K8s configs and verify Grafana alerting"
-last_updated: "2026-04-02T23:17:22.173Z"
+last_updated: "2026-04-02T23:37:38.668Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 84 — fix-loki-alerting-datasource-misconfiguration-alert-rules-fail-to-load-from-loki
+**Current focus:** Phase 86 — frontend-sidebar-icon-differentiation-make-nav-icons-visually-distinct-per-section
 
 ## Current Status
 
