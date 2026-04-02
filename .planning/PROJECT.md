@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-02 — Phase 80 complete (Analytics page cleanup: removed stale "Coming in Phase 69" Chip badges from all empty-state panels; N/A metric cards now show neutral grey HelpOutlineIcon instead of misleading green CheckCircleIcon)*
+*Last updated: 2026-04-03 — Phase 81 complete (Fix Grafana no-data-on-green: added null+nan value mappings with blue color to Error Rate %, p50/p95/p99 Latency stat panels in API Health dashboard — no-data state now shows neutral blue instead of misleading green)*
