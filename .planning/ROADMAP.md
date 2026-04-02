@@ -1528,7 +1528,7 @@ Plans:
 **Goal:** Forecasts page shows skeleton loading (not blank screen); ohlcv-normalizer FlinkDeployment reaches READY with completed MinIO checkpoints
 **Requirements**: TBD
 **Depends on:** Phase 76
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 77-01-PLAN.md — Forecasts blank screen: skeleton loading state + partial-failure error logic

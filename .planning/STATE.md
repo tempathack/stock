@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 77 context gathered
-last_updated: "2026-04-02T08:10:16.058Z"
+stopped_at: Completed 77-01-PLAN.md
+last_updated: "2026-04-02T11:36:14.818Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 76 — ux-polish-backtest-empty-state-and-loading-feedback-icon-tooltips-sector-and-company-names-in-forecasts-horizon-selector-dashboard-below-fold-content-analytics-olap-chart-ticker-selector
+**Current focus:** Phase 77 — fix-flink-pipeline-health-and-forecasts-blank-screen
 
 ## Current Status
 
@@ -371,10 +371,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 76-01]: null activeTicker guard: useState<string|null>(null) + activeTicker ?? '' disables query on initial Backtest mount
 - [Phase 76-01]: Tooltip audit: all icon-only buttons already wrapped; ExportButtons has text labels; nav has icon+text
 - [Phase 76-ux-polish]: 76-03: AVAILABLE_HORIZONS='1,7,14,30'; horizons.json seeded for immediate HorizonToggle; db_writer enriches stocks table via yfinance for Forecasts Company/Sector columns
+- [Phase 77]: bulkQuery.isError alone gates ErrorFallback — marketQuery failure degrades table to em-dash, not error page
+- [Phase 77]: generateMockForecasts removed from production code path — partial failure uses empty array fallback instead
 
 ## Last Session
 
-- **Stopped at:** Phase 77 context gathered
+- **Stopped at:** Completed 77-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
