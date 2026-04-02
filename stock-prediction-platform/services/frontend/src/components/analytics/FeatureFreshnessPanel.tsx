@@ -12,15 +12,15 @@ import {
 import { useFeatureFreshness } from "../../api/queries";
 import PlaceholderCard from "../ui/PlaceholderCard";
 
-function getStalenessColor(s: number | null): "success" | "warning" | "error" {
-  if (s === null) return "warning";
+function getStalenessColor(s: number | null): "success" | "warning" | "error" | "inherit" {
+  if (s === null) return "inherit";
   if (s < 15 * 60) return "success";   // <15min: green
   if (s < 60 * 60) return "warning";   // <1h: amber
   return "error";                        // >1h: red
 }
 
 function formatStaleness(s: number | null): string {
-  if (s === null) return "unknown";
+  if (s === null) return "—";
   if (s < 60) return `${s}s ago`;
   if (s < 3600) return `${Math.floor(s / 60)}m ago`;
   return `${Math.floor(s / 3600)}h ago`;
@@ -61,7 +61,7 @@ export default function FeatureFreshnessPanel() {
               key={view.view_name}
               title={`${view.view_name}: last materialized ${formatStaleness(view.staleness_seconds)}`}
             >
-              <Box>
+              <Box sx={{ opacity: view.staleness_seconds === null ? 0.45 : 1 }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -74,12 +74,14 @@ export default function FeatureFreshnessPanel() {
                     {formatStaleness(view.staleness_seconds)}
                   </Typography>
                 </Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={getStalenessProgress(view.staleness_seconds)}
-                  color={getStalenessColor(view.staleness_seconds)}
-                  sx={{ height: 6, borderRadius: 1 }}
-                />
+                {view.staleness_seconds !== null && (
+                  <LinearProgress
+                    variant="determinate"
+                    value={getStalenessProgress(view.staleness_seconds)}
+                    color={getStalenessColor(view.staleness_seconds) as "success" | "warning" | "error"}
+                    sx={{ height: 6, borderRadius: 1 }}
+                  />
+                )}
               </Box>
             </Tooltip>
           ))}
