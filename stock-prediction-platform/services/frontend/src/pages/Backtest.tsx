@@ -36,9 +36,9 @@ export default function Backtest() {
   const [start, setStart] = useState(oneYearAgo);
   const [end, setEnd] = useState(today);
   const [horizon, setHorizon] = useState<number | undefined>(undefined);
-  const [activeTicker, setActiveTicker] = useState("AAPL");
+  const [activeTicker, setActiveTicker] = useState<string | null>(null);
 
-  const backtestQuery = useBacktest(activeTicker, start, end, horizon);
+  const backtestQuery = useBacktest(activeTicker ?? "", start, end, horizon);
   const marketQuery = useMarketOverview();
 
   const tickers = useMemo(() => {
@@ -207,6 +207,25 @@ export default function Backtest() {
         />
       )}
 
+      {/* Idle State — shown before any run is initiated */}
+      {!activeTicker && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            py: 10,
+            gap: 2,
+            color: "text.secondary",
+          }}
+        >
+          <PlayArrowIcon sx={{ fontSize: 56, opacity: 0.25 }} />
+          <Typography variant="body1" sx={{ opacity: 0.55 }}>
+            Configure parameters above and click Run Backtest to see results
+          </Typography>
+        </Box>
+      )}
+
       {/* Results */}
       {backtestQuery.data && (
         <Box>
@@ -236,7 +255,7 @@ export default function Backtest() {
           <Paper sx={{ p: 2, mb: 3, height: 450 }} data-testid="backtest-chart">
             <BacktestChart
               series={backtestQuery.data.series}
-              ticker={activeTicker}
+              ticker={activeTicker ?? ""}
             />
           </Paper>
 

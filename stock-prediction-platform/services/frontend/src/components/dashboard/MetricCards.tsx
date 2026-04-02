@@ -105,7 +105,7 @@ export default function MetricCards({ metrics }: MetricCardsProps) {
 
       <Grid container spacing={1.5}>
         {cards.map((card, i) => {
-          const accent = CARD_ACCENTS[i % CARD_ACCENTS.length];
+          const accent = CARD_ACCENTS[i % CARD_ACCENTS.length]!;
           return (
             <Grid size={{ xs: 6, sm: 4, lg: 2 }} key={card.label}>
               <Box
