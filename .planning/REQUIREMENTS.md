@@ -11,7 +11,7 @@
 - [x] **INFRA-05**: deploy-all.sh orchestration script
 - [x] **INFRA-06**: docker-compose.yml for local dev convenience
 - [ ] **INFRA-07**: All services have Dockerfiles with multi-stage builds where applicable
-- [ ] **INFRA-08**: All configuration via environment variables — zero hardcoded secrets
+- [x] **INFRA-08**: All configuration via environment variables — zero hardcoded secrets
 - [x] **INFRA-09**: Structured JSON logging configured for all services
 
 ### FastAPI Backend — Base

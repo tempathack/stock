@@ -1552,7 +1552,7 @@ Plans:
 **Goal:** Remove hardcoded admin/admin credentials from Grafana — use K8s Secret in K8s and env var substitution in docker-compose.
 **Requirements**: INFRA-08
 **Depends on:** Phase 78
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 79-01-PLAN.md — Create grafana-secret K8s Secret, update Deployment to secretKeyRef, update docker-compose to env var, update deploy-all.sh
