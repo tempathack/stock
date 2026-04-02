@@ -1515,12 +1515,13 @@ Plans:
 **Goal:** Polish UX across all pages: add proper empty state and loading feedback to Backtest page, add tooltips to icon-only buttons, populate Sector and Company name fields in Forecasts table, add multi-horizon selector (1D/3D/7D/14D), add content below dashboard treemap fold, add ticker selector to Analytics OLAP candle chart, fix feature freshness unknown state.
 **Requirements**: TBD
 **Depends on:** Phase 73
-**Plans:** 3 plans
+**Plans:** 4 plans
 
 Plans:
 - [ ] 76-01-PLAN.md — Backtest idle state + icon tooltip audit
 - [ ] 76-02-PLAN.md — Feature Freshness null fix + OLAP ticker selector
-- [ ] 76-03-PLAN.md — Sector/company_name DB fix + 14D horizon config
+- [ ] 76-03-PLAN.md — Sector/company_name DB fix + 14D horizon config + horizons.json seed
+- [ ] 76-04-PLAN.md — Dashboard below-fold content: TopMoversPanel (top gainers/losers)
 
 ### Phase 77: Fix Flink pipeline health and Forecasts blank screen
 
