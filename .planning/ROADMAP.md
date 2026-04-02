@@ -1549,13 +1549,13 @@ Plans:
 
 ### Phase 79: Grafana security hardening — change default admin password from admin/admin
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Remove hardcoded admin/admin credentials from Grafana — use K8s Secret in K8s and env var substitution in docker-compose.
+**Requirements**: INFRA-08
 **Depends on:** Phase 78
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 79 to break down)
+- [ ] 79-01-PLAN.md — Create grafana-secret K8s Secret, update Deployment to secretKeyRef, update docker-compose to env var, update deploy-all.sh
 
 ### Phase 80: Analytics page cleanup — remove Coming in Phase 69 placeholder badges and fix N/A values showing green checkmarks
 
