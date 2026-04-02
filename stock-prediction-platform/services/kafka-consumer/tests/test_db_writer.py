@@ -128,14 +128,16 @@ class TestEnsureTickers:
             first_sql = mock_exec.call_args_list[0][0][1]
             assert "INSERT INTO stocks" in first_sql
 
-    def test_ensure_tickers_on_conflict_do_nothing(self, batch_writer, mock_db_pool):
+    def test_ensure_tickers_on_conflict_do_update(self, batch_writer, mock_db_pool):
+        """SQL uses DO UPDATE SET to backfill company_name/sector on existing rows."""
         records = [_make_intraday_record()]
 
-        with patch("consumer.db_writer.execute_values") as mock_exec:
+        with patch("consumer.db_writer._fetch_ticker_metadata", return_value=(None, None)), \
+             patch("consumer.db_writer.execute_values") as mock_exec:
             batch_writer.upsert_intraday_batch(records)
 
             first_sql = mock_exec.call_args_list[0][0][1]
-            assert "ON CONFLICT (ticker) DO NOTHING" in first_sql
+            assert "ON CONFLICT (ticker) DO UPDATE" in first_sql
 
 
 class TestEnsureTickersYfinanceEnrichment:

@@ -19,6 +19,12 @@ from consumer.config import settings
 from consumer.logging import get_logger
 from consumer.metrics import batch_write_duration_seconds
 
+try:
+    import yfinance as yf
+    _YFINANCE_AVAILABLE = True
+except ImportError:
+    _YFINANCE_AVAILABLE = False
+
 logger = get_logger(__name__)
 
 _INTRADAY_UPSERT_SQL = """
@@ -44,10 +50,37 @@ _DAILY_UPSERT_SQL = """
 """
 
 _ENSURE_TICKERS_SQL = """
-    INSERT INTO stocks (ticker, company_name)
+    INSERT INTO stocks (ticker, company_name, sector)
     VALUES %s
-    ON CONFLICT (ticker) DO NOTHING
+    ON CONFLICT (ticker) DO UPDATE SET
+        company_name = CASE
+            WHEN EXCLUDED.company_name IS NOT NULL AND EXCLUDED.company_name != EXCLUDED.ticker
+            THEN EXCLUDED.company_name
+            ELSE stocks.company_name
+        END,
+        sector = CASE
+            WHEN EXCLUDED.sector IS NOT NULL
+            THEN EXCLUDED.sector
+            ELSE stocks.sector
+        END
 """
+
+
+def _fetch_ticker_metadata(ticker: str) -> tuple[str | None, str | None]:
+    """Fetch company_name and sector for a ticker from yfinance.
+
+    Returns (company_name, sector) tuple. Returns (None, None) on failure.
+    """
+    if not _YFINANCE_AVAILABLE:
+        return None, None
+    try:
+        info = yf.Ticker(ticker).info
+        company_name = info.get("longName") or info.get("shortName")
+        sector = info.get("sector")
+        return company_name, sector
+    except Exception:
+        logger.warning("yfinance lookup failed for %s — falling back to ticker symbol", ticker)
+        return None, None
 
 
 class BatchWriter:
@@ -116,8 +149,15 @@ class BatchWriter:
         return len(records)
 
     def _ensure_tickers(self, tickers: set[str], conn) -> None:
-        """Ensure all tickers exist in the stocks table (FK requirement)."""
-        values = [(t, t) for t in tickers]
+        """Ensure all tickers exist in the stocks table (FK requirement).
+
+        Fetches company_name and sector from yfinance for enriched inserts.
+        Falls back to ticker symbol as company_name if yfinance is unavailable.
+        """
+        values = []
+        for t in tickers:
+            company_name, sector = _fetch_ticker_metadata(t)
+            values.append((t, company_name or t, sector))
         with conn.cursor() as cur:
             execute_values(cur, _ENSURE_TICKERS_SQL, values)
         conn.commit()
