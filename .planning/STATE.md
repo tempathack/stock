@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 81-01-PLAN.md
-last_updated: "2026-04-02T22:07:49.464Z"
+stopped_at: Completed 82-01-PLAN.md
+last_updated: "2026-04-02T22:28:18.045Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 81 — fix-grafana-no-data-on-green-panels-api-health-error-rate-and-inference-errors-show-no-data-on-green-background-appearing-healthy
+**Current focus:** Phase 82 — fix-ml-prediction-latency-alerting-add-threshold-line-for-8-10s-p95-verify-p50-p95-p99-are-real-histogram-metrics-not-synthetic
 
 ## Current Status
 
@@ -386,10 +386,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 80]: Use HelpOutlineIcon with text.disabled to signal unavailable data in SystemHealthSummary metric cards
 - [Phase 81]: Grafana null+nan mapping: use type=special mappings in fieldConfig.defaults to override no-data color to blue — noValue field alone only changes text, not threshold-driven color
 - [Phase 81]: kubectl replace vs apply: use kubectl replace when ConfigMap was originally created without apply annotations, preventing apply from updating the resource
+- [Phase 82]: thresholdsStyle.mode=line goes inside Grafana custom block; thresholds object at defaults level for SLO reference lines
+- [Phase 82]: Prometheus histogram alert uses prediction_latency_seconds_bucket with sum by (le) for correct histogram_quantile aggregation
 
 ## Last Session
 
-- **Stopped at:** Completed 81-01-PLAN.md
+- **Stopped at:** Completed 82-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
@@ -433,3 +435,4 @@ Recommended wave execution:
 - Phase 85 added: Backtest UX polish — neutral empty state, label orphaned icon buttons
 - Phase 86 added: Frontend sidebar icon differentiation
 - Phase 87 added: Point-in-time correct feature serving via Feast and KServe Transformer — eliminate lookahead leakage in backtest
+- Phase 88 added: Add all prediction forecasts to the table in the forecasts dashboard tab

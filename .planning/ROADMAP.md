@@ -83,7 +83,7 @@
 | 72 | 2/2 | Complete    | 2026-03-31 | 2 |
 | 73 | 7/7 | Complete    | 2026-03-31 | 7 |
 | 74–81 | Various hotfixes & Grafana fixes | Complete | 2026-04-02 | — |
-| 82 | Fix ML Prediction Latency Alerting — threshold line + histogram verify | MON-06, MON-08, MON-02 | 2 plans |
+| 82 | 1/2 | In Progress|  |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1586,7 +1586,7 @@ Plans:
 **Goal:** [To be planned]
 **Requirements**: TBD
 **Depends on:** Phase 81
-**Plans:** 0 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 82 to break down)
@@ -1640,6 +1640,16 @@ Plans:
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 87 to break down)
+
+### Phase 88: Add all prediction forecasts to the table in the forecasts dashboard tab
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 87
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 88 to break down)
 
 ---
 
