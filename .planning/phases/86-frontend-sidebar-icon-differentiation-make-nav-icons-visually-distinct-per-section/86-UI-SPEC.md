@@ -72,7 +72,7 @@ Declared values (must be multiples of 4) — source: existing codebase patterns 
 | 2xl | 48px | Major section breaks |
 | 3xl | 64px | Page-level spacing |
 
-Exceptions: Nav items use `px: 1.5` (12px) MUI spacing for horizontal padding — intentional compact fit within 60px header height. Touch targets are 60px tall (full header height), exceeding 44px minimum. No additional exceptions.
+Nav item horizontal padding (`px: 1.5`, 12px MUI spacing) is inherited from the existing codebase and is not modified by this phase.
 
 ---
 
@@ -84,10 +84,10 @@ Source: `globals.css` tokens + `Sidebar.tsx` observed values.
 |------|------|--------|-------------|
 | Nav label | 12.5px (0.78rem) | 400 inactive / 700 active | 1.0 (single line, no wrap) |
 | Body | 16px | 400 | 1.5 |
-| Label/caption | 9.6px (0.6rem) | 600 | 1.0 |
+| Label/caption | 9.6px (0.6rem) | 400 | 1.0 |
 | Heading | 20px | 700 | 1.2 |
 
-Nav label sizing and weights are locked by the existing component and must not change — this phase only changes icon selection, not typography.
+Two weights in use: 400 (regular) and 700 (bold). Nav label sizing and weights are locked by the existing component and must not change — this phase only changes icon selection, not typography.
 
 ---
 
