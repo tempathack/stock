@@ -138,6 +138,58 @@ class TestEnsureTickers:
             assert "ON CONFLICT (ticker) DO NOTHING" in first_sql
 
 
+class TestEnsureTickersYfinanceEnrichment:
+    """Tests for yfinance-enriched _ensure_tickers (76-03: populate company_name and sector)."""
+
+    def test_ensure_tickers_fetches_yfinance_company_name(self, batch_writer, mock_db_pool):
+        """_ensure_tickers calls _fetch_ticker_metadata and inserts company_name from longName."""
+        fake_info = {"longName": "Apple Inc.", "sector": "Technology"}
+
+        with patch("consumer.db_writer._fetch_ticker_metadata", return_value=("Apple Inc.", "Technology")) as mock_fetch, \
+             patch("consumer.db_writer.execute_values") as mock_exec:
+            batch_writer._ensure_tickers({"AAPL"}, mock_db_pool.getconn())
+
+            mock_fetch.assert_called_once_with("AAPL")
+            # Values passed to execute_values must include real company_name
+            values_arg = mock_exec.call_args[0][2]
+            row = values_arg[0]
+            assert row[0] == "AAPL"
+            assert row[1] == "Apple Inc."
+            assert row[2] == "Technology"
+
+    def test_ensure_tickers_falls_back_on_yfinance_error(self, batch_writer, mock_db_pool):
+        """If _fetch_ticker_metadata returns (None, None), company_name falls back to ticker symbol."""
+        with patch("consumer.db_writer._fetch_ticker_metadata", return_value=(None, None)), \
+             patch("consumer.db_writer.execute_values") as mock_exec:
+            batch_writer._ensure_tickers({"AAPL"}, mock_db_pool.getconn())
+
+            values_arg = mock_exec.call_args[0][2]
+            row = values_arg[0]
+            assert row[0] == "AAPL"
+            assert row[1] == "AAPL"  # fallback: ticker symbol
+            assert row[2] is None    # sector stays None on failure
+
+    def test_ensure_tickers_sql_uses_do_update(self, batch_writer, mock_db_pool):
+        """INSERT SQL must use ON CONFLICT ... DO UPDATE to backfill existing null rows."""
+        with patch("consumer.db_writer._fetch_ticker_metadata", return_value=(None, None)), \
+             patch("consumer.db_writer.execute_values") as mock_exec:
+            batch_writer._ensure_tickers({"AAPL"}, mock_db_pool.getconn())
+
+            first_sql = mock_exec.call_args[0][1]
+            assert "DO UPDATE SET" in first_sql, (
+                "SQL must use ON CONFLICT DO UPDATE to backfill null company_name rows"
+            )
+
+    def test_ensure_tickers_sql_includes_sector_column(self, batch_writer, mock_db_pool):
+        """INSERT SQL must include sector column so it is stored."""
+        with patch("consumer.db_writer._fetch_ticker_metadata", return_value=("Apple Inc.", "Technology")), \
+             patch("consumer.db_writer.execute_values") as mock_exec:
+            batch_writer._ensure_tickers({"AAPL"}, mock_db_pool.getconn())
+
+            sql_arg = mock_exec.call_args[0][1]
+            assert "sector" in sql_arg, "SQL must include sector column"
+
+
 class TestRetry:
     """Tests for retry logic (CONS-05)."""
 
