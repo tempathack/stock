@@ -1559,13 +1559,13 @@ Plans:
 
 ### Phase 80: Analytics page cleanup — remove Coming in Phase 69 placeholder badges and fix N/A values showing green checkmarks
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Remove stale "Coming in Phase 69" Chip badges from Analytics page empty states and fix N/A metric cards that incorrectly display green CheckCircle icons
+**Requirements**: UI-CLEANUP-80
 **Depends on:** Phase 79
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 80 to break down)
+- [ ] 80-01-PLAN.md — Remove phase badge from PlaceholderCard; fix neutral icon for N/A metric cards in SystemHealthSummary
 
 ### Phase 81: Fix Grafana No-data-on-green panels — API Health Error Rate and Inference Errors show No data on green background appearing healthy
 
