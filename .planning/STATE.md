@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 79-01-PLAN.md
-last_updated: "2026-04-02T19:59:54.611Z"
+stopped_at: Completed 80-01-PLAN.md
+last_updated: "2026-04-02T20:59:09.308Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 79 — grafana-security-hardening-change-default-admin-password-from-admin-admin
+**Current focus:** Phase 80 — analytics-page-cleanup-remove-coming-in-phase-69-placeholder-badges-and-fix-n-a-values-showing-green-checkmarks
 
 ## Current Status
 
@@ -382,10 +382,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 78-04]: retrainStatus fallback returns typed empty object instead of mock: { lastRetrainDate: null, isRetraining: false, oldModel: null, newModel: null, improvementPct: null }
 - [Phase 79]: Grafana K8s Secret with secretKeyRef — placeholder base64 password in manifest, override via kubectl --dry-run pattern
 - [Phase 79]: docker-compose uses ${GRAFANA_ADMIN_PASSWORD} with no default fallback to fail loudly if not set
+- [Phase 80]: Remove phase prop entirely from PlaceholderCard rather than conditionally hiding the Chip badge
+- [Phase 80]: Use HelpOutlineIcon with text.disabled to signal unavailable data in SystemHealthSummary metric cards
 
 ## Last Session
 
-- **Stopped at:** Completed 79-01-PLAN.md
+- **Stopped at:** Completed 80-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

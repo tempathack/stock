@@ -1562,7 +1562,7 @@ Plans:
 **Goal:** Remove stale "Coming in Phase 69" Chip badges from Analytics page empty states and fix N/A metric cards that incorrectly display green CheckCircle icons
 **Requirements**: UI-CLEANUP-80
 **Depends on:** Phase 79
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 80-01-PLAN.md — Remove phase badge from PlaceholderCard; fix neutral icon for N/A metric cards in SystemHealthSummary
