@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 78-01-PLAN.md
-last_updated: "2026-04-02T19:16:27.509Z"
+stopped_at: Completed 78-02-PLAN.md
+last_updated: "2026-04-02T19:18:34.278Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -375,10 +375,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 77]: generateMockForecasts removed from production code path — partial failure uses empty array fallback instead
 - [Phase 77]: Phase 77 Plan 02: minio-s3-credentials provides AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY required by flink-s3-fs-presto; minio-secrets provides wrong env var names (MINIO_ROOT_USER/PASSWORD) — always use minio-s3-credentials for Flink checkpoint bucket access
 - [Phase 78-fix-frontend-broken-page-error-states]: ErrorFallback enhanced in-place with ErrorOutlineIcon, preserving props interface so all callers get improvement automatically
+- [Phase 78]: Models.tsx: 8 skeleton rows + centered ErrorFallback with PageHeader in both loading and error states
 
 ## Last Session
 
-- **Stopped at:** Completed 78-01-PLAN.md
+- **Stopped at:** Completed 78-02-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
