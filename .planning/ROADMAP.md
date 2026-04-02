@@ -1626,13 +1626,13 @@ Plans:
 
 ### Phase 86: Frontend sidebar icon differentiation — make nav icons visually distinct per section
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Replace four visually similar chart-style nav icons with icons that have distinct silhouettes, so each of the six nav sections is identifiable by icon shape alone.
+**Requirements**: NAV-ICON-01
 **Depends on:** Phase 85
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 86 to break down)
+- [ ] 86-01-PLAN.md — Swap four nav icons in Sidebar.tsx (PsychologyIcon, WaterDropIcon, HistoryIcon, InsightsIcon) + Playwright visual verification
 
 ### Phase 87: Point-in-time correct feature serving via Feast and KServe Transformer — eliminate lookahead leakage in backtest
 
