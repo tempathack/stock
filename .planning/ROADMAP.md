@@ -1569,13 +1569,13 @@ Plans:
 
 ### Phase 81: Fix Grafana No-data-on-green panels — API Health Error Rate and Inference Errors show No data on green background appearing healthy
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Add null+nan value mappings to four green-base stat panels in the API Health dashboard so no-data states render as blue/neutral instead of falsely green
+**Requirements**: GRAFANA-81-01, GRAFANA-81-02, GRAFANA-81-03, GRAFANA-81-04
 **Depends on:** Phase 80
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 81 to break down)
+- [ ] 81-01-PLAN.md — Add null+nan mappings to Error Rate % and latency stat panels; apply ConfigMap; visual verify
 
 ### Phase 82: Fix ML prediction latency alerting — add threshold line for 8-10s p95, verify p50/p95/p99 are real histogram metrics not synthetic
 
@@ -1627,15 +1627,15 @@ Plans:
 Plans:
 - [ ] TBD (run /gsd:plan-phase 86 to break down)
 
-### Phase 64: Point-in-time correct feature serving via Feast and KServe Transformer — eliminate lookahead leakage in backtest
+### Phase 87: Point-in-time correct feature serving via Feast and KServe Transformer — eliminate lookahead leakage in backtest
 
-**Goal:** [To be planned]
+**Goal:** Replace ad-hoc on-the-fly feature computation with a Feast-backed pipeline: Flink/batch computes features → Feast online store → KServe Transformer fetches at inference. Ensures backtest uses only features available at prediction time — no lookahead leakage. Covers KServe Transformer sidecar wired to Feast, point-in-time feature retrieval in backtest service, feast materialize cronjob producing versioned snapshots, and validation that historical backtests cannot access future OHLCV rows.
 **Requirements**: TBD
-**Depends on:** Phase 63
+**Depends on:** Phase 86
 **Plans:** 0 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 64 to break down)
+- [ ] TBD (run /gsd:plan-phase 87 to break down)
 
 ---
 
