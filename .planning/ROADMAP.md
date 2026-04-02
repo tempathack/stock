@@ -1627,6 +1627,16 @@ Plans:
 Plans:
 - [ ] TBD (run /gsd:plan-phase 86 to break down)
 
+### Phase 64: Point-in-time correct feature serving via Feast and KServe Transformer — eliminate lookahead leakage in backtest
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 63
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 64 to break down)
+
 ---
 
 ## Requirement Traceability

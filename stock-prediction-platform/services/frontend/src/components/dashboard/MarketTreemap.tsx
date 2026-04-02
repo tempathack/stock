@@ -66,7 +66,8 @@ export default function MarketTreemap({
       })),
     }));
 
-    const option: echarts.EChartsOption = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const option: any = {
       backgroundColor: "transparent",
       tooltip: {
         backgroundColor: "rgba(13,10,36,0.96)",
