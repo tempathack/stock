@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 76-04-PLAN.md
-last_updated: "2026-04-02T07:54:50.642Z"
+stopped_at: Completed 76-01-PLAN.md
+last_updated: "2026-04-02T07:55:14.513Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -368,10 +368,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 76]: OLAPCandleChart uses disableClearable Autocomplete to prevent 404s from unknown tickers; freeSolo excluded
 - [Phase 76-ux-polish]: Sort stocks once descending by daily_change_pct; gainers are first 5, losers are last 5 reversed
 - [Phase 76-ux-polish]: TopMoversPanel placed between treemap and StockSelector, outside any Collapse — always visible
+- [Phase 76-01]: null activeTicker guard: useState<string|null>(null) + activeTicker ?? '' disables query on initial Backtest mount
+- [Phase 76-01]: Tooltip audit: all icon-only buttons already wrapped; ExportButtons has text labels; nav has icon+text
 
 ## Last Session
 
-- **Stopped at:** Completed 76-04-PLAN.md
+- **Stopped at:** Completed 76-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
