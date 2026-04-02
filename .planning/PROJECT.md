@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-02 — Phase 76 complete (UX polish — Backtest idle empty state added, Feature Freshness null staleness fixed (em-dash + muted style), OLAP Candle Chart now has ticker Autocomplete selector, 14D horizon added to config/CronJob/horizons.json seed, stocks table enriched with company_name/sector via yfinance, TopMoversPanel (Top Gainers/Losers) added below dashboard treemap)*
+*Last updated: 2026-04-02 — Phase 77 complete (Forecasts page now shows skeleton loading instead of blank screen; ohlcv-normalizer Flink job crash-loop fixed — root cause was minio-secrets injecting wrong env var names for S3 plugin, replaced with minio-s3-credentials providing AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY; MinIO checkpoints now writing successfully)*
