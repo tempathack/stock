@@ -1536,13 +1536,16 @@ Plans:
 
 ### Phase 78: Fix frontend broken-page error states — Dashboard, Models, Drift show tiny error box in a black void with no empty-state design
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Fix Models, Dashboard, and Drift pages so API failures and loading states never produce a black void — every page renders PageHeader first, then structured skeleton/error content below.
+**Requirements**: ERR-FALLBACK-ICON, MODELS-LOADING-SKELETON, MODELS-ERROR-STATE, DASHBOARD-ERROR-STATE, DASHBOARD-MOCK-REMOVAL, DASHBOARD-INTRADAY-PLACEHOLDER, DRIFT-ERROR-STATE, DRIFT-LOADING-SKELETON, DRIFT-MOCK-REMOVAL, DRIFT-PANEL-ERRORS
 **Depends on:** Phase 77
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 78 to break down)
+- [ ] 78-01-PLAN.md — Enhance ErrorFallback component: add ErrorOutline icon above message text
+- [ ] 78-02-PLAN.md — Fix Models page: skeleton loading state + structured error with PageHeader
+- [ ] 78-03-PLAN.md — Fix Dashboard page: remove mock fallbacks, structured error, per-panel indicator error, intraday empty state
+- [ ] 78-04-PLAN.md — Fix Drift page: remove mock fallbacks, skeleton loading, structured error, per-panel errors for secondary queries
 
 ### Phase 79: Grafana security hardening — change default admin password from admin/admin
 
