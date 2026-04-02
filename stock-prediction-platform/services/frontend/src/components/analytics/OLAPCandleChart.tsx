@@ -2,9 +2,11 @@ import { useMemo, useState } from "react";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import {
   Alert,
+  Autocomplete,
   Box,
   CircularProgress,
   Paper,
+  TextField,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -20,13 +22,12 @@ import {
   YAxis,
 } from "recharts";
 import type { CandlePoint } from "../../api/types";
-import { useAnalyticsCandles } from "../../api/queries";
+import { useAnalyticsCandles, useMarketOverview } from "../../api/queries";
 import PlaceholderCard from "../ui/PlaceholderCard";
 
 // Only 1h and 1d supported (Phase 64 created these aggregates; 5m/4h do not exist)
 type Interval = "1h" | "1d";
 
-const DEFAULT_TICKER = "AAPL";
 const GREEN = "#16a34a";
 const RED = "#dc2626";
 
@@ -95,7 +96,13 @@ function CandleShape(props: Record<string, unknown>) {
 
 export default function OLAPCandleChart() {
   const [interval, setInterval] = useState<Interval>("1h");
-  const { data, isLoading, isError } = useAnalyticsCandles(DEFAULT_TICKER, interval);
+  const [ticker, setTicker] = useState("AAPL");
+  const marketQuery = useMarketOverview();
+  const tickers = useMemo(() => {
+    if (!marketQuery.data?.stocks?.length) return ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"];
+    return marketQuery.data.stocks.map((s) => s.ticker).sort();
+  }, [marketQuery.data]);
+  const { data, isLoading, isError } = useAnalyticsCandles(ticker, interval);
 
   const candles: CandlePoint[] = data?.candles ?? [];
 
@@ -125,6 +132,15 @@ export default function OLAPCandleChart() {
       <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 1 }}>
         <BarChartIcon sx={{ color: "primary.main", fontSize: 20 }} />
         <Typography variant="h6">OLAP Candle Chart</Typography>
+        <Autocomplete
+          options={tickers}
+          value={ticker}
+          onChange={(_, v) => v && setTicker(v)}
+          size="small"
+          disableClearable
+          sx={{ width: 120, ml: 1 }}
+          renderInput={(params) => <TextField {...params} label="Ticker" />}
+        />
         <Box sx={{ ml: "auto", display: "flex", alignItems: "center", gap: 1 }}>
           {isLoading && <CircularProgress size={16} />}
           <ToggleButtonGroup
@@ -151,7 +167,7 @@ export default function OLAPCandleChart() {
       ) : (
         <Box
           role="img"
-          aria-label={`OLAP candle chart for ${DEFAULT_TICKER} at ${interval} interval`}
+          aria-label={`OLAP candle chart for ${ticker} at ${interval} interval`}
           sx={{ height: 280 }}
         >
           <ResponsiveContainer width="100%" height="100%">
