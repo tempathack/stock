@@ -2,14 +2,15 @@ import { useMemo } from "react";
 import {
   Alert,
   Box,
-  CircularProgress,
   Container,
   LinearProgress,
   Paper,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { ErrorFallback } from "@/components/ui";
+import { PageHeader } from "@/components/layout";
 import {
   ActiveModelCard,
   DriftTimeline,
@@ -19,7 +20,6 @@ import {
 } from "@/components/drift";
 import { useModelDrift, useModelComparison, useRollingPerformance, useRetrainStatus } from "@/api";
 import type { ActiveModelInfo, RetrainStatus } from "@/api";
-import { generateMockDriftData } from "@/utils/mockDriftData";
 
 export default function Drift() {
   const driftQuery = useModelDrift();
@@ -27,11 +27,9 @@ export default function Drift() {
   const rollingPerfQuery = useRollingPerformance();
   const retrainQuery = useRetrainStatus();
 
-  const mockData = useMemo(() => generateMockDriftData(), []);
-
   const activeModel: ActiveModelInfo | null = useMemo(() => {
     const active = modelsQuery.data?.models.find((m) => m.is_active);
-    if (!active) return modelsQuery.isError ? mockData.activeModel : null;
+    if (!active) return null;
     return {
       modelName: active.model_name,
       scalerVariant: active.scaler_variant,
@@ -42,10 +40,9 @@ export default function Drift() {
       oosMae: (active.oos_metrics?.mae as number) ?? null,
       oosDirectionalAccuracy: (active.oos_metrics?.directional_accuracy as number) ?? null,
     };
-  }, [modelsQuery.data, modelsQuery.isError, mockData]);
+  }, [modelsQuery.data]);
 
-  const events = driftQuery.data?.events
-    ?? (driftQuery.isError ? mockData.events : []);
+  const events = driftQuery.data?.events ?? [];
 
   const rollingPerformance = useMemo(() => {
     if (rollingPerfQuery.data?.entries?.length) {
@@ -56,9 +53,8 @@ export default function Drift() {
         directionalAccuracy: e.directional_accuracy,
       }));
     }
-    if (rollingPerfQuery.isError) return mockData.rollingPerformance;
     return [];
-  }, [rollingPerfQuery.data, rollingPerfQuery.isError, mockData]);
+  }, [rollingPerfQuery.data]);
 
   const retrainStatus = useMemo<RetrainStatus>(() => {
     if (retrainQuery.data?.model_name) {
@@ -83,29 +79,47 @@ export default function Drift() {
         improvementPct: null,
       };
     }
-    if (retrainQuery.isError) return mockData.retrainStatus;
-    return mockData.retrainStatus;
-  }, [retrainQuery.data, retrainQuery.isError, mockData]);
-
-  const featureDistributions = mockData.featureDistributions;
+    return { lastRetrainDate: null, isRetraining: false, oldModel: null, newModel: null, improvementPct: null };
+  }, [retrainQuery.data]);
 
   const isAllLoading = driftQuery.isLoading && modelsQuery.isLoading
     && rollingPerfQuery.isLoading && retrainQuery.isLoading;
 
   if (isAllLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
-        <CircularProgress />
-      </Box>
+      <Container maxWidth="xl" sx={{ py: 3 }}>
+        <PageHeader
+          title="Drift Monitoring"
+          subtitle="Model drift detection and auto-retrain status"
+        />
+        <Grid container spacing={3} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} />
+          </Grid>
+        </Grid>
+        <Skeleton variant="rectangular" height={220} sx={{ borderRadius: 1, mb: 3 }} />
+        <Skeleton variant="rectangular" height={180} sx={{ borderRadius: 1, mb: 3 }} />
+      </Container>
     );
   }
 
   if (driftQuery.isError && !driftQuery.data) {
     return (
-      <ErrorFallback
-        message="Failed to load drift data"
-        onRetry={() => driftQuery.refetch()}
-      />
+      <Container maxWidth="xl" sx={{ py: 3 }}>
+        <PageHeader
+          title="Drift Monitoring"
+          subtitle="Model drift detection and auto-retrain status"
+        />
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+          <ErrorFallback
+            message="Failed to load drift data"
+            onRetry={() => driftQuery.refetch()}
+          />
+        </Box>
+      </Container>
     );
   }
 
@@ -128,9 +142,10 @@ export default function Drift() {
         <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }} />
       )}
 
-      <Typography variant="h4" sx={{ mb: 3 }}>
-        Drift Monitoring
-      </Typography>
+      <PageHeader
+        title="Drift Monitoring"
+        subtitle="Model drift detection and auto-retrain status"
+      />
 
       {hasHighSeverity && (
         <Alert severity="warning" sx={{ mb: 3 }}>
@@ -141,10 +156,18 @@ export default function Drift() {
       {/* Row 1: Active Model + Retrain Status */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
         <Grid size={{ xs: 12, lg: 6 }}>
-          <ActiveModelCard model={activeModel} />
+          {modelsQuery.isError && !modelsQuery.data ? (
+            <ErrorFallback message="Failed to load active model" onRetry={() => modelsQuery.refetch()} />
+          ) : (
+            <ActiveModelCard model={activeModel} />
+          )}
         </Grid>
         <Grid size={{ xs: 12, lg: 6 }}>
-          <RetrainStatusPanel status={retrainStatus} />
+          {retrainQuery.isError && !retrainQuery.data ? (
+            <ErrorFallback message="Failed to load retrain status" onRetry={() => retrainQuery.refetch()} />
+          ) : (
+            <RetrainStatusPanel status={retrainStatus} />
+          )}
         </Grid>
       </Grid>
 
@@ -156,7 +179,11 @@ export default function Drift() {
         <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
           30-day rolling RMSE, MAE, and Directional Accuracy
         </Typography>
-        <RollingPerformanceChart data={rollingPerformance} />
+        {rollingPerfQuery.isError && !rollingPerfQuery.data ? (
+          <ErrorFallback message="Failed to load performance data" onRetry={() => rollingPerfQuery.refetch()} />
+        ) : (
+          <RollingPerformanceChart data={rollingPerformance} />
+        )}
       </Paper>
 
       {/* Row 3: Drift Timeline */}
@@ -165,7 +192,7 @@ export default function Drift() {
       </Box>
 
       {/* Row 4: Feature Distributions (collapsible accordion) */}
-      <FeatureDistributionChart distributions={featureDistributions} />
+      <FeatureDistributionChart distributions={[]} />
     </Container>
   );
 }
