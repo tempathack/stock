@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-02 — Phase 75 complete (Data quality fixes — Drift page null RMSE now renders as em-dash via previous_oos_metrics API field, Analytics integrations wired (ArgoCD K8s CRD, Feast latency cached 60s), OOS prefix stripping confirmed correct with regression tests, confidence variation guard added for constant-score ML output)*
+*Last updated: 2026-04-02 — Phase 76 complete (UX polish — Backtest idle empty state added, Feature Freshness null staleness fixed (em-dash + muted style), OLAP Candle Chart now has ticker Autocomplete selector, 14D horizon added to config/CronJob/horizons.json seed, stocks table enriched with company_name/sector via yfinance, TopMoversPanel (Top Gainers/Losers) added below dashboard treemap)*
