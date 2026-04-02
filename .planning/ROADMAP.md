@@ -84,6 +84,7 @@
 | 73 | 7/7 | Complete    | 2026-03-31 | 7 |
 | 74–81 | Various hotfixes & Grafana fixes | Complete | 2026-04-02 | — |
 | 82 | 2/2 | Complete    | 2026-04-02 |
+| 83 | Fix Kafka consumer metrics scraping | Fix port mismatch + INTRADAY_TOPIC + Service | MON-03 | 1 plan |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -92,6 +93,7 @@ Plans:
 - [ ] 72-02-PLAN.md — Flink dashboard 10-panel expansion + human verification
 - [ ] 82-01-PLAN.md — Grafana ML perf panel 2 threshold line + HighPredictionLatencyP95 alert rule
 - [ ] 82-02-PLAN.md — test_dashboard_json.py: 5 tests verifying threshold line + histogram sources
+- [ ] 83-01-PLAN.md — Fix INTRADAY_TOPIC, prometheus.yml port 8001→9090, create kafka-consumer Service
 
 ---
 
