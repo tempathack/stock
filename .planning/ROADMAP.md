@@ -1605,23 +1605,24 @@ Plans:
 
 ### Phase 84: Fix Loki alerting datasource misconfiguration — alert rules fail to load from Loki
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Pin Loki datasource UID, provision Grafana unified alert rules via ConfigMap, and fix Promtail path glob so logs flow to Loki — enabling end-to-end Loki-backed alerting
+**Requirements**: LOKI-ALERT-01, LOKI-ALERT-02, LOKI-ALERT-03, LOKI-ALERT-04, LOKI-ALERT-05
 **Depends on:** Phase 83
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 84 to break down)
+- [ ] 84-01-PLAN.md — TDD test scaffold (5 tests for all LOKI-ALERT requirements)
+- [ ] 84-02-PLAN.md — Apply datasource UID pin, alerting ConfigMap, Promtail path fix, deployment mount
 
 ### Phase 85: Backtest UX polish — change red empty-state message to neutral, label orphaned download and table-view icon buttons
 
-**Goal:** [To be planned]
+**Goal:** Fix two UX issues on the Backtest page: replace the alarming red error/no-data empty state with a neutral grey presentation, and replace icon-only export controls with labelled CSV/PDF buttons consistent with Models and Forecasts pages.
 **Requirements**: TBD
 **Depends on:** Phase 84
-**Plans:** 0 plans
+**Plans:** 1 plan
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 85 to break down)
+- [ ] 85-01-PLAN.md — Replace red ErrorFallback + icon-only export buttons with neutral empty state + ExportButtons component
 
 ### Phase 86: Frontend sidebar icon differentiation — make nav icons visually distinct per section
 
