@@ -14,5 +14,5 @@ scrape_configs:
 
   - job_name: kafka-consumer
     static_configs:
-      - targets: ["kafka-consumer:8001"]
+      - targets: ["kafka-consumer:9090"]
     metrics_path: /metrics
