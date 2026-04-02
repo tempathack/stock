@@ -5,19 +5,19 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import BubbleChartIcon from "@mui/icons-material/BubbleChart";
-import SsidChartIcon from "@mui/icons-material/SsidChart";
+import PsychologyIcon from "@mui/icons-material/Psychology";
+import WaterDropIcon  from "@mui/icons-material/WaterDrop";
+import HistoryIcon    from "@mui/icons-material/History";
+import InsightsIcon   from "@mui/icons-material/Insights";
 import { useK8sHealth, useHealthCheck, useModelDrift } from "@/api";
 
 const navItems = [
-  { to: "/dashboard", label: "Dashboard",  Icon: DashboardIcon  },
-  { to: "/models",    label: "Models",      Icon: AccountTreeIcon },
+  { to: "/dashboard", label: "Dashboard",  Icon: DashboardIcon   },
+  { to: "/models",    label: "Models",      Icon: PsychologyIcon  },
   { to: "/forecasts", label: "Forecasts",   Icon: TrendingUpIcon  },
-  { to: "/drift",     label: "Drift",       Icon: BubbleChartIcon },
-  { to: "/backtest",  label: "Backtest",    Icon: SsidChartIcon   },
-  { to: "/analytics", label: "Analytics",   Icon: BarChartIcon    },
+  { to: "/drift",     label: "Drift",       Icon: WaterDropIcon   },
+  { to: "/backtest",  label: "Backtest",    Icon: HistoryIcon     },
+  { to: "/analytics", label: "Analytics",   Icon: InsightsIcon    },
 ];
 
 type DotColor = "success" | "warning" | "error";
