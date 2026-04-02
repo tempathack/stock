@@ -1572,7 +1572,7 @@ Plans:
 **Goal:** Add null+nan value mappings to four green-base stat panels in the API Health dashboard so no-data states render as blue/neutral instead of falsely green
 **Requirements**: GRAFANA-81-01, GRAFANA-81-02, GRAFANA-81-03, GRAFANA-81-04
 **Depends on:** Phase 80
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 81-01-PLAN.md — Add null+nan mappings to Error Rate % and latency stat panels; apply ConfigMap; visual verify
