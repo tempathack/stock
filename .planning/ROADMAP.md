@@ -1525,13 +1525,14 @@ Plans:
 
 ### Phase 77: Fix Flink pipeline health and Forecasts blank screen
 
-**Goal:** [To be planned]
+**Goal:** Forecasts page shows skeleton loading (not blank screen); ohlcv-normalizer FlinkDeployment reaches READY with completed MinIO checkpoints
 **Requirements**: TBD
 **Depends on:** Phase 76
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 64 to break down)
+- [ ] 77-01-PLAN.md — Forecasts blank screen: skeleton loading state + partial-failure error logic
+- [ ] 77-02-PLAN.md — Flink ohlcv-normalizer: diagnose crash-loop, fix secrets + bucket + topic
 
 ### Phase 78: Fix frontend broken-page error states — Dashboard, Models, Drift show tiny error box in a black void with no empty-state design
 
