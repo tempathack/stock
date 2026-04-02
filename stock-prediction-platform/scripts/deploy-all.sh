@@ -443,6 +443,7 @@ kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/alertmanager-deployment.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/alertmanager-service.yaml"
 
 echo "[Phase 38] Deploying Grafana..."
+kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-secret.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-datasource-configmap.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboards-configmap.yaml"
 kubectl apply -f "$PROJECT_ROOT/k8s/monitoring/grafana-dashboard-api-health.yaml"
