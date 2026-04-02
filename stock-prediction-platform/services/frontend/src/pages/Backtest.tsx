@@ -2,8 +2,6 @@ import { useState, useMemo } from "react";
 import {
   Autocomplete,
   Box,
-  ButtonGroup,
-  Button,
   Container,
   LinearProgress,
   MenuItem,
@@ -16,8 +14,6 @@ import {
 import Grid from "@mui/material/Grid";
 import LoadingButton from "@mui/lab/LoadingButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { ExportButtons } from "@/components/ui";
 import { BacktestChart, BacktestMetricsSummary } from "@/components/backtest";
@@ -181,22 +177,11 @@ export default function Backtest() {
 
           {/* Export Buttons */}
           <Grid size={{ xs: 12, sm: 4, md: 1 }}>
-            <ButtonGroup variant="outlined" size="small" disabled={!backtestQuery.data}>
-              <Tooltip title="Export as CSV">
-                <span>
-                  <Button onClick={handleExportCsv} disabled={!backtestQuery.data}>
-                    <FileDownloadIcon fontSize="small" />
-                  </Button>
-                </span>
-              </Tooltip>
-              <Tooltip title="Export as PDF">
-                <span>
-                  <Button onClick={handleExportPdf} disabled={!backtestQuery.data}>
-                    <PictureAsPdfIcon fontSize="small" />
-                  </Button>
-                </span>
-              </Tooltip>
-            </ButtonGroup>
+            <ExportButtons
+              onExportCsv={handleExportCsv}
+              onExportPdf={handleExportPdf}
+              disabled={!backtestQuery.data}
+            />
           </Grid>
         </Grid>
       </Paper>
