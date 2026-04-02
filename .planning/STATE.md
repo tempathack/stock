@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: "Checkpoint:human-verify 84-02-PLAN.md Task 3 — apply K8s configs and verify Grafana alerting"
-last_updated: "2026-04-02T23:37:38.668Z"
+stopped_at: Completed 86-01-PLAN.md
+last_updated: "2026-04-02T23:40:40.397Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -397,10 +397,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 85]: Use shared ExportButtons component on Backtest for consistency with Models and Forecasts pages
 - [Phase 84-02]: Used uid: loki (stable, pinned) for Loki datasource — prevents auto-generated UID changes on pod restart from breaking alert rule references
 - [Phase 84-02]: Alert rule datasourceUid: loki matches pinned UID — cross-link is explicit and survives Grafana restarts
+- [Phase 86]: Replaced four chart-motif nav icons with PsychologyIcon/WaterDropIcon/HistoryIcon/InsightsIcon for silhouette-distinct TopNav
 
 ## Last Session
 
-- **Stopped at:** Checkpoint:human-verify 84-02-PLAN.md Task 3 — apply K8s configs and verify Grafana alerting
+- **Stopped at:** Completed 86-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

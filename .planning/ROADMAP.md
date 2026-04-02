@@ -1629,7 +1629,7 @@ Plans:
 **Goal:** Replace four visually similar chart-style nav icons with icons that have distinct silhouettes, so each of the six nav sections is identifiable by icon shape alone.
 **Requirements**: NAV-ICON-01
 **Depends on:** Phase 85
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 86-01-PLAN.md — Swap four nav icons in Sidebar.tsx (PsychologyIcon, WaterDropIcon, HistoryIcon, InsightsIcon) + Playwright visual verification
