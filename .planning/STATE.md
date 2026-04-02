@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 84-01-PLAN.md
-last_updated: "2026-04-02T23:12:59.944Z"
+stopped_at: Completed 85-01-PLAN.md
+last_updated: "2026-04-02T23:15:18.187Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -393,10 +393,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 83]: No RBAC changes needed: existing ClusterRole is cluster-scoped covering all namespaces including processing
 - [Phase 83]: Used ClusterIP Service (not NodePort/LoadBalancer) for kafka-consumer metrics — internal scraping only
 - [Phase 84-fix-loki-alerting-datasource-misconfiguration-alert-rules-fail-to-load-from-loki]: K8S_MONITORING resolved via 4x pathlib parent from tests/ — consistent with test_dashboard_json.py pattern
+- [Phase 85]: Replace ErrorFallback (red icon + text) with neutral Box for non-alarming no-data UX on Backtest page
+- [Phase 85]: Use shared ExportButtons component on Backtest for consistency with Models and Forecasts pages
 
 ## Last Session
 
-- **Stopped at:** Completed 84-01-PLAN.md
+- **Stopped at:** Completed 85-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

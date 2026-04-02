@@ -1619,7 +1619,7 @@ Plans:
 **Goal:** Fix two UX issues on the Backtest page: replace the alarming red error/no-data empty state with a neutral grey presentation, and replace icon-only export controls with labelled CSV/PDF buttons consistent with Models and Forecasts pages.
 **Requirements**: TBD
 **Depends on:** Phase 84
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 85-01-PLAN.md — Replace red ErrorFallback + icon-only export buttons with neutral empty state + ExportButtons component
