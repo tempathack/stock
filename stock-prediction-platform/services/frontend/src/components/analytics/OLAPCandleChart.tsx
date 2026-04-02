@@ -163,7 +163,7 @@ export default function OLAPCandleChart() {
       )}
 
       {!isLoading && candles.length === 0 ? (
-        <PlaceholderCard title="No candle data available" phase={69} />
+        <PlaceholderCard title="No candle data available" />
       ) : (
         <Box
           role="img"

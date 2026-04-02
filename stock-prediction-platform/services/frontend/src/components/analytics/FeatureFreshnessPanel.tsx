@@ -53,7 +53,7 @@ export default function FeatureFreshnessPanel() {
       )}
 
       {!isLoading && views.length === 0 ? (
-        <PlaceholderCard title="No feature views found" phase={69} />
+        <PlaceholderCard title="No feature views found" />
       ) : (
         <Stack spacing={2}>
           {views.map((view) => (

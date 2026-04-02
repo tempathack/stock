@@ -40,7 +40,7 @@ export default function StreamHealthPanel() {
       )}
 
       {!isLoading && jobs.length === 0 ? (
-        <PlaceholderCard title="No stream jobs detected" phase={69} />
+        <PlaceholderCard title="No stream jobs detected" />
       ) : (
         <Stack spacing={1}>
           {jobs.map((job) => (

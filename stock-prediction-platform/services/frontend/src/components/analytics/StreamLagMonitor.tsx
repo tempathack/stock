@@ -75,7 +75,7 @@ export default function StreamLagMonitor() {
       )}
 
       {!isLoading && !hasData ? (
-        <PlaceholderCard title="Lag data unavailable" phase={69} />
+        <PlaceholderCard title="Lag data unavailable" />
       ) : (
         <>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
