@@ -1505,10 +1505,10 @@ Plans:
 **Plans:** 4/4 plans complete
 
 Plans:
-- [ ] 75-01-PLAN.md — Wave 0: Test scaffolding (kubernetes pkg, K8s CRD ArgoCD tests, Feast latency tests)
-- [ ] 75-02-PLAN.md — Drift RMSE null fix (frontend ?? null + API schema previous_oos_metrics)
-- [ ] 75-03-PLAN.md — Analytics integrations (ArgoCD K8s CRD, Feast latency cached, CA last refresh)
-- [ ] 75-04-PLAN.md — OOS metrics diagnostic + fix, forecast constant bias diagnostic + fix
+- [x] 75-01-PLAN.md — Wave 0: Test scaffolding (kubernetes pkg, K8s CRD ArgoCD tests, Feast latency tests)
+- [x] 75-02-PLAN.md — Drift RMSE null fix (frontend ?? null + API schema previous_oos_metrics)
+- [x] 75-03-PLAN.md — Analytics integrations (ArgoCD K8s CRD, Feast latency cached, CA last refresh)
+- [x] 75-04-PLAN.md — OOS metrics diagnostic + fix, forecast constant bias diagnostic + fix
 
 ### Phase 76: UX polish — empty states, loading feedback, tooltips, missing data fields, analytics charts
 
