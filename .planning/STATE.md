@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 76-02-PLAN.md
-last_updated: "2026-04-02T07:53:54.488Z"
+stopped_at: Completed 76-04-PLAN.md
+last_updated: "2026-04-02T07:54:50.642Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -366,10 +366,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 75-04]: OOS metrics: DB has oos_ prefixed keys, local code strips correctly with k[4:] — running pod was stale; no source change needed
 - [Phase 75-04]: Forecast confidence: predictions table empty (path 3) — implemented defensive constant-confidence guard mapping price spread to [0.70, 0.98]
 - [Phase 76]: OLAPCandleChart uses disableClearable Autocomplete to prevent 404s from unknown tickers; freeSolo excluded
+- [Phase 76-ux-polish]: Sort stocks once descending by daily_change_pct; gainers are first 5, losers are last 5 reversed
+- [Phase 76-ux-polish]: TopMoversPanel placed between treemap and StockSelector, outside any Collapse — always visible
 
 ## Last Session
 
-- **Stopped at:** Completed 76-02-PLAN.md
+- **Stopped at:** Completed 76-04-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
