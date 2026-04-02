@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-03 — Phase 85 complete (Backtest UX polish: replaced red empty-state error message with neutral grey presentation, added labels to orphaned icon-only CSV/PDF export buttons on Backtest page)*
+*Last updated: 2026-04-03 — Phase 86 complete (Frontend sidebar icon differentiation: replaced 4 chart-motif nav icons with distinct silhouettes — PsychologyIcon/Models, WaterDropIcon/Drift, HistoryIcon/Backtest, InsightsIcon/Analytics)*
