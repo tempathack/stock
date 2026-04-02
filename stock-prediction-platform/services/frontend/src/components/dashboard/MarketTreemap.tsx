@@ -196,6 +196,8 @@ export default function MarketTreemap({
     };
 
     chart.setOption(option);
+    // Force resize after option set so echarts picks up container dimensions
+    requestAnimationFrame(() => chart.resize());
 
     // Click to select ticker
     chart.off("click");
@@ -207,7 +209,15 @@ export default function MarketTreemap({
 
     const handleResize = () => chart.resize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    // ResizeObserver so echarts tracks container size changes
+    const ro = new ResizeObserver(() => chart.resize());
+    ro.observe(chartRef.current!);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      ro.disconnect();
+    };
   }, [data, onSelectTicker]);
 
   // Highlight selected ticker by re-dispatching highlight action
