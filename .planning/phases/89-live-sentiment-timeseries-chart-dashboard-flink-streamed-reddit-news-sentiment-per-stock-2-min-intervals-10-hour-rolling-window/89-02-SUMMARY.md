@@ -35,9 +35,11 @@ key-decisions:
   - "REST polling (useQuery) not WebSocket for timeseries — the existing /ws/sentiment/{ticker} delivers only latest scalar; 10h history requires REST against TimescaleDB hypertable"
   - "Tooltip formatter types broadened from (v: number) to (v) => Number(v) to satisfy recharts TS overloads (Rule 1 auto-fix)"
   - "staleTime 110s set just under 120s refetchInterval to allow background refetch before staleness"
+  - "SentimentTimeseriesChart wired into BOTH conditional branches of SentimentPanel (WS connected + WS unavailable) so chart always renders"
 
 patterns-established:
   - "Pattern: Sentiment history polling hook follows same queryKey namespace ['market', 'sentiment-timeseries', ticker] as other market hooks"
+  - "Pattern: Wire chart into all conditional branches of parent panel to prevent silent omission when WebSocket is unavailable"
 
 requirements-completed: []
 
@@ -48,21 +50,22 @@ completed: 2026-04-03
 
 # Phase 89 Plan 02: SentimentTimeseriesChart Frontend Implementation Summary
 
-**recharts LineChart for 10h rolling VADER sentiment history wired into SentimentPanel Dashboard drawer via REST polling hook**
+**recharts LineChart for 10h rolling VADER sentiment history wired into SentimentPanel Dashboard drawer via REST polling hook — Playwright verified with empty-state placeholder**
 
 ## Performance
 
-- **Duration:** ~15 min
+- **Duration:** ~45 min
 - **Started:** 2026-04-03T00:00:00Z
 - **Completed:** 2026-04-03
-- **Tasks:** 2/3 complete (Task 3 is a checkpoint awaiting Playwright visual verification)
+- **Tasks:** 3/3 complete (all tasks done, Playwright checkpoint approved)
 - **Files modified:** 5
 
 ## Accomplishments
 - Appended `SentimentDataPoint` and `SentimentTimeseriesResponse` TypeScript interfaces to `api/types.ts`
 - Created `useSentimentTimeseries` React Query hook polling `/market/sentiment/{ticker}/timeseries` every 120 seconds with 110s staleTime
 - Created `SentimentTimeseriesChart` recharts LineChart with VADER [-1,+1] Y-axis, bullish/bearish reference lines (±0.05), loading skeleton, and empty-state placeholder
-- Modified `SentimentPanel` to append Divider + "10h Sentiment History" header + chart below existing scalar gauge
+- Modified `SentimentPanel` to append Divider + "10h Sentiment History" header + chart below existing scalar gauge in BOTH WS-connected and WS-unavailable branches
+- Playwright confirmed: Dashboard > AMD stock drawer shows "10H SENTIMENT HISTORY" section with empty-state "Sentiment history unavailable — pipeline may be starting"
 - `npm run build` exits 0 — no TypeScript or build errors
 - `npx tsc --noEmit` exits 0 — clean type check
 
@@ -72,7 +75,7 @@ Each task was committed atomically:
 
 1. **Task 1: TypeScript types + useSentimentTimeseries hook** - `ddc1eca` (feat)
 2. **Task 2: SentimentTimeseriesChart + SentimentPanel wiring + index export** - `8292f54` (feat)
-3. **Task 3: Playwright visual verification** - CHECKPOINT — awaiting human verify
+3. **Task 3: Fix SentimentTimeseriesChart render in WS-unavailable branch (Playwright verified)** - `11c92a8` (fix)
 
 ## Files Created/Modified
 - `stock-prediction-platform/services/frontend/src/api/types.ts` - SentimentDataPoint + SentimentTimeseriesResponse interfaces appended
@@ -106,28 +109,36 @@ Each task was committed atomically:
 - **Verification:** `npx tsc --noEmit` exits 0
 - **Committed in:** 8292f54 (Task 2 commit)
 
+**3. [Rule 1 - Bug] SentimentTimeseriesChart missing from WS-unavailable branch of SentimentPanel**
+- **Found during:** Task 3 (Playwright visual verification)
+- **Issue:** Initial SentimentPanel wiring only added the chart inside the WS-connected conditional branch; the WS-unavailable branch rendered the panel without the "10h Sentiment History" section
+- **Fix:** Duplicated the Divider + Typography ("10h Sentiment History") + SentimentTimeseriesChart block into the WS-unavailable branch
+- **Files modified:** `SentimentPanel.tsx`
+- **Verification:** Playwright screenshot confirmed "10H SENTIMENT HISTORY" section visible with empty-state placeholder text
+- **Committed in:** 11c92a8 (Task 3 fix commit)
+
 ---
 
-**Total deviations:** 2 auto-fixed (both Rule 1 - TypeScript type correctness)
-**Impact on plan:** Both auto-fixes necessary for TypeScript compilation. No scope creep.
+**Total deviations:** 3 auto-fixed (2 Rule 1 TypeScript type correctness + 1 Rule 1 branch coverage bug)
+**Impact on plan:** All auto-fixes necessary for TypeScript compilation and feature correctness. No scope creep.
 
 ## Issues Encountered
-- Playwright MCP tools (`mcp__playwright__browser_navigate`) not available in current execution environment — Task 3 checkpoint returned for human visual verification
+- recharts `Tooltip` formatter and labelFormatter props have overloaded TypeScript types — broadening signatures to satisfy the overloads was required for clean compilation
+- SentimentTimeseriesChart was initially only wired into the WS-connected branch of SentimentPanel, leaving it invisible when WebSocket was unavailable — fixed by duplicating the chart block into the WS-unavailable branch
 
 ## User Setup Required
 None - no external service configuration required.
 
 ## Next Phase Readiness
-- Frontend implementation complete and builds cleanly
-- Dashboard dev server confirmed running on http://localhost:3000
-- Awaiting Playwright/human visual confirmation that SentimentPanel renders the chart section in the stock-detail drawer
-- Once Task 3 approved: Phase 89 complete, Phase 90 (Debezium CDC + Elasticsearch) ready to execute
+- Phase 89 Deliverable A complete: users see 10h sentiment trend history in Dashboard stock-detail panel
+- Chart will auto-populate once the Flink sentiment pipeline delivers data to the TimescaleDB hypertable (from 89-01 backend)
+- Phase 90 (Debezium CDC + Elasticsearch) ready to execute
 
-## Self-Check: PARTIAL
-- ddc1eca — confirmed in git log
-- 8292f54 — confirmed in git log
-- Task 3 checkpoint — not yet complete (awaiting human verify)
+## Self-Check: PASSED
+- ddc1eca — confirmed in git log (Task 1)
+- 8292f54 — confirmed in git log (Task 2)
+- 11c92a8 — confirmed in git log (Task 3 fix, Playwright approved)
 
 ---
-*Phase: 89-live-sentiment-timeseries-chart...*
-*Completed: 2026-04-03 (Tasks 1-2; Task 3 pending checkpoint approval)*
+*Phase: 89-live-sentiment-timeseries-chart-dashboard-flink-streamed-reddit-news-sentiment-per-stock-2-min-intervals-10-hour-rolling-window*
+*Completed: 2026-04-03*

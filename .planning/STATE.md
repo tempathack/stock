@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 88-03 — multi-horizon forecast table plan complete (Playwright verified)
-last_updated: "2026-04-03T09:21:55.887Z"
+stopped_at: Completed 89-02 — SentimentTimeseriesChart frontend plan complete (Playwright verified)
+last_updated: "2026-04-03T09:26:12.582Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -413,10 +413,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 89]: StatementSet for dual-sink Flink job so Kafka and JDBC inserts run as a single Flink execution graph
 - [Phase 89]: TUMBLE(2-min) chosen over HOP to produce non-overlapping windows matching sentiment_timeseries primary key (ticker, window_start)
 - [Phase 89]: REST polling (useQuery 120s) used for sentiment timeseries — WebSocket delivers only latest scalar, history requires REST against TimescaleDB hypertable
+- [Phase 89]: REST polling (useQuery 120s) used for sentiment timeseries history — WebSocket delivers only latest scalar
+- [Phase 89]: SentimentTimeseriesChart wired into both WS-connected and WS-unavailable branches of SentimentPanel to prevent silent chart omission
 
 ## Last Session
 
-- **Stopped at:** Completed 88-03 — multi-horizon forecast table plan complete (Playwright verified)
+- **Stopped at:** Completed 89-02 — SentimentTimeseriesChart frontend plan complete (Playwright verified)
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
