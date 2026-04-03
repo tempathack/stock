@@ -100,8 +100,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added standalone Market Sentiment section to Dashboard.tsx below TopMoversPanel. Includes ticker quick-select chips (AAPL default, TSLA, MSFT, NVDA, AMZN), Bullish/Bearish/Neutral label with score from latest timeseries point, and SentimentTimeseriesChart sparkline. Empty state shows 'No sentiment data available' placeholder (sentiment_timeseries table has 0 rows — UI-007 will fix the pipeline). TypeScript + build pass. Playwright verified: section renders with AAPL selected, '—' label and 'No sentiment data available' placeholder (expected since no data in DB)."
     },
     {
       "id": "UI-007",

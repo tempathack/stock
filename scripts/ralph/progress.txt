@@ -117,3 +117,20 @@ Started: 2026-04-03 (ralph/frontend-data-fixes)
   - Always invalidate Redis cache after DB inserts: POST http://localhost:8010/models/cache/invalidate
   - kubectl exec psql: use -c "..." with escaped inner quotes — heredoc with << 'EOF' doesn't pass through to kubectl correctly
 ---
+
+## 2026-04-03 - UI-006: Add sentiment section to Dashboard component
+- Added standalone "Market Sentiment" section to Dashboard.tsx below TopMoversPanel (always visible, not inside stock detail Collapse)
+- Ticker quick-select chips: AAPL (default), TSLA, MSFT, NVDA, AMZN — highlighted pink when selected
+- Bullish/Bearish/Neutral label derived from latest sentimentQuery data point (>0.05=Bullish, <-0.05=Bearish, else Neutral)
+- "—" label shown when no data; "No sentiment data available" placeholder shown instead of chart when points.length === 0
+- Imported `useSentimentTimeseries` hook from @/hooks/useSentimentTimeseries into Dashboard.tsx
+- Imported `SentimentTimeseriesChart` directly (not via dashboard barrel) to avoid index re-export issues
+- Added `Chip` to MUI imports in Dashboard.tsx
+- TypeScript + npm run build pass with 0 errors
+- Playwright verified: "MARKET SENTIMENT" section renders below Top Gainers/Losers; AAPL chip selected; "—" and "No sentiment data available" shown correctly (expected — sentiment_timeseries has 0 rows, UI-007 fixes pipeline)
+- Files modified: services/frontend/src/pages/Dashboard.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - SentimentTimeseriesChart is not exported from the @/components/dashboard barrel — import it directly from @/components/dashboard/SentimentTimeseriesChart
+  - TypeScript TS2532 "Object is possibly undefined" fires on array indexing even after length check — use a named `last` variable with null guard
+  - Dashboard sentiment section must be OUTSIDE the Collapse block to be always visible (not stock-dependent)
+---

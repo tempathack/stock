@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import {
   Box,
+  Chip,
   Container,
   Grid,
   Skeleton,
@@ -25,9 +26,11 @@ import {
   StreamingFeaturesPanel,
   TopMoversPanel,
 } from "@/components/dashboard";
+import SentimentTimeseriesChart from "@/components/dashboard/SentimentTimeseriesChart";
 import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
 import { buildTreemapData, deriveStockMetrics } from "@/utils/dashboardUtils";
 import useWebSocket from "@/hooks/useWebSocket";
+import { useSentimentTimeseries } from "@/hooks/useSentimentTimeseries";
 import type { WebSocketStatus } from "@/api";
 
 const WS_DOT_COLOR: Record<WebSocketStatus, string> = {
@@ -364,9 +367,19 @@ function SectionLabel({ icon, label, accent = "#7C3AED" }: { icon: React.ReactNo
 }
 
 /* ── Main Dashboard ─────────────────────────────────────── */
+const SENTIMENT_TICKERS = ["AAPL", "TSLA", "MSFT", "NVDA", "AMZN"] as const;
+
+function getSentimentLabel(score: number | null): { label: string; color: string } {
+  if (score == null) return { label: "—", color: "rgba(107,96,168,0.7)" };
+  if (score > 0.05)  return { label: "Bullish", color: "#00FF87" };
+  if (score < -0.05) return { label: "Bearish", color: "#FF2D78" };
+  return { label: "Neutral", color: "#FFD60A" };
+}
+
 export default function Dashboard() {
   const marketQuery     = useMarketOverview();
   const [selected, setSelected] = useState<string | null>(null);
+  const [sentimentTicker, setSentimentTicker] = useState<string>("AAPL");
   const detailRef       = useRef<HTMLDivElement>(null);
 
   const wsUrl = `${(import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/^http/, "ws")}/ws/prices`;
@@ -375,6 +388,7 @@ export default function Dashboard() {
 
   const indicatorQuery  = useTickerIndicators(selected ?? "");
   const predictionQuery = usePrediction(selected ?? "");
+  const sentimentQuery  = useSentimentTimeseries(sentimentTicker);
 
   const stocks = marketQuery.data?.stocks ?? [];
   const treemapData = useMemo(() => buildTreemapData(stocks), [stocks]);
@@ -390,6 +404,13 @@ export default function Dashboard() {
     if (!selectedStock) return null;
     return deriveStockMetrics(selectedStock, indicatorSeries);
   }, [selectedStock, indicatorSeries]);
+
+  const latestSentimentScore = useMemo(() => {
+    const pts = sentimentQuery.data?.points;
+    if (!pts || pts.length === 0) return null;
+    const last = pts[pts.length - 1];
+    return last ? last.avg_sentiment : null;
+  }, [sentimentQuery.data]);
 
   // Scroll to detail panel when stock is selected
   const handleSelect = useCallback((ticker: string | null) => {
@@ -496,6 +517,79 @@ export default function Dashboard() {
         loading={marketQuery.isLoading}
         onSelectTicker={handleSelect}
       />
+
+      {/* ── Market Sentiment Section ── */}
+      <Box sx={{ mb: 3 }}>
+        <SectionLabel icon={<ElectricBoltIcon />} label="Market Sentiment" accent="#EC4899" />
+        <Box
+          sx={{
+            background: "rgba(7,4,26,0.5)",
+            border: "1px solid rgba(236,72,153,0.15)",
+            borderRadius: "14px",
+            p: 2,
+          }}
+        >
+          {/* Ticker quick-select row */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5, flexWrap: "wrap" }}>
+            <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.65rem", color: "rgba(107,96,168,0.7)", mr: 0.5 }}>
+              Ticker:
+            </Typography>
+            {SENTIMENT_TICKERS.map((t) => (
+              <Chip
+                key={t}
+                label={t}
+                size="small"
+                onClick={() => setSentimentTicker(t)}
+                sx={{
+                  fontFamily: '"JetBrains Mono", monospace',
+                  fontSize: "0.65rem",
+                  fontWeight: 700,
+                  height: 22,
+                  bgcolor: sentimentTicker === t ? "rgba(236,72,153,0.25)" : "rgba(124,58,237,0.1)",
+                  border: `1px solid ${sentimentTicker === t ? "rgba(236,72,153,0.5)" : "rgba(124,58,237,0.2)"}`,
+                  color: sentimentTicker === t ? "#EC4899" : "rgba(240,238,255,0.7)",
+                  "&:hover": { bgcolor: "rgba(236,72,153,0.18)", cursor: "pointer" },
+                }}
+              />
+            ))}
+            {/* Sentiment label */}
+            {!sentimentQuery.isLoading && (() => {
+              const { label, color } = getSentimentLabel(latestSentimentScore);
+              return (
+                <Box sx={{ ml: "auto", display: "flex", alignItems: "center", gap: 0.75 }}>
+                  <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: color, boxShadow: `0 0 6px ${color}` }} />
+                  <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.7rem", fontWeight: 700, color }}>
+                    {label}
+                  </Typography>
+                  {latestSentimentScore != null && (
+                    <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.65rem", color: "rgba(107,96,168,0.6)" }}>
+                      ({latestSentimentScore.toFixed(3)})
+                    </Typography>
+                  )}
+                </Box>
+              );
+            })()}
+          </Box>
+
+          {/* Timeseries sparkline / empty state */}
+          {sentimentQuery.isLoading ? (
+            <Box sx={{ mt: 1 }}>
+              <Skeleton variant="rectangular" height={180} sx={{ bgcolor: "rgba(236,72,153,0.05)", borderRadius: "8px" }} />
+            </Box>
+          ) : !sentimentQuery.data || sentimentQuery.data.points.length === 0 ? (
+            <Box sx={{ py: 3, textAlign: "center" }}>
+              <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.72rem", color: "rgba(107,96,168,0.5)" }}>
+                No sentiment data available
+              </Typography>
+              <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.62rem", color: "rgba(107,96,168,0.35)", mt: 0.5 }}>
+                Reddit pipeline may be starting up
+              </Typography>
+            </Box>
+          ) : (
+            <SentimentTimeseriesChart ticker={sentimentTicker} />
+          )}
+        </Box>
+      </Box>
 
       {/* ── Stock Selector ── */}
       <StockSelector
