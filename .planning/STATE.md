@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 90 UI-SPEC approved
-last_updated: "2026-04-03T10:02:50.798Z"
+stopped_at: Completed 90-01-PLAN.md (Elasticsearch + Kibana + PostgreSQL WAL)
+last_updated: "2026-04-03T10:05:03.587Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -415,10 +415,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 89]: REST polling (useQuery 120s) used for sentiment timeseries — WebSocket delivers only latest scalar, history requires REST against TimescaleDB hypertable
 - [Phase 89]: REST polling (useQuery 120s) used for sentiment timeseries history — WebSocket delivers only latest scalar
 - [Phase 89]: SentimentTimeseriesChart wired into both WS-connected and WS-unavailable branches of SentimentPanel to prevent silent chart omission
+- [Phase 90]: Elasticsearch StatefulSet uses external PVC (not volumeClaimTemplates) for simpler single-replica dev lifecycle
+- [Phase 90]: PostgreSQL WAL args injected via Deployment args[] — requires pod restart after apply
 
 ## Last Session
 
-- **Stopped at:** Phase 90 UI-SPEC approved
+- **Stopped at:** Completed 90-01-PLAN.md (Elasticsearch + Kibana + PostgreSQL WAL)
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
