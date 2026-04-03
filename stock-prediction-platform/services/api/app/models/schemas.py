@@ -350,3 +350,72 @@ class SentimentTimeseriesResponse(BaseModel):
     points: list[SentimentDataPoint]
     count: int
     window_hours: int
+
+
+# ── Search ────────────────────────────────────────────────────────────────
+
+
+class PredictionSearchItem(BaseModel):
+    ticker: str | None = None
+    predicted_price: float | None = None
+    current_price: float | None = None
+    expected_return_pct: float | None = None
+    confidence: str | None = None
+    model_id: int | None = None
+    prediction_date: str | None = None
+
+
+class ModelSearchItem(BaseModel):
+    model_name: str | None = None
+    status: str | None = None
+    r2_oos: float | None = None
+    rmse_oos: float | None = None
+    mae_oos: float | None = None
+    trained_at: str | None = None
+    version: str | None = None
+
+
+class DriftEventSearchItem(BaseModel):
+    timestamp: str | None = None
+    drift_type: str | None = None
+    severity: str | None = None
+    ticker: str | None = None
+    details: str | None = None
+    retrain_triggered: bool | None = None
+
+
+class StockSearchItem(BaseModel):
+    ticker: str | None = None
+    company_name: str | None = None
+    sector: str | None = None
+    industry: str | None = None
+    market_cap: float | None = None
+    exchange: str | None = None
+
+
+class PredictionSearchResponse(BaseModel):
+    items: list[PredictionSearchItem]
+    total: int
+    page: int
+    page_size: int
+
+
+class ModelSearchResponse(BaseModel):
+    items: list[ModelSearchItem]
+    total: int
+    page: int
+    page_size: int
+
+
+class DriftEventSearchResponse(BaseModel):
+    items: list[DriftEventSearchItem]
+    total: int
+    page: int
+    page_size: int
+
+
+class StockSearchResponse(BaseModel):
+    items: list[StockSearchItem]
+    total: int
+    page: int
+    page_size: int

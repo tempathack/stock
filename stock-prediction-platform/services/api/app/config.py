@@ -85,6 +85,9 @@ class Settings(BaseSettings):
     DEFAULT_HORIZON: int = 7
     AVAILABLE_HORIZONS: str = "1,7,14,30"
 
+    # Group 16 — Elasticsearch (Phase 90+)
+    ELASTICSEARCH_URL: Optional[str] = "http://elasticsearch.storage.svc.cluster.local:9200"
+
     @property
     def available_horizons_list(self) -> list[int]:
         """Parse AVAILABLE_HORIZONS into a list of ints."""
