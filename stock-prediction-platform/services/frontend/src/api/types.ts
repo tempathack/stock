@@ -416,3 +416,23 @@ export interface StreamingFeaturesResponse {
   source: string;
   sampled_at: string | null;
 }
+
+// ── Multi-Horizon Forecast types (Phase 88) ────────────────────────────────
+
+export interface HorizonPrediction {
+  predicted_price: number;
+  expected_return_pct: number;
+  confidence: number | null;
+  predicted_date: string;
+  trend: TrendDirection;
+}
+
+export interface MultiHorizonForecastRow {
+  ticker: string;
+  company_name: string | null;
+  sector: string | null;
+  current_price: number | null;
+  daily_change_pct: number | null;
+  horizons: { [horizonDays: number]: HorizonPrediction };
+  model_name: string;
+}
