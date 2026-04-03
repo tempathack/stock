@@ -6,17 +6,45 @@ import json
 import logging
 from pathlib import Path
 
+from starlette.concurrency import run_in_threadpool
+
 logger = logging.getLogger(__name__)
+
+try:
+    import feast  # noqa: F401 — imported so tests can patch app.services.prediction_service.feast
+    _FEAST_AVAILABLE = True
+except ImportError:
+    feast = None  # type: ignore[assignment]
+    _FEAST_AVAILABLE = False
 
 try:
     from ml.features.feast_store import get_online_features as _feast_get_online
     _FEAST_AVAILABLE = True
 except ImportError:
-    _FEAST_AVAILABLE = False
     _feast_get_online = None  # type: ignore[assignment]
 
 # Expose at module level so tests can patch app.services.prediction_service.get_online_features
 get_online_features = _feast_get_online
+
+# Feast online features — all 34 numeric features from all 4 views
+_ALL_ONLINE_FEATURES = [
+    "ohlcv_stats_fv:open", "ohlcv_stats_fv:high", "ohlcv_stats_fv:low",
+    "ohlcv_stats_fv:close", "ohlcv_stats_fv:volume",
+    "ohlcv_stats_fv:daily_return", "ohlcv_stats_fv:vwap",
+    "technical_indicators_fv:rsi_14", "technical_indicators_fv:macd_line",
+    "technical_indicators_fv:macd_signal", "technical_indicators_fv:bb_upper",
+    "technical_indicators_fv:bb_lower", "technical_indicators_fv:atr_14",
+    "technical_indicators_fv:adx_14", "technical_indicators_fv:ema_20",
+    "technical_indicators_fv:obv",
+    "lag_features_fv:lag_1", "lag_features_fv:lag_2", "lag_features_fv:lag_3",
+    "lag_features_fv:lag_5", "lag_features_fv:lag_7", "lag_features_fv:lag_10",
+    "lag_features_fv:lag_14", "lag_features_fv:lag_21",
+    "lag_features_fv:rolling_mean_5", "lag_features_fv:rolling_mean_10",
+    "lag_features_fv:rolling_mean_21", "lag_features_fv:rolling_std_5",
+    "lag_features_fv:rolling_std_10", "lag_features_fv:rolling_std_21",
+    "reddit_sentiment_fv:avg_sentiment", "reddit_sentiment_fv:mention_count",
+    "reddit_sentiment_fv:positive_ratio", "reddit_sentiment_fv:negative_ratio",
+]
 
 
 def load_cached_predictions(
@@ -955,22 +983,124 @@ async def get_retrain_status_from_db() -> dict | None:
 
 
 def get_online_features_for_ticker(ticker: str) -> dict | None:
-    """Retrieve online features from Feast/Redis for a single ticker.
+    """Fetch all 34 Feast online features for a single ticker from Redis.
 
-    Returns a dict of feature name -> value list (Feast format) on success,
-    or None when Feast is unavailable or Redis is unreachable.
-
-    FEAST-07: Used by predict router before falling back to live KServe inference.
+    Synchronous — must be called via run_in_threadpool in async handlers.
+    Returns a flat dict {bare_col_name: float_value} on success.
+    Returns None on any failure (Feast unavailable, Redis down, etc.).
+    Missing/None feature values are filled with 0.0.
     """
-    if not _FEAST_AVAILABLE or get_online_features is None:
-        logger.debug("Feast not available — skipping online feature retrieval for %s", ticker)
-        return None
     try:
-        return get_online_features(ticker.upper())
+        # `feast` is a module-level name — tests patch app.services.prediction_service.feast
+        if feast is None:
+            raise ImportError("feast not installed")
+        from app.config import settings as _settings
+        store = feast.FeatureStore(repo_path=_settings.FEAST_STORE_PATH)
+        result = store.get_online_features(
+            features=_ALL_ONLINE_FEATURES,
+            entity_rows=[{"ticker": ticker.upper()}],
+        ).to_dict()
+        # Flatten list-of-one to scalar; fill None → 0.0; drop "ticker" entity key
+        return {
+            k: (float(v[0]) if v and v[0] is not None else 0.0)
+            for k, v in result.items()
+            if k != "ticker"
+        }
     except Exception as exc:
         logger.warning(
-            "Feast get_online_features failed for %s (%s) — returning None.", ticker.upper(), exc
+            "get_online_features_for_ticker failed for %s: %s", ticker.upper(), exc
         )
+        return None
+
+
+async def _feast_inference(
+    ticker: str,
+    serving_dir: str,
+    horizon: int | None,
+    ab_model: dict | None,
+) -> dict | None:
+    """Feast online store inference path.
+
+    Fetches features from Redis via get_online_features_for_ticker(),
+    aligns them to features.json, and runs pipeline.predict().
+
+    Returns None (triggering fallback to _legacy_inference()) when:
+    - features.json or pipeline.pkl not found
+    - Feast online store unavailable (get_online_features_for_ticker returns None)
+    - All feature values are 0.0 (stale/expired Redis keys)
+    - Any unhandled exception during inference
+
+    Increments feast_stale_features_total Prometheus counter on fallback.
+    Never raises — always returns dict or None.
+    """
+    import pickle
+
+    import numpy as np
+    import pandas as pd
+
+    from app.metrics import feast_stale_features_total
+
+    try:
+        # Resolve serving directory (respect ab_model overrides only;
+        # horizon sub-directory resolution is handled by the caller)
+        actual_serving_dir = serving_dir
+        if ab_model is not None:
+            actual_serving_dir = ab_model.get("serving_dir", serving_dir)
+
+        features_path = Path(actual_serving_dir) / "features.json"
+        pipeline_path = Path(actual_serving_dir) / "pipeline.pkl"
+
+        if not features_path.exists():
+            logger.warning("_feast_inference: features.json not found at %s", features_path)
+            return None
+        if not pipeline_path.exists():
+            logger.warning("_feast_inference: pipeline.pkl not found at %s", pipeline_path)
+            return None
+
+        # Fetch features from Redis (synchronous Feast call wrapped in threadpool)
+        raw = await run_in_threadpool(get_online_features_for_ticker, ticker)
+        if raw is None:
+            feast_stale_features_total.labels(ticker=ticker, reason="feast_unavailable").inc()
+            logger.info("_feast_inference: Feast unavailable for %s — falling back", ticker)
+            return None
+
+        # Staleness check: all values 0.0 means all features were None (Redis keys expired)
+        if raw and all(v == 0.0 for v in raw.values()):
+            feast_stale_features_total.labels(ticker=ticker, reason="feast_stale").inc()
+            logger.info("_feast_inference: all features stale for %s — falling back", ticker)
+            return None
+
+        # Align features to the canonical list stored in features.json
+        with open(features_path) as f:
+            feature_names: list[str] = json.load(f)
+
+        row = {col: float(raw.get(col, 0.0)) for col in feature_names}
+        X = pd.DataFrame([row])[feature_names]
+        X = X.replace([np.inf, -np.inf], np.nan).fillna(0.0)
+
+        # Load pipeline and predict
+        with open(pipeline_path, "rb") as f:
+            pipeline = pickle.load(f)
+
+        pred = float(pipeline.predict(X)[0])
+
+        model_name = "feast_model"
+        if hasattr(pipeline, "named_steps") and "model" in pipeline.named_steps:
+            model_name = pipeline.named_steps["model"].__class__.__name__
+
+        logger.info(
+            "_feast_inference: %s predicted_price=%.4f model=%s", ticker, pred, model_name
+        )
+        return {
+            "ticker": ticker,
+            "predicted_price": pred,
+            "model_name": model_name,
+            "source": "feast_inference",
+            "feature_freshness_seconds": None,  # staleness check above handles freshness gate
+        }
+
+    except Exception as exc:
+        logger.warning("_feast_inference failed for %s: %s", ticker, exc, exc_info=True)
         return None
 
 

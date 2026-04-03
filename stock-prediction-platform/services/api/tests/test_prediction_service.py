@@ -237,8 +237,12 @@ class TestFeastInference:
             (serving / "pipeline.pkl").write_bytes(pickle.dumps(pipeline))
 
             mock_features = {"open": 1.0, "rsi_14": 55.0, "avg_sentiment": 0.3}
+
+            async def _fake_threadpool(fn, *a, **kw):
+                return fn(*a, **kw)
+
             with patch("app.services.prediction_service.get_online_features_for_ticker", return_value=mock_features):
-                with patch("app.services.prediction_service.run_in_threadpool", side_effect=lambda fn, *a, **kw: asyncio.coroutine(lambda: fn(*a, **kw))()):
+                with patch("app.services.prediction_service.run_in_threadpool", side_effect=_fake_threadpool):
                     result = asyncio.get_event_loop().run_until_complete(
                         _feast_inference(ticker="AAPL", serving_dir=str(serving), horizon=7, ab_model=None)
                     )
