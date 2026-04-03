@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 92-03-PLAN.md
-last_updated: "2026-04-03T14:51:21.998Z"
+stopped_at: Completed 92-02-PLAN.md
+last_updated: "2026-04-03T15:04:50.420Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -427,10 +427,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 92-feast-powered-prediction-pipeline]: Inner-function imports used in Wave 0 test stubs so ImportError surfaces at run time not collection time
 - [Phase 92-feast-powered-prediction-pipeline]: Group 17 pattern mirrors Group 12 (KServe): FEAST_INFERENCE_ENABLED: bool = False defaulting to disabled
 - [Phase 92-feast-powered-prediction-pipeline]: feast_stale_features_total uses 'reason' label with values feast_unavailable | feast_stale to distinguish fallback causes
+- [Phase 92-feast-powered-prediction-pipeline]: top_subreddit excluded from _TRAINING_FEATURES: String type incompatible with numeric model input
+- [Phase 92-feast-powered-prediction-pipeline]: load_feast_data returns flat DataFrame (not dict); training_pipeline converts to per-ticker dict at step 1
+- [Phase 92-feast-powered-prediction-pipeline]: Feast _feast_mode=True skips engineer_features at step 2 — data already has all 34 columns
 
 ## Last Session
 
-- **Stopped at:** Completed 92-03-PLAN.md
+- **Stopped at:** Completed 92-02-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
