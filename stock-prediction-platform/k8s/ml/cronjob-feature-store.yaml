@@ -39,6 +39,13 @@ spec:
                     secretKeyRef:
                       name: stock-platform-secrets
                       key: DATABASE_URL_WRITER
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: POSTGRES_PASSWORD
+                - name: POSTGRES_USER
+                  value: "stockuser"
               volumeMounts:
                 - name: model-artifacts
                   mountPath: /data

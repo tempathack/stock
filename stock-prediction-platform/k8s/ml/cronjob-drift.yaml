@@ -29,7 +29,6 @@ spec:
               imagePullPolicy: Never
               command: ["python", "-m", "ml.drift.trigger"]
               args:
-                - "--auto-retrain"
                 - "--registry-dir"
                 - "$(MODEL_REGISTRY_DIR)"
                 - "--serving-dir"
@@ -52,8 +51,6 @@ spec:
                       key: DATABASE_URL_WRITER
                 - name: STORAGE_BACKEND
                   value: "s3"
-                - name: TICKERS
-                  value: "AAPL,MSFT,GOOGL,AMZN,NVDA,META,TSLA,JPM,JNJ,V"
                 - name: POSTGRES_PASSWORD
                   valueFrom:
                     secretKeyRef:
@@ -61,8 +58,6 @@ spec:
                       key: POSTGRES_PASSWORD
                 - name: POSTGRES_USER
                   value: "stockuser"
-                - name: LINEAR_ONLY
-                  value: "true"
               resources:
                 requests:
                   cpu: "200m"
