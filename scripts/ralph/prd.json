@@ -65,8 +65,8 @@
         "Typecheck passes"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Both feast-writer and indicator-stream were already RUNNING/STABLE when investigated — the Flink operator had self-reconciled them after the FIX-002 operator restarts. feast-writer completing checkpoints every 30s (cp 99-103 observed). indicator-stream completing checkpoints every 30s (cp 97-101 observed). The 'Node 0 disconnected' INFO messages every ~5 min on feast-writer are normal Kafka AdminClient heartbeat behavior and do not affect job stability. No manifest changes required."
     },
     {
       "id": "FIX-005",

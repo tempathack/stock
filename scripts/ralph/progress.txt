@@ -70,3 +70,14 @@ Started: 2026-04-03
   - daily-feature-store cron job uses `stockuser` (from configmap POSTGRES_USER), not `stock_writer` (from DATABASE_URL_WRITER secret) — the DATABASE_URL secret is ignored by DBSettings.from_env()
   - When job pods are GCed (failedJobsHistoryLimit=3 keeps jobs but pods get cleaned up), use `kubectl describe job` to see final status; cannot recover logs
 ---
+
+## 2026-04-03 - FIX-004: Restart feast-writer and indicator-stream Flink jobs stuck in CANCELLING/UPGRADING
+- Both feast-writer and indicator-stream were already RUNNING/STABLE when investigated — the Flink operator had self-reconciled after the FIX-002 operator restarts
+- feast-writer: checkpoints completing every 30s (cp 99-103 observed in 5-min window), lifecycle=STABLE
+- indicator-stream: checkpoints completing every 30s (cp 97-101 observed in 5-min window), lifecycle=STABLE
+- No manifest changes required — operator reconciliation resolved the stuck state
+- **Learnings for future iterations:**
+  - Flink operator reconciliation can recover jobs stuck in CANCELLING/UPGRADING after operator pod restarts — check current state before applying restartNonce patches
+  - 'Node 0 disconnected' INFO messages every ~5 min on feast-writer are normal Kafka AdminClient heartbeat behavior (metadata fetch), NOT indicative of job instability — ignore if checkpoints are completing
+  - Healthy Flink job indicator: checkpoint completions every `execution.checkpointing.interval` (30s here) with no ERROR logs
+---
