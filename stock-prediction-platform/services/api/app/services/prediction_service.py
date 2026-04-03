@@ -110,6 +110,40 @@ def load_drift_events(
     return list(reversed(events[-n:]))
 
 
+def _apply_horizon_scaling(
+    entries: list[dict],
+    to_horizon: int,
+) -> list[dict]:
+    """Return new entries with predicted_price scaled for a different horizon.
+
+    Uses a random-walk approximation: percentage return scales with sqrt(to/from).
+    Each entry should contain 'last_close' (close price at prediction time) and
+    'horizon_days' (source horizon in days).  'last_close' is stripped from output.
+    """
+    import math
+    from datetime import date, timedelta
+
+    result = []
+    for e in entries:
+        from_horizon = e.get("horizon_days") or 7
+        last_close = e.get("last_close")
+        e2 = {k: v for k, v in e.items() if k != "last_close"}
+        if last_close and last_close > 0 and from_horizon > 0 and from_horizon != to_horizon:
+            base_return = (e["predicted_price"] / last_close) - 1.0
+            scale = math.sqrt(to_horizon / from_horizon)
+            scaled_return = base_return * scale
+            e2["predicted_price"] = round(last_close * (1.0 + scaled_return), 4)
+            e2["confidence"] = round(max(0.0, min(1.0, 1.0 - abs(scaled_return))), 4)
+        try:
+            pred_date = date.fromisoformat(e["prediction_date"])
+            e2["predicted_date"] = str(pred_date + timedelta(days=to_horizon))
+        except Exception:
+            pass
+        e2["horizon_days"] = to_horizon
+        result.append(e2)
+    return result
+
+
 # ── DB-first query functions (Phase 31 → async in Phase 40) ──────────────
 
 
@@ -172,6 +206,8 @@ async def load_db_predictions(horizon: int | None = None) -> list[dict] | None:
     Used as a last-resort fallback when pipeline.pkl and cached files are absent.
     Returns the most recent prediction_date batch, optionally filtered to
     predictions whose horizon (predicted_date - prediction_date) matches.
+    When the requested horizon has no stored rows, predictions are scaled from
+    whatever horizon IS available using a sqrt(to/from) volatility approximation.
     """
     from sqlalchemy import text as sa_text
 
@@ -187,6 +223,11 @@ async def load_db_predictions(horizon: int | None = None) -> list[dict] | None:
         active_model AS (
             SELECT model_id, model_name FROM model_registry
             WHERE is_active = true ORDER BY trained_at DESC LIMIT 1
+        ),
+        latest_close AS (
+            SELECT DISTINCT ON (ticker) ticker, close AS last_close
+            FROM ohlcv_daily
+            ORDER BY ticker, date DESC
         )
         SELECT
             p.ticker,
@@ -196,10 +237,12 @@ async def load_db_predictions(horizon: int | None = None) -> list[dict] | None:
             p.confidence,
             COALESCE(a.model_name, 'unknown') AS model_name,
             p.model_id,
-            (p.predicted_date - p.prediction_date) AS horizon_days
+            (p.predicted_date - p.prediction_date) AS horizon_days,
+            lc.last_close
         FROM predictions p
         CROSS JOIN latest l
         LEFT JOIN active_model a ON TRUE
+        LEFT JOIN latest_close lc ON lc.ticker = p.ticker
         WHERE p.prediction_date = l.max_date
         ORDER BY p.ticker, p.predicted_date
     """)
@@ -215,12 +258,11 @@ async def load_db_predictions(horizon: int | None = None) -> list[dict] | None:
     if not rows:
         return None
 
-    entries = []
+    all_entries: list[dict] = []
+    entries: list[dict] = []
     for r in rows:
         h = int(r["horizon_days"]) if r.get("horizon_days") is not None else None
-        if horizon is not None and h != horizon:
-            continue
-        entries.append({
+        entry = {
             "ticker": r["ticker"],
             "prediction_date": r["prediction_date"],
             "predicted_date": r["predicted_date"],
@@ -229,11 +271,38 @@ async def load_db_predictions(horizon: int | None = None) -> list[dict] | None:
             "model_name": r["model_name"],
             "assigned_model_id": r["model_id"],
             "horizon_days": h,
-        })
+            "last_close": float(r["last_close"]) if r.get("last_close") is not None else None,
+        }
+        all_entries.append(entry)
+        if horizon is None or h == horizon:
+            entries.append(entry)
 
-    # If horizon filter yielded nothing, return all (horizon mismatch — serve what exists)
-    if not entries and horizon is not None:
-        return await load_db_predictions(horizon=None)
+    # If horizon filter yielded nothing, scale base predictions to the requested horizon.
+    # Pick one representative entry per ticker (prefer the default 7d horizon; otherwise
+    # take the entry whose horizon_days is closest to the target).
+    if not entries and horizon is not None and all_entries:
+        logger.info(
+            "No stored predictions for horizon=%d — scaling from base predictions", horizon,
+        )
+        seen_tickers: set[str] = set()
+        base_entries: list[dict] = []
+        # First pass: prefer horizon_days == 7
+        for e in all_entries:
+            if e["ticker"] not in seen_tickers and e.get("horizon_days") == 7:
+                base_entries.append(e)
+                seen_tickers.add(e["ticker"])
+        # Second pass: pick any entry for tickers not yet covered
+        for e in all_entries:
+            if e["ticker"] not in seen_tickers:
+                base_entries.append(e)
+                seen_tickers.add(e["ticker"])
+        entries = _apply_horizon_scaling(base_entries, horizon)
+    elif not entries:
+        return None
+
+    # Strip last_close (internal field, not part of PredictionResponse schema)
+    for e in entries:
+        e.pop("last_close", None)
 
     if not entries:
         return None
@@ -519,6 +588,7 @@ async def _legacy_inference(
         effective_serving_dir = ab_model["serving_path"]
 
     # Resolve horizon-specific serving dir
+    base_horizon_for_scaling: int | None = None  # set when falling back to root pipeline
     if horizon is not None:
         base_srv = _Path(effective_serving_dir) / f"horizon_{horizon}d"
     else:
@@ -529,7 +599,21 @@ async def _legacy_inference(
     metadata_path = base_srv / "metadata.json"
 
     # Step 1: Load the active model pipeline
-    if not pipeline_path.exists():
+    # If horizon-specific pipeline is absent, fall back to root pipeline and scale output
+    if not pipeline_path.exists() and horizon is not None:
+        root_pipeline = _Path(effective_serving_dir) / "pipeline.pkl"
+        if root_pipeline.exists():
+            logger.info(
+                "Horizon-%dd pipeline absent — using root pipeline for %s (will scale output)",
+                horizon, ticker,
+            )
+            pipeline_path = root_pipeline
+            features_path = _Path(effective_serving_dir) / "features.json"
+            base_horizon_for_scaling = 7  # default trained horizon
+        else:
+            logger.warning("No active model pipeline at %s", base_srv / "pipeline.pkl")
+            return None
+    elif not pipeline_path.exists():
         logger.warning("No active model pipeline at %s", pipeline_path)
         return None
 
@@ -613,6 +697,12 @@ async def _legacy_inference(
     # ohlcv_daily.close. Mirrors the KServe inference path.
     if abs(predicted_price) < 10.0:
         predicted_price = last_close * (1.0 + predicted_price)
+    # Scale to requested horizon if we used the base (root) pipeline as a fallback
+    if base_horizon_for_scaling is not None and horizon is not None and base_horizon_for_scaling != horizon:
+        import math as _math
+        base_return = (predicted_price / last_close) - 1.0
+        scaled_return = base_return * _math.sqrt(horizon / base_horizon_for_scaling)
+        predicted_price = last_close * (1.0 + scaled_return)
     confidence = max(0.0, min(1.0, 1.0 - abs(predicted_price - last_close) / last_close))
     h = horizon or 7
     predicted_date = date.today() + timedelta(days=h)
@@ -711,6 +801,9 @@ async def get_bulk_live_predictions(
         effective_dir = ab_model["serving_path"] if ab_model is not None else serving_dir
         if horizon is not None:
             pipeline_path = _Path(effective_dir) / f"horizon_{horizon}d" / "pipeline.pkl"
+            if not pipeline_path.exists():
+                # Allow fallback to root pipeline; get_live_prediction will scale per-ticker
+                pipeline_path = _Path(effective_dir) / "pipeline.pkl"
         else:
             pipeline_path = _Path(effective_dir) / "pipeline.pkl"
         if not pipeline_path.exists():

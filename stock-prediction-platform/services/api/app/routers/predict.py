@@ -27,6 +27,7 @@ from app.models.schemas import (
     PredictionResponse,
 )
 from app.services.prediction_service import (
+    _apply_horizon_scaling,
     get_bulk_live_predictions,
     get_live_prediction,
     get_prediction_for_ticker,
@@ -112,6 +113,17 @@ async def predict_bulk(
             registry_dir=settings.MODEL_REGISTRY_DIR,
             horizon=horizon,
         )
+        if not raw and horizon is not None:
+            # Horizon-specific file absent — try base file and scale
+            base_raw = load_cached_predictions(
+                registry_dir=settings.MODEL_REGISTRY_DIR,
+                horizon=None,
+            )
+            if base_raw:
+                logger.info(
+                    "Cached predictions for horizon=%d absent — scaling from base file", horizon,
+                )
+                raw = _apply_horizon_scaling(base_raw, horizon)
         predictions = raw if raw else None
         status = "cached"
 
