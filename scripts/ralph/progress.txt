@@ -183,6 +183,19 @@ Started: 2026-04-03
   - All Flink jobs with S3 checkpointing must use `minio-s3-credentials` (not `minio-secrets`). The S3 Presto plugin uses EnvironmentVariableCredentialsProvider — needs AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY, not MINIO_ROOT_USER/PASSWORD.
 ---
 
+## 2026-04-03 - FIX-013: Investigate test-linear ML job failure and clean up
+- Investigation: test-linear was a manually instantiated job from the weekly-training CronJob (annotation: `cronjob.kubernetes.io/instantiate: manual`) with `LINEAR_ONLY=true` env var — someone tested linear model training in isolation
+- Job had Backoff Limit=2, failed 3d ago, all pods GCed (no logs recoverable via kubectl logs)
+- No CronJob named test-linear exists — only weekly-training (Sundays 3am), daily-feature-store, feast-materialize, daily-drift
+- Production impact: none — weekly-training CronJob is unaffected and healthy
+- Deleted orphaned job: `kubectl delete job test-linear -n ml`
+- No code changes required — pure cleanup
+- **Learnings for future iterations:**
+  - `cronjob.kubernetes.io/instantiate: manual` annotation indicates a job was manually created from a CronJob template (e.g., kubectl create job <name> --from=cronjob/<cronjob>)
+  - Job pod logs become unavailable after ~3 days (pods GCed by K8s TTL controller) — always check logs immediately after failure
+  - `Controlled By: CronJob/weekly-training` in job describe output identifies the parent CronJob — useful to determine if job is recurring
+---
+
 ## 2026-04-03 - FIX-012: Monitor daily-drift first execution and verify drift data populates
 - Triggered manually: `kubectl create job manual-daily-drift-test --from=cronjob/daily-drift -n ml`
 - Job completed successfully: loaded 10 tickers (1266-1269 rows each), engineered 51 features/ticker, detected data_drift=True severity=high (rsi_14 PSI=0.28, macd_line PSI=0.22 both drifted), logged drift event to DB

@@ -215,8 +215,8 @@
         "Typecheck passes"
       ],
       "priority": 13,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Investigation: test-linear was a manually instantiated job from the weekly-training CronJob (annotation: cronjob.kubernetes.io/instantiate=manual) with LINEAR_ONLY=true env var — someone tested linear model training specifically. All pods were GCed (3d old), no logs recoverable. Job failed with Backoff Limit=2. No CronJob named test-linear exists — only weekly-training (runs Sundays at 3am), daily-feature-store, feast-materialize, daily-drift. Production impact: none — weekly-training CronJob is healthy and unaffected. Deleted orphaned test-linear job: kubectl delete job test-linear -n ml."
     },
     {
       "id": "FIX-014",
