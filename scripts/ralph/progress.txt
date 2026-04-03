@@ -101,3 +101,19 @@ Started: 2026-04-03 (ralph/frontend-data-fixes)
   - SMA model: window_end = i - horizon_days, window_start = max(0, window_end - horizon_days); predicted_price = mean(closes[window_start:window_end+1])
   - backtest_results ON CONFLICT DO NOTHING requires unique constraint — add UNIQUE(ticker, start_date, end_date, horizon_days) in future if caching is needed
 ---
+
+## 2026-04-03 - UI-005: Register stacking_ensemble and missing models in model_registry
+- Checked MinIO model-artifacts/model_registry/: found 8+ trained model directories (stacking_ensemble_meta_ridge, bayesian_ridge_quantile, elastic_net_standard, lasso_standard, linear_regression_quantile, ridge_standard, ridge_minmax, elastic_net_minmax)
+- DB model_registry had only 3 distinct (model_name, scaler_variant): CatBoost_standard, RandomForest_minmax, Ridge_quantile — 9 duplicate rows across training runs
+- Inserted 6 new model rows directly via kubectl exec psql: stacking_ensemble(meta_ridge), bayesian_ridge(quantile), elastic_net(standard), lasso(standard), linear_regression(quantile), ridge(standard)
+- Invalidated Redis cache via POST /models/cache/invalidate (cleared 2 keys)
+- /models/comparison now returns 9 distinct models (was 3)
+- Playwright verified: models-all.png — Models page shows "1-9 of 9" with stacking_ensemble highlighted as Winner at top of table
+- Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt (DB inserts only — no code changes)
+- **Learnings for future iterations:**
+  - MinIO `mc ls --recursive local/model-artifacts/model_registry/` shows all trained models; cross-reference with DB to find unregistered ones
+  - model_registry deduplication query: DISTINCT ON (model_name, metrics_json->>'scaler_variant') — so each (name, scaler) combo appears once regardless of how many rows exist
+  - metrics_json must use oos_* prefix (oos_r2, oos_mae, oos_rmse, oos_mape, oos_directional_accuracy) for API to extract into oos_metrics dict correctly
+  - Always invalidate Redis cache after DB inserts: POST http://localhost:8010/models/cache/invalidate
+  - kubectl exec psql: use -c "..." with escaped inner quotes — heredoc with << 'EOF' doesn't pass through to kubectl correctly
+---

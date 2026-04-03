@@ -84,8 +84,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Checked MinIO model-artifacts/model_registry/: found stacking_ensemble_meta_ridge, bayesian_ridge_quantile, elastic_net_standard, lasso_standard, linear_regression_quantile, ridge_standard, ridge_minmax, elastic_net_minmax — all trained but not in DB. DB had only 3 distinct models (CatBoost_standard, RandomForest_minmax, Ridge_quantile). Inserted 6 new model rows directly via kubectl exec psql: stacking_ensemble(meta_ridge), bayesian_ridge(quantile), elastic_net(standard), lasso(standard), linear_regression(quantile), ridge(standard). Invalidated Redis cache via POST /models/cache/invalidate. /models/comparison now returns 9 models. Playwright verified: Models page shows 1-9 of 9 with stacking_ensemble as winner at top."
     },
     {
       "id": "UI-006",
