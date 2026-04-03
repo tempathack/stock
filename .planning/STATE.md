@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 87-02-PLAN.md
-last_updated: "2026-04-03T08:55:44.697Z"
+stopped_at: Completed 88-03-PLAN.md
+last_updated: "2026-04-03T08:58:49.950Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -406,10 +406,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 88]: Added MultiHorizonForecastRow and HorizonPrediction types as Rule 3 auto-fix for Plan 01 missing types
 - [Phase 87]: Use America/New_York tz_convert(UTC) in build_entity_df_for_backtest to handle DST transitions for all prediction dates
 - [Phase 87]: assert_no_future_leakage accepts empty result_df silently — no data before Feast cutoff is valid, not leakage
+- [Phase 88]: ForecastTable uses flat field mapping from MultiHorizonForecastRow.horizons — columnGroupingModel with 4 groups (1-Day, 7-Day, 14-Day, 30-Day); dual-query pattern keeps useBulkPredictions(7) for ForecastRow consumers alongside useAllHorizonsPredictions
 
 ## Last Session
 
-- **Stopped at:** Completed 87-02-PLAN.md
+- **Stopped at:** Completed 88-03-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

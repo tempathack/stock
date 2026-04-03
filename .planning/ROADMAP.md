@@ -86,7 +86,7 @@
 | 82 | 2/2 | Complete    | 2026-04-02 |
 | 83 | 1/1 | Complete    | 2026-04-02 | 1 plan |
 | 84–87 | Various ML/infra phases | Complete | 2026-04-03 | — |
-| 88 | 2/3 | In Progress|  | 3 plans |
+| 88 | 3/3 | Complete   | 2026-04-03 | 3 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1653,7 +1653,7 @@ Plans:
 **Goal:** Expose all four prediction horizons (1d, 7d, 14d, 30d) simultaneously as grouped columns in the Forecasts table, fixing the missing horizons.json ConfigMap entry and replacing the single-horizon toggle view.
 **Requirements**: FCST-HORIZONS-01, FCST-HOOK-01, FCST-MERGE-01, FCST-TEST-01, FCST-TABLE-01, FCST-EXPORT-01, FCST-UI-01
 **Depends on:** Phase 87
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 88-01-PLAN.md — Fix model-features-config ConfigMap (add horizons.json), add MultiHorizonForecastRow type and useAllHorizonsPredictions hook
