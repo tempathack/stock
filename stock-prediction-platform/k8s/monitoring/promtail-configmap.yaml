@@ -41,14 +41,15 @@ data:
           - source_labels: [__meta_kubernetes_pod_container_name]
             target_label: container
 
-          # Build the log file path using pod UID for exact directory matching
+          # Build the log file path using namespace_podname_uid/container pattern
           - source_labels:
-              - __meta_kubernetes_pod_uid
+              - __meta_kubernetes_namespace
+              - __meta_kubernetes_pod_name
               - __meta_kubernetes_pod_container_name
-            separator: /
-            regex: (.+)/(.+)
+            separator: _
+            regex: (.+)_(.+)_(.+)
             target_label: __path__
-            replacement: /var/log/pods/*$1/$2/*.log
+            replacement: /var/log/pods/*$1_$2_*/$3/*.log
 
         pipeline_stages:
           - cri: {}
