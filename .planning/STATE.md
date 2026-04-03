@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: "Checkpoint: 89-02 Task 3 — visual verification of SentimentPanel chart in Dashboard drawer"
-last_updated: "2026-04-03T09:19:27.840Z"
+stopped_at: Completed 88-03 — multi-horizon forecast table plan complete (Playwright verified)
+last_updated: "2026-04-03T09:21:55.887Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -407,6 +407,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 87]: Use America/New_York tz_convert(UTC) in build_entity_df_for_backtest to handle DST transitions for all prediction dates
 - [Phase 87]: assert_no_future_leakage accepts empty result_df silently — no data before Feast cutoff is valid, not leakage
 - [Phase 88]: ForecastTable uses flat field mapping from MultiHorizonForecastRow.horizons — columnGroupingModel with 4 groups (1-Day, 7-Day, 14-Day, 30-Day); dual-query pattern keeps useBulkPredictions(7) for ForecastRow consumers alongside useAllHorizonsPredictions
+- [Phase 88-03]: useAllHorizonsPredictions queryFn returns raw BulkPredictionResponse (not wrapped { horizon, data }) — prevents cache collision with shared bulkPredictions queryKey; horizon derived from ALL_HORIZONS index in select function
 - [Phase 87]: KSERVE_INFERENCE_URL must use InferenceService hostname (no -predictor suffix) to route requests through the Transformer before the Predictor
 - [Phase 87]: features_pit_correct defaults to False for backward compatibility with pre-Transformer predictions
 - [Phase 89]: StatementSet for dual-sink Flink job so Kafka and JDBC inserts run as a single Flink execution graph
@@ -415,7 +416,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 ## Last Session
 
-- **Stopped at:** Checkpoint: 89-02 Task 3 — visual verification of SentimentPanel chart in Dashboard drawer
+- **Stopped at:** Completed 88-03 — multi-horizon forecast table plan complete (Playwright verified)
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
