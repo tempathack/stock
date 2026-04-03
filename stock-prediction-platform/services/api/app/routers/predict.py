@@ -247,6 +247,10 @@ async def predict_ticker(
     if ab_model and pred:
         pred["assigned_model_id"] = ab_model["model_id"]
 
-    response = PredictionResponse(**pred)
+    # Thread Feast-path enrichment fields through to response (None when legacy path used)
+    response = PredictionResponse(
+        **{k: v for k, v in pred.items() if k != "feature_freshness_seconds"},
+        feature_freshness_seconds=pred.get("feature_freshness_seconds"),
+    )
     await cache_set(cache_key, response.model_dump(), SINGLE_PREDICTION_TTL)
     return response

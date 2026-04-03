@@ -405,9 +405,10 @@ async def get_live_prediction(
 ) -> dict | None:
     """Run live inference for a single ticker.
 
-    When ``settings.KSERVE_ENABLED`` is True, inference is delegated to a
-    KServe InferenceService via the V2 HTTP protocol.  When False, the
-    legacy pipeline.pkl path is used.
+    Inference priority:
+    1. KServe (when KSERVE_ENABLED=True)
+    2. Feast online store (when FEAST_INFERENCE_ENABLED=True)
+    3. Legacy Postgres+local-compute path (always available as fallback)
 
     When *horizon* is provided, reads from ``{serving_dir}/horizon_{h}d/``.
     When *ab_model* is provided, overrides serving_dir / KServe URL.
@@ -430,6 +431,17 @@ async def get_live_prediction(
             kserve_url=kserve_url,
             kserve_model_name=kserve_model_name,
         )
+
+    if _settings.FEAST_INFERENCE_ENABLED:
+        feast_result = await _feast_inference(
+            ticker=ticker,
+            serving_dir=serving_dir,
+            horizon=horizon,
+            ab_model=ab_model,
+        )
+        if feast_result is not None:
+            return feast_result
+        # _feast_inference returned None — fall through silently to legacy
 
     return await _legacy_inference(
         ticker=ticker,
