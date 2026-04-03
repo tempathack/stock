@@ -99,6 +99,16 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_middleware(RequestContextMiddleware)
+app.add_middleware(
+    RateLimitMiddleware,
+    route_limits={
+        "/predict": settings.RATE_LIMIT_PREDICT,
+        "/ingest": settings.RATE_LIMIT_INGEST,
+    },
+    default_limit=settings.RATE_LIMIT_GLOBAL,
+    exempt_paths=["/health", "/metrics", "/ws"],
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -113,16 +123,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(
-    RateLimitMiddleware,
-    route_limits={
-        "/predict": settings.RATE_LIMIT_PREDICT,
-        "/ingest": settings.RATE_LIMIT_INGEST,
-    },
-    default_limit=settings.RATE_LIMIT_GLOBAL,
-    exempt_paths=["/health", "/metrics", "/ws"],
-)
-app.add_middleware(RequestContextMiddleware)
 
 app.include_router(health.router)
 app.include_router(ingest.router)
