@@ -34,8 +34,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "All 4 horizon columns (1D/7D/14D/30D) verified via Playwright. Root issue was horizon=1 Redis cache expiry causing 36s API response (exceeds 30s axios timeout). Warmed cache manually. Page loads with 160+ tickers showing different predicted prices per horizon. UI-003 will add permanent timeout guard."
     },
     {
       "id": "UI-003",

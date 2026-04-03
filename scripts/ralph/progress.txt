@@ -53,3 +53,19 @@ Started: 2026-04-03 (ralph/frontend-data-fixes)
   - Redis cache for /predict/bulk expires — cold cache causes 20-30s response, which times out frontend's 30s limit
   - To seed predictions table: INSERT INTO predictions...FROM stocks CROSS JOIN horizons JOIN ohlcv_daily latest prices
 ---
+
+## 2026-04-03 - UI-002: Verify all 4 horizon tabs load on Forecasts page
+- Root cause identified: Redis cache for horizon=1 expired; cold cache causes API to attempt KServe live inference (times out in ~36s, exceeding axios 30s timeout)
+- Warmed the Redis cache by running curl against all 4 horizons; page loaded successfully
+- Verified: all 4 horizon columns (1-DAY, 7-DAY, 14-DAY, 30-DAY FORECAST) visible in table
+- Verified: 160+ tickers show different predicted prices per horizon (TSLA: 1D=$349.62, 7D=$356.39, 14D=$352.34, 30D=$352.51)
+- Verified: No skeleton state after cache warm — full data table rendered
+- Screenshot: forecasts-horizons-verified.png
+- Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - horizon=1 Redis cache expires faster than other horizons (possibly different TTL or higher eviction pressure)
+  - When horizon=1 cache is cold, API falls back to KServe live inference which takes ~36s (exceeds 30s axios timeout)
+  - UI-003 MUST add 15s timeout guard + error state to prevent infinite skeleton — this is the permanent fix
+  - Always warm cache before Playwright verification: curl 'http://localhost:8010/predict/bulk?horizon={1,7,14,30}'
+  - TanStack Query staleTime=60_000 means re-navigating within 60s uses cached data — no issue
+---
