@@ -19,6 +19,13 @@ spec:
       containers:
         - name: postgresql
           image: timescale/timescaledb:latest-pg15
+          args:
+            - "-c"
+            - "wal_level=logical"
+            - "-c"
+            - "max_replication_slots=5"
+            - "-c"
+            - "max_wal_senders=5"
           ports:
             - containerPort: 5432
           envFrom:
