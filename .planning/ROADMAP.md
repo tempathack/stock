@@ -85,6 +85,8 @@
 | 74–81 | Various hotfixes & Grafana fixes | Complete | 2026-04-02 | — |
 | 82 | 2/2 | Complete    | 2026-04-02 |
 | 83 | 1/1 | Complete    | 2026-04-02 | 1 plan |
+| 84–87 | Various ML/infra phases | Complete | 2026-04-03 | — |
+| 88 | Add all prediction forecasts to the table in the forecasts dashboard tab | Planned | — | 3 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1648,13 +1650,15 @@ Plans:
 
 ### Phase 88: Add all prediction forecasts to the table in the forecasts dashboard tab
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Expose all four prediction horizons (1d, 7d, 14d, 30d) simultaneously as grouped columns in the Forecasts table, fixing the missing horizons.json ConfigMap entry and replacing the single-horizon toggle view.
+**Requirements**: FCST-HORIZONS-01, FCST-HOOK-01, FCST-MERGE-01, FCST-TEST-01, FCST-TABLE-01, FCST-EXPORT-01, FCST-UI-01
 **Depends on:** Phase 87
-**Plans:** 0 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 88 to break down)
+- [ ] 88-01-PLAN.md — Fix model-features-config ConfigMap (add horizons.json), add MultiHorizonForecastRow type and useAllHorizonsPredictions hook
+- [ ] 88-02-PLAN.md — Add joinMultiHorizonForecastData util + vitest unit tests (6 cases)
+- [ ] 88-03-PLAN.md — Rewrite ForecastTable multi-horizon column groups + rewire Forecasts.tsx + Playwright verification
 
 ### Phase 89: Live sentiment timeseries chart in Dashboard tab + fix Promtail Kubernetes SD — Flink-streamed Reddit/news sentiment per stock, 2-min intervals, 10-hour rolling window, replaces static unavailable placeholder; fix Promtail 2.9.6 kubernetes_sd_configs role: pod discovering zero targets so logs reach Loki
 
