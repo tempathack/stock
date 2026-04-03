@@ -106,3 +106,28 @@ class TestOnlineFeatures:
             assert "ohlcv_stats_fv" in views
             assert "technical_indicators_fv" in views
             assert "lag_features_fv" in views
+
+
+# ── Wave 0 additions — sentinel tests for Phase 92 feature coverage ──
+
+def test_training_features_include_sentiment_columns():
+    """_TRAINING_FEATURES must include all 4 reddit_sentiment_fv columns after Phase 92 extends it."""
+    from ml.features.feast_store import _TRAINING_FEATURES
+    assert "reddit_sentiment_fv:avg_sentiment" in _TRAINING_FEATURES
+    assert "reddit_sentiment_fv:mention_count" in _TRAINING_FEATURES
+    assert "reddit_sentiment_fv:positive_ratio" in _TRAINING_FEATURES
+    assert "reddit_sentiment_fv:negative_ratio" in _TRAINING_FEATURES
+    assert len(_TRAINING_FEATURES) == 34, (
+        f"Expected 34 features (30 existing + 4 sentiment), got {len(_TRAINING_FEATURES)}"
+    )
+
+
+def test_online_feature_key_format_no_view_prefix():
+    """All _TRAINING_FEATURES bare names (after ':') must not contain ':'.
+    This confirms features.json will use unprefixed names matching to_dict() keys.
+    """
+    from ml.features.feast_store import _TRAINING_FEATURES
+    for feature in _TRAINING_FEATURES:
+        assert ":" in feature, f"Feature {feature!r} must be in 'view:col' format"
+        bare = feature.split(":", 1)[1]
+        assert ":" not in bare, f"Bare feature name {bare!r} must not contain ':'"

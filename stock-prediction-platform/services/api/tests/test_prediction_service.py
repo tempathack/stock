@@ -157,3 +157,101 @@ class TestPredictModelNameNotUnknown:
 
         assert model_name != "unknown"
         assert model_name == "Ridge_standard"
+
+
+# ── Wave 0 stub — tests will be RED until 92-04-PLAN.md implements _feast_inference() ──
+import json
+import tempfile
+import numpy as np
+from pathlib import Path
+from unittest.mock import MagicMock
+
+
+class TestFeastInference:
+    """Tests for rewritten get_online_features_for_ticker() and _feast_inference().
+    RED state until 92-04-PLAN.md implements these functions.
+    """
+
+    def test_get_online_features_returns_flat_dict(self):
+        from app.services.prediction_service import get_online_features_for_ticker
+        mock_store = MagicMock()
+        mock_store.get_online_features.return_value.to_dict.return_value = {
+            "open": [150.0], "rsi_14": [55.0],
+            "avg_sentiment": [0.3], "mention_count": [42.0],
+            "positive_ratio": [0.6], "negative_ratio": [0.2],
+            "ticker": ["AAPL"],
+        }
+        with patch("app.services.prediction_service.feast") as mock_feast:
+            mock_feast.FeatureStore.return_value = mock_store
+            result = get_online_features_for_ticker("AAPL")
+        assert isinstance(result, dict)
+        assert "ticker" not in result
+        assert result["avg_sentiment"] == 0.3
+        assert result["rsi_14"] == 55.0
+
+    def test_get_online_features_fills_none_with_zero(self):
+        from app.services.prediction_service import get_online_features_for_ticker
+        mock_store = MagicMock()
+        mock_store.get_online_features.return_value.to_dict.return_value = {
+            "open": [None], "rsi_14": [None], "avg_sentiment": [None], "ticker": ["AAPL"],
+        }
+        with patch("app.services.prediction_service.feast") as mock_feast:
+            mock_feast.FeatureStore.return_value = mock_store
+            result = get_online_features_for_ticker("AAPL")
+        assert result is not None
+        assert result["open"] == 0.0
+        assert result["avg_sentiment"] == 0.0
+
+    def test_get_online_features_returns_none_on_exception(self):
+        from app.services.prediction_service import get_online_features_for_ticker
+        with patch("app.services.prediction_service.feast") as mock_feast:
+            mock_feast.FeatureStore.side_effect = ConnectionError("Redis down")
+            result = get_online_features_for_ticker("AAPL")
+        assert result is None
+
+    def test_feast_inference_falls_back_on_none(self):
+        from app.services.prediction_service import _feast_inference
+        import asyncio
+        with patch("app.services.prediction_service.get_online_features_for_ticker", return_value=None):
+            result = asyncio.get_event_loop().run_until_complete(
+                _feast_inference(ticker="AAPL", serving_dir="/nonexistent", horizon=7, ab_model=None)
+            )
+        assert result is None
+
+    def test_feast_inference_uses_features_json(self):
+        from app.services.prediction_service import _feast_inference
+        import asyncio
+        import pickle
+        from sklearn.linear_model import LinearRegression
+        from sklearn.pipeline import Pipeline
+        from sklearn.preprocessing import StandardScaler
+
+        with tempfile.TemporaryDirectory() as tmp:
+            serving = Path(tmp)
+            feature_names = ["open", "rsi_14", "avg_sentiment"]
+            (serving / "features.json").write_text(json.dumps(feature_names))
+            pipeline = Pipeline([("scaler", StandardScaler()), ("model", LinearRegression())])
+            X_fake = np.array([[1.0, 55.0, 0.3]])
+            y_fake = np.array([200.0])
+            pipeline.fit(X_fake, y_fake)
+            (serving / "pipeline.pkl").write_bytes(pickle.dumps(pipeline))
+
+            mock_features = {"open": 1.0, "rsi_14": 55.0, "avg_sentiment": 0.3}
+            with patch("app.services.prediction_service.get_online_features_for_ticker", return_value=mock_features):
+                with patch("app.services.prediction_service.run_in_threadpool", side_effect=lambda fn, *a, **kw: asyncio.coroutine(lambda: fn(*a, **kw))()):
+                    result = asyncio.get_event_loop().run_until_complete(
+                        _feast_inference(ticker="AAPL", serving_dir=str(serving), horizon=7, ab_model=None)
+                    )
+        assert result is not None
+        assert "predicted_price" in result
+
+    def test_feature_freshness_seconds_field_in_schema(self):
+        from app.models.schemas import PredictionResponse
+        fields = PredictionResponse.model_fields
+        assert "feature_freshness_seconds" in fields, "PredictionResponse must have feature_freshness_seconds"
+        annotation = fields["feature_freshness_seconds"].annotation
+        # Must be Optional[float] i.e. float | None
+        import typing
+        args = getattr(annotation, "__args__", ())
+        assert type(None) in args or annotation is type(None) or annotation == float, \
+            "feature_freshness_seconds must be float | None"
