@@ -1641,7 +1641,7 @@ Plans:
 **Goal:** Replace ad-hoc on-the-fly feature computation with a Feast-backed pipeline: Flink/batch computes features → Feast online store → KServe Transformer fetches at inference. Ensures backtest uses only features available at prediction time — no lookahead leakage. Covers KServe Transformer sidecar wired to Feast, point-in-time feature retrieval in backtest service, feast materialize cronjob producing versioned snapshots, and validation that historical backtests cannot access future OHLCV rows.
 **Requirements**: TBD
 **Depends on:** Phase 86
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] 87-01-PLAN.md — FeastTransformer service (kserve.Model subclass) + Dockerfile + unit tests for preprocess() and 503-on-no-features
