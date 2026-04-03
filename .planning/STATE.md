@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 87-03-PLAN.md
-last_updated: "2026-04-03T09:03:40.403Z"
+stopped_at: Completed 89-01-PLAN.md
+last_updated: "2026-04-03T09:15:34.549Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 88 — add-all-prediction-forecasts-to-the-table-in-the-forecasts-dashboard-tab
+**Current focus:** Phase 89 — live-sentiment-timeseries-chart-dashboard-flink-streamed-reddit-news-sentiment-per-stock-2-min-intervals-10-hour-rolling-window
 
 ## Current Status
 
@@ -409,10 +409,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 88]: ForecastTable uses flat field mapping from MultiHorizonForecastRow.horizons — columnGroupingModel with 4 groups (1-Day, 7-Day, 14-Day, 30-Day); dual-query pattern keeps useBulkPredictions(7) for ForecastRow consumers alongside useAllHorizonsPredictions
 - [Phase 87]: KSERVE_INFERENCE_URL must use InferenceService hostname (no -predictor suffix) to route requests through the Transformer before the Predictor
 - [Phase 87]: features_pit_correct defaults to False for backward compatibility with pre-Transformer predictions
+- [Phase 89]: StatementSet for dual-sink Flink job so Kafka and JDBC inserts run as a single Flink execution graph
+- [Phase 89]: TUMBLE(2-min) chosen over HOP to produce non-overlapping windows matching sentiment_timeseries primary key (ticker, window_start)
 
 ## Last Session
 
-- **Stopped at:** Completed 87-03-PLAN.md
+- **Stopped at:** Completed 89-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
