@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 89-02 — SentimentTimeseriesChart frontend plan complete (Playwright verified)
-last_updated: "2026-04-03T09:26:12.582Z"
+stopped_at: Phase 90 UI-SPEC approved
+last_updated: "2026-04-03T10:02:50.798Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 89 — live-sentiment-timeseries-chart-dashboard-flink-streamed-reddit-news-sentiment-per-stock-2-min-intervals-10-hour-rolling-window
+**Current focus:** Phase 90 — debezium-cdc-and-elasticsearch-integration
 
 ## Current Status
 
@@ -418,7 +418,7 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 
 ## Last Session
 
-- **Stopped at:** Completed 89-02 — SentimentTimeseriesChart frontend plan complete (Playwright verified)
+- **Stopped at:** Phase 90 UI-SPEC approved
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
@@ -465,3 +465,4 @@ Recommended wave execution:
 - Phase 88 added: Add all prediction forecasts to the table in the forecasts dashboard tab
 - Phase 89 added: Live sentiment timeseries chart in Dashboard tab — Flink-streamed Reddit/news sentiment per stock, 2-min intervals, 10-hour rolling window, replaces static unavailable placeholder
 - Phase 90 added: Debezium CDC and Elasticsearch integration — Debezium Connect capturing PostgreSQL WAL (predictions, drift_logs, model_registry), Kafka CDC topics, ES Sink Connector, FastAPI /search/* endpoints, React analytics updates
+- Phase 92 added: Feast-powered prediction pipeline — retrain ML model on Feast features (OHLCV indicators + Reddit sentiment + Flink real-time indicators) and wire Feast online store into the API inference path

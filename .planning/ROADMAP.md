@@ -1688,6 +1688,16 @@ Plans:
 Plans:
 - [ ] TBD (run /gsd:plan-phase 90 to break down)
 
+### Phase 92: Feast-powered prediction pipeline — retrain ML model on Feast features (OHLCV indicators + Reddit sentiment + Flink real-time indicators) and wire Feast online store into the API inference path, replacing the current ad-hoc Postgres+local-compute approach
+
+**Goal:** Retrain the ML model on Feast-materialized features (OHLCV technical indicators + Flink real-time indicators + Reddit sentiment) and replace the current ad-hoc Postgres+local-compute inference path with Feast online store feature retrieval, making sentiment and streaming features available at prediction time.
+**Requirements**: TBD
+**Depends on:** Phase 90
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 92 to break down)
+
 ---
 
 ## Requirement Traceability
