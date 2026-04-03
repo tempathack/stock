@@ -1,0 +1,44 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: debezium-connect
+  namespace: processing
+  labels:
+    app: debezium-connect
+    app.kubernetes.io/part-of: stock-prediction-platform
+  annotations:
+    # REQUIRED: enables KafkaConnector CRs to be reconciled by the operator
+    strimzi.io/use-connector-resources: "true"
+spec:
+  version: 3.7.0
+  replicas: 1
+  # pre-built image loaded via: minikube image load debezium-connect-custom:latest
+  image: debezium-connect-custom:latest
+  bootstrapServers: kafka-kafka-bootstrap.storage.svc.cluster.local:9092
+  config:
+    group.id: debezium-connect-cluster
+    offset.storage.topic: debezium-connect-offsets
+    config.storage.topic: debezium-connect-configs
+    status.storage.topic: debezium-connect-status
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
+    # Converters: use JSON without schemas for simplicity
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    key.converter.schemas.enable: "false"
+    value.converter.schemas.enable: "false"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  template:
+    pod:
+      metadata:
+        labels:
+          app: debezium-connect
+      spec:
+        imagePullPolicy: Never

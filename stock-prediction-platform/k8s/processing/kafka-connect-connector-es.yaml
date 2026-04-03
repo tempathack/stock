@@ -1,0 +1,24 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: es-sink-connector
+  namespace: processing
+  labels:
+    strimzi.io/cluster: debezium-connect
+spec:
+  class: io.confluent.connect.elasticsearch.ElasticsearchSinkConnector
+  tasksMax: 1
+  config:
+    topics: "debezium.public.predictions,debezium.public.drift_logs,debezium.public.model_registry"
+    connection.url: http://elasticsearch.storage.svc.cluster.local:9200
+    type.name: _doc
+    key.ignore: "false"
+    schema.ignore: "true"
+    behavior.on.null.values: delete
+    batch.size: "100"
+    linger.ms: "1000"
+    index.name.format: "${topic}"
+    # Key converter for ES Sink
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: "false"

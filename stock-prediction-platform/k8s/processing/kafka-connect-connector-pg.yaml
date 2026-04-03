@@ -1,0 +1,30 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: debezium-postgres-source
+  namespace: processing
+  labels:
+    strimzi.io/cluster: debezium-connect
+spec:
+  class: io.debezium.connector.postgresql.PostgresConnector
+  tasksMax: 1
+  config:
+    database.hostname: postgresql.storage.svc.cluster.local
+    database.port: "5432"
+    database.user: stockuser
+    database.password: stockpassword
+    database.dbname: stockdb
+    database.server.name: debezium
+    topic.prefix: debezium
+    plugin.name: pgoutput
+    publication.name: dbz_publication
+    slot.name: debezium_slot
+    snapshot.mode: initial
+    table.include.list: "public.predictions,public.drift_logs,public.model_registry"
+    heartbeat.interval.ms: "10000"
+    # Flatten CDC envelope: removes before/after wrapper, adds __op and __ts_ms fields
+    transforms: unwrap
+    transforms.unwrap.type: io.debezium.transforms.ExtractNewRecordState
+    transforms.unwrap.drop.tombstones: "false"
+    transforms.unwrap.delete.handling.mode: rewrite
+    transforms.unwrap.add.fields: "op,ts_ms"
