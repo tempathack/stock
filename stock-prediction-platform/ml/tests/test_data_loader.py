@@ -264,3 +264,80 @@ class TestLoadDataErrorHandling:
 
         with pytest.raises(TypeError):
             load_data("AAPL")  # type: ignore[arg-type]
+
+
+# ---------------------------------------------------------------------------
+# TestFeastDataLoader
+# ── Wave 0 stub — tests will be RED until Plan 02 implements load_feast_data() ──
+# ---------------------------------------------------------------------------
+
+
+class TestFeastDataLoader:
+    """Tests for load_feast_data() — Feast offline training data loader.
+    RED state until 92-02-PLAN.md implements load_feast_data() in data_loader.py.
+    """
+
+    _FEAST_COLS = [
+        "ticker", "event_timestamp",
+        "open", "high", "low", "close", "volume", "daily_return", "vwap",
+        "rsi_14", "macd_line", "macd_signal", "bb_upper", "bb_lower",
+        "atr_14", "adx_14", "ema_20", "obv",
+        "lag_1", "lag_2", "lag_3", "lag_5", "lag_7", "lag_10", "lag_14", "lag_21",
+        "rolling_mean_5", "rolling_mean_10", "rolling_mean_21",
+        "rolling_std_5", "rolling_std_10", "rolling_std_21",
+        "avg_sentiment", "mention_count", "positive_ratio", "negative_ratio",
+    ]
+
+    def _make_mock_feast_df(self, tickers=None, null_sentiment=False):
+        tickers = tickers or ["AAPL"]
+        rows = []
+        for t in tickers:
+            for i in range(3):
+                row = {c: 1.0 for c in self._FEAST_COLS if c not in ("ticker", "event_timestamp")}
+                row["ticker"] = t
+                row["event_timestamp"] = pd.Timestamp("2024-01-01", tz="UTC") + pd.Timedelta(days=i)
+                if null_sentiment:
+                    for col in ("avg_sentiment", "mention_count", "positive_ratio", "negative_ratio"):
+                        row[col] = None
+                rows.append(row)
+        return pd.DataFrame(rows)
+
+    def test_load_feast_data_returns_dataframe(self):
+        from ml.pipelines.components.data_loader import load_feast_data
+        mock_store = MagicMock()
+        mock_store.get_historical_features.return_value.to_df.return_value = self._make_mock_feast_df()
+        with patch("ml.pipelines.components.data_loader.get_store", return_value=mock_store):
+            result = load_feast_data(tickers=["AAPL"], start_date="2024-01-01", end_date="2024-03-31")
+        assert isinstance(result, pd.DataFrame)
+        assert "avg_sentiment" in result.columns
+
+    def test_load_feast_data_fills_null_sentiment(self):
+        from ml.pipelines.components.data_loader import load_feast_data
+        mock_store = MagicMock()
+        mock_store.get_historical_features.return_value.to_df.return_value = self._make_mock_feast_df(null_sentiment=True)
+        with patch("ml.pipelines.components.data_loader.get_store", return_value=mock_store):
+            result = load_feast_data(tickers=["AAPL"], start_date="2024-01-01", end_date="2024-03-31")
+        for col in ("avg_sentiment", "mention_count", "positive_ratio", "negative_ratio"):
+            assert result[col].isna().sum() == 0, f"{col} must have no NaN after fill"
+            assert (result[col] == 0.0).all(), f"{col} nulls must be filled with 0.0"
+
+    def test_load_feast_data_drops_entity_cols(self):
+        from ml.pipelines.components.data_loader import load_feast_data
+        mock_store = MagicMock()
+        mock_store.get_historical_features.return_value.to_df.return_value = self._make_mock_feast_df()
+        with patch("ml.pipelines.components.data_loader.get_store", return_value=mock_store):
+            result = load_feast_data(tickers=["AAPL"], start_date="2024-01-01", end_date="2024-03-31")
+        assert "event_timestamp" not in result.columns, "event_timestamp must be stripped"
+
+    def test_load_feast_data_entity_df_structure(self):
+        from ml.pipelines.components.data_loader import load_feast_data
+        mock_store = MagicMock()
+        mock_store.get_historical_features.return_value.to_df.return_value = self._make_mock_feast_df()
+        with patch("ml.pipelines.components.data_loader.get_store", return_value=mock_store):
+            load_feast_data(tickers=["AAPL", "MSFT"], start_date="2024-01-01", end_date="2024-01-31")
+        call_args = mock_store.get_historical_features.call_args
+        entity_df = call_args.kwargs.get("entity_df") or call_args[1].get("entity_df") or call_args[0][0]
+        assert "ticker" in entity_df.columns
+        assert "event_timestamp" in entity_df.columns
+        assert entity_df["event_timestamp"].dt.tz is not None, "event_timestamp must be UTC"
+        assert set(entity_df["ticker"].unique()) == {"AAPL", "MSFT"}
