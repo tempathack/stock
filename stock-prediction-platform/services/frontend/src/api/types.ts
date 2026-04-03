@@ -436,3 +436,20 @@ export interface MultiHorizonForecastRow {
   horizons: { [horizonDays: number]: HorizonPrediction };
   model_name: string;
 }
+
+// ── Sentiment Timeseries (Phase 89) ───────────────────────────────────────
+
+export interface SentimentDataPoint {
+  timestamp: string;           // ISO8601 from window_start AT TIME ZONE 'UTC'
+  avg_sentiment: number | null;
+  mention_count: number | null;
+  positive_ratio: number | null;
+  negative_ratio: number | null;
+}
+
+export interface SentimentTimeseriesResponse {
+  ticker: string;
+  points: SentimentDataPoint[];
+  count: number;
+  window_hours: number;
+}
