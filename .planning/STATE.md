@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 86-01-PLAN.md
-last_updated: "2026-04-02T23:43:21.328Z"
+stopped_at: Completed 87-01-PLAN.md
+last_updated: "2026-04-03T08:53:11.195Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 86 — frontend-sidebar-icon-differentiation-make-nav-icons-visually-distinct-per-section
+**Current focus:** Phase 88 — add-all-prediction-forecasts-to-the-table-in-the-forecasts-dashboard-tab
 
 ## Current Status
 
@@ -398,10 +398,14 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 84-02]: Used uid: loki (stable, pinned) for Loki datasource — prevents auto-generated UID changes on pod restart from breaking alert rule references
 - [Phase 84-02]: Alert rule datasourceUid: loki matches pinned UID — cross-link is explicit and survives Grafana restarts
 - [Phase 86]: Replaced four chart-motif nav icons with PsychologyIcon/WaterDropIcon/HistoryIcon/InsightsIcon for silhouette-distinct TopNav
+- [Phase 87-01]: HTTP 400 (kserve.errors.InvalidInput) on all-None features, not HTTP 503: unresolvable entity is a client error not a transient service failure
+- [Phase 87-01]: FeatureStore singleton in FeastTransformer.__init__ avoids 50-200ms per-request registry fetch
+- [Phase 88]: 88-01: Used useQueries for parallel horizon fetching with shared queryKeys.bulkPredictions cache keys
+- [Phase 88]: 88-01: isPending (not isLoading) used for useQueries state — React Query v5 semantics
 
 ## Last Session
 
-- **Stopped at:** Completed 86-01-PLAN.md
+- **Stopped at:** Completed 87-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
