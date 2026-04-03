@@ -4,7 +4,8 @@ Started: 2026-04-03 (ralph/frontend-data-fixes)
 
 ## Codebase Patterns
 
-- VITE_API_URL must point to localhost:8010 — port-forwarded to k8s stock-api in ingestion namespace
+- VITE_API_URL must point to localhost:8010 — port-forwarded to k8s stock-api in ingestion namespace (port-forward: 8010:8000, NOT 8010:80)
+- stock-api service port is 8000 (not 80) — always use kubectl port-forward svc/stock-api -n ingestion 8010:8000
 - k8s stock-api connects to k8s postgres (storage namespace), NOT docker postgres
 - k8s postgres has 640 predictions (160 tickers × 4 horizons, inserted 2026-04-03)
 - Predictions table schema: ticker, prediction_date, predicted_date, predicted_price, confidence, model_id — NO horizon_days column (horizon = predicted_date - prediction_date)
@@ -81,4 +82,22 @@ Started: 2026-04-03 (ralph/frontend-data-fixes)
   - useRef needed for clearTimeout — useState doesn't persist the timer ID reliably across renders
   - Must reset timedOut state to false when refetch() is called, otherwise retry stays in error loop
   - TanStack Query default retry=3 with exponential backoff means a hung API can block error state for 90s — always set retry: false for time-sensitive queries
+---
+
+## 2026-04-03 - UI-004: Implement backtest_results table and on-the-fly backtest computation
+- Created alembic migration 007_backtest_results.py: backtest_results table with id, ticker, start/end_date, horizon_days, total_return_pct, benchmark_return_pct, sharpe_ratio, max_drawdown, win_rate, trade_count, created_at
+- Updated backtest_service.py: on-the-fly synthetic backtest fallback using naive SMA model on ohlcv_daily when no prediction/actual pairs exist
+- Synthetic backtest: rolling SMA window (size = horizon_days) generates predicted prices from historical OHLCV; results cached in backtest_results
+- Applied backtest_results table directly to k8s postgres via kubectl exec (CREATE TABLE + CREATE INDEX)
+- Rebuilt stock-api Docker image in Minikube context and rolled out deployment
+- Re-established port-forward: kubectl port-forward svc/stock-api -n ingestion 8010:8000 (port is 8000 not 80)
+- curl /backtest/AAPL?start=2025-01-01&end=2026-01-01 returns model=naive_sma7, 262 data points
+- Playwright verified: backtest-working.png — Run Backtest shows chart + 6 metric cards (RMSE, MAE, MAPE, R², Dir.Accuracy, Points)
+- Files created/modified: services/api/alembic/versions/007_backtest_results.py, services/api/app/services/backtest_service.py, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - All predictions are future-dated (2026-04-03+), so predictions JOIN ohlcv_daily always returns 0 rows — must use synthetic/fallback approach
+  - stock-api service port is 8000 (not 80) — port-forward must use 8010:8000
+  - All pytest tests fail due to pre-existing import errors (elasticsearch + opentelemetry) unrelated to backtest changes
+  - SMA model: window_end = i - horizon_days, window_start = max(0, window_end - horizon_days); predicted_price = mean(closes[window_start:window_end+1])
+  - backtest_results ON CONFLICT DO NOTHING requires unique constraint — add UNIQUE(ticker, start_date, end_date, horizon_days) in future if caching is needed
 ---

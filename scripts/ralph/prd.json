@@ -67,8 +67,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Created Alembic migration 007_backtest_results.py adding backtest_results table (id, ticker, start/end_date, horizon_days, total_return_pct, benchmark_return_pct, sharpe_ratio, max_drawdown, win_rate, trade_count, created_at). Updated backtest_service.py: when no prediction/actual pairs exist (predictions are future-dated), falls back to on-the-fly synthetic backtest using naive SMA model on ohlcv_daily data, caches result in backtest_results. Applied table to k8s postgres via kubectl exec. Rebuilt stock-api image and redeployed. curl /backtest/AAPL returns 262 data points with model=naive_sma7. Playwright verified: Run Backtest renders chart + 6 metric cards."
     },
     {
       "id": "UI-005",
