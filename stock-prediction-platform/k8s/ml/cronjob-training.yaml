@@ -61,7 +61,7 @@ spec:
                 - name: POSTGRES_USER
                   value: "stockuser"
                 - name: LINEAR_ONLY
-                  value: "true"
+                  value: "false"
               resources:
                 requests:
                   cpu: "4000m"
