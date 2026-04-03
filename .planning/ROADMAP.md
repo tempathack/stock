@@ -1693,10 +1693,13 @@ Plans:
 **Goal:** Retrain the ML model on Feast-materialized features (OHLCV technical indicators + Flink real-time indicators + Reddit sentiment) and replace the current ad-hoc Postgres+local-compute inference path with Feast online store feature retrieval, making sentiment and streaming features available at prediction time.
 **Requirements**: TBD
 **Depends on:** Phase 90
-**Plans:** 0 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 92 to break down)
+- [ ] 92-01-PLAN.md — Wave 0 test scaffolds (TestFeastDataLoader, TestFeastInference, sentiment coverage)
+- [ ] 92-02-PLAN.md — Training pipeline Feast integration (extend _TRAINING_FEATURES, add load_feast_data(), wire use_feast_data)
+- [ ] 92-03-PLAN.md — Config, metrics, schema additions (FEAST_INFERENCE_ENABLED, feast_stale_features_total, feature_freshness_seconds)
+- [ ] 92-04-PLAN.md — Inference path rewrite (get_online_features_for_ticker, _feast_inference, get_live_prediction branch)
 
 ---
 
