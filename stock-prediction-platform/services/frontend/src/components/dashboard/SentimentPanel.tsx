@@ -59,6 +59,15 @@ export default function SentimentPanel({ ticker }: SentimentPanelProps) {
         >
           Sentiment data unavailable — pipeline may be starting
         </Typography>
+        {/* Still render the timeseries chart — it uses REST, independent of the WS */}
+        <Divider sx={{ my: 1.5, borderColor: "rgba(124,58,237,0.1)" }} />
+        <Typography
+          variant="subtitle2"
+          sx={{ mb: 0.5, fontSize: "0.65rem", fontWeight: 700 }}
+        >
+          10h Sentiment History
+        </Typography>
+        <SentimentTimeseriesChart ticker={ticker} />
       </Paper>
     );
   }
