@@ -22,3 +22,4 @@ data:
   REDIS_HOST: "redis.storage.svc.cluster.local"
   REDIS_PORT: "6379"
   FEAST_REPO_PATH: "/app/ml/feature_store"
+  FEAST_INFERENCE_ENABLED: "false"

@@ -17,6 +17,7 @@ class PredictionResponse(BaseModel):
     confidence: float | None = None
     horizon_days: int | None = None
     assigned_model_id: int | None = None
+    feature_freshness_seconds: float | None = None  # seconds since Feast features were written; None when legacy path used
 
 
 class BulkPredictionResponse(BaseModel):
