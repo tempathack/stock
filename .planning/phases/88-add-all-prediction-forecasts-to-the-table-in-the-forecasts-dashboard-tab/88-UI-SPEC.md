@@ -52,9 +52,10 @@ Source: Existing `ForecastFilters.tsx` uses `p: 2` (16px), `spacing={2}` (16px).
 | Role | Size | Weight | Line Height | Font | Usage |
 |------|------|--------|-------------|------|-------|
 | Body / Data | 14px (0.875rem) | 400 regular | 1.5 | JetBrains Mono | Numeric cells: price, return %, confidence, daily change |
-| Label / Caption | 11px (0.68rem) | 700 semibold | 1.2 | Inter | Column headers (uppercase, `letterSpacing: 0.05em`) |
-| Chip text | 10.4px (0.65rem) | 600 semibold | 1.2 | JetBrains Mono | Trend badges (bullish / bearish / neutral) |
-| Horizon group header | 12px (0.75rem) | 700 semibold | 1.2 | Inter | `GridColumnGroupingModel` group header labels (1-Day Forecast, 7-Day Forecast, etc.) |
+| Label / Caption | 11px (0.68rem) | 700 bold | 1.2 | Inter | Column headers (uppercase, `letterSpacing: 0.05em`), chip badges (bullish / bearish / neutral), horizon group header labels |
+| Horizon group header | 12px (0.75rem) | 700 bold | 1.2 | Inter | `GridColumnGroupingModel` group header labels (1-Day Forecast, 7-Day Forecast, etc.) |
+
+Weight consolidation note: chip badges render at 10.4px — 700 bold is visually indistinguishable from 600 semibold at that size. A single 700 bold weight covers all heading, label, and chip roles.
 
 Source: `src/theme/index.ts` — `body1: 0.875rem JetBrains Mono`, `subtitle2: 0.65rem Inter uppercase`, `caption: 0.68rem JetBrains Mono`. Existing `ForecastTable.tsx` column header sx: `fontSize: "0.7rem"`.
 
@@ -74,6 +75,8 @@ Source: `src/theme/index.ts` — `body1: 0.875rem JetBrains Mono`, `subtitle2: 0
 | Divider | `rgba(124, 58, 237, 0.2)` | Row dividers inside DataGrid, column borders |
 
 Accent reserved for: ticker symbol text, row selection highlight, primary CTA buttons, horizon group header underline only. NOT used for data cells or general text.
+
+Primary visual anchor: the multi-horizon Return % columns — color contrast (green/red against dark background) draws the eye first; Ticker column in accent purple provides row identity anchor.
 
 Source: `src/theme/index.ts` palette. Existing `ForecastTable.tsx` uses `color: "primary.main"` for ticker, `color: "success.main"` / `"error.main"` for return %.
 
