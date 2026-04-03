@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 90 context gathered
-last_updated: "2026-04-03T09:15:50.211Z"
+stopped_at: "Checkpoint: 89-02 Task 3 — visual verification of SentimentPanel chart in Dashboard drawer"
+last_updated: "2026-04-03T09:19:27.840Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -411,10 +411,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 87]: features_pit_correct defaults to False for backward compatibility with pre-Transformer predictions
 - [Phase 89]: StatementSet for dual-sink Flink job so Kafka and JDBC inserts run as a single Flink execution graph
 - [Phase 89]: TUMBLE(2-min) chosen over HOP to produce non-overlapping windows matching sentiment_timeseries primary key (ticker, window_start)
+- [Phase 89]: REST polling (useQuery 120s) used for sentiment timeseries — WebSocket delivers only latest scalar, history requires REST against TimescaleDB hypertable
 
 ## Last Session
 
-- **Stopped at:** Phase 90 context gathered
+- **Stopped at:** Checkpoint: 89-02 Task 3 — visual verification of SentimentPanel chart in Dashboard drawer
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

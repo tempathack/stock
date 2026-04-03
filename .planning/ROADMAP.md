@@ -87,7 +87,7 @@
 | 83 | 1/1 | Complete    | 2026-04-02 | 1 plan |
 | 84–87 | Various ML/infra phases | Complete | 2026-04-03 | — |
 | 88 | 3/3 | Complete   | 2026-04-03 | 3 plans |
-| 89 | 1/2 | In Progress|  | 2 plans |
+| 89 | 2/2 | Complete   | 2026-04-03 | 2 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1666,7 +1666,7 @@ Plans:
 **Goal:** Deliver live sentiment timeseries LineChart in Dashboard stock-detail drawer (10h rolling window, 2-min Flink TUMBLE intervals via TimescaleDB hypertable); fix Promtail kubernetes_sd_configs path separator so logs reach Loki.
 **Requirements**: TBD
 **Depends on:** Phase 88
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 89-01-PLAN.md — Promtail fix + sentiment_timeseries DB migration + API endpoint + Flink JDBC sink
