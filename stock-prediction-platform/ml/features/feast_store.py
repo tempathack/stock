@@ -59,6 +59,10 @@ _TRAINING_FEATURES: list[str] = [
     "lag_features_fv:rolling_std_5",
     "lag_features_fv:rolling_std_10",
     "lag_features_fv:rolling_std_21",
+    "reddit_sentiment_fv:avg_sentiment",
+    "reddit_sentiment_fv:mention_count",
+    "reddit_sentiment_fv:positive_ratio",
+    "reddit_sentiment_fv:negative_ratio",
 ]
 
 # Key features for real-time inference from Redis
