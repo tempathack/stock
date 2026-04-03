@@ -107,3 +107,16 @@ Started: 2026-04-03
   - MinIO resource limits already at 1Gi/512Mi in manifest — do NOT lower these; they are correct
   - Both required buckets (model-artifacts, drift-logs) confirmed healthy via `kubectl exec -n storage deployment/minio -- mc ls minio/`
 ---
+
+## 2026-04-03 - FIX-007: Stabilize Redis — add maxmemory-policy and resource limits
+- Investigation: Exit Code 255 (not OOMKill/137). maxmemory 256mb + allkeys-lru were ALREADY in the manifest command — no missing config
+- Root cause: K8s memory limit was 256Mi — same as maxmemory setting — leaving zero headroom for Redis process overhead (~20-30MB on top of data), causing occasional eviction/restart under pressure
+- Fix: Increased memory limit from 256Mi to 320Mi in k8s/storage/redis-deployment.yaml (request left at 128Mi, still meets >= 128Mi requirement)
+- Applied manifest: new pod redis-5d9fb5ffff-phqr7 came up with 0 restarts, stable for 96s+
+- Redis accessible: PING→PONG, maxmemory=268435456 (256mb confirmed), maxmemory-policy=allkeys-lru confirmed
+- Files modified: `k8s/storage/redis-deployment.yaml`
+- **Learnings for future iterations:**
+  - Redis K8s memory limit must be > maxmemory setting — recommend at least 1.25x (256mb → 320Mi) to allow for Redis process overhead
+  - Redis Exit Code 255 = SIGTERM from K8s OOM eviction or liveness probe failure, NOT necessarily OOMKill (which would be exit 137)
+  - `kubectl exec -n storage deployment/redis -- redis-cli config get maxmemory` returns bytes — 268435456 = 256MB
+---

@@ -115,8 +115,8 @@
         "Typecheck passes"
       ],
       "priority": 7,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Investigation: Exit Code 255 (not OOMKill). maxmemory 256mb + allkeys-lru were already set in manifest command. Root issue: K8s memory limit was 256Mi — identical to maxmemory — leaving zero headroom for Redis process overhead (~20-30MB). Increased memory limit from 256Mi to 320Mi (>= 300Mi as required). Applied manifest, new pod came up with 0 restarts, stable. Redis accessible: PING→PONG, maxmemory=268435456 (256mb), maxmemory-policy=allkeys-lru confirmed."
     },
     {
       "id": "FIX-008",
