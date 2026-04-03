@@ -1,0 +1,41 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: debezium.public.predictions
+  namespace: storage
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  partitions: 1
+  replicas: 1
+  config:
+    retention.ms: 604800000
+    cleanup.policy: delete
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: debezium.public.drift_logs
+  namespace: storage
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  partitions: 1
+  replicas: 1
+  config:
+    retention.ms: 604800000
+    cleanup.policy: delete
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: debezium.public.model_registry
+  namespace: storage
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  partitions: 1
+  replicas: 1
+  config:
+    retention.ms: 604800000
+    cleanup.policy: delete
