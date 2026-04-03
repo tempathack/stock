@@ -331,3 +331,22 @@ class StreamingFeaturesResponse(BaseModel):
     available: bool = False
     source: str = "flink-indicator-stream"
     sampled_at: str | None = None  # ISO8601 UTC timestamp of the Redis query
+
+
+# ── Sentiment Timeseries (Phase 89) ───────────────────────────────────────
+
+class SentimentDataPoint(BaseModel):
+    """Single 2-minute window sentiment data point."""
+    timestamp: str                      # ISO8601 from window_start AT TIME ZONE 'UTC'
+    avg_sentiment: float | None = None
+    mention_count: int | None = None
+    positive_ratio: float | None = None
+    negative_ratio: float | None = None
+
+
+class SentimentTimeseriesResponse(BaseModel):
+    """Response for GET /market/sentiment/{ticker}/timeseries."""
+    ticker: str
+    points: list[SentimentDataPoint]
+    count: int
+    window_hours: int

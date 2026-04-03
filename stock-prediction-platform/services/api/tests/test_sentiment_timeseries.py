@@ -8,7 +8,7 @@ from __future__ import annotations
 import importlib
 import os
 from pathlib import Path
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -126,11 +126,11 @@ async def test_get_sentiment_timeseries_returns_list():
     with patch(
         "app.services.market_service.get_async_session"
     ) as mock_session_ctx:
-        mock_session = AsyncMock()
-        mock_result = AsyncMock()
+        mock_result = MagicMock()
         mock_result.fetchall.return_value = [
             type("Row", (), {"_mapping": row})() for row in mock_rows
         ]
+        mock_session = AsyncMock()
         mock_session.execute = AsyncMock(return_value=mock_result)
         mock_session_ctx.return_value.__aenter__ = AsyncMock(return_value=mock_session)
         mock_session_ctx.return_value.__aexit__ = AsyncMock(return_value=False)

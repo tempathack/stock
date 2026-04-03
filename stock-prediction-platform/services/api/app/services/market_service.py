@@ -200,3 +200,44 @@ async def get_candles(
     except Exception:
         logger.exception("Failed to fetch candles for %s from %s", ticker, view)
         return []
+
+
+async def get_sentiment_timeseries(ticker: str, hours: int = 10) -> list[dict]:
+    """Query sentiment_timeseries table for rolling window history.
+
+    Returns list of dicts with keys: timestamp, avg_sentiment, mention_count,
+    positive_ratio, negative_ratio. At 2-min intervals, 10h = up to 300 rows.
+    """
+    query = text("""
+        SELECT
+            window_start AT TIME ZONE 'UTC' AS timestamp,
+            avg_sentiment,
+            mention_count,
+            positive_ratio,
+            negative_ratio
+        FROM sentiment_timeseries
+        WHERE ticker = :ticker
+          AND window_start >= NOW() - (:hours * INTERVAL '1 hour')
+        ORDER BY window_start ASC
+    """)
+    try:
+        async with get_async_session() as session:
+            result = await session.execute(query, {"ticker": ticker.upper(), "hours": hours})
+            rows = result.fetchall()
+        return [
+            {
+                "timestamp": (
+                    row._mapping["timestamp"].isoformat()
+                    if hasattr(row._mapping["timestamp"], "isoformat")
+                    else str(row._mapping["timestamp"])
+                ),
+                "avg_sentiment": row._mapping["avg_sentiment"],
+                "mention_count": row._mapping["mention_count"],
+                "positive_ratio": row._mapping["positive_ratio"],
+                "negative_ratio": row._mapping["negative_ratio"],
+            }
+            for row in rows
+        ]
+    except Exception:
+        logger.exception("Failed to fetch sentiment timeseries for %s", ticker)
+        return []

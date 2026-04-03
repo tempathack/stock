@@ -18,13 +18,16 @@ from app.models.schemas import (
     IndicatorValues,
     MarketOverviewEntry,
     MarketOverviewResponse,
+    SentimentDataPoint,
+    SentimentTimeseriesResponse,
     StreamingFeaturesResponse,
     TickerIndicatorsResponse,
 )
 from app.services.feast_online_service import get_streaming_features
-from app.services.market_service import get_candles, get_market_overview, get_ticker_indicators
+from app.services.market_service import get_candles, get_market_overview, get_sentiment_timeseries, get_ticker_indicators
 
 STREAMING_FEATURES_TTL = 5  # 5s — matches frontend poll interval
+SENTIMENT_TIMESERIES_TTL = 120  # 2 minutes — matches 2-min window emission rate
 
 router = APIRouter(prefix="/market", tags=["market"])
 
@@ -148,3 +151,28 @@ async def streaming_features(ticker: str) -> StreamingFeaturesResponse:
     result = await get_streaming_features(upper_ticker)
     await cache_set(key, result.model_dump(), STREAMING_FEATURES_TTL)
     return result
+
+
+@router.get("/sentiment/{ticker}/timeseries", response_model=SentimentTimeseriesResponse)
+async def get_sentiment_timeseries_endpoint(
+    ticker: str, hours: int = 10
+) -> SentimentTimeseriesResponse:
+    """Return 10h rolling window of 2-minute sentiment averages for a ticker.
+
+    Source: sentiment_timeseries TimescaleDB hypertable (written by Flink JDBC sink).
+    Cache TTL: 120s (aligns with 2-minute window interval).
+    """
+    upper = ticker.upper()
+    key = build_key("market", "sentiment-ts", upper, str(hours))
+    cached = await cache_get(key)
+    if cached is not None:
+        return SentimentTimeseriesResponse(**cached)
+    data = await get_sentiment_timeseries(ticker=upper, hours=hours)
+    response = SentimentTimeseriesResponse(
+        ticker=upper,
+        points=[SentimentDataPoint(**p) for p in data],
+        count=len(data),
+        window_hours=hours,
+    )
+    await cache_set(key, response.model_dump(), SENTIMENT_TIMESERIES_TTL)
+    return response
