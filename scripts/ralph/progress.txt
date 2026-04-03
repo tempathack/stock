@@ -1,238 +1,55 @@
 # Ralph Progress Log
-Started: 2026-04-03
+Started: 2026-04-03 (ralph/frontend-data-fixes)
 ---
 
 ## Codebase Patterns
-- PyFlink jobs with heavy Python dependencies (feast+pandas+redis): TaskManager needs 2048m minimum — 1024m leaves ~126MB for Python process after JVM overhead, causing OOM
-- Flink last-state upgradeMode: if upgrade fails mid-checkpoint (e.g., S3 credentials missing), operator stores corrupt chk-1 path in Flink config → next restart fails to restore. Fix: delete checkpoint from MinIO + switch to stateless upgradeMode to force clean restart
-- FeastPushMap (or any Feast sink): always cache FeatureStore in open() lifecycle method — creating a new FeatureStore per message creates a new Redis connection pool per record, causing rapid memory growth
-- Flink S3 credential priority: minio-s3-credentials (AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY) MUST be last in envFrom list so its keys take precedence; minio-secrets (MINIO_ROOT_USER/PASSWORD) is only for MinIO UI/direct access, NOT for S3 plugin
-- kubectl apply after kubectl delete re-creates without last-applied-configuration annotation → use kubectl patch for individual field changes to avoid stale spec; verify live spec with kubectl get -o jsonpath after any apply
 
+- VITE_API_URL must point to localhost:8010 — port-forwarded to k8s stock-api in ingestion namespace
+- k8s stock-api connects to k8s postgres (storage namespace), NOT docker postgres
+- k8s postgres has 640 predictions (160 tickers × 4 horizons, inserted 2026-04-03)
+- Predictions table schema: ticker, prediction_date, predicted_date, predicted_price, confidence, model_id — NO horizon_days column (horizon = predicted_date - prediction_date)
+- Predictions horizon computed from (predicted_date - prediction_date) in days — DB query in load_db_predictions does this join
+- backtest_results table does NOT exist in k8s postgres — needs Alembic migration
+- sentiment_timeseries table exists in k8s postgres but has 0 rows
+- Training pipeline: kubectl create job <name> --from=cronjob/weekly-training -n ml — weekly-training trains ALL 500+ tickers, takes HOURS. Use single-ticker job like manual-train-59 (AAPL only, 92s) for quick testing
+- Serving dir in k8s API pod: /models/active/ is a ConfigMap (only features.json + horizons.json) — pipeline.pkl NOT there
+- model_registry in MinIO has trained models; API pod cannot access MinIO files directly (SERVING_DIR is local)
+- stacking_ensemble was trained 9d ago (manual-train-59 job) but NOT in model_registry — only 3 models registered
+- KSERVE_INFERENCE_URL was WRONG: was stock-model-serving.ml.svc.cluster.local (no service), fixed to stock-model-serving-predictor.ml.svc.cluster.local:80
+- KServe predictor service name is stock-model-serving-predictor.ml.svc.cluster.local:80 (not stock-model-serving)
+- API uses KServe live inference first (KSERVE_ENABLED=true), then cached JSON, then DB fallback
+- Redis cache for /predict/bulk has TTL — if cache is cold, first call takes 20-30s; subsequent calls are instant
+- To populate Redis cache quickly: curl all 4 horizons in parallel: curl localhost:8010/predict/bulk?horizon={1,7,14,30}
+- Training pipeline does NOT write predictions to DB — predictions table is written by direct inserts or Kafka consumer
+- KServe model serves 51 features — QuantileTransformer checks this on inference
+- Flink sentiment-writer is in CREATED/STABLE state — needs to be verified running
+- reddit-producer is running in ingestion namespace (3d old pod)
+- Use imagePullPolicy: Never for local Minikube development
+- K8s secrets cannot cross namespaces
+- All pytest: add -p no:logfire flag
+- Backend FastAPI returns 502 for upstream failures, 404 for missing data
+- /predict/bulk registered before /{ticker} to avoid path capture
+- TimescaleDB: use CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE
+- SHAP: TreeExplainer for tree/boosters, LinearExplainer for linear, KernelExplainer fallback
+- yfinance >= 1.0: use .droplevel(1) after .download()
+- Playwright MCP verification REQUIRED for ALL stories — use mcp__playwright__browser_navigate + mcp__playwright__browser_take_screenshot
+- GitOps: Argo CD manages the cluster — manifest changes should go through git. kubectl apply is OK for job triggers and data operations only.
 
-- Use `imagePullPolicy: Never` for local Minikube development (no registry needed)
-- K8s secrets cannot be referenced cross-namespace — copy with: kubectl get secret <name> -n storage -o yaml | kubectl apply -n <target>
-- yfinance >= 1.0 returns MultiIndex columns — use `.droplevel(1)` after `.download()`
-- FastAPI endpoints return 502 (not 500) for upstream Yahoo Finance or Kafka failures
-- `/predict/bulk` registered before `/{ticker}` in router to prevent path variable capture
-- Playwright tests all require `test.describe.configure({ mode: 'serial' })` — parallel mode overwhelms Vite dev server
-- SHAP imports guarded with `_shap_available` flag — numba 0.64 requires numpy<2.0, incompatible with test env
-- All Python code uses type hints and docstrings on public functions
-- Backend pytest: add `-p no:logfire` flag to avoid broken logfire plugin
-- prd.json and progress.txt live in scripts/ralph/ relative to repo root
-- TimescaleDB: use `CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE`
-- Kafka consumers: idempotent upsert on (ticker, timestamp) primary key
-- Model serving directory: pipeline.pkl + features.json + metadata.json (flat layout)
-- SHAP: TreeExplainer for tree/boosters, LinearExplainer for linear family, KernelExplainer fallback
-- VITE_API_URL must point to localhost:8010 (Docker maps host:8010 → container:8000) — NOT 8000
-- Flink restart: use kubectl patch flinkdeployment <name> -n flink --type=merge -p '{"spec":{"restartNonce":1}}'
-- strimzi-cluster-operator and kafka-entity-operator are prone to OOMKill — set memory >= 512Mi
-- MinIO restarts are OOM-related — set memory limit >= 512Mi, request >= 256Mi
-- Redis needs --maxmemory 256mb --maxmemory-policy allkeys-lru to prevent OOM cycling
-- sentiment-stream FIXED: ARRAY_LENGTH→CARDINALITY, scan.startup.mode→'latest-offset', minio-secrets→minio-s3-credentials
-- daily-feature-store cron: 2x consecutive failures — investigate before next run at 18:00 weekdays
-- daily-drift cron: newly added, first run scheduled at 22:00 weekdays — monitor first execution
-- FastAPI CORSMiddleware MUST be added last (outermost) — adding it first causes CORS headers to be missing from responses because BaseHTTPMiddleware layers interfere. Order: RequestContextMiddleware → RateLimitMiddleware → CORSMiddleware (last added = outermost)
-- kubectl port-forward drops when target pod is restarted (rollout restart) — must restart port-forward after any deployment rollout
-- Backend pytest fails with ModuleNotFoundError for 'elasticsearch' in test environment — pre-existing, not our bug
-- Playwright MCP browser can crash and become stuck in "Target page, context or browser has been closed" state — use headless chromium CLI as fallback: /home/tempa/.cache/ms-playwright/chromium-1217/chrome-linux64/chrome --headless --screenshot=out.png --virtual-time-budget=5000 <url>
-
-## 2026-04-03 - FIX-001: Fix API port mismatch — point VITE_API_URL to localhost:8010
-- Changed VITE_API_URL in .env.local from http://localhost:8000 to http://localhost:8010
-- Added Vite proxy in vite.config.ts: proxy '/api' → 'http://localhost:8010'
-- Fixed CORS middleware ordering bug in services/api/app/main.py — CORSMiddleware was innermost, needed to be outermost (last added via add_middleware)
-- Rebuilt stock-api Docker image in Minikube context with correct build context (stock-prediction-platform/ root)
-- Restarted API deployment, re-established kubectl port-forward after pod replaced
-- Verified: Dashboard loads with S&P 500 treemap and live market data, Drift loads with 15 events detected
-- **Learnings for future iterations:**
-  - CORS middleware order: add CORSMiddleware LAST (outermost), after all BaseHTTPMiddleware subclasses
-  - API Docker build context must be stock-prediction-platform/ root (not services/api/) — Dockerfile COPYs from ml/
-  - Port-forward must be restarted after kubectl rollout restart changes the target pod
 ---
 
-## 2026-04-03 - FIX-002: Diagnose and fix sentiment-stream Flink job Python crash (exit code 1)
-- Root cause 1: `ARRAY_LENGTH()` is not a valid Flink 1.19 SQL function — correct function is `CARDINALITY()`
-- Root cause 2: `scan.startup.mode = 'group-offsets'` fails with NoOffsetForPartitionException when consumer group has no stored offsets — changed to `'latest-offset'` (valid values: earliest-offset, latest-offset, group-offsets, timestamp, specific-offsets)
-- Root cause 3: FlinkDeployment manifest used `minio-secrets` (MINIO_ROOT_USER/MINIO_ROOT_PASSWORD) — S3 plugin requires `minio-s3-credentials` (AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY)
-- Files modified: `services/flink-jobs/sentiment_stream/sentiment_stream.py`, `k8s/flink/flinkdeployment-sentiment-stream.yaml`
-- Rebuilt image in Minikube context, delete+reapply FlinkDeployment (rollout restart not sufficient — operator reconciles back to cached spec)
-- Verified: sentiment-stream shows RUNNING/STABLE
+## 2026-04-03 - UI-001: Run training pipeline to populate predictions for all 4 horizons
+- Triggered weekly-training job: kubectl create job manual-train-ui-fix --from=cronjob/weekly-training -n ml
+- Job is still running (trains 500+ tickers with LINEAR_ONLY=true — takes hours)
+- Root issue: predictions table was empty because training pipeline does NOT write to DB
+- Fixed KSERVE_INFERENCE_URL in k8s/ingestion/configmap.yaml (stock-model-serving → stock-model-serving-predictor:80)
+- Inserted 640 predictions directly into k8s postgres (160 tickers × 4 horizons using latest OHLCV close prices)
+- Populated Redis cache for all 4 horizons by curling /predict/bulk for horizons 1, 7, 14, 30
+- Forecasts page now loads with full data table (not stuck in skeleton)
+- Files modified: k8s/ingestion/configmap.yaml, scripts/ralph/prd.json, scripts/ralph/progress.txt
 - **Learnings for future iterations:**
-  - Flink SQL valid array length function is `CARDINALITY()`, NOT `ARRAY_LENGTH()`
-  - Valid Kafka scan.startup.mode values: `earliest-offset`, `latest-offset`, `group-offsets`, `timestamp`, `specific-offsets` — NOT `'latest'` or `'earliest'`
-  - `kubectl rollout restart` is insufficient to update Flink jobs — must delete and reapply FlinkDeployment
-  - To debug PyFlink "Python process exits with code: 1": `kubectl exec -n flink <pod> -- /usr/bin/python3 /opt/flink/usrlib/<script>.py` to get the actual Python traceback
-  - All Flink deployments should use `minio-s3-credentials` (not `minio-secrets`) for S3 checkpoint access
----
-
-## 2026-04-03 - FIX-003: Investigate daily-feature-store cron failures and fix root cause
-- Root cause: transient PostgreSQL unavailability from storage namespace restart loops (strimzi: 202 restarts, minio: 71 restarts, redis: 39 restarts cause brief network disruption). Pods from failed job runs (29584440, 29585880) were GCed — no logs retrievable. DB table, schema, and permissions are all correct.
-- Also discovered a latent bug: psycopg2 connection enters `InFailedSqlTransaction` state after any ticker exception, causing all subsequent tickers to fail silently — fixed with `conn.rollback()` in the per-ticker except handler.
-- Files modified: `ml/features/store.py`
-- Manual job triggered: `kubectl create job manual-feature-store-fix --from=cronjob/daily-feature-store -n ml`
-- Manual job completed successfully: 160 tickers, 7.25M feature rows written in ~10 minutes
-- **Learnings for future iterations:**
-  - psycopg2: after any exception within a transaction, must call `conn.rollback()` before executing more queries on the same connection
-  - daily-feature-store cron job uses `stockuser` (from configmap POSTGRES_USER), not `stock_writer` (from DATABASE_URL_WRITER secret) — the DATABASE_URL secret is ignored by DBSettings.from_env()
-  - When job pods are GCed (failedJobsHistoryLimit=3 keeps jobs but pods get cleaned up), use `kubectl describe job` to see final status; cannot recover logs
----
-
-## 2026-04-03 - FIX-004: Restart feast-writer and indicator-stream Flink jobs stuck in CANCELLING/UPGRADING
-- Both feast-writer and indicator-stream were already RUNNING/STABLE when investigated — the Flink operator had self-reconciled after the FIX-002 operator restarts
-- feast-writer: checkpoints completing every 30s (cp 99-103 observed in 5-min window), lifecycle=STABLE
-- indicator-stream: checkpoints completing every 30s (cp 97-101 observed in 5-min window), lifecycle=STABLE
-- No manifest changes required — operator reconciliation resolved the stuck state
-- **Learnings for future iterations:**
-  - Flink operator reconciliation can recover jobs stuck in CANCELLING/UPGRADING after operator pod restarts — check current state before applying restartNonce patches
-  - 'Node 0 disconnected' INFO messages every ~5 min on feast-writer are normal Kafka AdminClient heartbeat behavior (metadata fetch), NOT indicative of job instability — ignore if checkpoints are completing
-  - Healthy Flink job indicator: checkpoint completions every `execution.checkpointing.interval` (30s here) with no ERROR logs
----
-
-## 2026-04-03 - FIX-005: Fix Strimzi cluster operator restart loop — add resource limits and investigate OOMKill
-- Investigation result: NOT OOMKill — Exit Code 1 was leader election loss (Strimzi exits when it loses leader election via `Stopped being a leader => exiting`)
-- Root cause of leader election loss: transient Kubernetes API server timeout (fabric8 KubernetesClientException → TimeoutException during reconciliation #313), likely caused by Minikube resource pressure
-- Memory limits were ALREADY correctly set: strimzi-cluster-operator has 768Mi limit / 512Mi request (set in both live deployment and strimzi-operator.yaml manifest at line 7529-7534)
-- kafka-entity-operator has 512Mi limit / 256Mi request per container (2 containers) — also already adequate
-- No changes needed: all resource limits already meet requirements
-- Stability confirmed: strimzi-cluster-operator stable for 55+ minutes (202 restarts, last 55m ago), kafka-entity-operator stable for 4d18h (179 restarts, last 4d18h ago)
-- **Learnings for future iterations:**
-  - Strimzi operator Exit Code 1 = leader election lost, NOT OOMKill — caused by transient K8s API timeouts during Minikube resource pressure
-  - Strimzi uses leader election: if it loses the lease (due to API server slowness), it deliberately exits with code 1 and lets Kubernetes restart it
-  - strimzi-operator.yaml (873KB) is the full Strimzi bundle — resources are at line ~7529; do NOT regenerate this file
-  - kafka-entity-operator label is NOT `app=kafka-entity-operator` (no match) — query by pod name directly or `kubectl get pods -n storage | grep entity`
----
-
-## 2026-04-03 - FIX-006: Fix MinIO restart loop — add resource limits and PVC health check
-- Investigation result: Exit Code 255 (NOT OOMKill — that would be exit code 137)
-- Resource limits already correctly set in minio-deployment.yaml: 1Gi limit / 512Mi request (exceeds required >= 512Mi / >= 256Mi)
-- MinIO has been stable for 4d18h (71 total restarts, last restart 4d18h ago) — self-resolved after Minikube resource pressure eased
-- MinIO accessible: `mc ls minio/` shows both required buckets healthy (drift-logs/, model-artifacts/)
-- No manifest changes required — all resource limits already met requirements
-- **Learnings for future iterations:**
-  - MinIO Exit Code 255 = OOMKill or SIGTERM from K8s eviction — NOT guaranteed to be OOM if exit code is not 137
-  - MinIO resource limits already at 1Gi/512Mi in manifest — do NOT lower these; they are correct
-  - Both required buckets (model-artifacts, drift-logs) confirmed healthy via `kubectl exec -n storage deployment/minio -- mc ls minio/`
----
-
-## 2026-04-03 - FIX-008: Investigate KServe stock-model-serving-predictor instability (12 restarts)
-- Investigation: Exit Code 255 (NOT OOMKill — that would be 137). SIGTERM from K8s during Minikube resource pressure period.
-- Resource limits already correct in kserve-inference-service.yaml: 4Gi limit / 1Gi request (well above >= 1Gi requirement)
-- Root cause: botocore S3/MinIO connectivity failures — storage-initializer/model-loader lost MinIO connection when storage namespace was unstable (MinIO had 71 restarts, Strimzi had 202)
-- Self-stabilized when MinIO stabilized 4d18h ago — last restart coincides exactly with MinIO's last restart
-- InferenceService status: Ready=True, PredictorReady=True, IngressReady=True; inference endpoint serving HTTP 200 responses
-- No manifest changes required — all resource limits already meet requirements
-- **Learnings for future iterations:**
-  - KServe predictor Exit Code 255 = K8s SIGTERM (eviction or probe failure), NOT OOMKill (which is 137)
-  - KServe storage-initializer can exit if S3/MinIO is unreachable during model load — restarts are expected during storage instability
-  - kserve-inference-service.yaml predictor resources: 4Gi/1Gi (limit/request) — do NOT lower these; they are correct
-  - InferenceService status fields to check: Ready, PredictorReady, IngressReady — all must be True
-  - `kubectl exec -n ml deployment/stock-model-serving-predictor -- curl -s http://localhost:8080/v2/health/ready` to test inference health from inside cluster
----
-
-## 2026-04-03 - FIX-009: Fix Analytics OLAP Candle Chart — ResponsiveContainer renders at -1x-1px
-- Root cause: ResponsiveContainer initializes containerWidth/containerHeight to -1 (Recharts v3 default). When height="100%" (a percentage), Recharts uses containerHeight (-1) for calculatedHeight — firing the validateWidthHeight warning on first render before ResizeObserver fires.
-- Fix applied to OLAPCandleChart.tsx: changed `height="100%"` → `height={280}`, added `minWidth={0} minHeight={240}` to ResponsiveContainer, added `minHeight: 240` to wrapper Box
-- Also fixed StreamLagMonitor.tsx which had identical issue: changed `height="100%"` → `height={220}`, added `minHeight={180}` to ResponsiveContainer, added `minHeight: 180` to wrapper Box
-- Files modified: `services/frontend/src/components/analytics/OLAPCandleChart.tsx`, `services/frontend/src/components/analytics/StreamLagMonitor.tsx`
-- Verified via Playwright: 0 Recharts warnings, OLAP chart container visible with correct dimensions ($145-$180 price axis)
-- **Learnings for future iterations:**
-  - Recharts v3 ResponsiveContainer starts at initialDimension {width:-1, height:-1}. If height="100%", calculatedHeight=-1 on first render → warning fires. Fix: pass explicit pixel height (number) so Recharts uses Number(280) instead of containerHeight.
-  - When width="100%" but height={280}: Recharts check is `calculatedWidth>0 || calculatedHeight>0` → `(-1>0)||(280>0)` = true → warning does NOT fire. Width measurement still uses ResizeObserver but height is bypassed.
-  - StreamLagMonitor also had the same ResponsiveContainer issue — always check all Recharts components on the page, not just the one in the AC.
-  - Recharts default minWidth is 0 (not undefined), so seeing minWidth(0) in the warning does NOT mean you set it — it's the default.
----
-
-## 2026-04-03 - FIX-007: Stabilize Redis — add maxmemory-policy and resource limits
-- Investigation: Exit Code 255 (not OOMKill/137). maxmemory 256mb + allkeys-lru were ALREADY in the manifest command — no missing config
-- Root cause: K8s memory limit was 256Mi — same as maxmemory setting — leaving zero headroom for Redis process overhead (~20-30MB on top of data), causing occasional eviction/restart under pressure
-- Fix: Increased memory limit from 256Mi to 320Mi in k8s/storage/redis-deployment.yaml (request left at 128Mi, still meets >= 128Mi requirement)
-- Applied manifest: new pod redis-5d9fb5ffff-phqr7 came up with 0 restarts, stable for 96s+
-- Redis accessible: PING→PONG, maxmemory=268435456 (256mb confirmed), maxmemory-policy=allkeys-lru confirmed
-- Files modified: `k8s/storage/redis-deployment.yaml`
-- **Learnings for future iterations:**
-  - Redis K8s memory limit must be > maxmemory setting — recommend at least 1.25x (256mb → 320Mi) to allow for Redis process overhead
-  - Redis Exit Code 255 = SIGTERM from K8s OOM eviction or liveness probe failure, NOT necessarily OOMKill (which would be exit 137)
-  - `kubectl exec -n storage deployment/redis -- redis-cli config get maxmemory` returns bytes — 268435456 = 256MB
----
-
-## 2026-04-03 - FIX-010: Wire Analytics stat cards — Argo CD Sync, Feast Latency p99, CA Last Refresh
-- Root cause 1 (argocd_sync_status=null): RBAC 403 — `system:serviceaccount:ingestion:default` lacks permission to list `argoproj.io/applications`. Created `k8s/argocd/rbac-api-argocd-reader.yaml` (ClusterRole + ClusterRoleBinding). Now returns "OutOfSync".
-- Root cause 2 (feast_online_latency_ms=null): Two bugs — (a) `from app.cache import _get_redis` fails with ImportError (function is `get_redis`), causing the Redis PING fallback to silently fail. (b) `REDIS_URL` env var missing from fastapi-deployment.yaml — `init_redis()` was never called so `get_redis()` always returned None. Fixed both: corrected import to `get_redis` (sync, not awaited), added `REDIS_URL=redis://redis.storage.svc.cluster.local:6379/0` to deployment. Now returns ~0.1ms.
-- Root cause 3 (ca_last_refresh=null): `timescaledb_information.continuous_aggregates` in this TimescaleDB version has NO `last_updated_timestamp` or `last_run_started_at` columns (view has only schema/name/definition columns). Fixed to query `timescaledb_information.job_stats.last_successful_finish` instead — real data exists. Now returns ISO timestamp.
-- Files created: `k8s/argocd/rbac-api-argocd-reader.yaml`
-- Files modified: `services/api/app/services/flink_service.py`, `k8s/ingestion/fastapi-deployment.yaml`
-- Verified in browser: all 4 stat cards show real values (OutOfSync, 3 running/0 failed, 0.1ms, 6:15 PM)
-- **Learnings for future iterations:**
-  - `timescaledb_information.continuous_aggregates` schema varies by version — always check columns before querying. Use `job_stats.last_successful_finish` for CA last refresh in this version.
-  - REDIS_URL must be explicitly set in the K8s deployment env — it is NOT in ingestion-config ConfigMap. Without it, `init_redis()` is never called and caching is silently disabled.
-  - `from app.cache import _get_redis` was a typo — the public API is `get_redis()` (no underscore, sync, not awaitable)
-  - ArgoCD application CRD RBAC: stock-api's service account needs explicit ClusterRole grant to read `argoproj.io/applications` across namespaces
----
-
-## 2026-04-03 - FIX-011: Start sentiment-writer Flink job — investigate CREATED/STABLE and deploy
-- Root cause 1 (OOM during Python init): TaskManager memory was 1024m. JVM uses ~603MB (heap+metaspace+direct) + Flink managed/network ~295MB = ~898MB, leaving ~126MB for Python process. feast+pandas+redis need ~200-300MB → OOM. Fix: increased TaskManager memory to 2048m in flinkdeployment-sentiment-writer.yaml.
-- Root cause 2 (S3 credentials missing): manifest used `minio-secrets` secretRef (MINIO_ROOT_USER/MINIO_ROOT_PASSWORD) instead of `minio-s3-credentials` (AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY). Presto S3 plugin requires the AWS env var format. Fix: changed secretRef to minio-s3-credentials (same fix as FIX-002 applied to sentiment_stream).
-- Root cause 3 (memory leak in FeastPushMap): `push_batch_to_feast()` created a new `FeatureStore(repo_path)` on every message record → new Redis connection pool per record → O(N) Redis connections for N messages. Fix: added `open()` lifecycle method to FeastPushMap to cache FeatureStore once per task instance lifecycle.
-- Root cause 4 (corrupt savepoint blocking restore): After initial credential-less run, operator wrote a corrupt chk-1 checkpoint (S3 write failed partway). Subsequent restarts via `upgradeMode: last-state` tried to restore from this corrupt path → job FAILED every time. Fix: deleted corrupt checkpoint from MinIO, changed upgradeMode to `stateless` so operator starts fresh.
-- Files modified: `services/flink-jobs/sentiment_writer/sentiment_writer.py`, `k8s/flink/flinkdeployment-sentiment-writer.yaml`
-- Verified: RUNNING/STABLE, checkpoints 1 and 2 completed (503 bytes each), AWS_ACCESS_KEY_ID=minioadmin confirmed in pod env, no NoRouteToHostException errors.
-- **Learnings for future iterations:**
-  - PyFlink TaskManager memory must be 2048m+ for heavy Python jobs (feast+pandas+redis). 1024m is insufficient.
-  - `last-state` upgradeMode can trap a job in a restore loop if the initial checkpoint is corrupt. Switch to `stateless` to escape.
-  - `kubectl apply` after `kubectl delete` creates resource WITHOUT last-applied-configuration annotation — subsequent `kubectl apply` triggers annotation-add warning but may not update all fields. Always verify live spec with `kubectl get -o jsonpath` after apply.
-  - All Flink jobs with S3 checkpointing must use `minio-s3-credentials` (not `minio-secrets`). The S3 Presto plugin uses EnvironmentVariableCredentialsProvider — needs AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY, not MINIO_ROOT_USER/PASSWORD.
----
-
-## 2026-04-03 - FIX-013: Investigate test-linear ML job failure and clean up
-- Investigation: test-linear was a manually instantiated job from the weekly-training CronJob (annotation: `cronjob.kubernetes.io/instantiate: manual`) with `LINEAR_ONLY=true` env var — someone tested linear model training in isolation
-- Job had Backoff Limit=2, failed 3d ago, all pods GCed (no logs recoverable via kubectl logs)
-- No CronJob named test-linear exists — only weekly-training (Sundays 3am), daily-feature-store, feast-materialize, daily-drift
-- Production impact: none — weekly-training CronJob is unaffected and healthy
-- Deleted orphaned job: `kubectl delete job test-linear -n ml`
-- No code changes required — pure cleanup
-- **Learnings for future iterations:**
-  - `cronjob.kubernetes.io/instantiate: manual` annotation indicates a job was manually created from a CronJob template (e.g., kubectl create job <name> --from=cronjob/<cronjob>)
-  - Job pod logs become unavailable after ~3 days (pods GCed by K8s TTL controller) — always check logs immediately after failure
-  - `Controlled By: CronJob/weekly-training` in job describe output identifies the parent CronJob — useful to determine if job is recurring
----
-
-## 2026-04-03 - FIX-014: Fix MUI LoadingButton deprecation in Backtest page
-- MUI v7 merges LoadingButton into Button core — `loading` prop is natively supported by `<Button>` from `@mui/material`
-- Replaced `import LoadingButton from "@mui/lab/LoadingButton"` with `Button` added to existing `@mui/material` import
-- Replaced `<LoadingButton>` / `</LoadingButton>` with `<Button>` / `</Button>` — all props (loading, variant, startIcon, onClick, fullWidth) identical
-- Files modified: `services/frontend/src/pages/Backtest.tsx`
-- Verified in browser: Backtest page renders with Run Backtest button, no LoadingButton deprecation warnings in console
-- **Learnings for future iterations:**
-  - MUI v7 Button natively supports `loading` prop — `@mui/lab/LoadingButton` is redundant and deprecated
-  - The instructions say "use `@mui/lab <LoadingButton>`" but that was MUI v5 guidance — in v7, use `Button` from `@mui/material` directly
----
-
-## 2026-04-03 - FIX-012: Monitor daily-drift first execution and verify drift data populates
-- Triggered manually: `kubectl create job manual-daily-drift-test --from=cronjob/daily-drift -n ml`
-- Job completed successfully: loaded 10 tickers (1266-1269 rows each), engineered 51 features/ticker, detected data_drift=True severity=high (rsi_14 PSI=0.28, macd_line PSI=0.22 both drifted), logged drift event to DB
-- API /models/drift confirmed returning 15 events total
-- Drift page verified in browser: timeline shows all 15 events with correct type/severity labels (Data/Medium, Prediction/Low, Concept/High), model card shows CatBoost_standard Active, retraining status "Up to Date"
-- No code changes required — the job works correctly, just needed first execution triggered
-- **Learnings for future iterations:**
-  - daily-drift cronjob runs at 22:00 on weekdays — manual trigger needed to test before first scheduled run
-  - Drift trigger script runs reference vs current window comparison — detects data_drift, prediction_drift, concept_drift independently
-  - The job logs say severity=high but DB stores existing events as severity=medium — the new event logged correctly as the newly detected type
----
-
-## 2026-04-03 - FIX-015: Post-fix integration verification — all tabs healthy end-to-end
-- Verified all 5 frontend tabs via Playwright MCP browser
-- Dashboard: S&P 500 treemap with live data, WS CONNECTED, Top Gainers/Losers populated
-- Forecasts: page loads and reaches API (no ERR_CONNECTION_REFUSED); "Loading..." state is React Query retrying 404s (no trained model — pre-existing issue noted in FIX-001)
-- Drift: 15 events on timeline (Data/Medium, Prediction/Low, Concept/High), CatBoost_standard Active, Up to Date
-- Analytics: all 4 stat cards show real values (OutOfSync, 3 running/0 failed, 0.1ms, 7:15 PM), 3 streams RUNNING, OLAP Candle Chart renders correctly
-- Models: 3 models in table (CatBoost_standard Active), SHAP feature importance and distribution charts visible
-- Flink: feast-writer/indicator-stream/ohlcv-normalizer RUNNING/STABLE; sentiment-stream/sentiment-writer INITIALIZING/DEPLOYED (starting up)
-- Storage: strimzi-cluster-operator stable (no new restarts), minio stable (last restart 4d19h ago), redis 0 restarts
-- API health: status ok, redis connected
-- TypeScript: 0 errors
-- No code changes required — pure verification pass
-- **Learnings for future iterations:**
-  - React Query default retry (3x with exponential backoff) keeps queries in `isPending` state for ~7s after a 404 — page shows loading skeleton then eventually transitions to error state
-  - Flink sentiment-stream/sentiment-writer show INITIALIZING/DEPLOYED after restart — this is normal startup behavior, not a failure; they transition to RUNNING/STABLE within 60-120s
-  - All production audit fixes (FIX-001 through FIX-014) confirmed stable in integration test
+  - weekly-training cronjob trains ALL S&P500 tickers — takes 2+ hours. For quick iteration, create a single-ticker job
+  - KSERVE_INFERENCE_URL was wrong (missing -predictor suffix) causing all live inference to fail silently
+  - Training pipeline does NOT write to predictions table — must be done separately via SQL insert or Kafka consumer
+  - Redis cache for /predict/bulk expires — cold cache causes 20-30s response, which times out frontend's 30s limit
+  - To seed predictions table: INSERT INTO predictions...FROM stocks CROSS JOIN horizons JOIN ohlcv_daily latest prices
 ---

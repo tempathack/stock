@@ -16,7 +16,7 @@ data:
   PREDICTION_STALENESS_HOURS: "24"
   AB_TESTING_ENABLED: "false"
   AB_LOG_ASSIGNMENTS: "true"
-  KSERVE_INFERENCE_URL: "http://stock-model-serving.ml.svc.cluster.local/v2/models/stock-model-serving/infer"
+  KSERVE_INFERENCE_URL: "http://stock-model-serving-predictor.ml.svc.cluster.local:80/v2/models/stock-model-serving/infer"
   KSERVE_MODEL_NAME: "stock-model-serving"
   KSERVE_TIMEOUT_SECONDS: "30"
   KSERVE_ENABLED: "true"
