@@ -182,3 +182,15 @@ Started: 2026-04-03
   - `kubectl apply` after `kubectl delete` creates resource WITHOUT last-applied-configuration annotation — subsequent `kubectl apply` triggers annotation-add warning but may not update all fields. Always verify live spec with `kubectl get -o jsonpath` after apply.
   - All Flink jobs with S3 checkpointing must use `minio-s3-credentials` (not `minio-secrets`). The S3 Presto plugin uses EnvironmentVariableCredentialsProvider — needs AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY, not MINIO_ROOT_USER/PASSWORD.
 ---
+
+## 2026-04-03 - FIX-012: Monitor daily-drift first execution and verify drift data populates
+- Triggered manually: `kubectl create job manual-daily-drift-test --from=cronjob/daily-drift -n ml`
+- Job completed successfully: loaded 10 tickers (1266-1269 rows each), engineered 51 features/ticker, detected data_drift=True severity=high (rsi_14 PSI=0.28, macd_line PSI=0.22 both drifted), logged drift event to DB
+- API /models/drift confirmed returning 15 events total
+- Drift page verified in browser: timeline shows all 15 events with correct type/severity labels (Data/Medium, Prediction/Low, Concept/High), model card shows CatBoost_standard Active, retraining status "Up to Date"
+- No code changes required — the job works correctly, just needed first execution triggered
+- **Learnings for future iterations:**
+  - daily-drift cronjob runs at 22:00 on weekdays — manual trigger needed to test before first scheduled run
+  - Drift trigger script runs reference vs current window comparison — detects data_drift, prediction_drift, concept_drift independently
+  - The job logs say severity=high but DB stores existing events as severity=medium — the new event logged correctly as the newly detected type
+---

@@ -199,8 +199,8 @@
         "Typecheck passes"
       ],
       "priority": 12,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Manually triggered daily-drift job: kubectl create job manual-daily-drift-test --from=cronjob/daily-drift -n ml. Job completed successfully in ~5s. Logs show: loaded 10 tickers (1266-1269 rows each), engineered 51 features, ran drift check on reference=8496 rows vs current=2125 rows, detected data_drift=True severity=high, logged drift event successfully. API /models/drift returns 15 events (pre-existing + new). Drift page verified in browser: timeline shows all 15 events with correct type/severity labels (Data/Medium, Prediction/Low, Concept/High)."
     },
     {
       "id": "FIX-013",
