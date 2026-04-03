@@ -132,8 +132,8 @@
         "Typecheck passes"
       ],
       "priority": 8,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Investigation: Exit Code 255 (NOT OOMKill — that would be 137). Resource limits already correctly set in kserve-inference-service.yaml: 4Gi limit / 1Gi request (well above >= 1Gi requirement). Root cause: botocore S3/MinIO connectivity failures during storage namespace chaos (MinIO had 71 restarts, strimzi had 202 restarts — both now stable). The storage-initializer or model-loader lost its MinIO connection and exited. Self-stabilized when MinIO stabilized 4d18h ago. InferenceService status: Ready=True, PredictorReady=True, IngressReady=True. Inference endpoint serving HTTP 200 responses. No manifest changes required."
     },
     {
       "id": "FIX-009",

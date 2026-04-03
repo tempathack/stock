@@ -108,6 +108,21 @@ Started: 2026-04-03
   - Both required buckets (model-artifacts, drift-logs) confirmed healthy via `kubectl exec -n storage deployment/minio -- mc ls minio/`
 ---
 
+## 2026-04-03 - FIX-008: Investigate KServe stock-model-serving-predictor instability (12 restarts)
+- Investigation: Exit Code 255 (NOT OOMKill — that would be 137). SIGTERM from K8s during Minikube resource pressure period.
+- Resource limits already correct in kserve-inference-service.yaml: 4Gi limit / 1Gi request (well above >= 1Gi requirement)
+- Root cause: botocore S3/MinIO connectivity failures — storage-initializer/model-loader lost MinIO connection when storage namespace was unstable (MinIO had 71 restarts, Strimzi had 202)
+- Self-stabilized when MinIO stabilized 4d18h ago — last restart coincides exactly with MinIO's last restart
+- InferenceService status: Ready=True, PredictorReady=True, IngressReady=True; inference endpoint serving HTTP 200 responses
+- No manifest changes required — all resource limits already meet requirements
+- **Learnings for future iterations:**
+  - KServe predictor Exit Code 255 = K8s SIGTERM (eviction or probe failure), NOT OOMKill (which is 137)
+  - KServe storage-initializer can exit if S3/MinIO is unreachable during model load — restarts are expected during storage instability
+  - kserve-inference-service.yaml predictor resources: 4Gi/1Gi (limit/request) — do NOT lower these; they are correct
+  - InferenceService status fields to check: Ready, PredictorReady, IngressReady — all must be True
+  - `kubectl exec -n ml deployment/stock-model-serving-predictor -- curl -s http://localhost:8080/v2/health/ready` to test inference health from inside cluster
+---
+
 ## 2026-04-03 - FIX-007: Stabilize Redis — add maxmemory-policy and resource limits
 - Investigation: Exit Code 255 (not OOMKill/137). maxmemory 256mb + allkeys-lru were ALREADY in the manifest command — no missing config
 - Root cause: K8s memory limit was 256Mi — same as maxmemory setting — leaving zero headroom for Redis process overhead (~20-30MB on top of data), causing occasional eviction/restart under pressure
