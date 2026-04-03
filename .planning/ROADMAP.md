@@ -87,6 +87,7 @@
 | 83 | 1/1 | Complete    | 2026-04-02 | 1 plan |
 | 84–87 | Various ML/infra phases | Complete | 2026-04-03 | — |
 | 88 | 3/3 | Complete   | 2026-04-03 | 3 plans |
+| 89 | 0/2 | In Progress |  | 2 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1662,17 +1663,18 @@ Plans:
 
 ### Phase 89: Live sentiment timeseries chart in Dashboard tab + fix Promtail Kubernetes SD — Flink-streamed Reddit/news sentiment per stock, 2-min intervals, 10-hour rolling window, replaces static unavailable placeholder; fix Promtail 2.9.6 kubernetes_sd_configs role: pod discovering zero targets so logs reach Loki
 
-**Goal:** [To be planned]
+**Goal:** Deliver live sentiment timeseries LineChart in Dashboard stock-detail drawer (10h rolling window, 2-min Flink TUMBLE intervals via TimescaleDB hypertable); fix Promtail kubernetes_sd_configs path separator so logs reach Loki.
 **Requirements**: TBD
 **Depends on:** Phase 88
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 89 to break down)
+- [ ] 89-01-PLAN.md — Promtail fix + sentiment_timeseries DB migration + API endpoint + Flink JDBC sink
+- [ ] 89-02-PLAN.md — SentimentTimeseriesChart React component + SentimentPanel wiring + Playwright verify
 
 ### Phase 90: Debezium CDC and Elasticsearch integration
 
-**Goal:** [To be planned]
+**Goal:** Deploy Debezium Connect as a K8s workload capturing PostgreSQL WAL changes for predictions, drift_logs, and model_registry tables into Kafka CDC topics; route CDC events to Elasticsearch via Kafka Connect ES Sink Connector; expose FastAPI /search/* endpoints; update React analytics and model-comparison pages to query Elasticsearch. All components run as Kubernetes resources in Minikube.
 **Requirements**: TBD
 **Depends on:** Phase 89
 **Plans:** 0 plans
