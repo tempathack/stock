@@ -16,7 +16,7 @@ from app.config import settings
 from app.middleware import RequestContextMiddleware
 from app.models.database import dispose_engine, init_engine
 from app.rate_limit import RateLimitMiddleware
-from app.routers import analytics, backtest, health, ingest, market, models, predict, ws
+from app.routers import analytics, backtest, health, ingest, market, models, predict, search, ws
 from app.services.model_metadata_cache import load_active_model_metadata
 from app.services.price_feed import price_feed_loop
 from app.utils.logging import configure_uvicorn_logging, get_logger
@@ -81,6 +81,10 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     from app.services.kserve_client import close_client as close_kserve
     await close_kserve()
 
+    # Close Elasticsearch client
+    from app.services.elasticsearch_service import close_es_client
+    await close_es_client()
+
     # Close Redis
     await close_redis()
 
@@ -128,5 +132,6 @@ app.include_router(market.router)
 app.include_router(ws.router)
 app.include_router(backtest.router)
 app.include_router(analytics.router)
+app.include_router(search.router)
 
 Instrumentator().instrument(app).expose(app)
