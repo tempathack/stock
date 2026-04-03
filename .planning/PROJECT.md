@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-03 — Phase 87 complete (Point-in-time correct feature serving: FeastTransformer KServe sidecar wired to online store, PIT validator eliminates lookahead leakage in backtest, KSERVE_INFERENCE_URL routed through Transformer, BacktestResponse carries features_pit_correct flag)*
+*Last updated: 2026-04-03 — Phase 89 complete (Live sentiment timeseries chart in Dashboard: SentimentTimeseriesChart recharts LineChart (10h rolling window, 2-min Flink TUMBLE intervals) wired into SentimentPanel; sentiment_timeseries TimescaleDB hypertable + REST endpoint + Flink JDBC sink; Promtail K8s SD path separator fix)*
