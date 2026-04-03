@@ -17,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useSentimentSocket } from "@/hooks/useSentimentSocket";
+import SentimentTimeseriesChart from "./SentimentTimeseriesChart";
 
 // Convert VADER compound score [-1, +1] to LinearProgress value [0, 100]
 const scoreToPercent = (s: number | null): number =>
@@ -159,6 +160,16 @@ export default function SentimentPanel({ ticker }: SentimentPanelProps) {
           Updated: {new Date(data.sampled_at).toLocaleTimeString()}
         </Typography>
       )}
+
+      {/* 10h Sentiment History — chart appended below scalar gauge */}
+      <Divider sx={{ my: 1.5, borderColor: "rgba(124,58,237,0.1)" }} />
+      <Typography
+        variant="subtitle2"
+        sx={{ mb: 0.5, fontSize: "0.65rem", fontWeight: 700 }}
+      >
+        10h Sentiment History
+      </Typography>
+      <SentimentTimeseriesChart ticker={ticker} />
     </Paper>
   );
 }
