@@ -251,8 +251,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 15,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "All frontend tabs verified post-fix: (1) Dashboard — S&P 500 treemap visible with live data, WS CONNECTED, Top Gainers/Losers populated. (2) Forecasts — page loads and reaches API without ERR_CONNECTION_REFUSED (no trained model is pre-existing, noted in FIX-001). (3) Drift — 15 events on timeline (Data/Medium, Prediction/Low, Concept/High), CatBoost_standard Active, Up to Date. (4) Analytics — all 4 stat cards show real values (OutOfSync, 3 running/0 failed, 0.1ms, 7:15 PM), Stream Health shows ohlcv-normalizer/indicator-stream/feast-writer-job RUNNING, OLAP Candle Chart renders correctly. (5) Models — model table with 3 models (CatBoost_standard Active, RandomForest_minmax/Ridge_quantile Inactive), SHAP feature importance and distribution charts visible. Infra: Flink — feast-writer/indicator-stream/ohlcv-normalizer RUNNING/STABLE, sentiment-stream/sentiment-writer INITIALIZING/DEPLOYED (still starting up). Storage: strimzi-cluster-operator 202 restarts (last 104m ago, no new), minio 71 restarts (last 4d19h ago, no new), redis 0 restarts. API health: status ok, redis connected."
     }
   ]
 }

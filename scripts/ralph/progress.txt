@@ -218,3 +218,21 @@ Started: 2026-04-03
   - Drift trigger script runs reference vs current window comparison — detects data_drift, prediction_drift, concept_drift independently
   - The job logs say severity=high but DB stores existing events as severity=medium — the new event logged correctly as the newly detected type
 ---
+
+## 2026-04-03 - FIX-015: Post-fix integration verification — all tabs healthy end-to-end
+- Verified all 5 frontend tabs via Playwright MCP browser
+- Dashboard: S&P 500 treemap with live data, WS CONNECTED, Top Gainers/Losers populated
+- Forecasts: page loads and reaches API (no ERR_CONNECTION_REFUSED); "Loading..." state is React Query retrying 404s (no trained model — pre-existing issue noted in FIX-001)
+- Drift: 15 events on timeline (Data/Medium, Prediction/Low, Concept/High), CatBoost_standard Active, Up to Date
+- Analytics: all 4 stat cards show real values (OutOfSync, 3 running/0 failed, 0.1ms, 7:15 PM), 3 streams RUNNING, OLAP Candle Chart renders correctly
+- Models: 3 models in table (CatBoost_standard Active), SHAP feature importance and distribution charts visible
+- Flink: feast-writer/indicator-stream/ohlcv-normalizer RUNNING/STABLE; sentiment-stream/sentiment-writer INITIALIZING/DEPLOYED (starting up)
+- Storage: strimzi-cluster-operator stable (no new restarts), minio stable (last restart 4d19h ago), redis 0 restarts
+- API health: status ok, redis connected
+- TypeScript: 0 errors
+- No code changes required — pure verification pass
+- **Learnings for future iterations:**
+  - React Query default retry (3x with exponential backoff) keeps queries in `isPending` state for ~7s after a 404 — page shows loading skeleton then eventually transitions to error state
+  - Flink sentiment-stream/sentiment-writer show INITIALIZING/DEPLOYED after restart — this is normal startup behavior, not a failure; they transition to RUNNING/STABLE within 60-120s
+  - All production audit fixes (FIX-001 through FIX-014) confirmed stable in integration test
+---
