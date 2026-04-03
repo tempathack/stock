@@ -99,11 +99,25 @@ def main() -> None:
 
         def __init__(self, feast_store_path: str):
             self._store_path = feast_store_path
+            self._store = None  # Lazily initialized in open() — one instance per task
+
+        def open(self, runtime_context) -> None:
+            """Initialize the FeatureStore once per task instance (not per record)."""
+            self._store = FeatureStore(repo_path=self._store_path)
 
         def map(self, value: str) -> str:
             try:
                 record = json.loads(value)
-                push_batch_to_feast([record], store_path=self._store_path)
+                if not record:
+                    return value
+                df = pd.DataFrame([record])
+                df["event_timestamp"] = pd.to_datetime(df["event_timestamp"], utc=True)
+                self._store.push(
+                    push_source_name="reddit_sentiment_push",
+                    df=df[["ticker", "event_timestamp", "avg_sentiment", "mention_count",
+                            "positive_ratio", "negative_ratio", "top_subreddit"]],
+                    to=PushMode.ONLINE,
+                )
             except Exception as exc:
                 # Log and continue — do not crash the job on a bad record
                 print(f"[FeastPushMap] Failed to push record: {exc}", flush=True)

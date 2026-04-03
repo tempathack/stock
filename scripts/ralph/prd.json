@@ -183,8 +183,8 @@
         "Typecheck passes"
       ],
       "priority": 11,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Three root causes fixed: (1) OOM crash — TaskManager memory was 1024m; JVM uses ~603MB leaving only ~126MB for Python process (feast+pandas+redis need ~200-300MB). Fixed: increased TaskManager memory to 2048m in manifest. (2) minio-secrets bug — manifest used minio-secrets (MINIO_ROOT_USER/PASSWORD) instead of minio-s3-credentials (AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY) which the S3 checkpoint plugin requires. Fixed: changed secretRef to minio-s3-credentials. (3) Memory leak in FeastPushMap — push_batch_to_feast() created a new FeatureStore on every message (new Redis connection pool per record). Fixed: added open() lifecycle method to cache FeatureStore once per task instance. Also fixed: (4) upgradeMode changed from last-state to stateless after corrupt chk-1 checkpoint (written with missing S3 credentials) blocked restore. Corrupt checkpoint deleted from MinIO. Verified: RUNNING/STABLE, checkpoints 1 and 2 completed successfully (503 bytes each, no NoRouteToHostException)."
     },
     {
       "id": "FIX-012",

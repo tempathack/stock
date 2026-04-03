@@ -46,7 +46,7 @@ spec:
 
   taskManager:
     resource:
-      memory: "1024m"
+      memory: "2048m"
       cpu: 0.5
 
   podTemplate:
@@ -78,9 +78,10 @@ spec:
             - secretRef:
                 name: stock-platform-secrets
             # MinIO credentials required by the flink-s3-fs-presto plugin for checkpoint access.
-            # NOTE: minio-secrets must also be copied to the flink namespace in deploy-all.sh.
+            # NOTE: minio-s3-credentials must be in the flink namespace (copied from storage in deploy-all.sh).
+            # The S3 plugin needs AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY — NOT MINIO_ROOT_USER/PASSWORD.
             - secretRef:
-                name: minio-secrets
+                name: minio-s3-credentials
 
   job:
     entryClass: "org.apache.flink.client.python.PythonDriver"
@@ -90,5 +91,5 @@ spec:
       - "-py"
       - "/opt/flink/usrlib/sentiment_writer.py"
     parallelism: 1
-    upgradeMode: last-state
+    upgradeMode: stateless
     state: running

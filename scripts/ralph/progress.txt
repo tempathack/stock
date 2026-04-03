@@ -3,6 +3,12 @@ Started: 2026-04-03
 ---
 
 ## Codebase Patterns
+- PyFlink jobs with heavy Python dependencies (feast+pandas+redis): TaskManager needs 2048m minimum — 1024m leaves ~126MB for Python process after JVM overhead, causing OOM
+- Flink last-state upgradeMode: if upgrade fails mid-checkpoint (e.g., S3 credentials missing), operator stores corrupt chk-1 path in Flink config → next restart fails to restore. Fix: delete checkpoint from MinIO + switch to stateless upgradeMode to force clean restart
+- FeastPushMap (or any Feast sink): always cache FeatureStore in open() lifecycle method — creating a new FeatureStore per message creates a new Redis connection pool per record, causing rapid memory growth
+- Flink S3 credential priority: minio-s3-credentials (AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY) MUST be last in envFrom list so its keys take precedence; minio-secrets (MINIO_ROOT_USER/PASSWORD) is only for MinIO UI/direct access, NOT for S3 plugin
+- kubectl apply after kubectl delete re-creates without last-applied-configuration annotation → use kubectl patch for individual field changes to avoid stale spec; verify live spec with kubectl get -o jsonpath after any apply
+
 
 - Use `imagePullPolicy: Never` for local Minikube development (no registry needed)
 - K8s secrets cannot be referenced cross-namespace — copy with: kubectl get secret <name> -n storage -o yaml | kubectl apply -n <target>
@@ -161,4 +167,18 @@ Started: 2026-04-03
   - REDIS_URL must be explicitly set in the K8s deployment env — it is NOT in ingestion-config ConfigMap. Without it, `init_redis()` is never called and caching is silently disabled.
   - `from app.cache import _get_redis` was a typo — the public API is `get_redis()` (no underscore, sync, not awaitable)
   - ArgoCD application CRD RBAC: stock-api's service account needs explicit ClusterRole grant to read `argoproj.io/applications` across namespaces
+---
+
+## 2026-04-03 - FIX-011: Start sentiment-writer Flink job — investigate CREATED/STABLE and deploy
+- Root cause 1 (OOM during Python init): TaskManager memory was 1024m. JVM uses ~603MB (heap+metaspace+direct) + Flink managed/network ~295MB = ~898MB, leaving ~126MB for Python process. feast+pandas+redis need ~200-300MB → OOM. Fix: increased TaskManager memory to 2048m in flinkdeployment-sentiment-writer.yaml.
+- Root cause 2 (S3 credentials missing): manifest used `minio-secrets` secretRef (MINIO_ROOT_USER/MINIO_ROOT_PASSWORD) instead of `minio-s3-credentials` (AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY). Presto S3 plugin requires the AWS env var format. Fix: changed secretRef to minio-s3-credentials (same fix as FIX-002 applied to sentiment_stream).
+- Root cause 3 (memory leak in FeastPushMap): `push_batch_to_feast()` created a new `FeatureStore(repo_path)` on every message record → new Redis connection pool per record → O(N) Redis connections for N messages. Fix: added `open()` lifecycle method to FeastPushMap to cache FeatureStore once per task instance lifecycle.
+- Root cause 4 (corrupt savepoint blocking restore): After initial credential-less run, operator wrote a corrupt chk-1 checkpoint (S3 write failed partway). Subsequent restarts via `upgradeMode: last-state` tried to restore from this corrupt path → job FAILED every time. Fix: deleted corrupt checkpoint from MinIO, changed upgradeMode to `stateless` so operator starts fresh.
+- Files modified: `services/flink-jobs/sentiment_writer/sentiment_writer.py`, `k8s/flink/flinkdeployment-sentiment-writer.yaml`
+- Verified: RUNNING/STABLE, checkpoints 1 and 2 completed (503 bytes each), AWS_ACCESS_KEY_ID=minioadmin confirmed in pod env, no NoRouteToHostException errors.
+- **Learnings for future iterations:**
+  - PyFlink TaskManager memory must be 2048m+ for heavy Python jobs (feast+pandas+redis). 1024m is insufficient.
+  - `last-state` upgradeMode can trap a job in a restore loop if the initial checkpoint is corrupt. Switch to `stateless` to escape.
+  - `kubectl apply` after `kubectl delete` creates resource WITHOUT last-applied-configuration annotation — subsequent `kubectl apply` triggers annotation-add warning but may not update all fields. Always verify live spec with `kubectl get -o jsonpath` after apply.
+  - All Flink jobs with S3 checkpointing must use `minio-s3-credentials` (not `minio-secrets`). The S3 Presto plugin uses EnvironmentVariableCredentialsProvider — needs AWS_ACCESS_KEY_ID/SECRET_ACCESS_KEY, not MINIO_ROOT_USER/PASSWORD.
 ---
