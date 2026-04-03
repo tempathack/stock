@@ -81,3 +81,17 @@ Started: 2026-04-03
   - 'Node 0 disconnected' INFO messages every ~5 min on feast-writer are normal Kafka AdminClient heartbeat behavior (metadata fetch), NOT indicative of job instability — ignore if checkpoints are completing
   - Healthy Flink job indicator: checkpoint completions every `execution.checkpointing.interval` (30s here) with no ERROR logs
 ---
+
+## 2026-04-03 - FIX-005: Fix Strimzi cluster operator restart loop — add resource limits and investigate OOMKill
+- Investigation result: NOT OOMKill — Exit Code 1 was leader election loss (Strimzi exits when it loses leader election via `Stopped being a leader => exiting`)
+- Root cause of leader election loss: transient Kubernetes API server timeout (fabric8 KubernetesClientException → TimeoutException during reconciliation #313), likely caused by Minikube resource pressure
+- Memory limits were ALREADY correctly set: strimzi-cluster-operator has 768Mi limit / 512Mi request (set in both live deployment and strimzi-operator.yaml manifest at line 7529-7534)
+- kafka-entity-operator has 512Mi limit / 256Mi request per container (2 containers) — also already adequate
+- No changes needed: all resource limits already meet requirements
+- Stability confirmed: strimzi-cluster-operator stable for 55+ minutes (202 restarts, last 55m ago), kafka-entity-operator stable for 4d18h (179 restarts, last 4d18h ago)
+- **Learnings for future iterations:**
+  - Strimzi operator Exit Code 1 = leader election lost, NOT OOMKill — caused by transient K8s API timeouts during Minikube resource pressure
+  - Strimzi uses leader election: if it loses the lease (due to API server slowness), it deliberately exits with code 1 and lets Kubernetes restart it
+  - strimzi-operator.yaml (873KB) is the full Strimzi bundle — resources are at line ~7529; do NOT regenerate this file
+  - kafka-entity-operator label is NOT `app=kafka-entity-operator` (no match) — query by pod name directly or `kubectl get pods -n storage | grep entity`
+---

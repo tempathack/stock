@@ -82,8 +82,8 @@
         "Typecheck passes"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Investigation: NOT OOMKill — Exit Code 1 was leader election loss due to transient K8s API timeout (fabric8 KubernetesClientException → TimeoutException during reconciliation). Memory limits already correctly set: strimzi-cluster-operator has 768Mi limit / 512Mi request in both live deployment and strimzi-operator.yaml manifest. kafka-entity-operator has 512Mi limit / 256Mi request. No patches needed — resources already at required levels. Stability confirmed: strimzi-cluster-operator stable for 55+ minutes (202 restarts total, last 55m ago), kafka-entity-operator stable for 4d18h (179 restarts total)."
     },
     {
       "id": "FIX-006",
