@@ -295,7 +295,7 @@ export function useAllHorizonsPredictions() {
           "/predict/bulk",
           { params: { horizon: h } },
         );
-        return { horizon: h as number, data };
+        return data;
       },
       staleTime: 60_000,
     })),
@@ -305,8 +305,8 @@ export function useAllHorizonsPredictions() {
   const isError = results.every((r) => r.isError);
   const isPartialError = !isLoading && results.some((r) => r.isError) && !isError;
   const loadedHorizons = results
-    .filter((r) => r.isSuccess && r.data != null)
-    .map((r) => r.data!);
+    .map((r, i) => ({ horizon: ALL_HORIZONS[i] as number, data: r.data! }))
+    .filter((entry) => entry.data != null);
 
   return { results, isLoading, isError, isPartialError, loadedHorizons };
 }
