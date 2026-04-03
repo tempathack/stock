@@ -123,6 +123,19 @@ Started: 2026-04-03
   - `kubectl exec -n ml deployment/stock-model-serving-predictor -- curl -s http://localhost:8080/v2/health/ready` to test inference health from inside cluster
 ---
 
+## 2026-04-03 - FIX-009: Fix Analytics OLAP Candle Chart — ResponsiveContainer renders at -1x-1px
+- Root cause: ResponsiveContainer initializes containerWidth/containerHeight to -1 (Recharts v3 default). When height="100%" (a percentage), Recharts uses containerHeight (-1) for calculatedHeight — firing the validateWidthHeight warning on first render before ResizeObserver fires.
+- Fix applied to OLAPCandleChart.tsx: changed `height="100%"` → `height={280}`, added `minWidth={0} minHeight={240}` to ResponsiveContainer, added `minHeight: 240` to wrapper Box
+- Also fixed StreamLagMonitor.tsx which had identical issue: changed `height="100%"` → `height={220}`, added `minHeight={180}` to ResponsiveContainer, added `minHeight: 180` to wrapper Box
+- Files modified: `services/frontend/src/components/analytics/OLAPCandleChart.tsx`, `services/frontend/src/components/analytics/StreamLagMonitor.tsx`
+- Verified via Playwright: 0 Recharts warnings, OLAP chart container visible with correct dimensions ($145-$180 price axis)
+- **Learnings for future iterations:**
+  - Recharts v3 ResponsiveContainer starts at initialDimension {width:-1, height:-1}. If height="100%", calculatedHeight=-1 on first render → warning fires. Fix: pass explicit pixel height (number) so Recharts uses Number(280) instead of containerHeight.
+  - When width="100%" but height={280}: Recharts check is `calculatedWidth>0 || calculatedHeight>0` → `(-1>0)||(280>0)` = true → warning does NOT fire. Width measurement still uses ResizeObserver but height is bypassed.
+  - StreamLagMonitor also had the same ResponsiveContainer issue — always check all Recharts components on the page, not just the one in the AC.
+  - Recharts default minWidth is 0 (not undefined), so seeing minWidth(0) in the warning does NOT mean you set it — it's the default.
+---
+
 ## 2026-04-03 - FIX-007: Stabilize Redis — add maxmemory-policy and resource limits
 - Investigation: Exit Code 255 (not OOMKill/137). maxmemory 256mb + allkeys-lru were ALREADY in the manifest command — no missing config
 - Root cause: K8s memory limit was 256Mi — same as maxmemory setting — leaving zero headroom for Redis process overhead (~20-30MB on top of data), causing occasional eviction/restart under pressure

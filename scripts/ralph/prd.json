@@ -149,8 +149,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 9,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Root cause: both OLAPCandleChart and StreamLagMonitor used ResponsiveContainer with height='100%' (a percentage string), causing Recharts to use its initialDimension of -1 on first render before ResizeObserver fires. Fix: changed height prop from '100%' to explicit pixel values (height={280} for OLAPCandleChart, height={220} for StreamLagMonitor) and added minHeight props. Since isPercent(280) is false, Recharts uses Number(280) directly — bypassing the -1 initial state. Also added minHeight={240}/minHeight={180} to both ResponsiveContainers and minHeight CSS to both Box wrappers. 0 warnings confirmed via Playwright."
     },
     {
       "id": "FIX-010",

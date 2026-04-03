@@ -84,9 +84,9 @@ export default function StreamLagMonitor() {
           <Box
             role="img"
             aria-label="Kafka consumer lag per partition (30-min rolling window)"
-            sx={{ height: 220 }}
+            sx={{ height: 220, minHeight: 180 }}
           >
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height={220} minHeight={180}>
               <LineChart
                 data={chartData}
                 margin={{ top: 4, right: 8, bottom: 4, left: 8 }}

@@ -168,9 +168,9 @@ export default function OLAPCandleChart() {
         <Box
           role="img"
           aria-label={`OLAP candle chart for ${ticker} at ${interval} interval`}
-          sx={{ height: 280 }}
+          sx={{ height: 280, minHeight: 240 }}
         >
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={280} minWidth={0} minHeight={240}>
             <ComposedChart data={chartData} margin={{ top: 8, right: 8, bottom: 8, left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#2a2a4a" />
               <XAxis
