@@ -453,3 +453,55 @@ export interface SentimentTimeseriesResponse {
   count: number;
   window_hours: number;
 }
+
+// ── Search Types (Phase 90) ────────────────────────────────────────────────
+
+export interface PredictionSearchItem {
+  ticker: string | null;
+  predicted_price: number | null;
+  current_price: number | null;
+  expected_return_pct: number | null;
+  confidence: string | null;
+  model_id: number | null;
+  prediction_date: string | null;
+}
+
+export interface ModelSearchItem {
+  model_name: string | null;
+  status: string | null;
+  r2_oos: number | null;
+  rmse_oos: number | null;
+  mae_oos: number | null;
+  trained_at: string | null;
+  version: string | null;
+}
+
+export interface DriftEventSearchItem {
+  timestamp: string | null;
+  drift_type: string | null;
+  severity: string | null;
+  ticker: string | null;
+  details: string | null;
+  retrain_triggered: boolean | null;
+}
+
+export interface StockSearchItem {
+  ticker: string | null;
+  company_name: string | null;
+  sector: string | null;
+  industry: string | null;
+  market_cap: number | null;
+  exchange: string | null;
+}
+
+export interface SearchPaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export type PredictionSearchResponse = SearchPaginatedResponse<PredictionSearchItem>;
+export type ModelSearchResponse = SearchPaginatedResponse<ModelSearchItem>;
+export type DriftEventSearchResponse = SearchPaginatedResponse<DriftEventSearchItem>;
+export type StockSearchResponse = SearchPaginatedResponse<StockSearchItem>;

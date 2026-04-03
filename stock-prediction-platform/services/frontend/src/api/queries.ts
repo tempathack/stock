@@ -19,6 +19,10 @@ import type {
   AnalyticsSummaryResponse,
   CandlePoint,
   StreamingFeaturesResponse,
+  PredictionSearchResponse,
+  ModelSearchResponse,
+  DriftEventSearchResponse,
+  StockSearchResponse,
 } from "./types";
 
 /* ── query key constants ───────────────────────────────── */
@@ -309,4 +313,73 @@ export function useAllHorizonsPredictions() {
     .filter((entry) => entry.data != null);
 
   return { results, isLoading, isError, isPartialError, loadedHorizons };
+}
+
+// ── Search hooks (Phase 90) ────────────────────────────────────────────────
+
+export interface SearchParams {
+  q?: string;
+  page?: number;
+  page_size?: number;
+  ticker?: string;
+  model_id?: number;
+  confidence_min?: number;
+  date_from?: string;
+  date_to?: string;
+  status?: string;
+  r2_min?: number;
+  rmse_max?: number;
+  mae_max?: number;
+  drift_type?: string;
+  severity?: string;
+  sector?: string;
+  exchange?: string;
+}
+
+export function useSearchPredictions(params: SearchParams, enabled: boolean = false) {
+  return useQuery({
+    queryKey: ["search", "predictions", params],
+    queryFn: async () => {
+      const { data } = await apiClient.get<PredictionSearchResponse>("/search/predictions", { params });
+      return data;
+    },
+    staleTime: 30_000,
+    enabled,
+  });
+}
+
+export function useSearchModels(params: SearchParams, enabled: boolean = false) {
+  return useQuery({
+    queryKey: ["search", "models", params],
+    queryFn: async () => {
+      const { data } = await apiClient.get<ModelSearchResponse>("/search/models", { params });
+      return data;
+    },
+    staleTime: 30_000,
+    enabled,
+  });
+}
+
+export function useSearchDriftEvents(params: SearchParams, enabled: boolean = false) {
+  return useQuery({
+    queryKey: ["search", "drift-events", params],
+    queryFn: async () => {
+      const { data } = await apiClient.get<DriftEventSearchResponse>("/search/drift-events", { params });
+      return data;
+    },
+    staleTime: 30_000,
+    enabled,
+  });
+}
+
+export function useSearchStocks(params: SearchParams, enabled: boolean = false) {
+  return useQuery({
+    queryKey: ["search", "stocks", params],
+    queryFn: async () => {
+      const { data } = await apiClient.get<StockSearchResponse>("/search/stocks", { params });
+      return data;
+    },
+    staleTime: 30_000,
+    enabled,
+  });
 }
