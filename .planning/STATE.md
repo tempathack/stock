@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 90-03-PLAN.md
-last_updated: "2026-04-03T10:08:52.350Z"
+stopped_at: Completed 90-04-PLAN.md
+last_updated: "2026-04-03T10:13:42.910Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -422,10 +422,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 90-02]: imagePullPolicy: Never for Minikube — custom image loaded via minikube image load, no registry needed
 - [Phase 90]: Used str() conversion for cache key parts in build_key() calls to prevent TypeError with int/float/None query params
 - [Phase 90]: SEARCH_TTL=30s for /search endpoints to balance CDC freshness vs Redis cache load
+- [Phase 90-04]: TabPanel uses conditional render (not keepMounted) for per-tab lazy rendering in Search page
+- [Phase 90-04]: All 4 search hooks share a single SearchParams interface for consistent query params across entities
 
 ## Last Session
 
-- **Stopped at:** Completed 90-03-PLAN.md
+- **Stopped at:** Completed 90-04-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

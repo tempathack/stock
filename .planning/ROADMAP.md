@@ -88,7 +88,7 @@
 | 84–87 | Various ML/infra phases | Complete | 2026-04-03 | — |
 | 88 | 3/3 | Complete   | 2026-04-03 | 3 plans |
 | 89 | 2/2 | Complete   | 2026-04-03 | 2 plans |
-| 90 | 3/5 | In Progress|  | 5 plans |
+| 90 | 4/5 | In Progress|  | 5 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -1683,7 +1683,7 @@ Plans:
 **Goal:** Deploy Debezium Connect as a K8s workload capturing PostgreSQL WAL changes for predictions, drift_logs, and model_registry tables into Kafka CDC topics; route CDC events to Elasticsearch via Kafka Connect ES Sink Connector; expose FastAPI /search/* endpoints; update React analytics and model-comparison pages to query Elasticsearch. All components run as Kubernetes resources in Minikube.
 **Requirements**: TBD
 **Depends on:** Phase 89
-**Plans:** 3/5 plans executed
+**Plans:** 4/5 plans executed
 
 Plans:
 - [ ] TBD (run /gsd:plan-phase 90 to break down)
