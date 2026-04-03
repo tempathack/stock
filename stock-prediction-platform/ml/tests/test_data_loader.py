@@ -336,7 +336,10 @@ class TestFeastDataLoader:
         with patch("ml.pipelines.components.data_loader.get_store", return_value=mock_store):
             load_feast_data(tickers=["AAPL", "MSFT"], start_date="2024-01-01", end_date="2024-01-31")
         call_args = mock_store.get_historical_features.call_args
-        entity_df = call_args.kwargs.get("entity_df") or call_args[1].get("entity_df") or call_args[0][0]
+        _edf = call_args.kwargs.get("entity_df")
+        if _edf is None:
+            _edf = call_args[1].get("entity_df") if call_args[1] else call_args[0][0]
+        entity_df = _edf
         assert "ticker" in entity_df.columns
         assert "event_timestamp" in entity_df.columns
         assert entity_df["event_timestamp"].dt.tz is not None, "event_timestamp must be UTC"

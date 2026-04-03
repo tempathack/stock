@@ -10,6 +10,8 @@ from datetime import date
 import pandas as pd
 import psycopg2
 
+from ml.features.feast_store import _TRAINING_FEATURES, get_store
+
 logger = logging.getLogger(__name__)
 
 
@@ -139,3 +141,60 @@ def load_data(
         return result
     finally:
         conn.close()
+
+
+# ---------------------------------------------------------------------------
+# Feast offline data loading (Phase 92)
+# ---------------------------------------------------------------------------
+
+_SENTIMENT_COLS = ["avg_sentiment", "mention_count", "positive_ratio", "negative_ratio"]
+
+
+def load_feast_data(
+    tickers: list[str],
+    start_date: str,
+    end_date: str,
+) -> pd.DataFrame:
+    """Load historical training features from Feast offline (PostgreSQL) store.
+
+    Replaces load_data() + engineer_features() for the Feast training path.
+    Returns a flat DataFrame with one row per (ticker, date) and 34 feature columns.
+    Entity/timestamp columns (ticker, event_timestamp) are dropped before return.
+    Null sentiment values (sparse Reddit coverage) are filled with 0.0.
+
+    Args:
+        tickers: List of ticker symbols (e.g. ["AAPL", "MSFT"]).
+        start_date: ISO date string "YYYY-MM-DD" — training window start.
+        end_date: ISO date string "YYYY-MM-DD" — training window end.
+
+    Returns:
+        DataFrame with columns matching _TRAINING_FEATURES bare names (34 columns),
+        plus "ticker" column for grouping. event_timestamp is dropped.
+    """
+    dates = pd.date_range(start=start_date, end=end_date, freq="B")
+    rows = [
+        {"ticker": t, "event_timestamp": pd.Timestamp(d, tz="UTC")}
+        for t in tickers
+        for d in dates
+    ]
+    entity_df = pd.DataFrame(rows)
+
+    store = get_store()
+    df = store.get_historical_features(
+        entity_df=entity_df,
+        features=_TRAINING_FEATURES,
+    ).to_df()
+
+    # Fill sparse sentiment columns first (most commonly None)
+    for col in _SENTIMENT_COLS:
+        if col in df.columns:
+            df[col] = df[col].fillna(0.0)
+
+    # Fill any remaining NaN (e.g. warm-up period for lag features)
+    df = df.fillna(0.0)
+
+    # Drop entity/timestamp columns — keep ticker for grouping in training pipeline
+    df = df.drop(columns=["event_timestamp"], errors="ignore")
+
+    logger.info("load_feast_data: %d rows for %d tickers", len(df), len(tickers))
+    return df

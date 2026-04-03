@@ -163,6 +163,7 @@ def run_training_pipeline(
     use_feature_store: bool = False,
     horizons: list[int] | None = None,
     linear_only: bool = False,
+    use_feast_data: bool = False,
 ) -> PipelineRunResult:
     """Execute the full 12-step training pipeline.
 
@@ -191,31 +192,58 @@ def run_training_pipeline(
 
     try:
         # Step 1: Load data
+        _feast_mode = False
         if data_dict is None:
-            from ml.pipelines.components.data_loader import load_data
-
-            data_dict = load_data(tickers=tickers, settings=db_settings)
+            if use_feast_data:
+                from ml.pipelines.components.data_loader import load_feast_data
+                import pandas as _pd
+                feast_df = load_feast_data(
+                    tickers=tickers,
+                    start_date="2020-01-01",
+                    end_date=_pd.Timestamp.now().strftime("%Y-%m-%d"),
+                )
+                # Convert flat DataFrame to per-ticker dict expected by downstream steps
+                data_dict = {
+                    t: feast_df[feast_df["ticker"] == t].drop(columns=["ticker"], errors="ignore")
+                    for t in feast_df["ticker"].unique()
+                }
+                _feast_mode = True
+                result.steps_completed.append("load_feast_data")
+                logger.info("Step 1/12 load_feast_data (Feast offline) — %d tickers", len(data_dict))
+            else:
+                from ml.pipelines.components.data_loader import load_data
+                data_dict = load_data(tickers=tickers, settings=db_settings)
+                result.steps_completed.append("load_data")
+                logger.info("Step 1/12 load_data — %d tickers", len(data_dict))
+        else:
+            # Pre-loaded data_dict provided — track step for consistent step count
+            result.steps_completed.append("load_data")
+            logger.info("Step 1/12 load_data (pre-loaded) — %d tickers", len(data_dict))
         result.n_tickers = len(data_dict)
-        result.steps_completed.append("load_data")
-        logger.info("Step 1/12 load_data — %d tickers", result.n_tickers)
 
         # Step 2: Engineer features
-        fs_settings = db_settings
-        if use_feature_store and fs_settings is None:
-            from ml.pipelines.components.data_loader import DBSettings as _DBS
-            fs_settings = _DBS.from_env()
-        try:
-            enriched = engineer_features(
-                data_dict,
-                use_feature_store=use_feature_store,
-                db_settings=fs_settings,
-            )
-        except Exception as exc:
-            logger.warning("Feature store failed (%s) — falling back to on-the-fly.", exc)
-            enriched = engineer_features(data_dict)
-        source = "feature_store" if use_feature_store else "on-the-fly"
-        result.steps_completed.append("engineer_features")
-        logger.info("Step 2/12 engineer_features (source: %s) — done", source)
+        if _feast_mode:
+            # Feast path: features already pre-computed (all 34 columns present)
+            enriched = data_dict
+            result.steps_completed.append("engineer_features")
+            logger.info("Step 2/12 engineer_features (Feast mode — passthrough) — done")
+        else:
+            fs_settings = db_settings
+            if use_feature_store and fs_settings is None:
+                from ml.pipelines.components.data_loader import DBSettings as _DBS
+                fs_settings = _DBS.from_env()
+            try:
+                enriched = engineer_features(
+                    data_dict,
+                    use_feature_store=use_feature_store,
+                    db_settings=fs_settings,
+                )
+            except Exception as exc:
+                logger.warning("Feature store failed (%s) — falling back to on-the-fly.", exc)
+                enriched = engineer_features(data_dict)
+            source = "feature_store" if use_feature_store else "on-the-fly"
+            result.steps_completed.append("engineer_features")
+            logger.info("Step 2/12 engineer_features (source: %s) — done", source)
 
         # Step 3: Generate labels
         if horizons is not None:
