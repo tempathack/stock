@@ -88,6 +88,7 @@
 | 84–87 | Various ML/infra phases | Complete | 2026-04-03 | — |
 | 88 | 3/3 | Complete   | 2026-04-03 | 3 plans |
 | 89 | 2/2 | Complete   | 2026-04-03 | 2 plans |
+| 90 | Debezium CDC & Elasticsearch | Debezium CDC → Elasticsearch → /search page | TBD | 5 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -97,6 +98,11 @@ Plans:
 - [ ] 82-01-PLAN.md — Grafana ML perf panel 2 threshold line + HighPredictionLatencyP95 alert rule
 - [ ] 82-02-PLAN.md — test_dashboard_json.py: 5 tests verifying threshold line + histogram sources
 - [ ] 83-01-PLAN.md — Fix INTRADAY_TOPIC, prometheus.yml port 8001→9090, create kafka-consumer Service
+- [ ] 90-01-PLAN.md — Elasticsearch 8 + Kibana K8s manifests + PostgreSQL WAL config
+- [ ] 90-02-PLAN.md — Debezium KafkaConnect image Dockerfile + CR + KafkaConnector CRs + CDC topics
+- [ ] 90-03-PLAN.md — FastAPI elasticsearch_service + /search router + config + schemas
+- [ ] 90-04-PLAN.md — React /search page + API hooks + App.tsx route + Sidebar nav
+- [ ] 90-05-PLAN.md — Playwright browser verification checkpoint
 
 ---
 
