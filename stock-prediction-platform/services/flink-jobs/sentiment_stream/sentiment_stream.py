@@ -2,10 +2,12 @@
 
 Reads reddit-raw Kafka topic, UNNESTs ticker arrays to one row per (post, ticker),
 applies VADER compound score per post via a ScalarFunction UDF, then aggregates
-per-ticker sentiment in a 1-min-hop / 5-min HOP window and writes to sentiment-aggregated.
+per-ticker sentiment in a 2-min TUMBLE window. Writes to two sinks:
+  1. sentiment-aggregated Kafka topic (for Feast streaming features / WebSocket)
+  2. sentiment_timeseries TimescaleDB table (for the 10h rolling chart API)
 
-Window semantics: HOP(1 min slide, 5 min size) so every minute a new 5-minute
-window closes and emits one sentiment row per active ticker.
+Window semantics: TUMBLE(2 min) — non-overlapping 2-minute windows. Every 2 minutes
+a window closes and emits one sentiment row per active ticker.
 
 VADER scoring: module-level SentimentIntensityAnalyzer singleton (thread-safe,
 initialized once). compound score range: -1.0 (most negative) to +1.0 (most positive).
@@ -202,6 +204,31 @@ def main() -> None:
         )
     """)
 
+    # ── JDBC sink: write 2-min aggregates to TimescaleDB ──────────────────────
+    POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "postgresql-service.database.svc.cluster.local")
+    POSTGRES_DB = os.environ.get("POSTGRES_DB", "stockdb")
+    POSTGRES_USER = os.environ.get("POSTGRES_USER", "stockuser")
+    POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "")
+
+    t_env.execute_sql(f"""
+        CREATE TABLE IF NOT EXISTS sentiment_timeseries_sink (
+            ticker         STRING,
+            window_start   TIMESTAMP(3),
+            avg_sentiment  DOUBLE,
+            mention_count  INT,
+            positive_ratio DOUBLE,
+            negative_ratio DOUBLE,
+            PRIMARY KEY (ticker, window_start) NOT ENFORCED
+        ) WITH (
+            'connector'                   = 'jdbc',
+            'url'                         = 'jdbc:postgresql://{POSTGRES_HOST}:5432/{POSTGRES_DB}',
+            'table-name'                  = 'sentiment_timeseries',
+            'username'                    = '{POSTGRES_USER}',
+            'password'                    = '{POSTGRES_PASSWORD}',
+            'sink.buffer-flush.interval'  = '0'
+        )
+    """)
+
     # UNNEST tickers array: one row per (post, ticker) with VADER score
     t_env.execute_sql("""
         CREATE VIEW reddit_unnested AS
@@ -216,10 +243,12 @@ def main() -> None:
         WHERE ARRAY_LENGTH(tickers) > 0
     """)
 
-    # HOP window aggregation: 1-min hop, 5-min window.
+    # TUMBLE window aggregation: 2-min tumbling window (no overlap).
     # window_start is written to both window_start and event_timestamp columns so
     # downstream sentiment_writer can pass event_timestamp directly to Feast.
-    t_env.execute_sql("""
+    # StatementSet runs both Kafka and JDBC sinks as a single Flink job.
+    stmt_set = t_env.create_statement_set()
+    stmt_set.add_insert_sql("""
         INSERT INTO sentiment_aggregated_sink
         SELECT
             ticker,
@@ -232,11 +261,27 @@ def main() -> None:
             negative_ratio_udaf(compound_score) AS negative_ratio,
             FIRST_VALUE(subreddit)              AS top_subreddit
         FROM TABLE(
-            HOP(TABLE reddit_unnested, DESCRIPTOR(event_time),
-                INTERVAL '1' MINUTE, INTERVAL '5' MINUTE)
+            TUMBLE(TABLE reddit_unnested, DESCRIPTOR(event_time),
+                   INTERVAL '2' MINUTE)
         )
         GROUP BY ticker, window_start, window_end
-    """).wait()
+    """)
+    stmt_set.add_insert_sql("""
+        INSERT INTO sentiment_timeseries_sink
+        SELECT
+            ticker,
+            window_start,
+            avg_sentiment_udaf(compound_score)  AS avg_sentiment,
+            mention_count_udaf(compound_score)  AS mention_count,
+            positive_ratio_udaf(compound_score) AS positive_ratio,
+            negative_ratio_udaf(compound_score) AS negative_ratio
+        FROM TABLE(
+            TUMBLE(TABLE reddit_unnested, DESCRIPTOR(event_time),
+                   INTERVAL '2' MINUTE)
+        )
+        GROUP BY ticker, window_start, window_end
+    """)
+    stmt_set.execute().wait()
 
 
 if __name__ == "__main__":
