@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import apiClient from "./client";
 import type {
   HealthResponse,
@@ -280,4 +280,33 @@ export function useStreamingFeatures(ticker: string) {
     refetchInterval: 5_000,   // 5s poll — matches Flink HOP window output rate
     staleTime: 4_000,
   });
+}
+
+// ── Multi-Horizon Predictions (Phase 88) ───────────────────────────────────
+
+const ALL_HORIZONS = [1, 7, 14, 30] as const;
+
+export function useAllHorizonsPredictions() {
+  const results = useQueries({
+    queries: ALL_HORIZONS.map((h) => ({
+      queryKey: queryKeys.bulkPredictions(h),
+      queryFn: async () => {
+        const { data } = await apiClient.get<BulkPredictionResponse>(
+          "/predict/bulk",
+          { params: { horizon: h } },
+        );
+        return { horizon: h as number, data };
+      },
+      staleTime: 60_000,
+    })),
+  });
+
+  const isLoading = results.some((r) => r.isPending);
+  const isError = results.every((r) => r.isError);
+  const isPartialError = !isLoading && results.some((r) => r.isError) && !isError;
+  const loadedHorizons = results
+    .filter((r) => r.isSuccess && r.data != null)
+    .map((r) => r.data!);
+
+  return { results, isLoading, isError, isPartialError, loadedHorizons };
 }
