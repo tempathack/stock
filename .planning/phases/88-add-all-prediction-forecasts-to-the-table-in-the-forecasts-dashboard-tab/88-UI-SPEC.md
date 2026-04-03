@@ -1,10 +1,11 @@
 ---
 phase: 88
 slug: add-all-prediction-forecasts-to-the-table-in-the-forecasts-dashboard-tab
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-04-03
+reviewed_at: 2026-04-03T00:00:00Z
 ---
 
 # Phase 88 — UI Design Contract
