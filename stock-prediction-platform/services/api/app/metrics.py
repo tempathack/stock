@@ -20,3 +20,9 @@ model_inference_errors_total = Counter(
     "Total model inference errors",
     ["ticker", "error_type"],
 )
+
+feast_stale_features_total = Counter(
+    "feast_stale_features_total",
+    "Total Feast feature fallbacks due to staleness or unavailability",
+    ["ticker", "reason"],  # reason: "feast_unavailable" | "feast_stale"
+)
