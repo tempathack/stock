@@ -1669,8 +1669,8 @@ Plans:
 **Plans:** 2/2 plans complete
 
 Plans:
-- [ ] 89-01-PLAN.md — Promtail fix + sentiment_timeseries DB migration + API endpoint + Flink JDBC sink
-- [ ] 89-02-PLAN.md — SentimentTimeseriesChart React component + SentimentPanel wiring + Playwright verify
+- [x] 89-01-PLAN.md — Promtail fix + sentiment_timeseries DB migration + API endpoint + Flink JDBC sink
+- [x] 89-02-PLAN.md — SentimentTimeseriesChart React component + SentimentPanel wiring + Playwright verify
 
 ### Phase 90: Debezium CDC and Elasticsearch integration
 
