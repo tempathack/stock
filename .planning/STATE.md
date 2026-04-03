@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 88-02-PLAN.md
-last_updated: "2026-04-03T08:53:35.699Z"
+stopped_at: Completed 87-02-PLAN.md
+last_updated: "2026-04-03T08:55:44.697Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -404,10 +404,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 88]: 88-01: isPending (not isLoading) used for useQueries state — React Query v5 semantics
 - [Phase 88]: Used relative imports in test file to avoid vitest alias configuration complexity
 - [Phase 88]: Added MultiHorizonForecastRow and HorizonPrediction types as Rule 3 auto-fix for Plan 01 missing types
+- [Phase 87]: Use America/New_York tz_convert(UTC) in build_entity_df_for_backtest to handle DST transitions for all prediction dates
+- [Phase 87]: assert_no_future_leakage accepts empty result_df silently — no data before Feast cutoff is valid, not leakage
 
 ## Last Session
 
-- **Stopped at:** Completed 88-02-PLAN.md
+- **Stopped at:** Completed 87-02-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
@@ -453,3 +455,4 @@ Recommended wave execution:
 - Phase 87 added: Point-in-time correct feature serving via Feast and KServe Transformer — eliminate lookahead leakage in backtest
 - Phase 88 added: Add all prediction forecasts to the table in the forecasts dashboard tab
 - Phase 89 added: Live sentiment timeseries chart in Dashboard tab — Flink-streamed Reddit/news sentiment per stock, 2-min intervals, 10-hour rolling window, replaces static unavailable placeholder
+- Phase 90 added: Debezium CDC and Elasticsearch integration — Debezium Connect capturing PostgreSQL WAL (predictions, drift_logs, model_registry), Kafka CDC topics, ES Sink Connector, FastAPI /search/* endpoints, React analytics updates
