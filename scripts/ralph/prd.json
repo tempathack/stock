@@ -50,8 +50,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 3,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added 15-second timeout guard via useEffect + useRef in Forecasts.tsx. Added retry: false to useAllHorizonsPredictions queries to prevent 90s backoff. Error state (ErrorFallback + Retry button) now triggers on allHorizonsQuery.isError OR timedOut. Refetch also resets the timeout state. Page verified loading correctly with 160 tickers across all 4 horizons."
     },
     {
       "id": "UI-004",

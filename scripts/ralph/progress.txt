@@ -69,3 +69,16 @@ Started: 2026-04-03 (ralph/frontend-data-fixes)
   - Always warm cache before Playwright verification: curl 'http://localhost:8010/predict/bulk?horizon={1,7,14,30}'
   - TanStack Query staleTime=60_000 means re-navigating within 60s uses cached data — no issue
 ---
+
+## 2026-04-03 - UI-003: Fix Forecasts page — replace infinite skeleton with error state on 404
+- Added 15-second timeout guard in Forecasts.tsx using useEffect + useRef (timedOut state)
+- Added retry: false to useAllHorizonsPredictions queries in queries.ts — prevents 3×30s=90s retry backoff
+- Error state (ErrorFallback with Retry button) triggers on allHorizonsQuery.isError OR timedOut
+- Refetch() resets timedOut state and clears the timeout ref before re-querying
+- Verified: page loads with 160 tickers across 1-DAY, 7-DAY, 14-DAY, 30-DAY horizon columns
+- Files modified: services/frontend/src/pages/Forecasts.tsx, services/frontend/src/api/queries.ts, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - useRef needed for clearTimeout — useState doesn't persist the timer ID reliably across renders
+  - Must reset timedOut state to false when refetch() is called, otherwise retry stays in error loop
+  - TanStack Query default retry=3 with exponential backoff means a hung API can block error state for 90s — always set retry: false for time-sensitive queries
+---

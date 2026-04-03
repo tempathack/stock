@@ -302,6 +302,7 @@ export function useAllHorizonsPredictions() {
         return data;
       },
       staleTime: 60_000,
+      retry: false,
     })),
   });
 

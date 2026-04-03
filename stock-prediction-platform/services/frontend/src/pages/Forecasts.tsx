@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import {
   Alert,
   Box,
@@ -127,6 +127,8 @@ export default function Forecasts() {
   const [filters, setFilters] = useState<ForecastFiltersState>(DEFAULT_FILTERS);
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [comparisonTickers, setComparisonTickers] = useState<string[]>([]);
+  const [timedOut, setTimedOut] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Multi-horizon rows for the main table
   const allMultiRows = useMemo<MultiHorizonForecastRow[]>(() => {
@@ -182,12 +184,33 @@ export default function Forecasts() {
 
   const isLoading = allHorizonsQuery.isLoading || marketQuery.isLoading;
 
+  // 15-second timeout guard — prevents infinite skeleton when API is unreachable
+  useEffect(() => {
+    if (isLoading && !timedOut) {
+      timeoutRef.current = setTimeout(() => setTimedOut(true), 15_000);
+    } else if (!isLoading) {
+      setTimedOut(false);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    }
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const refetch = () => {
+    setTimedOut(false);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
     allHorizonsQuery.results.forEach((r) => { void r.refetch(); });
     marketQuery.refetch();
   };
 
-  if (isLoading) {
+  if (isLoading && !timedOut) {
     return (
       <Container maxWidth="xl">
         <PageHeader
@@ -206,7 +229,7 @@ export default function Forecasts() {
     );
   }
 
-  if (allHorizonsQuery.isError) {
+  if (allHorizonsQuery.isError || timedOut) {
     return (
       <ErrorFallback
         message="Failed to load forecast data. Check that the prediction service is running."
