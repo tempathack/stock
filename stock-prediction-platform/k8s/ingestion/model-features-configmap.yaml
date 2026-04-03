@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: model-features-config
+  namespace: ingestion
+  labels:
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: model-serving
+data:
+  features.json: '["open","high","low","close","volume","rsi_14","macd_line","macd_signal","macd_hist","stoch_k","stoch_d","sma_20","sma_50","sma_200","ema_12","ema_26","adx","bb_upper","bb_lower","bb_bandwidth","atr","rolling_vol_21","obv","vwap","volume_sma_20","ad_line","return_1d","log_return_1d","return_5d","log_return_5d","return_21d","log_return_21d","lag_close_1","lag_close_2","lag_close_3","lag_close_5","lag_close_7","lag_close_14","lag_close_21","rolling_mean_5","rolling_std_5","rolling_min_5","rolling_max_5","rolling_mean_10","rolling_std_10","rolling_min_10","rolling_max_10","rolling_mean_21","rolling_std_21","rolling_min_21","rolling_max_21"]'
+  horizons.json: '{"horizons": [1, 7, 14, 30], "default": 7}'
