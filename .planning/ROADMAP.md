@@ -1614,16 +1614,6 @@ Plans:
 - [ ] 84-01-PLAN.md — TDD test scaffold (5 tests for all LOKI-ALERT requirements)
 - [ ] 84-02-PLAN.md — Apply datasource UID pin, alerting ConfigMap, Promtail path fix, deployment mount
 
-### Phase 84.1: Fix Promtail Kubernetes SD — zero active targets, logs not reaching Loki (INSERTED)
-
-**Goal:** Diagnose and fix Promtail 2.9.6 kubernetes_sd_configs role: pod establishing zero outbound connections in Minikube — no logs reach Loki, making all Loki alert rules evaluate against empty streams.
-**Requirements**: TBD
-**Depends on:** Phase 84
-**Plans:** 0 plans
-
-Plans:
-- [ ] TBD (run /gsd:plan-phase 84.1 to break down)
-
 ### Phase 85: Backtest UX polish — change red empty-state message to neutral, label orphaned download and table-view icon buttons
 
 **Goal:** Fix two UX issues on the Backtest page: replace the alarming red error/no-data empty state with a neutral grey presentation, and replace icon-only export controls with labelled CSV/PDF buttons consistent with Models and Forecasts pages.
@@ -1666,7 +1656,7 @@ Plans:
 Plans:
 - [ ] TBD (run /gsd:plan-phase 88 to break down)
 
-### Phase 89: Live sentiment timeseries chart in Dashboard tab — Flink-streamed Reddit/news sentiment per stock, 2-min intervals, 10-hour rolling window, replaces static unavailable placeholder
+### Phase 89: Live sentiment timeseries chart in Dashboard tab + fix Promtail Kubernetes SD — Flink-streamed Reddit/news sentiment per stock, 2-min intervals, 10-hour rolling window, replaces static unavailable placeholder; fix Promtail 2.9.6 kubernetes_sd_configs role: pod discovering zero targets so logs reach Loki
 
 **Goal:** [To be planned]
 **Requirements**: TBD
