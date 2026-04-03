@@ -9,6 +9,7 @@ import PsychologyIcon from "@mui/icons-material/Psychology";
 import WaterDropIcon  from "@mui/icons-material/WaterDrop";
 import HistoryIcon    from "@mui/icons-material/History";
 import InsightsIcon   from "@mui/icons-material/Insights";
+import SearchIcon     from "@mui/icons-material/Search";
 import { useK8sHealth, useHealthCheck, useModelDrift } from "@/api";
 
 const navItems = [
@@ -18,6 +19,7 @@ const navItems = [
   { to: "/drift",     label: "Drift",       Icon: WaterDropIcon   },
   { to: "/backtest",  label: "Backtest",    Icon: HistoryIcon     },
   { to: "/analytics", label: "Analytics",   Icon: InsightsIcon    },
+  { to: "/search",    label: "Search",      Icon: SearchIcon      },
 ];
 
 type DotColor = "success" | "warning" | "error";
