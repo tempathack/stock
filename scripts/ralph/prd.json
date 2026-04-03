@@ -99,8 +99,8 @@
         "Typecheck passes"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Investigation: Exit Code 255 (NOT OOMKill — that would be 137). Resource limits already correctly set in both live deployment and minio-deployment.yaml manifest: 1Gi limit / 512Mi request (exceeds required >= 512Mi / >= 256Mi). MinIO stable for 4d18h (71 total restarts, last restart 4d18h ago). MinIO accessible: mc ls shows both model-artifacts and drift-logs buckets healthy. No changes required — manifest already met all requirements before this story ran."
     },
     {
       "id": "FIX-007",

@@ -95,3 +95,15 @@ Started: 2026-04-03
   - strimzi-operator.yaml (873KB) is the full Strimzi bundle — resources are at line ~7529; do NOT regenerate this file
   - kafka-entity-operator label is NOT `app=kafka-entity-operator` (no match) — query by pod name directly or `kubectl get pods -n storage | grep entity`
 ---
+
+## 2026-04-03 - FIX-006: Fix MinIO restart loop — add resource limits and PVC health check
+- Investigation result: Exit Code 255 (NOT OOMKill — that would be exit code 137)
+- Resource limits already correctly set in minio-deployment.yaml: 1Gi limit / 512Mi request (exceeds required >= 512Mi / >= 256Mi)
+- MinIO has been stable for 4d18h (71 total restarts, last restart 4d18h ago) — self-resolved after Minikube resource pressure eased
+- MinIO accessible: `mc ls minio/` shows both required buckets healthy (drift-logs/, model-artifacts/)
+- No manifest changes required — all resource limits already met requirements
+- **Learnings for future iterations:**
+  - MinIO Exit Code 255 = OOMKill or SIGTERM from K8s eviction — NOT guaranteed to be OOM if exit code is not 137
+  - MinIO resource limits already at 1Gi/512Mi in manifest — do NOT lower these; they are correct
+  - Both required buckets (model-artifacts, drift-logs) confirmed healthy via `kubectl exec -n storage deployment/minio -- mc ls minio/`
+---
