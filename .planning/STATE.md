@@ -4,7 +4,7 @@ milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
 stopped_at: Completed 90-04-PLAN.md
-last_updated: "2026-04-03T10:13:42.910Z"
+last_updated: "2026-04-03T11:54:33.897Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 90 — debezium-cdc-and-elasticsearch-integration
+**Current focus:** Phase 92 — feast-powered-prediction-pipeline
 
 ## Current Status
 
