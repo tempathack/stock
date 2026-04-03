@@ -137,8 +137,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 8,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "All 4 pages verified via Playwright MCP. Dashboard: MARKET SENTIMENT section visible with Bullish (0.178) label and sparkline. Forecasts: 4 horizon columns (1-DAY/7-DAY/14-DAY/30-DAY) with 160 tickers — Redis cache warmed before verification (cold cache ~50s, warm ~instant). Models: 1-9 of 9 with stacking_ensemble as Winner. Backtest: Run Backtest for AAPL renders chart + 6 metric cards (RMSE/MAE/MAPE/R²/Dir.Accuracy/Points). API and DB nav dots are green. TypeScript 0 errors, npm run build passes."
     }
   ]
 }

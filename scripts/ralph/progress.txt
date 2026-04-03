@@ -152,3 +152,18 @@ Started: 2026-04-03 (ralph/frontend-data-fixes)
   - The /models/cache/invalidate endpoint only clears model-related keys — use redis-cli directly for other namespaces
   - flink-config ConfigMap has correct POSTGRES_HOST=postgresql.storage.svc.cluster.local; sentiment_stream.py default was wrong but gets overridden by env var
 ---
+
+## 2026-04-03 - UI-008: Final end-to-end verification of all 4 fixed pages
+- Verified Dashboard: MARKET SENTIMENT section visible with AAPL selected, "Bullish (0.178)" label and 10H sparkline
+- Verified Forecasts: 4 horizon columns (1-DAY/7-DAY/14-DAY/30-DAY) with 160 tickers — warmed Redis cache first (all 4 horizons ~50s cold)
+- Verified Models: 1-9 of 9 with stacking_ensemble highlighted as Winner at top
+- Verified Backtest: Run Backtest for AAPL renders chart + 6 metric cards (RMSE 45.71, MAE 22.59, MAPE 54.67%, R² 0.1539, Dir.Accuracy 49.2%, 255 data points)
+- Confirmed API and DB nav dots are green throughout all pages
+- TypeScript 0 errors, npm run build passes
+- Screenshots: final-dashboard.png, final-forecasts.png, final-models.png, final-backtest.png
+- Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Redis cache for /predict/bulk expires — always warm cache before Playwright verification: curl all 4 horizons in parallel
+  - Cold cache for all 4 horizons takes ~50s — well above the 15s timeout guard added in UI-003; Playwright must wait for warm cache
+  - All 4 pages independently functional; no regressions from UI-001 through UI-007 changes
+---
