@@ -167,8 +167,8 @@
         "Verify in browser using dev-browser skill"
       ],
       "priority": 10,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Three root causes fixed: (1) argocd_sync_status=null — RBAC 403: service account ingestion/default lacked permission to list argoproj.io/applications. Created ClusterRole stock-api-argocd-reader + ClusterRoleBinding — now returns 'OutOfSync'. (2) feast_online_latency_ms=null — Redis PING fallback had bug: `from app.cache import _get_redis` fails with ImportError (function is `get_redis`, not `_get_redis`), also it was awaited but get_redis() is sync. Fixed to `from app.cache import get_redis; r = get_redis()` (no await). Also added REDIS_URL=redis://redis.storage.svc.cluster.local:6379/0 to fastapi-deployment.yaml — REDIS_URL was missing so init_redis() was never called and get_redis() always returned None. (3) ca_last_refresh=null — timescaledb_information.continuous_aggregates in this TimescaleDB version lacks last_updated_timestamp/last_run_started_at columns. Fixed to query job_stats.last_successful_finish instead — returns '2026-04-03T16:15:05+00:00'. Verified in browser: all 4 stat cards show real values (OutOfSync, 3 running/0 failed, 0.1ms, 6:15 PM)."
     },
     {
       "id": "FIX-011",

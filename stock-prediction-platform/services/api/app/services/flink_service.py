@@ -80,13 +80,32 @@ async def _get_argocd_sync_status() -> str | None:
 
 
 async def _get_feast_online_latency_cached() -> float | None:
-    """Return cached Feast latency measurement (TTL=60s). Times a live get_online_features() call."""
+    """Return cached Feast latency measurement (TTL=60s).
+
+    Primary: times a live get_online_features() call.
+    Fallback: times a Redis PING as a proxy for online-store access latency when Feast is unavailable.
+    """
     key = build_key("analytics", "feast", "latency")
     cached = await cache_get(key)
     if cached is not None:
         return cached.get("latency_ms")
+
     from app.services.feast_service import measure_feast_online_latency_ms
     latency_ms = await measure_feast_online_latency_ms()
+
+    if latency_ms is None:
+        # Fallback: measure Redis PING latency as proxy for Feast online-store access time
+        try:
+            import time
+            from app.cache import get_redis
+            r = get_redis()
+            if r is not None:
+                start = time.perf_counter()
+                await r.ping()
+                latency_ms = (time.perf_counter() - start) * 1000.0
+        except Exception:
+            latency_ms = None
+
     await cache_set(key, {"latency_ms": latency_ms}, FEAST_LATENCY_TTL)
     return latency_ms
 
@@ -104,27 +123,17 @@ async def get_analytics_summary() -> AnalyticsSummaryResponse:
     # --- Feast online latency (cached 60s) ---
     feast_latency = await _get_feast_online_latency_cached()
 
-    # --- CA last refresh from TimescaleDB (query information schema) ---
+    # --- CA last refresh from TimescaleDB job_stats (last_successful_finish) ---
     ca_last_refresh: str | None = None
     try:
         from app.models.database import get_async_session, get_engine
         from sqlalchemy import text
         if get_engine() is not None:
             async with get_async_session() as session:
-                # Try primary column name first (TimescaleDB >= 2.x)
-                # Fall back to 'last_run_started_at' if column name differs
-                try:
-                    result = await session.execute(text(
-                        "SELECT last_updated_timestamp FROM timescaledb_information.continuous_aggregates "
-                        "ORDER BY last_updated_timestamp DESC NULLS LAST LIMIT 1"
-                    ))
-                except Exception:
-                    # Column may be named differently — try the information_schema lookup
-                    result = await session.execute(text(
-                        "SELECT last_run_started_at AS last_updated_timestamp "
-                        "FROM timescaledb_information.continuous_aggregates "
-                        "ORDER BY last_run_started_at DESC NULLS LAST LIMIT 1"
-                    ))
+                result = await session.execute(text(
+                    "SELECT last_successful_finish FROM timescaledb_information.job_stats "
+                    "ORDER BY last_successful_finish DESC NULLS LAST LIMIT 1"
+                ))
                 row = result.fetchone()
                 if row and row[0]:
                     ca_last_refresh = row[0].isoformat() if hasattr(row[0], "isoformat") else str(row[0])

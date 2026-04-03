@@ -1,0 +1,24 @@
+---
+# Allow the stock-api service account to read ArgoCD Application CRDs
+# so /analytics/summary can report argocd_sync_status
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: stock-api-argocd-reader
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources: ["applications"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: stock-api-argocd-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: stock-api-argocd-reader
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: ingestion

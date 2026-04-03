@@ -148,3 +148,17 @@ Started: 2026-04-03
   - Redis Exit Code 255 = SIGTERM from K8s OOM eviction or liveness probe failure, NOT necessarily OOMKill (which would be exit 137)
   - `kubectl exec -n storage deployment/redis -- redis-cli config get maxmemory` returns bytes — 268435456 = 256MB
 ---
+
+## 2026-04-03 - FIX-010: Wire Analytics stat cards — Argo CD Sync, Feast Latency p99, CA Last Refresh
+- Root cause 1 (argocd_sync_status=null): RBAC 403 — `system:serviceaccount:ingestion:default` lacks permission to list `argoproj.io/applications`. Created `k8s/argocd/rbac-api-argocd-reader.yaml` (ClusterRole + ClusterRoleBinding). Now returns "OutOfSync".
+- Root cause 2 (feast_online_latency_ms=null): Two bugs — (a) `from app.cache import _get_redis` fails with ImportError (function is `get_redis`), causing the Redis PING fallback to silently fail. (b) `REDIS_URL` env var missing from fastapi-deployment.yaml — `init_redis()` was never called so `get_redis()` always returned None. Fixed both: corrected import to `get_redis` (sync, not awaited), added `REDIS_URL=redis://redis.storage.svc.cluster.local:6379/0` to deployment. Now returns ~0.1ms.
+- Root cause 3 (ca_last_refresh=null): `timescaledb_information.continuous_aggregates` in this TimescaleDB version has NO `last_updated_timestamp` or `last_run_started_at` columns (view has only schema/name/definition columns). Fixed to query `timescaledb_information.job_stats.last_successful_finish` instead — real data exists. Now returns ISO timestamp.
+- Files created: `k8s/argocd/rbac-api-argocd-reader.yaml`
+- Files modified: `services/api/app/services/flink_service.py`, `k8s/ingestion/fastapi-deployment.yaml`
+- Verified in browser: all 4 stat cards show real values (OutOfSync, 3 running/0 failed, 0.1ms, 6:15 PM)
+- **Learnings for future iterations:**
+  - `timescaledb_information.continuous_aggregates` schema varies by version — always check columns before querying. Use `job_stats.last_successful_finish` for CA last refresh in this version.
+  - REDIS_URL must be explicitly set in the K8s deployment env — it is NOT in ingestion-config ConfigMap. Without it, `init_redis()` is never called and caching is silently disabled.
+  - `from app.cache import _get_redis` was a typo — the public API is `get_redis()` (no underscore, sync, not awaitable)
+  - ArgoCD application CRD RBAC: stock-api's service account needs explicit ClusterRole grant to read `argoproj.io/applications` across namespaces
+---

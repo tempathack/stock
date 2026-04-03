@@ -46,6 +46,8 @@ spec:
                 secretKeyRef:
                   name: stock-platform-secrets
                   key: DATABASE_URL
+            - name: REDIS_URL
+              value: "redis://redis.storage.svc.cluster.local:6379/0"
           resources:
             requests:
               cpu: "250m"
