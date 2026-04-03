@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 90-02-PLAN.md
-last_updated: "2026-04-03T10:05:24.112Z"
+stopped_at: Completed 90-03-PLAN.md
+last_updated: "2026-04-03T10:08:52.350Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -420,10 +420,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 90-02]: KafkaTopic CRs in storage namespace (Strimzi Topic Operator watches where Kafka CR lives)
 - [Phase 90-02]: strimzi.io/use-connector-resources: true annotation required for KafkaConnector CR reconciliation
 - [Phase 90-02]: imagePullPolicy: Never for Minikube — custom image loaded via minikube image load, no registry needed
+- [Phase 90]: Used str() conversion for cache key parts in build_key() calls to prevent TypeError with int/float/None query params
+- [Phase 90]: SEARCH_TTL=30s for /search endpoints to balance CDC freshness vs Redis cache load
 
 ## Last Session
 
-- **Stopped at:** Completed 90-02-PLAN.md
+- **Stopped at:** Completed 90-03-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
