@@ -3,6 +3,9 @@ import type {
   MarketOverviewEntry,
   ForecastRow,
   TrendDirection,
+  MultiHorizonForecastRow,
+  HorizonPrediction,
+  BulkPredictionResponse,
 } from "@/api";
 
 /**
@@ -58,4 +61,65 @@ export function extractSectors(rows: ForecastRow[]): string[] {
     rows.map((r) => r.sector).filter(Boolean) as string[],
   );
   return Array.from(sectors).sort();
+}
+
+/**
+ * Merge per-horizon bulk prediction results into one row per ticker.
+ * Input: array of { horizon: number; data: BulkPredictionResponse }
+ * Output: MultiHorizonForecastRow[] — one row per ticker that appears in at least one horizon.
+ * Tickers in market overview but absent from all predictions are NOT included.
+ */
+export function joinMultiHorizonForecastData(
+  horizonResults: Array<{ horizon: number; data: BulkPredictionResponse }>,
+  stocks: MarketOverviewEntry[],
+): MultiHorizonForecastRow[] {
+  const stockMap = new Map(stocks.map((s) => [s.ticker, s]));
+
+  // Build ticker → { horizonDays → PredictionResponse } map
+  const tickerHorizonMap = new Map<string, Record<number, PredictionResponse>>();
+  for (const { horizon, data } of horizonResults) {
+    for (const pred of data.predictions) {
+      if (!tickerHorizonMap.has(pred.ticker)) {
+        tickerHorizonMap.set(pred.ticker, {});
+      }
+      tickerHorizonMap.get(pred.ticker)![horizon] = pred;
+    }
+  }
+
+  // Emit one row per ticker that appeared in at least one horizon prediction
+  const rows: MultiHorizonForecastRow[] = [];
+  for (const [ticker, horizonPreds] of tickerHorizonMap) {
+    const stock = stockMap.get(ticker);
+    const currentPrice = stock?.last_close ?? null;
+    const horizons: MultiHorizonForecastRow["horizons"] = {};
+
+    for (const [hStr, pred] of Object.entries(horizonPreds)) {
+      const hNum = Number(hStr);
+      const expectedReturn =
+        currentPrice != null && currentPrice > 0
+          ? ((pred.predicted_price - currentPrice) / currentPrice) * 100
+          : 0;
+      const hp: HorizonPrediction = {
+        predicted_price: pred.predicted_price,
+        expected_return_pct: expectedReturn,
+        confidence: pred.confidence,
+        predicted_date: pred.predicted_date,
+        trend: deriveTrend(expectedReturn),
+      };
+      horizons[hNum] = hp;
+    }
+
+    const firstPred = Object.values(horizonPreds)[0];
+    rows.push({
+      ticker,
+      company_name: stock?.company_name ?? null,
+      sector: stock?.sector ?? null,
+      current_price: currentPrice,
+      daily_change_pct: stock?.daily_change_pct ?? null,
+      horizons,
+      model_name: firstPred?.model_name ?? "unknown",
+    });
+  }
+
+  return rows;
 }

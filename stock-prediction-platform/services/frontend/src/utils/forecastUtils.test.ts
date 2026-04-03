@@ -58,23 +58,25 @@ describe("joinMultiHorizonForecastData", () => {
     const stocks = [makeStock("AAPL", 175)];
     const rows = joinMultiHorizonForecastData(input, stocks);
     expect(rows).toHaveLength(1);
-    expect(rows[0].horizons[1]).toBeDefined();
-    expect(rows[0].horizons[7]).toBeUndefined();
+    const row = rows[0]!;
+    expect(row.horizons[1]).toBeDefined();
+    expect(row.horizons[7]).toBeUndefined();
   });
 
   it("calculates expected_return_pct correctly", () => {
     const input = [makeBulk(7, [makePred("AAPL", 182, "2026-04-10")])];
     const stocks = [makeStock("AAPL", 175)];
     const rows = joinMultiHorizonForecastData(input, stocks);
-    const returnPct = rows[0].horizons[7].expected_return_pct;
-    expect(returnPct).toBeCloseTo(((182 - 175) / 175) * 100, 4);
+    const h7 = rows[0]!.horizons[7]!;
+    expect(h7.expected_return_pct).toBeCloseTo(((182 - 175) / 175) * 100, 4);
   });
 
   it("handles ticker with no market data — current_price null, expected_return_pct 0", () => {
     const input = [makeBulk(7, [makePred("XYZ", 50, "2026-04-10")])];
     const rows = joinMultiHorizonForecastData(input, []);
-    expect(rows[0].current_price).toBeNull();
-    expect(rows[0].horizons[7].expected_return_pct).toBe(0);
+    const row = rows[0]!;
+    expect(row.current_price).toBeNull();
+    expect(row.horizons[7]!.expected_return_pct).toBe(0);
   });
 
   it("excludes ticker present in stocks but absent from all predictions (JNJ case)", () => {
