@@ -25,6 +25,35 @@ metadata:
     description: "Primary KServe InferenceService for stock prediction sklearn models"
     sidecar.istio.io/inject: "false"
 spec:
+  transformer:
+    containers:
+      - name: feast-transformer
+        image: stock-feast-transformer:latest
+        imagePullPolicy: Never
+        args:
+          - --model_name=stock-model-serving
+        env:
+          - name: FEAST_STORE_PATH
+            value: "/opt/feast"
+          - name: REDIS_HOST
+            value: "redis.storage.svc.cluster.local"
+          - name: REDIS_PORT
+            value: "6379"
+        volumeMounts:
+          - name: feast-config
+            mountPath: /opt/feast
+            readOnly: true
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+    volumes:
+      - name: feast-config
+        configMap:
+          name: feast-feature-store-config
   predictor:
     serviceAccountName: kserve-s3-sa
     minReplicas: 1

@@ -22,6 +22,9 @@ spec:
         metadata:
           labels:
             app: feast-materialize
+          annotations:
+            feast-snapshot-date: "daily-incremental"
+            feast-audit: "materialize_incremental advances watermark — snapshot date logged by ml.feature_store.materialize"
         spec:
           restartPolicy: OnFailure
           containers:
@@ -40,6 +43,8 @@ spec:
                 - secretRef:
                     name: minio-secrets
               env:
+                - name: FEAST_SNAPSHOT_LOG
+                  value: "true"
                 - name: DATABASE_URL
                   valueFrom:
                     secretKeyRef:
