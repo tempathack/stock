@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import {
   Autocomplete,
   Box,
+  Button,
   Container,
   LinearProgress,
   MenuItem,
@@ -12,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import LoadingButton from "@mui/lab/LoadingButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import { ExportButtons } from "@/components/ui";
@@ -162,7 +162,7 @@ export default function Backtest() {
           <Grid size={{ xs: 12, sm: 4, md: 2 }}>
             <Tooltip title="Run backtest with selected parameters">
               <span style={{ display: "block" }}>
-                <LoadingButton
+                <Button
                   loading={backtestQuery.isLoading}
                   variant="contained"
                   startIcon={<PlayArrowIcon />}
@@ -170,7 +170,7 @@ export default function Backtest() {
                   fullWidth
                 >
                   Run Backtest
-                </LoadingButton>
+                </Button>
               </span>
             </Tooltip>
           </Grid>
