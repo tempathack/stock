@@ -50,8 +50,8 @@
         "Typecheck passes"
       ],
       "priority": 3,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Root cause: transient PostgreSQL unavailability during job execution window (storage namespace restart loops affecting connectivity). Pods from failed runs were already GCed — confirmed via describe job. Fix applied: (1) Added _connect_with_retry() helper with 5-attempt exponential backoff to ml/features/store.py — prevents immediate failure on transient DB outage. (2) Added conn.rollback() in per-ticker exception handler to fix InFailedSqlTransaction bug where one ticker failure would corrupt connection state for all subsequent tickers. Manual job triggered and completed successfully: 160 tickers, 7.25M feature rows written."
     },
     {
       "id": "FIX-004",

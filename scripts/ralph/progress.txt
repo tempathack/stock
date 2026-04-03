@@ -58,3 +58,15 @@ Started: 2026-04-03
   - To debug PyFlink "Python process exits with code: 1": `kubectl exec -n flink <pod> -- /usr/bin/python3 /opt/flink/usrlib/<script>.py` to get the actual Python traceback
   - All Flink deployments should use `minio-s3-credentials` (not `minio-secrets`) for S3 checkpoint access
 ---
+
+## 2026-04-03 - FIX-003: Investigate daily-feature-store cron failures and fix root cause
+- Root cause: transient PostgreSQL unavailability from storage namespace restart loops (strimzi: 202 restarts, minio: 71 restarts, redis: 39 restarts cause brief network disruption). Pods from failed job runs (29584440, 29585880) were GCed — no logs retrievable. DB table, schema, and permissions are all correct.
+- Also discovered a latent bug: psycopg2 connection enters `InFailedSqlTransaction` state after any ticker exception, causing all subsequent tickers to fail silently — fixed with `conn.rollback()` in the per-ticker except handler.
+- Files modified: `ml/features/store.py`
+- Manual job triggered: `kubectl create job manual-feature-store-fix --from=cronjob/daily-feature-store -n ml`
+- Manual job completed successfully: 160 tickers, 7.25M feature rows written in ~10 minutes
+- **Learnings for future iterations:**
+  - psycopg2: after any exception within a transaction, must call `conn.rollback()` before executing more queries on the same connection
+  - daily-feature-store cron job uses `stockuser` (from configmap POSTGRES_USER), not `stock_writer` (from DATABASE_URL_WRITER secret) — the DATABASE_URL secret is ignored by DBSettings.from_env()
+  - When job pods are GCed (failedJobsHistoryLimit=3 keeps jobs but pods get cleaned up), use `kubectl describe job` to see final status; cannot recover logs
+---

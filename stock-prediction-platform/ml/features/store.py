@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+import time
 from datetime import date
 
 import pandas as pd
@@ -19,6 +20,44 @@ from ml.features.lag_features import (
 from ml.pipelines.components.data_loader import DBSettings, load_ticker_data
 
 logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Connection helper with retry
+# ---------------------------------------------------------------------------
+
+_DB_CONNECT_RETRIES = 5
+_DB_CONNECT_BACKOFF = 10  # seconds between attempts
+
+
+def _connect_with_retry(settings: DBSettings):
+    """Open a psycopg2 connection with exponential-ish retry on transient failures.
+
+    Retries up to ``_DB_CONNECT_RETRIES`` times with ``_DB_CONNECT_BACKOFF``-second
+    waits to survive brief PostgreSQL restarts (e.g. storage-namespace OOMKill cycles).
+    """
+    last_exc: Exception | None = None
+    for attempt in range(1, _DB_CONNECT_RETRIES + 1):
+        try:
+            return psycopg2.connect(
+                host=settings.host,
+                port=settings.port,
+                dbname=settings.database,
+                user=settings.user,
+                password=settings.password,
+            )
+        except psycopg2.OperationalError as exc:
+            last_exc = exc
+            if attempt < _DB_CONNECT_RETRIES:
+                wait = _DB_CONNECT_BACKOFF * attempt
+                logger.warning(
+                    "DB connection attempt %d/%d failed — retrying in %ds: %s",
+                    attempt, _DB_CONNECT_RETRIES, wait, exc,
+                )
+                time.sleep(wait)
+    raise RuntimeError(
+        f"Could not connect to PostgreSQL after {_DB_CONNECT_RETRIES} attempts"
+    ) from last_exc
+
 
 # ---------------------------------------------------------------------------
 # Feature computation
@@ -109,13 +148,7 @@ def compute_and_store(
     if settings is None:
         settings = DBSettings.from_env()
 
-    conn = psycopg2.connect(
-        host=settings.host,
-        port=settings.port,
-        dbname=settings.database,
-        user=settings.user,
-        password=settings.password,
-    )
+    conn = _connect_with_retry(settings)
     result: dict[str, int] = {}
     try:
         for ticker in tickers:
@@ -128,6 +161,11 @@ def compute_and_store(
             except Exception:
                 logger.exception("Failed to compute/store features for %s.", ticker)
                 result[ticker] = 0
+                # Roll back the aborted transaction so subsequent tickers can proceed.
+                try:
+                    conn.rollback()
+                except Exception:
+                    pass
     finally:
         conn.close()
 
@@ -155,13 +193,7 @@ def read_features(
     if settings is None:
         settings = DBSettings.from_env()
 
-    conn = psycopg2.connect(
-        host=settings.host,
-        port=settings.port,
-        dbname=settings.database,
-        user=settings.user,
-        password=settings.password,
-    )
+    conn = _connect_with_retry(settings)
     result: dict[str, pd.DataFrame] = {}
     try:
         cursor = conn.cursor()
@@ -267,13 +299,7 @@ if __name__ == "__main__":
     if args.tickers:
         ticker_list = [t.strip() for t in args.tickers.split(",")]
     elif args.compute_all:
-        conn = psycopg2.connect(
-            host=settings.host,
-            port=settings.port,
-            dbname=settings.database,
-            user=settings.user,
-            password=settings.password,
-        )
+        conn = _connect_with_retry(settings)
         try:
             ticker_list = _get_active_tickers(conn)
         finally:
