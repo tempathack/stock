@@ -158,4 +158,5 @@ async def get_backtest_data(
             "total_points": len(series),
         },
         "series": series,
+        "features_pit_correct": False,  # TODO: set True when prediction_date >= KSERVE_TRANSFORMER_DEPLOY_DATE
     }

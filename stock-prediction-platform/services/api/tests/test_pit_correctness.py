@@ -127,19 +127,22 @@ def test_pit_missing_timestamp_column_raises_value_error():
         assert_no_future_leakage(result_df, entity_df)
 
 
-@pytest.mark.xfail(reason="features_pit_correct field added to BacktestResponse in Plan 03")
 def test_response_includes_pit_flag():
-    """BacktestResponse schema includes features_pit_correct: bool field.
-
-    This test is xfail until Plan 03 adds the field. After Plan 03 it must pass.
-    Remove the xfail marker after Plan 03 is executed.
-    """
+    """BacktestResponse schema includes features_pit_correct: bool field (PIT-04)."""
     from app.models.schemas import BacktestResponse
 
     fields = BacktestResponse.model_fields
     assert "features_pit_correct" in fields, (
-        "BacktestResponse must have features_pit_correct field (added in Plan 03)"
+        "BacktestResponse must have features_pit_correct field"
     )
-    assert fields["features_pit_correct"].annotation in (bool, "bool"), (
-        "features_pit_correct must be type bool"
+    # Verify default is False (existing predictions are not PIT-correct)
+    response = BacktestResponse(
+        ticker="AAPL",
+        model_name="Ridge",
+        horizon=7,
+        start_date="2024-01-01",
+        end_date="2024-06-01",
+        metrics={"rmse": 1.0, "mae": 0.8, "mape": 0.5, "directional_accuracy": 55.0, "r2": 0.3, "total_points": 10},
+        series=[],
     )
+    assert response.features_pit_correct is False

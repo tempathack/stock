@@ -214,6 +214,8 @@ class BacktestResponse(BaseModel):
     end_date: str
     metrics: BacktestMetrics
     series: list[BacktestDataPoint]
+    features_pit_correct: bool = False
+    """True when predictions were generated via KServe Transformer + Feast (PIT-correct path)."""
 
 
 # ── A/B Testing ───────────────────────────────────────────────────────────
