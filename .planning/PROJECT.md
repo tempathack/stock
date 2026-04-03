@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-03 — Phase 89 complete (Live sentiment timeseries chart in Dashboard: SentimentTimeseriesChart recharts LineChart (10h rolling window, 2-min Flink TUMBLE intervals) wired into SentimentPanel; sentiment_timeseries TimescaleDB hypertable + REST endpoint + Flink JDBC sink; Promtail K8s SD path separator fix)*
+*Last updated: 2026-04-03 — Phase 90 complete (Debezium CDC + Elasticsearch integration: Elasticsearch 8 StatefulSet + Kibana K8s manifests; Debezium Connect pipeline with PostgreSQL source + ES sink connectors for predictions/drift_logs/model_registry; FastAPI /search/* endpoints with AsyncElasticsearch + 30s cache; React /search page with unified search box + 4 tabbed DataGrids; Playwright-verified in live browser)*
