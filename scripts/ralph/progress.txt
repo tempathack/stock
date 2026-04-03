@@ -196,6 +196,17 @@ Started: 2026-04-03
   - `Controlled By: CronJob/weekly-training` in job describe output identifies the parent CronJob — useful to determine if job is recurring
 ---
 
+## 2026-04-03 - FIX-014: Fix MUI LoadingButton deprecation in Backtest page
+- MUI v7 merges LoadingButton into Button core — `loading` prop is natively supported by `<Button>` from `@mui/material`
+- Replaced `import LoadingButton from "@mui/lab/LoadingButton"` with `Button` added to existing `@mui/material` import
+- Replaced `<LoadingButton>` / `</LoadingButton>` with `<Button>` / `</Button>` — all props (loading, variant, startIcon, onClick, fullWidth) identical
+- Files modified: `services/frontend/src/pages/Backtest.tsx`
+- Verified in browser: Backtest page renders with Run Backtest button, no LoadingButton deprecation warnings in console
+- **Learnings for future iterations:**
+  - MUI v7 Button natively supports `loading` prop — `@mui/lab/LoadingButton` is redundant and deprecated
+  - The instructions say "use `@mui/lab <LoadingButton>`" but that was MUI v5 guidance — in v7, use `Button` from `@mui/material` directly
+---
+
 ## 2026-04-03 - FIX-012: Monitor daily-drift first execution and verify drift data populates
 - Triggered manually: `kubectl create job manual-daily-drift-test --from=cronjob/daily-drift -n ml`
 - Job completed successfully: loaded 10 tickers (1266-1269 rows each), engineered 51 features/ticker, detected data_drift=True severity=high (rsi_14 PSI=0.28, macd_line PSI=0.22 both drifted), logged drift event to DB
