@@ -174,7 +174,7 @@ def main() -> None:
             'topic'                        = 'reddit-raw',
             'properties.bootstrap.servers' = '{kafka_servers}',
             'properties.group.id'          = 'flink-sentiment-stream',
-            'scan.startup.mode'            = 'group-offsets',
+            'scan.startup.mode'            = 'latest-offset',
             'format'                       = 'json',
             'json.ignore-parse-errors'     = 'true'
         )
@@ -240,7 +240,7 @@ def main() -> None:
             vader_score(CONCAT(COALESCE(title, ''), ' ', COALESCE(body, ''))) AS compound_score
         FROM reddit_raw_source
         CROSS JOIN UNNEST(tickers) AS t(ticker)
-        WHERE ARRAY_LENGTH(tickers) > 0
+        WHERE CARDINALITY(tickers) > 0
     """)
 
     # TUMBLE window aggregation: 2-min tumbling window (no overlap).

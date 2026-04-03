@@ -23,7 +23,7 @@ Started: 2026-04-03
 - strimzi-cluster-operator and kafka-entity-operator are prone to OOMKill — set memory >= 512Mi
 - MinIO restarts are OOM-related — set memory limit >= 512Mi, request >= 256Mi
 - Redis needs --maxmemory 256mb --maxmemory-policy allkeys-lru to prevent OOM cycling
-- sentiment-stream crashed with Python exit code 1 — check sentiment_stream.py startup
+- sentiment-stream FIXED: ARRAY_LENGTH→CARDINALITY, scan.startup.mode→'latest-offset', minio-secrets→minio-s3-credentials
 - daily-feature-store cron: 2x consecutive failures — investigate before next run at 18:00 weekdays
 - daily-drift cron: newly added, first run scheduled at 22:00 weekdays — monitor first execution
 - FastAPI CORSMiddleware MUST be added last (outermost) — adding it first causes CORS headers to be missing from responses because BaseHTTPMiddleware layers interfere. Order: RequestContextMiddleware → RateLimitMiddleware → CORSMiddleware (last added = outermost)
@@ -42,4 +42,19 @@ Started: 2026-04-03
   - CORS middleware order: add CORSMiddleware LAST (outermost), after all BaseHTTPMiddleware subclasses
   - API Docker build context must be stock-prediction-platform/ root (not services/api/) — Dockerfile COPYs from ml/
   - Port-forward must be restarted after kubectl rollout restart changes the target pod
+---
+
+## 2026-04-03 - FIX-002: Diagnose and fix sentiment-stream Flink job Python crash (exit code 1)
+- Root cause 1: `ARRAY_LENGTH()` is not a valid Flink 1.19 SQL function — correct function is `CARDINALITY()`
+- Root cause 2: `scan.startup.mode = 'group-offsets'` fails with NoOffsetForPartitionException when consumer group has no stored offsets — changed to `'latest-offset'` (valid values: earliest-offset, latest-offset, group-offsets, timestamp, specific-offsets)
+- Root cause 3: FlinkDeployment manifest used `minio-secrets` (MINIO_ROOT_USER/MINIO_ROOT_PASSWORD) — S3 plugin requires `minio-s3-credentials` (AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY)
+- Files modified: `services/flink-jobs/sentiment_stream/sentiment_stream.py`, `k8s/flink/flinkdeployment-sentiment-stream.yaml`
+- Rebuilt image in Minikube context, delete+reapply FlinkDeployment (rollout restart not sufficient — operator reconciles back to cached spec)
+- Verified: sentiment-stream shows RUNNING/STABLE
+- **Learnings for future iterations:**
+  - Flink SQL valid array length function is `CARDINALITY()`, NOT `ARRAY_LENGTH()`
+  - Valid Kafka scan.startup.mode values: `earliest-offset`, `latest-offset`, `group-offsets`, `timestamp`, `specific-offsets` — NOT `'latest'` or `'earliest'`
+  - `kubectl rollout restart` is insufficient to update Flink jobs — must delete and reapply FlinkDeployment
+  - To debug PyFlink "Python process exits with code: 1": `kubectl exec -n flink <pod> -- /usr/bin/python3 /opt/flink/usrlib/<script>.py` to get the actual Python traceback
+  - All Flink deployments should use `minio-s3-credentials` (not `minio-secrets`) for S3 checkpoint access
 ---
