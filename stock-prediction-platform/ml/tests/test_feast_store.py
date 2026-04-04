@@ -115,6 +115,7 @@ def test_training_features_include_core_feature_views():
 
     Phase 92 added sentiment (now removed in Phase 93).
     Phase 93 adds yfinance_macro_fv with 5 columns, giving 35 total features.
+    Phase 94 adds fred_macro_fv with 14 FRED series, giving 49 total features.
     """
     from ml.features.feast_store import _TRAINING_FEATURES
     views = {f.split(":")[0] for f in _TRAINING_FEATURES}
@@ -122,8 +123,9 @@ def test_training_features_include_core_feature_views():
     assert "technical_indicators_fv" in views
     assert "lag_features_fv" in views
     assert "yfinance_macro_fv" in views
-    assert len(_TRAINING_FEATURES) == 35, (
-        f"Expected 35 features (30 existing + 5 yfinance macro), got {len(_TRAINING_FEATURES)}"
+    assert "fred_macro_fv" in views
+    assert len(_TRAINING_FEATURES) == 49, (
+        f"Expected 49 features (35 existing + 14 FRED macro), got {len(_TRAINING_FEATURES)}"
     )
 
 

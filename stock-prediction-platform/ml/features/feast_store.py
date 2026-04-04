@@ -28,7 +28,9 @@ FEAST_REPO_PATH = os.environ.get(
 )
 
 # All training features spanning ohlcv_stats_fv, technical_indicators_fv,
-# lag_features_fv, and yfinance_macro_fv (Phase 93: sentiment removed, macro added)
+# lag_features_fv, yfinance_macro_fv, and fred_macro_fv
+# (Phase 93: sentiment removed, yfinance macro added; Phase 94: 14 FRED series added)
+# Total: 49 features (7 ohlcv + 9 indicators + 14 lag + 5 yfinance_macro + 14 fred_macro)
 _TRAINING_FEATURES: list[str] = [
     "ohlcv_stats_fv:open",
     "ohlcv_stats_fv:high",
@@ -65,6 +67,21 @@ _TRAINING_FEATURES: list[str] = [
     "yfinance_macro_fv:sector_return",
     "yfinance_macro_fv:high52w_pct",
     "yfinance_macro_fv:low52w_pct",
+    # Phase 94: FRED macro features (14 series)
+    "fred_macro_fv:dgs2",
+    "fred_macro_fv:dgs10",
+    "fred_macro_fv:t10y2y",
+    "fred_macro_fv:t10y3m",
+    "fred_macro_fv:bamlh0a0hym2",
+    "fred_macro_fv:dbaa",
+    "fred_macro_fv:t10yie",
+    "fred_macro_fv:dcoilwtico",
+    "fred_macro_fv:dtwexbgs",
+    "fred_macro_fv:dexjpus",
+    "fred_macro_fv:icsa",
+    "fred_macro_fv:nfci",
+    "fred_macro_fv:cpiaucsl",
+    "fred_macro_fv:pcepilfe",
 ]
 
 # Key features for real-time inference from Redis
