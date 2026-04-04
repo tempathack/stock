@@ -198,8 +198,8 @@ export default function OLAPCandleChart() {
                 }}
               />
               <Bar dataKey="bodyRange" shape={<CandleShape />} isAnimationActive={false}>
-                {chartData.map((entry) => (
-                  <Cell key={entry.date} fill={entry.isUp ? GREEN : RED} />
+                {chartData.map((entry, i) => (
+                  <Cell key={`${entry.date}-${i}`} fill={entry.isUp ? GREEN : RED} />
                 ))}
               </Bar>
             </ComposedChart>

@@ -305,3 +305,16 @@ Previous run codebase patterns (still valid):
   - Playwright screenshot timeout (waiting for fonts) can happen after many interactions — close and reopen browser to reset
   - The scrollable container in Dashboard is the `<main>` element (overflow: auto), not window — use main.scrollTop to scroll, not window.scrollTo
 ---
+
+## 2026-04-04 - US-008: Verify Models, Drift, and Analytics tabs are fully working
+- Models tab: 9 models rendered, stacking_ensemble Winner card, CatBoost_standard Active, 0 console errors ✅
+- Drift tab: ActiveModelCard (CatBoost_standard Active, Trained Mar 22), Retraining Status (Up to Date), DriftTimeline (15 events) ✅
+- Analytics tab: 4 stat cards, Stream Health (3 RUNNING), Feature Freshness, OLAP Candle Chart, Kafka Stream Lag — all render ✅
+- Fixed OLAPCandleChart console error: Cell key `entry.date` was non-unique for 1H data (multiple candles share same date string); changed to `${entry.date}-${i}` to guarantee uniqueness
+- TypeScript 0 errors, npm run build succeeded
+- Screenshots: models-full-verify.png, drift-full-verify.png, analytics-fixed-verify.png (after fix)
+- Files modified: services/frontend/src/components/analytics/OLAPCandleChart.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Recharts Cell key uniqueness: when dataKey is a date string (YYYY-MM-DD), 1H candle data will have multiple entries per day — always use `${entry.date}-${index}` pattern
+  - All 3 tabs (Models, Drift, Analytics) were working without code changes other than the OLAPCandleChart key fix
+---
