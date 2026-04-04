@@ -1,5 +1,6 @@
 import { useQuery, useQueries } from "@tanstack/react-query";
 import apiClient from "./client";
+import { fetchMacroLatest } from "./client";
 import type {
   HealthResponse,
   K8sHealthResponse,
@@ -23,6 +24,7 @@ import type {
   ModelSearchResponse,
   DriftEventSearchResponse,
   StockSearchResponse,
+  MacroLatest,
 } from "./types";
 
 /* ── query key constants ───────────────────────────────── */
@@ -382,5 +384,17 @@ export function useSearchStocks(params: SearchParams, enabled: boolean = false) 
     },
     staleTime: 30_000,
     enabled,
+  });
+}
+
+// ── Macro Environment (Phase 95) ───────────────────────────────────────────
+
+export function useMacroLatest(): ReturnType<typeof useQuery<MacroLatest>> {
+  return useQuery<MacroLatest>({
+    queryKey: ["macro", "latest"],
+    queryFn: fetchMacroLatest,
+    refetchInterval: 60_000,   // 60s auto-refresh
+    staleTime: 55_000,
+    retry: false,
   });
 }

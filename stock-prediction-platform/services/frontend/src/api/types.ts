@@ -505,3 +505,20 @@ export type PredictionSearchResponse = SearchPaginatedResponse<PredictionSearchI
 export type ModelSearchResponse = SearchPaginatedResponse<ModelSearchItem>;
 export type DriftEventSearchResponse = SearchPaginatedResponse<DriftEventSearchItem>;
 export type StockSearchResponse = SearchPaginatedResponse<StockSearchItem>;
+
+// ── Macro Environment (Phase 95) ───────────────────────────────────────────
+
+export interface MacroLatest {
+  as_of_date: string | null;
+  vix: number | null;
+  spy_return: number | null;
+  dgs10: number | null;
+  t10y2y: number | null;
+  baml_hy_oas: number | null;
+  wti_crude: number | null;
+  usd_broad: number | null;
+  icsa: number | null;
+  core_pce: number | null;
+  dgs2: number | null;
+  t10yie: number | null;
+}
