@@ -563,3 +563,18 @@ Previous run codebase patterns (still valid):
   - MacroHistoryPoint already had all 19 fields — chart just needed SERIES_CONFIG entries
   - Color uniqueness matters: scan existing colors before assigning new ones
 ---
+
+## 2026-04-04 - US-006: Populate feast_yfinance_macro synthetic data and final production verification
+- Verified feast_yfinance_macro already had non-null sector_return (0.0008), high52w_pct (0.85), low52w_pct (0.35) — no UPDATE needed
+- Verified macro_fred_daily already had non-null dbaa (5.538), dexjpus (152.79), nfci (-0.085), cpiaucsl (313.27) — no UPDATE needed
+- Warmed Redis cache for all 4 horizons: curl /predict/bulk?horizon={1,7,14,30} in parallel
+- Verified 7-tab production pass via Playwright MCP: Dashboard (Market + Macro), Forecasts, Models, Drift, Analytics, Backtest, Search — 0 console errors on all pages
+- Macro panel shows all 19 cards with real data: VIX (18.50), SPY Return (+0.12%), 10Y Yield (4.39%), 2-10 Spread (-0.67%), HY Spread (292.70), WTI Crude (70.66), USD Index (110.5), Initial Claims (217,997), Core PCE (122.883), Sector Return (+0.08%), 52W High % (0.85), 52W Low % (0.35), 3M-10Y Spread (-0.49%), BAA Yield (5.45%), USD/JPY (149.9), NFCI (-0.10), CPI Index (314.8), 2Y Yield (4.82%), 10Y Breakeven (2.25)
+- MacroChart shows all series chips including new: 3M-10Y Spread, BAA Yield, USD/JPY, Jobless Claims, NFCI, CPI, Core PCE, Sector Return, 52W High %, 52W Low %
+- Screenshots: final-macro-all-cards.png, final-market.png, final-macro.png, final-forecasts.png, final-models.png, final-drift.png, final-analytics.png, final-backtest.png, final-search.png
+- Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - feast_yfinance_macro and macro_fred_daily were already populated from earlier phases (93, 94) — always check before running UPDATEs
+  - Redis cache for /predict/bulk expires — always warm with curl on all 4 horizons before doing Playwright verification of Forecasts page
+  - All 19 macro cards render with real DB data; no synthetic data injection was needed
+---
