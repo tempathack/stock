@@ -432,3 +432,15 @@ Previous run codebase patterns (still valid):
   - Correct command: docker build -t stock-api:latest -f stock-prediction-platform/services/api/Dockerfile stock-prediction-platform/
   - Backend pytest failures are pre-existing env issues (no elasticsearch module locally) — not caused by my changes
 ---
+
+## 2026-04-04 - US-005: Add fetchMacroHistory API client and useMacroHistory hook to frontend
+- Added MacroHistoryPoint TypeScript interface to src/api/types.ts (15 fields: as_of_date + 14 FRED series as number | null)
+- Added fetchMacroHistory(days=90) to src/api/client.ts (native fetch to /market/macro/history?days={days})
+- Created src/hooks/useMacroHistory.ts: useState-based hook returning { data, loading, error }
+- Updated src/api/index.ts to export fetchMacroHistory from client and useMacroHistory from hooks
+- TypeScript 0 errors, npm run build succeeded
+- Files created/modified: src/api/types.ts, src/api/client.ts, src/hooks/useMacroHistory.ts, src/api/index.ts
+- **Learnings for future iterations:**
+  - index.ts uses named export syntax `export { default as apiClient, fetchMacroLatest, fetchMacroHistory }` to expose named client functions — adding new functions requires updating this export list
+  - Hook uses cancelled flag in useEffect cleanup to prevent setState after unmount (avoids React memory leak warning)
+---

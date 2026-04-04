@@ -508,6 +508,24 @@ export type StockSearchResponse = SearchPaginatedResponse<StockSearchItem>;
 
 // ── Macro Environment (Phase 95) ───────────────────────────────────────────
 
+export interface MacroHistoryPoint {
+  as_of_date: string;
+  dgs2: number | null;
+  dgs10: number | null;
+  t10y2y: number | null;
+  t10y3m: number | null;
+  bamlh0a0hym2: number | null;
+  dbaa: number | null;
+  t10yie: number | null;
+  dcoilwtico: number | null;
+  dtwexbgs: number | null;
+  dexjpus: number | null;
+  icsa: number | null;
+  nfci: number | null;
+  cpiaucsl: number | null;
+  pcepilfe: number | null;
+}
+
 export interface MacroLatest {
   as_of_date: string | null;
   vix: number | null;

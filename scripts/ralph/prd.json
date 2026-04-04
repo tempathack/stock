@@ -73,8 +73,8 @@
         "Typecheck passes"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added MacroHistoryPoint (15 fields) to types.ts, fetchMacroHistory() to client.ts, useMacroHistory hook to src/hooks/useMacroHistory.ts. Exported fetchMacroHistory and useMacroHistory from api/index.ts. TypeScript 0 errors, npm run build succeeded."
     },
     {
       "id": "US-006",
