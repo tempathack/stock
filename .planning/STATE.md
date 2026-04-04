@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 94-01-PLAN.md
-last_updated: "2026-04-04T13:59:30.059Z"
+stopped_at: Completed 94-02-PLAN.md
+last_updated: "2026-04-04T14:06:35.758Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -442,10 +442,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 93]: Archive-stub pattern: files referencing deleted Feast registry objects raise NotImplementedError or return static available=False
 - [Phase 94]: Used monkeypatch.setenv for FRED_API_KEY isolation in all fetch_fred_macro tests
 - [Phase 94]: TestCreateFredMacroTable uses explicit MagicMock context manager protocol for clean psycopg2 isolation
+- [Phase 94]: Implemented FRED functions inline in yahoo_finance.py rather than cross-service import from ml layer to preserve service boundary
+- [Phase 94]: FRED fetch in ingest.py guarded by historical mode condition to avoid FRED rate limit hits on intraday ingestion runs
 
 ## Last Session
 
-- **Stopped at:** Completed 94-01-PLAN.md
+- **Stopped at:** Completed 94-02-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

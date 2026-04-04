@@ -92,7 +92,7 @@
 | 91 | Phase 91 | Planned | — | — |
 | 92 | Phase 92 | Planned | — | — |
 | 93 | 4/4 | Complete    | 2026-04-04 | 3 plans |
-| 94 | 1/3 | In Progress|  | 3 plans |
+| 94 | 2/3 | In Progress|  | 3 plans |
 | 95 | Dashboard Macro Panel | Planned | — | 2 plans |
 | 96 | sktime Statistical Forecasting + Regression Models | Planned | — | 5 plans |
 
@@ -1737,7 +1737,7 @@ Plans:
 **Requirements:** TBD
 
 **Depends on:** Phase 93
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 - [ ] 94-01-PLAN.md — TDD test scaffolds (RED state): FredCollector fetch contract
