@@ -211,10 +211,24 @@ def run_training_pipeline(
                 result.steps_completed.append("load_feast_data")
                 logger.info("Step 1/12 load_feast_data (Feast offline) — %d tickers", len(data_dict))
             else:
-                from ml.pipelines.components.data_loader import load_data
+                from ml.pipelines.components.data_loader import load_data, load_yfinance_macro
                 data_dict = load_data(tickers=tickers, settings=db_settings)
                 result.steps_completed.append("load_data")
                 logger.info("Step 1/12 load_data — %d tickers", len(data_dict))
+
+                # Step 1b: Fetch and join yfinance macro features per ticker
+                try:
+                    import pandas as _pd
+                    _start = "2019-01-01"
+                    _end = _pd.Timestamp.now().strftime("%Y-%m-%d")
+                    macro_df = load_yfinance_macro(list(data_dict.keys()), _start, _end)
+                    _macro_cols = ["vix", "spy_return", "sector_return", "high52w_pct", "low52w_pct"]
+                    for _ticker, _df in data_dict.items():
+                        _macro_ticker = macro_df[macro_df["ticker"] == _ticker][_macro_cols]
+                        data_dict[_ticker] = _df.join(_macro_ticker, how="left")
+                    logger.info("Step 1b/12 load_yfinance_macro — macro features joined for %d tickers", len(data_dict))
+                except Exception as _exc:
+                    logger.warning("Step 1b/12 load_yfinance_macro — failed (%s); continuing without macro features", _exc)
         else:
             # Pre-loaded data_dict provided — track step for consistent step count
             result.steps_completed.append("load_data")

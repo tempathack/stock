@@ -26,7 +26,8 @@ except ImportError:
 # Expose at module level so tests can patch app.services.prediction_service.get_online_features
 get_online_features = _feast_get_online
 
-# Feast online features — all 34 numeric features from all 4 views
+# Feast online features — 30 numeric features from ohlcv/technical/lag views
+# (Phase 93: reddit_sentiment_fv removed; yfinance_macro_fv is offline-only)
 _ALL_ONLINE_FEATURES = [
     "ohlcv_stats_fv:open", "ohlcv_stats_fv:high", "ohlcv_stats_fv:low",
     "ohlcv_stats_fv:close", "ohlcv_stats_fv:volume",
@@ -42,8 +43,6 @@ _ALL_ONLINE_FEATURES = [
     "lag_features_fv:rolling_mean_5", "lag_features_fv:rolling_mean_10",
     "lag_features_fv:rolling_mean_21", "lag_features_fv:rolling_std_5",
     "lag_features_fv:rolling_std_10", "lag_features_fv:rolling_std_21",
-    "reddit_sentiment_fv:avg_sentiment", "reddit_sentiment_fv:mention_count",
-    "reddit_sentiment_fv:positive_ratio", "reddit_sentiment_fv:negative_ratio",
 ]
 
 

@@ -3,16 +3,19 @@
 This file is the Feast repository root scanned by ``feast apply``.
 All objects must be defined at module top level so Feast discovers them.
 
-Source tables (feast_ohlcv_stats, feast_technical_indicators, feast_lag_features)
-are created by the Alembic migration in ml/alembic/versions/0001_feast_wide_format_tables.py.
+Source tables (feast_ohlcv_stats, feast_technical_indicators, feast_lag_features,
+feast_yfinance_macro) are created by Alembic migrations or the macro collector.
 feast apply registers metadata only; it does NOT create these tables.
+
+Phase 93: removed reddit_sentiment_fv and reddit_sentiment_push;
+          added yfinance_macro_source and yfinance_macro_fv.
 """
 from __future__ import annotations
 
 from datetime import timedelta
 
-from feast import Entity, FeatureView, Field, PushSource
-from feast.types import Float64, Int64, String
+from feast import Entity, FeatureView, Field
+from feast.types import Float64, Int64
 from feast.infra.offline_stores.contrib.postgres_offline_store.postgres_source import (
     PostgreSQLSource,
 )
@@ -133,25 +136,28 @@ lag_features_fv = FeatureView(
     source=lag_source,
 )
 
-# ── Phase 71: Reddit Sentiment FeatureView ───────────────────────────────────
+# ── Phase 93: yfinance Macro FeatureView ─────────────────────────────────────
 
-reddit_sentiment_push = PushSource(
-    name="reddit_sentiment_push",
-    batch_source=indicators_source,  # Placeholder batch source — push-only in practice
+yfinance_macro_source = PostgreSQLSource(
+    name="yfinance_macro_source",
+    query=(
+        "SELECT ticker, timestamp, vix, spy_return, sector_return, high52w_pct, low52w_pct "
+        "FROM feast_yfinance_macro"
+    ),
+    timestamp_field="timestamp",
+    created_timestamp_column="created_at",
 )
 
-reddit_sentiment_fv = FeatureView(
-    name="reddit_sentiment_fv",
+yfinance_macro_fv = FeatureView(
+    name="yfinance_macro_fv",
     entities=[ticker],
-    ttl=timedelta(minutes=10),  # Short TTL — stale if pipeline stops
+    ttl=timedelta(days=365),
     schema=[
-        Field(name="avg_sentiment",   dtype=Float64),
-        Field(name="mention_count",   dtype=Int64),
-        Field(name="positive_ratio",  dtype=Float64),
-        Field(name="negative_ratio",  dtype=Float64),
-        Field(name="top_subreddit",   dtype=String),
+        Field(name="vix",            dtype=Float64),
+        Field(name="spy_return",     dtype=Float64),
+        Field(name="sector_return",  dtype=Float64),
+        Field(name="high52w_pct",    dtype=Float64),
+        Field(name="low52w_pct",     dtype=Float64),
     ],
-    online=True,
-    source=indicators_source,  # Required placeholder batch source
-    stream_source=reddit_sentiment_push,
+    source=yfinance_macro_source,
 )

@@ -174,9 +174,6 @@ def load_data(
 # Feast offline data loading (Phase 92)
 # ---------------------------------------------------------------------------
 
-_SENTIMENT_COLS = ["avg_sentiment", "mention_count", "positive_ratio", "negative_ratio"]
-
-
 def load_feast_data(
     tickers: list[str],
     start_date: str,
@@ -185,9 +182,8 @@ def load_feast_data(
     """Load historical training features from Feast offline (PostgreSQL) store.
 
     Replaces load_data() + engineer_features() for the Feast training path.
-    Returns a flat DataFrame with one row per (ticker, date) and 34 feature columns.
-    Entity/timestamp columns (ticker, event_timestamp) are dropped before return.
-    Null sentiment values (sparse Reddit coverage) are filled with 0.0.
+    Returns a flat DataFrame with one row per (ticker, date) and 35 feature columns
+    (30 OHLCV/technical/lag + 5 yfinance macro). Entity/timestamp columns are dropped.
 
     Args:
         tickers: List of ticker symbols (e.g. ["AAPL", "MSFT"]).
@@ -195,7 +191,7 @@ def load_feast_data(
         end_date: ISO date string "YYYY-MM-DD" — training window end.
 
     Returns:
-        DataFrame with columns matching _TRAINING_FEATURES bare names (34 columns),
+        DataFrame with columns matching _TRAINING_FEATURES bare names (35 columns),
         plus "ticker" column for grouping. event_timestamp is dropped.
     """
     dates = pd.date_range(start=start_date, end=end_date, freq="B")
@@ -212,12 +208,7 @@ def load_feast_data(
         features=_TRAINING_FEATURES,
     ).to_df()
 
-    # Fill sparse sentiment columns first (most commonly None)
-    for col in _SENTIMENT_COLS:
-        if col in df.columns:
-            df[col] = df[col].fillna(0.0)
-
-    # Fill any remaining NaN (e.g. warm-up period for lag features)
+    # Fill any NaN (e.g. warm-up period for lag features, macro join gaps)
     df = df.fillna(0.0)
 
     # Drop entity/timestamp columns — keep ticker for grouping in training pipeline
@@ -356,3 +347,122 @@ def load_yfinance_macro(
     final = final.set_index("date")
     logger.info("load_yfinance_macro: %d rows for %d tickers", len(final), len(tickers))
     return final
+
+
+# ---------------------------------------------------------------------------
+# feast_yfinance_macro table helpers (Phase 93)
+# ---------------------------------------------------------------------------
+
+_CREATE_MACRO_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS feast_yfinance_macro (
+    ticker        TEXT            NOT NULL,
+    timestamp     TIMESTAMPTZ     NOT NULL,
+    created_at    TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
+    vix           DOUBLE PRECISION,
+    spy_return    DOUBLE PRECISION,
+    sector_return DOUBLE PRECISION,
+    high52w_pct   DOUBLE PRECISION,
+    low52w_pct    DOUBLE PRECISION,
+    PRIMARY KEY (ticker, timestamp)
+);
+SELECT create_hypertable('feast_yfinance_macro', 'timestamp', if_not_exists => TRUE);
+"""
+
+
+def create_macro_table(settings: DBSettings | None = None) -> None:
+    """Create the feast_yfinance_macro TimescaleDB table if it does not exist.
+
+    Safe to call multiple times — uses IF NOT EXISTS and if_not_exists => TRUE.
+
+    Args:
+        settings: DBSettings instance; defaults to DBSettings.from_env().
+    """
+    if settings is None:
+        settings = DBSettings.from_env()
+
+    conn = psycopg2.connect(
+        host=settings.host,
+        port=settings.port,
+        dbname=settings.database,
+        user=settings.user,
+        password=settings.password,
+    )
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(_CREATE_MACRO_TABLE_SQL)
+        logger.info("create_macro_table: feast_yfinance_macro ready.")
+    finally:
+        conn.close()
+
+
+def write_yfinance_macro_to_db(
+    macro_df: pd.DataFrame,
+    settings: DBSettings | None = None,
+) -> int:
+    """Write yfinance macro rows to feast_yfinance_macro, upserting on (ticker, timestamp).
+
+    Args:
+        macro_df: DataFrame with columns ticker, date (or DatetimeIndex), vix,
+                  spy_return, sector_return, high52w_pct, low52w_pct.
+        settings: DBSettings instance; defaults to DBSettings.from_env().
+
+    Returns:
+        Number of rows upserted.
+    """
+    if settings is None:
+        settings = DBSettings.from_env()
+
+    df = macro_df.copy()
+    if "ticker" not in df.columns:
+        raise ValueError("macro_df must have a 'ticker' column")
+
+    # Ensure 'date' is a column (not just the index)
+    if "date" not in df.columns:
+        df = df.reset_index()
+        df = df.rename(columns={"index": "date"})
+
+    required_cols = ["ticker", "date", "vix", "spy_return", "sector_return", "high52w_pct", "low52w_pct"]
+    missing = [c for c in required_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"macro_df missing columns: {missing}")
+
+    conn = psycopg2.connect(
+        host=settings.host,
+        port=settings.port,
+        dbname=settings.database,
+        user=settings.user,
+        password=settings.password,
+    )
+    upsert_sql = """
+        INSERT INTO feast_yfinance_macro
+            (ticker, timestamp, vix, spy_return, sector_return, high52w_pct, low52w_pct)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ON CONFLICT (ticker, timestamp) DO UPDATE SET
+            vix           = EXCLUDED.vix,
+            spy_return    = EXCLUDED.spy_return,
+            sector_return = EXCLUDED.sector_return,
+            high52w_pct   = EXCLUDED.high52w_pct,
+            low52w_pct    = EXCLUDED.low52w_pct,
+            created_at    = NOW();
+    """
+    rows_written = 0
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                for _, row in df[required_cols].iterrows():
+                    cur.execute(upsert_sql, (
+                        row["ticker"],
+                        row["date"],
+                        row["vix"],
+                        row["spy_return"],
+                        row["sector_return"],
+                        row["high52w_pct"],
+                        row["low52w_pct"],
+                    ))
+                    rows_written += 1
+        logger.info("write_yfinance_macro_to_db: upserted %d rows.", rows_written)
+    finally:
+        conn.close()
+
+    return rows_written

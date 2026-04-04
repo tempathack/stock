@@ -110,15 +110,20 @@ class TestOnlineFeatures:
 
 # ── Wave 0 additions — sentinel tests for Phase 92 feature coverage ──
 
-def test_training_features_include_sentiment_columns():
-    """_TRAINING_FEATURES must include all 4 reddit_sentiment_fv columns after Phase 92 extends it."""
+def test_training_features_include_core_feature_views():
+    """_TRAINING_FEATURES must include ohlcv, technical indicator, and lag feature views.
+
+    Phase 92 added sentiment (now removed in Phase 93).
+    Phase 93 adds yfinance_macro_fv with 5 columns, giving 35 total features.
+    """
     from ml.features.feast_store import _TRAINING_FEATURES
-    assert "reddit_sentiment_fv:avg_sentiment" in _TRAINING_FEATURES
-    assert "reddit_sentiment_fv:mention_count" in _TRAINING_FEATURES
-    assert "reddit_sentiment_fv:positive_ratio" in _TRAINING_FEATURES
-    assert "reddit_sentiment_fv:negative_ratio" in _TRAINING_FEATURES
-    assert len(_TRAINING_FEATURES) == 34, (
-        f"Expected 34 features (30 existing + 4 sentiment), got {len(_TRAINING_FEATURES)}"
+    views = {f.split(":")[0] for f in _TRAINING_FEATURES}
+    assert "ohlcv_stats_fv" in views
+    assert "technical_indicators_fv" in views
+    assert "lag_features_fv" in views
+    assert "yfinance_macro_fv" in views
+    assert len(_TRAINING_FEATURES) == 35, (
+        f"Expected 35 features (30 existing + 5 yfinance macro), got {len(_TRAINING_FEATURES)}"
     )
 
 

@@ -27,7 +27,8 @@ FEAST_REPO_PATH = os.environ.get(
     os.path.join(os.path.dirname(__file__), "..", "feature_store"),
 )
 
-# All training features spanning the three FeatureViews
+# All training features spanning ohlcv_stats_fv, technical_indicators_fv,
+# lag_features_fv, and yfinance_macro_fv (Phase 93: sentiment removed, macro added)
 _TRAINING_FEATURES: list[str] = [
     "ohlcv_stats_fv:open",
     "ohlcv_stats_fv:high",
@@ -59,10 +60,11 @@ _TRAINING_FEATURES: list[str] = [
     "lag_features_fv:rolling_std_5",
     "lag_features_fv:rolling_std_10",
     "lag_features_fv:rolling_std_21",
-    "reddit_sentiment_fv:avg_sentiment",
-    "reddit_sentiment_fv:mention_count",
-    "reddit_sentiment_fv:positive_ratio",
-    "reddit_sentiment_fv:negative_ratio",
+    "yfinance_macro_fv:vix",
+    "yfinance_macro_fv:spy_return",
+    "yfinance_macro_fv:sector_return",
+    "yfinance_macro_fv:high52w_pct",
+    "yfinance_macro_fv:low52w_pct",
 ]
 
 # Key features for real-time inference from Redis
