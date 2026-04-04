@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import date
+
 from pydantic import BaseModel
 
 
@@ -352,6 +354,25 @@ class SentimentTimeseriesResponse(BaseModel):
     points: list[SentimentDataPoint]
     count: int
     window_hours: int
+
+
+# ── Macro (Phase 95) ──────────────────────────────────────────────────────
+
+
+class MacroLatestResponse(BaseModel):
+    """Latest macro indicator snapshot for the Dashboard macro panel."""
+    as_of_date: date | None = None
+    vix: float | None = None           # from feast_yfinance_macro (^VIX close)
+    spy_return: float | None = None    # from feast_yfinance_macro
+    dgs10: float | None = None         # 10Y Treasury yield
+    t10y2y: float | None = None        # 10Y-2Y spread (yield curve)
+    baml_hy_oas: float | None = None   # HY credit spread
+    wti_crude: float | None = None     # WTI oil price
+    usd_broad: float | None = None     # Broad USD index
+    icsa: float | None = None          # Initial jobless claims (thousands)
+    core_pce: float | None = None      # Core PCE YoY %
+    dgs2: float | None = None          # 2Y Treasury yield
+    t10yie: float | None = None        # 10Y breakeven inflation
 
 
 # ── Search ────────────────────────────────────────────────────────────────

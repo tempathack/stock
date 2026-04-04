@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import date
 from typing import Any
 
 import numpy as np
@@ -10,6 +11,7 @@ import pandas as pd
 from sqlalchemy import text
 
 from app.models.database import get_async_session, get_engine
+from app.models.schemas import MacroLatestResponse
 
 logger = logging.getLogger(__name__)
 
@@ -241,3 +243,76 @@ async def get_sentiment_timeseries(ticker: str, hours: int = 10) -> list[dict]:
     except Exception:
         logger.exception("Failed to fetch sentiment timeseries for %s", ticker)
         return []
+
+
+async def get_macro_latest() -> MacroLatestResponse:
+    """Fetch the latest macro indicator snapshot for the Dashboard macro panel.
+
+    Queries two tables:
+    - macro_fred_daily: FRED series (DGS10, T10Y2Y, BAML HY OAS, WTI, USD, ICSA, Core PCE, DGS2, T10YIE)
+    - feast_yfinance_macro: VIX and SPY return (ticker='SPY')
+
+    Returns MacroLatestResponse with all-null values when tables are empty — never raises.
+    The as_of_date is taken from macro_fred_daily (FRED) when available, otherwise from feast_yfinance_macro.
+    """
+    if get_engine() is None:
+        return MacroLatestResponse()
+
+    fred_query = text("""
+        SELECT date AS as_of_date,
+               dgs10, t10y2y, baml_hy_oas, wti_crude, usd_broad,
+               icsa, core_pce, dgs2, t10yie
+        FROM macro_fred_daily
+        ORDER BY date DESC
+        LIMIT 1
+    """)
+
+    yfinance_query = text("""
+        SELECT timestamp::date AS as_of_date, vix, spy_return
+        FROM feast_yfinance_macro
+        WHERE ticker = 'SPY'
+        ORDER BY timestamp DESC
+        LIMIT 1
+    """)
+
+    fred_row: dict = {}
+    yf_row: dict = {}
+
+    try:
+        async with get_async_session() as session:
+            try:
+                result = await session.execute(fred_query)
+                row = result.mappings().first()
+                if row:
+                    fred_row = dict(row)
+            except Exception:
+                logger.warning("macro_fred_daily not available — returning nulls for FRED fields")
+
+            try:
+                result = await session.execute(yfinance_query)
+                row = result.mappings().first()
+                if row:
+                    yf_row = dict(row)
+            except Exception:
+                logger.warning("feast_yfinance_macro not available — returning nulls for VIX/SPY fields")
+    except Exception:
+        logger.exception("Failed to connect to DB for macro latest — returning all-null response")
+        return MacroLatestResponse()
+
+    # Determine as_of_date: prefer FRED date, fall back to yfinance date
+    as_of: date | None = fred_row.get("as_of_date") or yf_row.get("as_of_date")
+
+    return MacroLatestResponse(
+        as_of_date=as_of,
+        vix=yf_row.get("vix"),
+        spy_return=yf_row.get("spy_return"),
+        dgs10=fred_row.get("dgs10"),
+        t10y2y=fred_row.get("t10y2y"),
+        baml_hy_oas=fred_row.get("baml_hy_oas"),
+        wti_crude=fred_row.get("wti_crude"),
+        usd_broad=fred_row.get("usd_broad"),
+        icsa=fred_row.get("icsa"),
+        core_pce=fred_row.get("core_pce"),
+        dgs2=fred_row.get("dgs2"),
+        t10yie=fred_row.get("t10yie"),
+    )

@@ -16,6 +16,7 @@ from app.models.schemas import (
     CandleBar,
     CandlesResponse,
     IndicatorValues,
+    MacroLatestResponse,
     MarketOverviewEntry,
     MarketOverviewResponse,
     SentimentDataPoint,
@@ -24,7 +25,7 @@ from app.models.schemas import (
     TickerIndicatorsResponse,
 )
 from app.services.feast_online_service import get_streaming_features
-from app.services.market_service import get_candles, get_market_overview, get_sentiment_timeseries, get_ticker_indicators
+from app.services.market_service import get_candles, get_macro_latest, get_market_overview, get_sentiment_timeseries, get_ticker_indicators
 
 STREAMING_FEATURES_TTL = 5  # 5s — matches frontend poll interval
 SENTIMENT_TIMESERIES_TTL = 120  # 2 minutes — matches 2-min window emission rate
@@ -175,4 +176,28 @@ async def get_sentiment_timeseries_endpoint(
         window_hours=hours,
     )
     await cache_set(key, response.model_dump(), SENTIMENT_TIMESERIES_TTL)
+    return response
+
+
+MACRO_LATEST_TTL = 300  # 5 minutes — FRED/yfinance data changes at most daily
+
+
+@router.get("/macro/latest", response_model=MacroLatestResponse)
+async def get_macro_latest_endpoint() -> MacroLatestResponse:
+    """Return latest macro indicator snapshot for the Dashboard macro panel.
+
+    Sources:
+    - macro_fred_daily: FRED series (DGS10, T10Y2Y, BAML HY OAS, WTI, USD, ICSA, Core PCE, DGS2, T10YIE)
+    - feast_yfinance_macro: VIX and SPY return (ticker='SPY')
+
+    Returns all-null response when tables are empty — never raises 500.
+    Cache TTL: 5 minutes.
+    """
+    key = build_key("market", "macro-latest")
+    cached = await cache_get(key)
+    if cached is not None:
+        return MacroLatestResponse(**cached)
+
+    response = await get_macro_latest()
+    await cache_set(key, response.model_dump(), MACRO_LATEST_TTL)
     return response
