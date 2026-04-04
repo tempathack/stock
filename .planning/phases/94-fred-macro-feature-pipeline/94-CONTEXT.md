@@ -34,7 +34,7 @@ VIXCLS is excluded from FRED (already covered by yfinance VIX). All other 14 ser
 - No entity key — date-keyed only (same as `yfinance_macro_fv`)
 - **All 14 FRED features added to `_TRAINING_FEATURES`** in `feast_store.py`
 - Training join pulls both `yfinance_macro_fv` and `fred_macro_fv` — combined macro context of 19 features (5 yfinance + 14 FRED)
-- Inference path updated to also pull `fred_macro_fv` features from Feast online store
+- Inference path updated to pull FRED macro features via **direct DB lookup** (`SELECT * FROM feast_fred_macro ORDER BY timestamp DESC LIMIT 1`) in `feast_online_service.py` — `entities=[]` on `fred_macro_fv` is incompatible with the existing ticker-keyed `get_online_features()` call, so Feast online store is bypassed for FRED features only
 
 ### CronJob + Secret Wiring
 - **Add FRED fetch to existing ingestion CronJob** — no new K8s CronJob object
