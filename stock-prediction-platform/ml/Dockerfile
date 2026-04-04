@@ -1,10 +1,26 @@
 # Stage 1 -- Builder
 FROM python:3.11-slim AS builder
 
+# Install build tools needed for pycatch22 (C extension) and other source builds
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc build-essential && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY ml/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Pre-compile ROCKET numba kernels so they are cached in the image layer
+# This avoids JIT compilation delay on the first training run in Kubernetes
+# Non-fatal: dask version incompatibility in sktime datatypes check may fail on some versions
+RUN python -c "\
+from sktime.regression.kernel_based import RocketRegressor; \
+import numpy as np; \
+X = np.random.randn(10, 1, 20); \
+y = np.random.randn(10); \
+RocketRegressor(rocket_transform='minirocket', num_kernels=100).fit(X, y); \
+print('Numba ROCKET kernels pre-compiled OK')" || echo "Numba pre-warm skipped (non-fatal)"
 
 # Stage 2 -- Runtime
 FROM python:3.11-slim

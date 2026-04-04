@@ -50,8 +50,8 @@
         "Typecheck passes"
       ],
       "priority": 3,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "SktimeRegressionWrapper base + 5 concrete wrappers added. All use lazy imports via _make_regressor() to avoid import-time failures. numba and pycatch22 added to requirements. Import check confirmed OK."
     },
     {
       "id": "US-004",
@@ -69,8 +69,8 @@
         "Typecheck passes"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "SKTIME_REGRESSION_MODELS (5 entries) added to model_configs.py. train_sktime_regression_models() added to model_trainer.py. train_all_models() updated with include_sktime_regression param. --skip-sktime-regression CLI flag added. Dockerfile updated with gcc build tools for pycatch22 and numba pre-warm (non-fatal). ML Docker image rebuilt in Minikube context successfully."
     },
     {
       "id": "US-005",

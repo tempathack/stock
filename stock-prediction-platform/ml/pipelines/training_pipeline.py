@@ -170,6 +170,7 @@ def run_training_pipeline(
     linear_only: bool = False,
     use_feast_data: bool = False,
     include_sktime: bool = True,
+    include_sktime_regression: bool = True,
 ) -> PipelineRunResult:
     """Execute the full 12-step training pipeline.
 
@@ -312,7 +313,7 @@ def run_training_pipeline(
                         logger.info("LINEAR_ONLY mode — skipping tree/booster models for speed")
                         results_list = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
                     else:
-                        results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits, include_sktime=include_sktime)
+                        results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits, include_sktime=include_sktime, include_sktime_regression=include_sktime_regression)
                     pipelines = _rebuild_pipelines(results_list, X_train, y_train)
                     total_models += len(results_list)
 
@@ -405,7 +406,7 @@ def run_training_pipeline(
                 logger.info("LINEAR_ONLY mode — skipping tree/booster models for speed")
                 results_list = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
             else:
-                results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits, include_sktime=include_sktime)
+                results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits, include_sktime=include_sktime, include_sktime_regression=include_sktime_regression)
             pipelines = _rebuild_pipelines(results_list, X_train, y_train)
             result.n_models_trained = len(results_list)
             result.steps_completed.append("train_models")
@@ -531,6 +532,12 @@ if __name__ == "__main__":
         default=False,
         help="Skip sktime statistical forecasting model training.",
     )
+    parser.add_argument(
+        "--skip-sktime-regression",
+        action="store_true",
+        default=False,
+        help="Skip sktime time series regression model training (MiniROCKET, ROCKET, etc.).",
+    )
     args = parser.parse_args()
 
     tickers_str = args.tickers or os.environ.get("TICKERS")
@@ -549,5 +556,6 @@ if __name__ == "__main__":
         horizons=horizons_list,
         linear_only=linear_only,
         include_sktime=not args.skip_sktime,
+        include_sktime_regression=not args.skip_sktime_regression,
     )
     print(json.dumps(run_result.to_dict(), indent=2, default=str))

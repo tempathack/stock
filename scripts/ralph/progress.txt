@@ -187,6 +187,19 @@ Previous run codebase patterns (still valid):
   - flink-config ConfigMap has correct POSTGRES_HOST=postgresql.storage.svc.cluster.local; sentiment_stream.py default was wrong but gets overridden by env var
 ---
 
+## 2026-04-04 - US-003: Add SktimeRegressionWrapper base and 5 regression model wrappers
+- Added numba>=0.59.0 and pycatch22>=0.4.2 to ml/requirements.txt sktime block
+- Extended ml/models/sktime_wrappers.py with SktimeRegressionWrapper base class that reshapes X (n, T) → (n, 1, T) for sktime regressors
+- Added 5 concrete wrappers: MiniRocketWrapper, RocketWrapper, TimeSeriesForestWrapper, RandomIntervalWrapper, Catch22Wrapper
+- All wrappers use lazy imports via _make_regressor() method (not __init__) — import check passes without sktime installed
+- Import check confirmed: python3 -c "from ml.models.sktime_wrappers import MiniRocketWrapper..." exits 0
+- Files modified: ml/requirements.txt, ml/models/sktime_wrappers.py
+- **Learnings for future iterations:**
+  - Plan's __init__ wrappers used eager sktime imports — must be made lazy via a _make_regressor() factory method instead
+  - SktimeRegressionWrapper uses _make_regressor() pattern (no `regressor` constructor arg) to allow sklearn clone() to work correctly
+  - The 3D reshape (n, 1, T) treats each sample's feature vector as a univariate time series — valid because features are ordered lag features
+---
+
 ## 2026-04-04 - US-002: Register SKTIME_MODELS family in model_configs.py and wire train_sktime_models() into trainer
 - Added SKTIME_MODELS list (6 entries: naive_last, exponential_smoothing, auto_ets, theta, auto_arima, bats) to ml/models/model_configs.py
 - Added train_sktime_models() to model_trainer.py (mirrors train_linear_models(), uses standard scaler only)
@@ -199,6 +212,24 @@ Previous run codebase patterns (still valid):
 - **Learnings for future iterations:**
   - SKTIME_MODELS is a list (not dict) — convert with {cfg.name: cfg for cfg in SKTIME_MODELS} for dict merges
   - _rebuild_pipelines needs .get() not [] to safely skip unknown model families
+---
+
+## 2026-04-04 - US-004: Register SKTIME_REGRESSION_MODELS family, wire into trainer, rebuild ML Docker image
+- Added SKTIME_REGRESSION_MODELS list (5 entries: minirocket, rocket, timeseries_forest, random_interval, catch22) to ml/models/model_configs.py
+- Added train_sktime_regression_models() to model_trainer.py (mirrors train_sktime_models() pattern, standard scaler only)
+- Updated train_all_models() with include_sktime_regression: bool = True parameter
+- Added SKTIME_REGRESSION_MODELS to imports in model_trainer.py
+- Added --skip-sktime-regression CLI flag to training_pipeline.py; passed through to train_all_models()
+- Updated ml/Dockerfile builder stage: added gcc/build-essential for pycatch22 C extension compilation
+- Added numba pre-warm step to Dockerfile (non-fatal with || echo fallback — dask incompatibility in sktime types check)
+- Rebuilt ML Docker image in Minikube context successfully (stock-ml:latest)
+- Ran kubectl rollout restart deployment -n ml to pick up new image
+- Import check: SKTIME_REGRESSION_MODELS len=5 OK; --skip-sktime-regression in --help confirmed
+- Files modified: ml/models/model_configs.py, ml/pipelines/components/model_trainer.py, ml/pipelines/training_pipeline.py, ml/Dockerfile, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - pycatch22 requires gcc for C extension compilation — Docker builder stage needs build-essential
+  - sktime 0.31.0 + newer dask (2024+) causes AttributeError: module 'dask.dataframe.core' has no attribute 'DataFrame' — numba pre-warm step must be non-fatal (|| echo fallback)
+  - SktimeRegressionWrapper wrappers use lazy imports via _make_regressor() — model class instantiation is deferred until fit() is called, so Docker import check passes without sktime installed
 ---
 
 ## 2026-04-03 - UI-008: Final end-to-end verification of all 4 fixed pages

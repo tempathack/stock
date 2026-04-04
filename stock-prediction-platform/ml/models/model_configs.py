@@ -294,9 +294,14 @@ from ml.models.sktime_wrappers import (  # noqa: E402
     AutoARIMAWrapper,
     AutoETSWrapper,
     BATSWrapper,
+    Catch22Wrapper,
     ExponentialSmoothingWrapper,
+    MiniRocketWrapper,
     NaiveForecasterWrapper,
+    RandomIntervalWrapper,
+    RocketWrapper,
     ThetaForecasterWrapper,
+    TimeSeriesForestWrapper,
 )
 
 SKTIME_MODELS: list[ModelConfig] = [
@@ -351,6 +356,60 @@ SKTIME_MODELS: list[ModelConfig] = [
             "use_trend": [None, True, False],
         },
         n_iter=6,
+    ),
+]
+
+
+# ---------------------------------------------------------------------------
+# sktime Regression Models (time series → scalar via 3D reshape) (Phase 96)
+# ---------------------------------------------------------------------------
+
+SKTIME_REGRESSION_MODELS: list[ModelConfig] = [
+    ModelConfig(
+        name="minirocket",
+        model_class=MiniRocketWrapper,
+        default_params={"num_kernels": 10_000, "max_dilations_per_kernel": 32},
+        search_space={
+            "num_kernels": [5_000, 10_000, 20_000],
+        },
+        n_iter=3,
+    ),
+    ModelConfig(
+        name="rocket",
+        model_class=RocketWrapper,
+        default_params={"num_kernels": 10_000},
+        search_space={
+            "num_kernels": [5_000, 10_000, 20_000],
+        },
+        n_iter=3,
+    ),
+    ModelConfig(
+        name="timeseries_forest",
+        model_class=TimeSeriesForestWrapper,
+        default_params={"n_estimators": 200, "min_interval": 3, "n_jobs": -1},
+        search_space={
+            "n_estimators": [100, 200, 500],
+            "min_interval": [3, 5, 9],
+        },
+        n_iter=6,
+    ),
+    ModelConfig(
+        name="random_interval",
+        model_class=RandomIntervalWrapper,
+        default_params={"n_estimators": 200, "n_jobs": -1},
+        search_space={
+            "n_estimators": [100, 200, 500],
+        },
+        n_iter=3,
+    ),
+    ModelConfig(
+        name="catch22",
+        model_class=Catch22Wrapper,
+        default_params={"outlier_norm": False, "replace_nans": True},
+        search_space={
+            "outlier_norm": [True, False],
+        },
+        n_iter=2,
     ),
 ]
 

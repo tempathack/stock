@@ -21,6 +21,7 @@ from ml.models.model_configs import (
     DISTANCE_NEURAL_MODELS,
     LINEAR_MODELS,
     SKTIME_MODELS,
+    SKTIME_REGRESSION_MODELS,
     TREE_MODELS,
     ModelConfig,
     TrainingResult,
@@ -338,6 +339,52 @@ def train_sktime_models(
     return results
 
 
+def train_sktime_regression_models(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    n_splits: int = 5,
+    scaler_variants: list[str] | None = None,
+) -> list[TrainingResult]:
+    """Train all sktime time series regression models.
+
+    Models in this family use a 3D reshape of X internally via
+    ``SktimeRegressionWrapper``, treating each sample's feature vector
+    as a univariate time series of length n_features.
+
+    Uses only ``standard`` scaler (1 variant) to keep training time linear
+    with number of models.
+    """
+    if scaler_variants is None:
+        scaler_variants = ["standard"]
+
+    results: list[TrainingResult] = []
+    for config in SKTIME_REGRESSION_MODELS:
+        for scaler_variant in scaler_variants:
+            logger.info(
+                "Training sktime regression model",
+                extra={"model": config.name, "scaler": scaler_variant},
+            )
+            try:
+                result = train_single_model(
+                    config=config,
+                    X_train=X_train,
+                    y_train=y_train,
+                    X_test=X_test,
+                    y_test=y_test,
+                    scaler_variant=scaler_variant,
+                    n_splits=n_splits,
+                )
+                results.append(result)
+            except Exception as exc:
+                logger.warning(
+                    "sktime regression model training failed — skipping",
+                    extra={"model": config.name, "error": str(exc)},
+                )
+    return results
+
+
 def train_all_models(
     X_train: np.ndarray,
     y_train: np.ndarray,
@@ -345,6 +392,7 @@ def train_all_models(
     y_test: np.ndarray,
     n_splits: int = 5,
     include_sktime: bool = True,
+    include_sktime_regression: bool = True,
 ) -> list[TrainingResult]:
     """Train all model families (linear + tree + boosters + distance/neural + sktime) and return sorted results."""
     linear = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
@@ -353,6 +401,8 @@ def train_all_models(
     combined = linear + tree + distance_neural
     if include_sktime:
         combined.extend(train_sktime_models(X_train, y_train, X_test, y_test, n_splits))
+    if include_sktime_regression:
+        combined.extend(train_sktime_regression_models(X_train, y_train, X_test, y_test, n_splits))
     combined.sort(key=lambda r: r.oos_metrics["rmse"])
     return combined
 
