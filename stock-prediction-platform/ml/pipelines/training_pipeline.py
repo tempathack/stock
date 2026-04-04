@@ -87,6 +87,7 @@ def _rebuild_pipelines(
         BOOSTER_MODELS,
         DISTANCE_NEURAL_MODELS,
         LINEAR_MODELS,
+        SKTIME_MODELS,
         TREE_MODELS,
         ModelConfig,
     )
@@ -96,13 +97,17 @@ def _rebuild_pipelines(
         **TREE_MODELS,
         **BOOSTER_MODELS,
         **DISTANCE_NEURAL_MODELS,
+        **{cfg.name: cfg for cfg in SKTIME_MODELS},
     }
 
     pipelines: dict[str, Pipeline] = {}
     for result in results:
         if result.model_name == "stacking_ensemble":
             continue
-        config = all_configs[result.model_name]
+        config = all_configs.get(result.model_name)
+        if config is None:
+            logger.warning("No config found for model %s — skipping rebuild", result.model_name)
+            continue
         pipeline = _build_pipeline(config, result.scaler_variant)
         if result.best_params:
             pipeline.set_params(
@@ -164,6 +169,7 @@ def run_training_pipeline(
     horizons: list[int] | None = None,
     linear_only: bool = False,
     use_feast_data: bool = False,
+    include_sktime: bool = True,
 ) -> PipelineRunResult:
     """Execute the full 12-step training pipeline.
 
@@ -306,7 +312,7 @@ def run_training_pipeline(
                         logger.info("LINEAR_ONLY mode — skipping tree/booster models for speed")
                         results_list = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
                     else:
-                        results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits)
+                        results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits, include_sktime=include_sktime)
                     pipelines = _rebuild_pipelines(results_list, X_train, y_train)
                     total_models += len(results_list)
 
@@ -399,7 +405,7 @@ def run_training_pipeline(
                 logger.info("LINEAR_ONLY mode — skipping tree/booster models for speed")
                 results_list = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
             else:
-                results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits)
+                results_list = train_all_models(X_train, y_train, X_test, y_test, n_splits, include_sktime=include_sktime)
             pipelines = _rebuild_pipelines(results_list, X_train, y_train)
             result.n_models_trained = len(results_list)
             result.steps_completed.append("train_models")
@@ -519,6 +525,12 @@ if __name__ == "__main__":
         "--horizons", type=str, default=None,
         help="Comma-separated horizon days for multi-horizon mode (e.g. 1,7,30)",
     )
+    parser.add_argument(
+        "--skip-sktime",
+        action="store_true",
+        default=False,
+        help="Skip sktime statistical forecasting model training.",
+    )
     args = parser.parse_args()
 
     tickers_str = args.tickers or os.environ.get("TICKERS")
@@ -536,5 +548,6 @@ if __name__ == "__main__":
         skip_shap=args.skip_shap,
         horizons=horizons_list,
         linear_only=linear_only,
+        include_sktime=not args.skip_sktime,
     )
     print(json.dumps(run_result.to_dict(), indent=2, default=str))

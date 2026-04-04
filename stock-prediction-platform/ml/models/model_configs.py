@@ -284,6 +284,77 @@ DISTANCE_NEURAL_MODELS: dict[str, ModelConfig] = {
 }
 
 
+
+# ---------------------------------------------------------------------------
+# sktime Statistical Forecasting Models (Phase 96)
+# ---------------------------------------------------------------------------
+# Imports are lazy (inside wrapper classes) so no hard dependency at import time.
+# ---------------------------------------------------------------------------
+from ml.models.sktime_wrappers import (  # noqa: E402
+    AutoARIMAWrapper,
+    AutoETSWrapper,
+    BATSWrapper,
+    ExponentialSmoothingWrapper,
+    NaiveForecasterWrapper,
+    ThetaForecasterWrapper,
+)
+
+SKTIME_MODELS: list[ModelConfig] = [
+    ModelConfig(
+        name="naive_last",
+        model_class=NaiveForecasterWrapper,
+        default_params={"strategy": "last"},
+        search_space={"strategy": ["last", "mean", "drift"]},
+        n_iter=3,
+    ),
+    ModelConfig(
+        name="exponential_smoothing",
+        model_class=ExponentialSmoothingWrapper,
+        default_params={"trend": "add", "damped_trend": False},
+        search_space={
+            "trend": [None, "add", "mul"],
+            "damped_trend": [True, False],
+        },
+        n_iter=6,
+    ),
+    ModelConfig(
+        name="auto_ets",
+        model_class=AutoETSWrapper,
+        default_params={"auto": True, "information_criterion": "aic"},
+        search_space={"information_criterion": ["aic", "bic", "aicc"]},
+        n_iter=3,
+    ),
+    ModelConfig(
+        name="theta",
+        model_class=ThetaForecasterWrapper,
+        default_params={"sp": 1},
+        search_space={"smoothing_level": [None, 0.1, 0.2, 0.3, 0.5]},
+        n_iter=5,
+    ),
+    ModelConfig(
+        name="auto_arima",
+        model_class=AutoARIMAWrapper,
+        default_params={"stepwise": True, "seasonal": False, "max_p": 5, "max_q": 5},
+        search_space={
+            "max_p": [3, 5, 7],
+            "max_q": [3, 5, 7],
+            "information_criterion": ["aic", "bic"],
+        },
+        n_iter=6,
+    ),
+    ModelConfig(
+        name="bats",
+        model_class=BATSWrapper,
+        default_params={"use_box_cox": None, "use_trend": None, "n_jobs": -1},
+        search_space={
+            "use_box_cox": [None, True, False],
+            "use_trend": [None, True, False],
+        },
+        n_iter=6,
+    ),
+]
+
+
 # ---------------------------------------------------------------------------
 # Registry helpers
 # ---------------------------------------------------------------------------

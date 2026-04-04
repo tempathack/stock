@@ -20,6 +20,7 @@ from ml.models.model_configs import (
     BOOSTER_MODELS,
     DISTANCE_NEURAL_MODELS,
     LINEAR_MODELS,
+    SKTIME_MODELS,
     TREE_MODELS,
     ModelConfig,
     TrainingResult,
@@ -296,18 +297,62 @@ def train_distance_neural_models(
     return results
 
 
+def train_sktime_models(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    n_splits: int = 5,
+    scaler_variants: list[str] | None = None,
+) -> list[TrainingResult]:
+    """Train all sktime statistical forecasting models.
+
+    Uses only ``standard`` scaler by default — sktime models consume ``y``
+    directly and are largely scaler-invariant, but the scaler still normalises
+    the lag/indicator features passed via X.
+    """
+    if scaler_variants is None:
+        scaler_variants = ["standard"]  # one variant to keep training fast
+
+    results: list[TrainingResult] = []
+    for config in SKTIME_MODELS:
+        for scaler_variant in scaler_variants:
+            logger.info("Training sktime model %s with %s scaler...", config.name, scaler_variant)
+            try:
+                result = train_single_model(
+                    config=config,
+                    X_train=X_train,
+                    y_train=y_train,
+                    X_test=X_test,
+                    y_test=y_test,
+                    scaler_variant=scaler_variant,
+                    n_splits=n_splits,
+                )
+                results.append(result)
+            except Exception as exc:
+                logger.warning(
+                    "sktime model training failed — skipping",
+                    extra={"model": config.name, "error": str(exc)},
+                )
+    results.sort(key=lambda r: r.oos_metrics["rmse"])
+    return results
+
+
 def train_all_models(
     X_train: np.ndarray,
     y_train: np.ndarray,
     X_test: np.ndarray,
     y_test: np.ndarray,
     n_splits: int = 5,
+    include_sktime: bool = True,
 ) -> list[TrainingResult]:
-    """Train all model families (linear + tree + boosters + distance/neural) and return sorted results."""
+    """Train all model families (linear + tree + boosters + distance/neural + sktime) and return sorted results."""
     linear = train_linear_models(X_train, y_train, X_test, y_test, n_splits)
     tree = train_tree_models(X_train, y_train, X_test, y_test, n_splits)
     distance_neural = train_distance_neural_models(X_train, y_train, X_test, y_test, n_splits)
     combined = linear + tree + distance_neural
+    if include_sktime:
+        combined.extend(train_sktime_models(X_train, y_train, X_test, y_test, n_splits))
     combined.sort(key=lambda r: r.oos_metrics["rmse"])
     return combined
 
