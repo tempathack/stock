@@ -399,3 +399,21 @@ Previous run codebase patterns (still valid):
   - feast_fred_macro uses ticker='MACRO' (not a stock ticker) — same entity pattern as feast_yfinance_macro uses ticker='SPY'
   - Docker build context for stock-api must be stock-prediction-platform/ (not services/api/) — Dockerfile copies ml/ files
 ---
+
+## 2026-04-04 - US-003: Add realistic daily variance to macro_fred_daily synthetic timeseries
+- Updated all 90 rows in macro_fred_daily via single psql UPDATE with CTE (ranked by date) + trigonometric noise
+- dgs10: trends 4.566 (Jan 05) → 4.393 (Apr 04) with daily variation ±0.03–0.05
+- dgs2: trends 5.023 → 4.817 with daily variation ±0.02–0.03
+- t10y2y: trends -0.19 → -0.668 (range -0.20 to -0.65 met)
+- bamlh0a0hym2: spike to 352.5 in Feb (rn~28), recovers to ~293 by Apr
+- dcoilwtico: oscillates 65-78 range using SIN(rn*0.07) long wave + short noise
+- icsa: 205000-230000 weekly pattern via SIN(rn*1.257) (period ~5 days)
+- All other 8 series updated with ±2% trig noise around base values
+- /market/macro/latest now returns updated values: dgs10=4.393, t10y2y=-0.668, baml_hy_oas=292.7, wti_crude=70.66
+- No frontend or backend code changes — pure data operation via kubectl exec psql
+- **Learnings for future iterations:**
+  - kubectl heredoc (<<'EOF') does NOT pass through kubectl exec correctly — use -c "..." with the full SQL as a single argument
+  - CTE-based UPDATE: `WITH ranked AS (SELECT ...) UPDATE t SET col=expr FROM ranked WHERE t.pk = ranked.pk` works in PostgreSQL
+  - SIN/COS with different frequencies creates pseudo-random noise without needing pgcrypto — use 2+ frequencies per series
+  - /market/macro/latest Redis cache may serve stale flat data for up to 5 min after DB update — acceptable for US-003 since criteria only requires "non-null values"
+---
