@@ -93,8 +93,8 @@
         "Typecheck passes"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Created MacroChart.tsx with ResponsiveContainer+LineChart, SERIES_CONFIG (6 series), MUI Chip series picker (default: dgs10/t10y2y/dcoilwtico), X-axis every 2 weeks, custom tooltip with units, Skeleton loading state. TypeScript 0 errors, npm run build succeeded."
     },
     {
       "id": "US-007",

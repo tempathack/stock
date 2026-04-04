@@ -444,3 +444,19 @@ Previous run codebase patterns (still valid):
   - index.ts uses named export syntax `export { default as apiClient, fetchMacroLatest, fetchMacroHistory }` to expose named client functions — adding new functions requires updating this export list
   - Hook uses cancelled flag in useEffect cleanup to prevent setState after unmount (avoids React memory leak warning)
 ---
+
+## 2026-04-04 - US-006: Build MacroChart timeseries component with series selector
+- Created src/components/dashboard/MacroChart.tsx
+- Recharts ResponsiveContainer + LineChart with 6 SERIES_CONFIG entries (dgs10, t10y2y, dgs2, bamlh0a0hym2, dcoilwtico, icsa) with colors/units
+- MUI Chip series picker row — default selected: dgs10, t10y2y, dcoilwtico; keeps ≥1 always selected
+- X-axis: ticks filtered to day=1 or day=15 of each month (every ~2 weeks), formatted MMM DD
+- Custom tooltip showing date + all selected series with values and units
+- Loading: Skeleton height=300px; Error: centered muted text box
+- useMacroHistory(90) hook provides data, loading, error state
+- TypeScript 0 errors, npm run build succeeded
+- Files created: src/components/dashboard/MacroChart.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Recharts Tooltip content prop: if using a custom component, pass selectedKeys as a prop and filter payload inside the component
+  - XAxis ticks array must be subset of data keys — filter using shouldShowTick predicate on as_of_date values
+  - connectNulls on Line handles null values gracefully (FRED data may have gaps on weekends)
+---
