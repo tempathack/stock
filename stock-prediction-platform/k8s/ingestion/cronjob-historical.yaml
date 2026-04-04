@@ -33,6 +33,11 @@ spec:
               env:
                 - name: TRIGGER_TIMEOUT_SECONDS
                   value: "600"
+                - name: FRED_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: FRED_API_KEY
               resources:
                 requests:
                   cpu: "200m"

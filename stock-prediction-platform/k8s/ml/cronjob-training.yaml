@@ -58,10 +58,15 @@ spec:
                     secretKeyRef:
                       name: stock-platform-secrets
                       key: POSTGRES_PASSWORD
+                - name: FRED_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: stock-platform-secrets
+                      key: FRED_API_KEY
                 - name: POSTGRES_USER
                   value: "stockuser"
                 - name: LINEAR_ONLY
-                  value: "false"
+                  value: "true"
               resources:
                 requests:
                   cpu: "4000m"
