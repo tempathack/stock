@@ -25,6 +25,7 @@ import {
   SentimentPanel,
   StreamingFeaturesPanel,
   TopMoversPanel,
+  MacroPanel,
 } from "@/components/dashboard";
 import SentimentTimeseriesChart from "@/components/dashboard/SentimentTimeseriesChart";
 import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
@@ -588,6 +589,21 @@ export default function Dashboard() {
           ) : (
             <SentimentTimeseriesChart ticker={sentimentTicker} />
           )}
+        </Box>
+      </Box>
+
+      {/* ── Macro Environment Section ── */}
+      <Box sx={{ mb: 3 }}>
+        <SectionLabel icon={<BarChartIcon />} label="Macro Environment" accent="#00F5FF" />
+        <Box
+          sx={{
+            background: "rgba(7,4,26,0.5)",
+            border: "1px solid rgba(0,245,255,0.1)",
+            borderRadius: "14px",
+            p: 2,
+          }}
+        >
+          <MacroPanel />
         </Box>
       </Box>
 
