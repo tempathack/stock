@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 95-01-PLAN.md
-last_updated: "2026-04-04T16:11:49.753Z"
+stopped_at: Completed 95-02-PLAN.md
+last_updated: "2026-04-04T16:22:35.614Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -446,10 +446,13 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 94]: FRED fetch in ingest.py guarded by historical mode condition to avoid FRED rate limit hits on intraday ingestion runs
 - [Phase 94-fred-macro-feature-pipeline]: Option C for StreamingFeaturesResponse: add fred_macro dict field rather than 14 individual float fields — Fewest schema changes, extensible for future FRED columns, consistent with Optional pattern
 - [Phase 95-dashboard-macro-panel]: MacroLatestResponse added to models/schemas.py; get_macro_latest() in market_service.py; dual-table query with per-table null-safety; as_of_date prefers FRED date over yfinance date
+- [Phase 95-02]: Used native fetch() in fetchMacroLatest() rather than axios apiClient — macro endpoint needs no auth headers
+- [Phase 95-02]: API path is /market/macro/latest not /macro/latest — backend router mounts under /market prefix
+- [Phase 95-02]: MacroPanel placed between Market Sentiment and Stock Selector in Dashboard.tsx for natural macro-to-stock analysis flow
 
 ## Last Session
 
-- **Stopped at:** Completed 95-01-PLAN.md
+- **Stopped at:** Completed 95-02-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes

@@ -93,7 +93,7 @@
 | 92 | Phase 92 | Planned | — | — |
 | 93 | 4/4 | Complete    | 2026-04-04 | 3 plans |
 | 94 | 3/3 | Complete   | 2026-04-04 | 3 plans |
-| 95 | 1/2 | In Progress|  | 2 plans |
+| 95 | 2/2 | Complete   | 2026-04-04 | 2 plans |
 | 96 | sktime Statistical Forecasting + Regression Models | Planned | — | 5 plans |
 
 Plans:
@@ -1753,7 +1753,7 @@ Plans:
 **Requirements:** TBD
 
 **Depends on:** Phase 94
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [ ] 95-01-PLAN.md — Backend: GET /api/macro/latest endpoint
