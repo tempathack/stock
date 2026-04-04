@@ -3,13 +3,19 @@
 from __future__ import annotations
 
 import threading
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 
 from app.config import settings
 from app.models.schemas import IngestRequest, IngestResponse
 from app.services.kafka_producer import OHLCVProducer
-from app.services.yahoo_finance import YahooFinanceService
+from app.services.yahoo_finance import (
+    YahooFinanceService,
+    create_fred_macro_table,
+    fetch_fred_macro,
+    write_fred_macro_to_db,
+)
 from app.utils.logging import get_logger
 
 logger = get_logger(__name__)
@@ -68,6 +74,18 @@ def _run_ingestion_task(mode: str, tickers: list[str]) -> None:
         total_fetched=total_fetched,
         total_produced=total_produced,
     )
+
+    # FRED macro — daily population of feast_fred_macro (historical mode only)
+    if mode == "historical":
+        try:
+            end_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            start_date = (datetime.now(timezone.utc) - timedelta(days=5 * 365)).strftime("%Y-%m-%d")
+            create_fred_macro_table()
+            fred_df = fetch_fred_macro(start_date=start_date, end_date=end_date)
+            write_fred_macro_to_db(fred_df)
+            logger.info("fred_macro_complete", rows=len(fred_df))
+        except Exception as exc:
+            logger.error("fred_macro_error", error=str(exc))
 
 
 @router.post("/intraday", response_model=IngestResponse)

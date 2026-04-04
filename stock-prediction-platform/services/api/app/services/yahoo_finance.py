@@ -1,14 +1,17 @@
 """Yahoo Finance data fetching service."""
 from __future__ import annotations
 
+import os
 import time
 from datetime import datetime, timedelta, timezone
 
 import numpy as np
 import pandas as pd
 import pandas_datareader.data as pdr
+import psycopg2
 import requests
 import yfinance as yf
+from fredapi import Fred
 from tenacity import (
     RetryError,
     retry,
@@ -357,3 +360,146 @@ class YahooFinanceService:
         else:
             ts = ts.tz_localize("UTC")
         return ts.isoformat()
+
+
+# ---------------------------------------------------------------------------
+# FRED macro feature collector — ingestion-service layer (Phase 94)
+# ---------------------------------------------------------------------------
+
+_FRED_SERIES: list[str] = [
+    "DGS2", "DGS10", "T10Y2Y", "T10Y3M",
+    "BAMLH0A0HYM2", "DBAA", "T10YIE",
+    "DCOILWTICO", "DTWEXBGS", "DEXJPUS",
+    "ICSA", "NFCI", "CPIAUCSL", "PCEPILFE",
+]
+
+_FRED_COLS: list[str] = [s.lower() for s in _FRED_SERIES]
+
+_CREATE_FRED_MACRO_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS feast_fred_macro (
+    timestamp       TIMESTAMPTZ      NOT NULL,
+    created_at      TIMESTAMPTZ      NOT NULL DEFAULT NOW(),
+    dgs2            DOUBLE PRECISION,
+    dgs10           DOUBLE PRECISION,
+    t10y2y          DOUBLE PRECISION,
+    t10y3m          DOUBLE PRECISION,
+    bamlh0a0hym2    DOUBLE PRECISION,
+    dbaa            DOUBLE PRECISION,
+    t10yie          DOUBLE PRECISION,
+    dcoilwtico      DOUBLE PRECISION,
+    dtwexbgs        DOUBLE PRECISION,
+    dexjpus         DOUBLE PRECISION,
+    icsa            DOUBLE PRECISION,
+    nfci            DOUBLE PRECISION,
+    cpiaucsl        DOUBLE PRECISION,
+    pcepilfe        DOUBLE PRECISION,
+    PRIMARY KEY (timestamp)
+);
+SELECT create_hypertable('feast_fred_macro', 'timestamp', if_not_exists => TRUE);
+"""
+
+_UPSERT_FRED_SQL = (
+    "INSERT INTO feast_fred_macro (timestamp, {cols}) "
+    "VALUES (%s, {placeholders}) "
+    "ON CONFLICT (timestamp) DO UPDATE SET {updates}, created_at = NOW();"
+).format(
+    cols=", ".join(_FRED_COLS),
+    placeholders=", ".join(["%s"] * len(_FRED_COLS)),
+    updates=", ".join(f"{c} = EXCLUDED.{c}" for c in _FRED_COLS),
+)
+
+
+def fetch_fred_macro(start_date: str, end_date: str) -> pd.DataFrame:
+    """Fetch 14 FRED macro series; return wide daily DataFrame with forward-fill.
+
+    Ingestion-service counterpart of the ML pipeline fetch_fred_macro(). Reads
+    FRED_API_KEY from the environment; raises KeyError immediately if not set.
+
+    Args:
+        start_date: ISO date string "YYYY-MM-DD" — window start.
+        end_date:   ISO date string "YYYY-MM-DD" — window end.
+
+    Returns:
+        DataFrame with DatetimeIndex (daily, name="date"), 14 columns.
+        No NaN values — weekly/monthly series are forward-filled with no limit.
+    """
+    api_key = os.environ["FRED_API_KEY"]  # KeyError if not set — intentional
+    fred = Fred(api_key=api_key)
+    frames: dict[str, pd.Series] = {}
+    for series_id in _FRED_SERIES:
+        s = fred.get_series(
+            series_id,
+            observation_start=start_date,
+            observation_end=end_date,
+        )
+        frames[series_id.lower()] = s
+        time.sleep(0.5)  # Respect FRED rate limit (120 req/min for authenticated calls)
+
+    wide = pd.DataFrame(frames)
+    date_spine = pd.date_range(start=start_date, end=end_date, freq="D")
+    wide = wide.reindex(date_spine).ffill()  # No limit — carry last value indefinitely
+    wide.index.name = "date"
+    return wide
+
+
+def create_fred_macro_table() -> None:
+    """Create the feast_fred_macro TimescaleDB hypertable if it does not exist.
+
+    Uses DB connection settings from environment variables. Safe to call multiple
+    times — uses IF NOT EXISTS and if_not_exists => TRUE.
+    """
+    conn = psycopg2.connect(
+        host=os.environ.get("POSTGRES_HOST", "postgresql.storage.svc.cluster.local"),
+        port=int(os.environ.get("POSTGRES_PORT", "5432")),
+        dbname=os.environ.get("POSTGRES_DB", "stockdb"),
+        user=os.environ.get("POSTGRES_USER", "stockuser"),
+        password=os.environ.get("POSTGRES_PASSWORD", ""),
+    )
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(_CREATE_FRED_MACRO_TABLE_SQL)
+        logger.info("create_fred_macro_table", status="feast_fred_macro ready")
+    finally:
+        conn.close()
+
+
+def write_fred_macro_to_db(macro_df: pd.DataFrame) -> int:
+    """Write FRED macro rows to feast_fred_macro, upserting on timestamp.
+
+    Args:
+        macro_df: DataFrame with DatetimeIndex (name="date") and 14 FRED columns.
+
+    Returns:
+        Number of rows upserted.
+    """
+    conn = psycopg2.connect(
+        host=os.environ.get("POSTGRES_HOST", "postgresql.storage.svc.cluster.local"),
+        port=int(os.environ.get("POSTGRES_PORT", "5432")),
+        dbname=os.environ.get("POSTGRES_DB", "stockdb"),
+        user=os.environ.get("POSTGRES_USER", "stockuser"),
+        password=os.environ.get("POSTGRES_PASSWORD", ""),
+    )
+    df = macro_df.copy()
+    if "date" not in df.columns:
+        df = df.reset_index()
+        df = df.rename(columns={"index": "date", 0: "date"})
+
+    missing_cols = [c for c in _FRED_COLS if c not in df.columns]
+    if missing_cols:
+        raise ValueError(f"macro_df missing FRED columns: {missing_cols}")
+
+    rows_written = 0
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                for _, row in df.iterrows():
+                    cur.execute(_UPSERT_FRED_SQL, tuple(
+                        [row.get("date", row.name)] + [row[c] for c in _FRED_COLS]
+                    ))
+                    rows_written += 1
+        logger.info("write_fred_macro_to_db", rows=rows_written)
+    finally:
+        conn.close()
+
+    return rows_written
