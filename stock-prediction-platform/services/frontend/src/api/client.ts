@@ -17,7 +17,7 @@ apiClient.interceptors.response.use(
 
 export async function fetchMacroLatest(): Promise<MacroLatest> {
   const res = await fetch(
-    `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/macro/latest`,
+    `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/market/macro/latest`,
   );
   if (!res.ok) throw new Error("Failed to fetch macro data");
   return res.json() as Promise<MacroLatest>;
