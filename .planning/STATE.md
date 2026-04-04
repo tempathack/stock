@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 94-02-PLAN.md
-last_updated: "2026-04-04T14:06:35.758Z"
+stopped_at: Completed 94-03-PLAN.md
+last_updated: "2026-04-04T15:48:20.086Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -444,10 +444,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 94]: TestCreateFredMacroTable uses explicit MagicMock context manager protocol for clean psycopg2 isolation
 - [Phase 94]: Implemented FRED functions inline in yahoo_finance.py rather than cross-service import from ml layer to preserve service boundary
 - [Phase 94]: FRED fetch in ingest.py guarded by historical mode condition to avoid FRED rate limit hits on intraday ingestion runs
+- [Phase 94-fred-macro-feature-pipeline]: Option C for StreamingFeaturesResponse: add fred_macro dict field rather than 14 individual float fields — Fewest schema changes, extensible for future FRED columns, consistent with Optional pattern
 
 ## Last Session
 
-- **Stopped at:** Completed 94-02-PLAN.md
+- **Stopped at:** Completed 94-03-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
