@@ -39,6 +39,44 @@ def _fetch_from_feast(ticker: str) -> StreamingFeaturesResponse:
         # available=True only when at least one feature has a real value
         available = any(v is not None for v in (ema_20, rsi_14, macd_signal))
 
+        # Phase 94: second Feast call for FRED macro features — entity ticker='MACRO'
+        fred_macro: dict | None = None
+        try:
+            fred_result = store.get_online_features(
+                features=[
+                    "fred_macro_fv:dgs2",
+                    "fred_macro_fv:dgs10",
+                    "fred_macro_fv:t10y2y",
+                    "fred_macro_fv:t10y3m",
+                    "fred_macro_fv:bamlh0a0hym2",
+                    "fred_macro_fv:dbaa",
+                    "fred_macro_fv:t10yie",
+                    "fred_macro_fv:dcoilwtico",
+                    "fred_macro_fv:dtwexbgs",
+                    "fred_macro_fv:dexjpus",
+                    "fred_macro_fv:icsa",
+                    "fred_macro_fv:nfci",
+                    "fred_macro_fv:cpiaucsl",
+                    "fred_macro_fv:pcepilfe",
+                ],
+                entity_rows=[{"ticker": "MACRO"}],
+            ).to_dict()
+            # Extract scalar values from list-wrapped Feast results
+            fred_cols = [
+                "dgs2", "dgs10", "t10y2y", "t10y3m",
+                "bamlh0a0hym2", "dbaa", "t10yie",
+                "dcoilwtico", "dtwexbgs", "dexjpus",
+                "icsa", "nfci", "cpiaucsl", "pcepilfe",
+            ]
+            fred_macro = {col: fred_result.get(col, [None])[0] for col in fred_cols}
+            if all(v is None for v in fred_macro.values()):
+                # FRED not yet materialized — degrade gracefully
+                logger.warning("fred_macro_fv not materialized (all None)")
+                fred_macro = None
+        except Exception:
+            logger.warning("fred_macro_fv online fetch failed — degrading gracefully", exc_info=True)
+            fred_macro = None
+
         return StreamingFeaturesResponse(
             ticker=ticker.upper(),
             ema_20=ema_20,
@@ -47,6 +85,7 @@ def _fetch_from_feast(ticker: str) -> StreamingFeaturesResponse:
             available=available,
             source="flink-indicator-stream",
             sampled_at=sampled_at,
+            fred_macro=fred_macro,
         )
     except Exception:
         logger.warning(
@@ -62,6 +101,7 @@ def _fetch_from_feast(ticker: str) -> StreamingFeaturesResponse:
             available=False,
             source="flink-indicator-stream",
             sampled_at=sampled_at,
+            fred_macro=None,
         )
 
 

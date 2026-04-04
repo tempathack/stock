@@ -332,6 +332,7 @@ class StreamingFeaturesResponse(BaseModel):
     available: bool = False
     source: str = "flink-indicator-stream"
     sampled_at: str | None = None  # ISO8601 UTC timestamp of the Redis query
+    fred_macro: dict | None = None  # Phase 94: 14 FRED macro series (dgs2..pcepilfe); None if not materialized
 
 
 # ── Sentiment Timeseries (Phase 89) ───────────────────────────────────────
