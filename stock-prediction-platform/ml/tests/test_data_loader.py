@@ -348,13 +348,37 @@ class TestFeastDataLoader:
 
 # ---------------------------------------------------------------------------
 # TestYfinanceMacroLoader
-# ── Wave 0 stub — tests will be RED until Plan 93-02 implements load_yfinance_macro() ──
+# ── GREEN after Plan 93-02 implements load_yfinance_macro() ──
 # ---------------------------------------------------------------------------
+
+
+def _make_mock_macro_wide(n: int = 60) -> pd.DataFrame:
+    """Build a synthetic macro-wide DataFrame as returned by _fetch_yfinance_macro_wide."""
+    dates = pd.bdate_range(start="2024-01-02", periods=n, freq="B")
+    etfs = ["xlk", "xlf", "xle", "xlv", "xli", "xly", "xlp", "xlu", "xlre", "xlb", "xlc"]
+    data = {"vix": np.full(n, 15.0), "spy_return": np.full(n, 0.001)}
+    for etf in etfs:
+        data[f"{etf}_return"] = np.full(n, 0.0005)
+    df = pd.DataFrame(data, index=dates)
+    df.index.name = "date"
+    return df
+
+
+def _make_mock_ohlcv_rows(n: int = 300) -> list[tuple]:
+    """Build synthetic OHLCV rows suitable for load_ticker_data mocking."""
+    rows = []
+    base_date = date(2023, 1, 2)
+    for i in range(n):
+        d = base_date.replace(day=min(28, (base_date.day + i) % 28 + 1))
+        from datetime import timedelta as _td
+        d = (pd.Timestamp(base_date) + pd.Timedelta(days=i)).date()
+        rows.append((d, 170.0 + i * 0.1, 172.0 + i * 0.1, 168.0 + i * 0.1, 171.0 + i * 0.1, 5_000_000))
+    return rows
 
 
 class TestYfinanceMacroLoader:
     """Tests for load_yfinance_macro() — yfinance macro feature loader.
-    RED state until 93-02-PLAN.md implements load_yfinance_macro() in data_loader.py.
+    GREEN after 93-02-PLAN.md implements load_yfinance_macro() in data_loader.py.
     """
 
     _EXPECTED_MACRO_COLS = [
@@ -365,9 +389,22 @@ class TestYfinanceMacroLoader:
         "low52w_pct",
     ]
 
-    def test_load_yfinance_macro_returns_dataframe(self):
+    @patch("ml.pipelines.components.data_loader._fetch_yfinance_macro_wide")
+    @patch("ml.pipelines.components.data_loader.psycopg2")
+    def test_load_yfinance_macro_returns_dataframe(self, mock_psycopg2, mock_fetch_wide):
         """load_yfinance_macro() returns a DataFrame with DatetimeIndex and required macro columns."""
-        from ml.pipelines.components.data_loader import load_yfinance_macro  # noqa: F401 — fails RED until 93-02
+        from ml.pipelines.components.data_loader import load_yfinance_macro
+
+        # Mock yfinance macro download
+        mock_fetch_wide.return_value = _make_mock_macro_wide(n=60)
+
+        # Mock PostgreSQL OHLCV data
+        ohlcv_rows = _make_mock_ohlcv_rows(n=300)
+        cursor = MagicMock()
+        cursor.fetchall.return_value = ohlcv_rows
+        conn = MagicMock()
+        conn.cursor.return_value = cursor
+        mock_psycopg2.connect.return_value = conn
 
         result = load_yfinance_macro(
             tickers=["AAPL"],

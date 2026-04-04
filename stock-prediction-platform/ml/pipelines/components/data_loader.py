@@ -7,10 +7,37 @@ import os
 from dataclasses import dataclass, field
 from datetime import date
 
+import numpy as np
 import pandas as pd
 import psycopg2
+import yfinance as yf
 
 from ml.features.feast_store import _TRAINING_FEATURES, get_store
+
+# ---------------------------------------------------------------------------
+# Macro / sector ETF constants (mirrors yahoo_finance.py in the API service)
+# ---------------------------------------------------------------------------
+
+_SECTOR_ETF_MAP: dict[str, list[str]] = {
+    "XLK":  ["AAPL", "MSFT", "NVDA", "AVGO", "ORCL", "AMD", "QCOM", "TXN", "AMAT", "MU"],
+    "XLF":  ["BRK-B", "JPM", "V", "MA", "BAC", "WFC", "GS", "MS", "SPGI", "BLK"],
+    "XLE":  ["XOM", "CVX", "COP", "SLB", "EOG", "PXD", "MPC", "PSX", "VLO", "HES"],
+    "XLV":  ["LLY", "UNH", "JNJ", "ABBV", "MRK", "TMO", "ABT", "ISRG", "DHR", "SYK"],
+    "XLI":  ["RTX", "HON", "UNP", "UPS", "CAT", "DE", "GE", "LMT", "ETN", "ITW"],
+    "XLY":  ["AMZN", "TSLA", "HD", "MCD", "NKE", "LOW", "SBUX", "TJX", "BKNG", "MAR"],
+    "XLP":  ["PG", "KO", "PEP", "COST", "WMT", "PM", "MO", "MDLZ", "CL", "GIS"],
+    "XLU":  ["NEE", "DUK", "SO", "D", "AEP", "EXC", "XEL", "SRE", "ED", "ES"],
+    "XLRE": ["AMT", "PLD", "CCI", "EQIX", "PSA", "SPG", "O", "WELL", "AVB", "EQR"],
+    "XLB":  ["LIN", "SHW", "APD", "FCX", "NEM", "NUE", "VMC", "MLM", "CE", "ALB"],
+    "XLC":  ["META", "GOOGL", "GOOG", "NFLX", "DIS", "CMCSA", "T", "VZ", "EA", "TTWO"],
+}
+
+_TICKER_TO_SECTOR_ETF: dict[str, str] = {
+    t: etf for etf, tickers in _SECTOR_ETF_MAP.items() for t in tickers
+}
+
+_DEFAULT_SECTOR_ETF = "SPY"
+_SECTOR_ETFS = list(_SECTOR_ETF_MAP.keys())
 
 logger = logging.getLogger(__name__)
 
@@ -198,3 +225,134 @@ def load_feast_data(
 
     logger.info("load_feast_data: %d rows for %d tickers", len(df), len(tickers))
     return df
+
+
+# ---------------------------------------------------------------------------
+# yfinance macro feature loader (Phase 93)
+# ---------------------------------------------------------------------------
+
+
+def _fetch_yfinance_macro_wide(start_date: str, end_date: str) -> pd.DataFrame:
+    """Download VIX, SPY, and all 11 sector ETFs; return wide daily DataFrame.
+
+    Columns: vix, spy_return, xlk_return, ..., xlc_return.
+    Index: DatetimeIndex (business days in range).
+    """
+    macro_symbols = ["^VIX", "SPY"] + _SECTOR_ETFS
+
+    raw = yf.download(
+        macro_symbols,
+        start=start_date,
+        end=end_date,
+        interval="1d",
+        progress=False,
+        auto_adjust=True,
+    )
+
+    if isinstance(raw.columns, pd.MultiIndex):
+        close = raw["Close"].copy()
+    else:
+        close = raw[["Close"]].copy()
+
+    # Normalize names: "^VIX" -> "VIX"
+    close.columns = [str(c).lstrip("^") for c in close.columns]
+    close = close.dropna(how="all").ffill()
+
+    result = pd.DataFrame(index=close.index)
+    result.index.name = "date"
+    result["vix"] = close["VIX"]
+    result["spy_return"] = np.log(close["SPY"] / close["SPY"].shift(1))
+
+    for etf in _SECTOR_ETFS:
+        col = etf.lower() + "_return"
+        result[col] = np.log(close[etf] / close[etf].shift(1))
+
+    # Drop first row (NaN log-returns from shift)
+    result = result.dropna(subset=["spy_return"])
+    return result
+
+
+def load_yfinance_macro(
+    tickers: list[str],
+    start_date: str,
+    end_date: str,
+) -> pd.DataFrame:
+    """Load and join yfinance macro features for each (ticker, date) pair.
+
+    For each ticker the function:
+    1. Fetches VIX, SPY, and 11 sector ETF returns from Yahoo Finance.
+    2. Maps each ticker to its GICS sector ETF via TICKER_TO_SECTOR_ETF.
+    3. Computes 52-week high/low pct from the per-ticker OHLCV data already
+       in PostgreSQL (loaded via load_ticker_data).
+
+    Args:
+        tickers:    List of stock ticker symbols.
+        start_date: ISO date string "YYYY-MM-DD" — window start.
+        end_date:   ISO date string "YYYY-MM-DD" — window end.
+
+    Returns:
+        DataFrame with columns:
+            ticker, date, vix, spy_return, sector_return,
+            high52w_pct, low52w_pct
+        Indexed by (ticker, date) MultiIndex.
+    """
+    # --- 1. Fetch market-wide macro DataFrame ---
+    macro_wide = _fetch_yfinance_macro_wide(start_date, end_date)
+
+    # --- 2. Load per-ticker OHLCV for 52-week window ---
+    db_settings = DBSettings.from_env()
+    conn = psycopg2.connect(
+        host=db_settings.host,
+        port=db_settings.port,
+        dbname=db_settings.database,
+        user=db_settings.user,
+        password=db_settings.password,
+    )
+
+    all_rows: list[pd.DataFrame] = []
+
+    try:
+        for ticker in tickers:
+            ohlcv = load_ticker_data(ticker, conn, start_date=None, end_date=None)
+            if ohlcv.empty:
+                logger.warning("load_yfinance_macro: no OHLCV data for %s — skipping.", ticker)
+                continue
+
+            # Compute 52-week rolling high/low pct (252 trading days)
+            ohlcv["high52w"] = ohlcv["close"].rolling(252, min_periods=20).max()
+            ohlcv["low52w"]  = ohlcv["close"].rolling(252, min_periods=20).min()
+            ohlcv["high52w_pct"] = (ohlcv["high52w"] - ohlcv["close"]) / ohlcv["high52w"]
+            ohlcv["low52w_pct"]  = (ohlcv["close"] - ohlcv["low52w"])  / ohlcv["low52w"]
+
+            # Filter to requested date range
+            start_ts = pd.Timestamp(start_date)
+            end_ts   = pd.Timestamp(end_date)
+            ohlcv = ohlcv[(ohlcv.index >= start_ts) & (ohlcv.index <= end_ts)]
+
+            # Join macro features by date
+            merged = ohlcv[["high52w_pct", "low52w_pct"]].join(macro_wide, how="inner")
+
+            # Pick sector ETF return for this ticker
+            etf = _TICKER_TO_SECTOR_ETF.get(ticker, _DEFAULT_SECTOR_ETF)
+            etf_col = etf.lower() + "_return"
+            merged["sector_return"] = merged[etf_col] if etf_col in merged.columns else np.nan
+
+            # Final columns
+            merged["ticker"] = ticker
+            merged["date"]   = merged.index
+            result_cols = ["ticker", "date", "vix", "spy_return", "sector_return", "high52w_pct", "low52w_pct"]
+            all_rows.append(merged[result_cols])
+    finally:
+        conn.close()
+
+    if not all_rows:
+        empty = pd.DataFrame(columns=["ticker", "date", "vix", "spy_return", "sector_return", "high52w_pct", "low52w_pct"])
+        empty["date"] = pd.to_datetime(empty["date"])
+        empty = empty.set_index("date")
+        return empty
+
+    final = pd.concat(all_rows, ignore_index=True)
+    final["date"] = pd.to_datetime(final["date"])
+    final = final.set_index("date")
+    logger.info("load_yfinance_macro: %d rows for %d tickers", len(final), len(tickers))
+    return final

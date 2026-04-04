@@ -4,6 +4,7 @@ from __future__ import annotations
 import time
 from datetime import datetime, timedelta, timezone
 
+import numpy as np
 import pandas as pd
 import pandas_datareader.data as pdr
 import requests
@@ -20,6 +21,116 @@ from app.config import settings
 from app.utils.logging import get_logger
 
 logger = get_logger(__name__)
+
+# ---------------------------------------------------------------------------
+# Macro / sector ETF constants
+# ---------------------------------------------------------------------------
+
+SECTOR_ETF_MAP: dict[str, list[str]] = {
+    "XLK":  ["AAPL", "MSFT", "NVDA", "AVGO", "ORCL", "AMD", "QCOM", "TXN", "AMAT", "MU"],
+    "XLF":  ["BRK-B", "JPM", "V", "MA", "BAC", "WFC", "GS", "MS", "SPGI", "BLK"],
+    "XLE":  ["XOM", "CVX", "COP", "SLB", "EOG", "PXD", "MPC", "PSX", "VLO", "HES"],
+    "XLV":  ["LLY", "UNH", "JNJ", "ABBV", "MRK", "TMO", "ABT", "ISRG", "DHR", "SYK"],
+    "XLI":  ["RTX", "HON", "UNP", "UPS", "CAT", "DE", "GE", "LMT", "ETN", "ITW"],
+    "XLY":  ["AMZN", "TSLA", "HD", "MCD", "NKE", "LOW", "SBUX", "TJX", "BKNG", "MAR"],
+    "XLP":  ["PG", "KO", "PEP", "COST", "WMT", "PM", "MO", "MDLZ", "CL", "GIS"],
+    "XLU":  ["NEE", "DUK", "SO", "D", "AEP", "EXC", "XEL", "SRE", "ED", "ES"],
+    "XLRE": ["AMT", "PLD", "CCI", "EQIX", "PSA", "SPG", "O", "WELL", "AVB", "EQR"],
+    "XLB":  ["LIN", "SHW", "APD", "FCX", "NEM", "NUE", "VMC", "MLM", "CE", "ALB"],
+    "XLC":  ["META", "GOOGL", "GOOG", "NFLX", "DIS", "CMCSA", "T", "VZ", "EA", "TTWO"],
+}
+
+# Invert: ticker -> sector ETF symbol
+TICKER_TO_SECTOR_ETF: dict[str, str] = {
+    t: etf for etf, tickers in SECTOR_ETF_MAP.items() for t in tickers
+}
+
+# Default ETF for tickers not present in SECTOR_ETF_MAP
+DEFAULT_SECTOR_ETF = "SPY"
+
+_SECTOR_ETFS = list(SECTOR_ETF_MAP.keys())  # 11 ETF symbols
+
+
+def fetch_yfinance_macro(
+    tickers: list[str],
+    start_date: str,
+    end_date: str,
+) -> pd.DataFrame:
+    """Fetch market-wide macro features from Yahoo Finance.
+
+    Downloads ^VIX, SPY, and all 11 GICS sector ETFs for the given date range.
+    Returns a wide DataFrame indexed by date with columns:
+        vix, spy_return, xlk_return, xlf_return, xle_return, xlv_return,
+        xli_return, xly_return, xlp_return, xlu_return, xlre_return,
+        xlb_return, xlc_return.
+
+    Args:
+        tickers: Stock tickers to fetch macro data for (used only to determine
+                 which sector ETFs are relevant; all ETFs are always fetched).
+        start_date: ISO date string "YYYY-MM-DD" — window start.
+        end_date:   ISO date string "YYYY-MM-DD" — window end.
+
+    Returns:
+        DataFrame with DatetimeIndex (date) and one row per trading day.
+    """
+    macro_symbols = ["^VIX", "SPY"] + _SECTOR_ETFS
+
+    logger.info(
+        "fetch_yfinance_macro_start",
+        symbols=macro_symbols,
+        start=start_date,
+        end=end_date,
+    )
+
+    raw = yf.download(
+        macro_symbols,
+        start=start_date,
+        end=end_date,
+        interval="1d",
+        progress=False,
+        auto_adjust=True,
+    )
+
+    # yfinance returns MultiIndex columns: (field, symbol) — extract Close prices
+    if isinstance(raw.columns, pd.MultiIndex):
+        close = raw["Close"].copy()
+    else:
+        # Single-symbol fallback (shouldn't happen with list input)
+        close = raw[["Close"]].copy()
+
+    # Normalize column names: "^VIX" -> "VIX", "SPY" -> "SPY", "XLK" -> "XLK", …
+    close.columns = [str(c).lstrip("^") for c in close.columns]
+
+    # Drop rows where every column is NaN (non-trading days)
+    close = close.dropna(how="all")
+
+    # Forward-fill to handle holidays / missing days
+    close = close.ffill()
+
+    # ---------- VIX ----------
+    result = pd.DataFrame(index=close.index)
+    result.index.name = "date"
+    result["vix"] = close["VIX"]
+
+    # ---------- SPY log-return ----------
+    result["spy_return"] = np.log(close["SPY"] / close["SPY"].shift(1))
+
+    # ---------- Sector ETF log-returns ----------
+    for etf in _SECTOR_ETFS:
+        col = etf.lower() + "_return"
+        result[col] = np.log(close[etf] / close[etf].shift(1))
+
+    # Drop first row which has NaN log-returns
+    result = result.dropna(subset=["spy_return"])
+
+    logger.info(
+        "fetch_yfinance_macro_complete",
+        rows=len(result),
+        columns=list(result.columns),
+    )
+
+    return result
+
 
 DEFAULT_TICKERS = [
     "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA",
