@@ -31,6 +31,7 @@ export default function ForecastTable({
         sector: row.sector,
         current_price: row.current_price,
         daily_change_pct: row.daily_change_pct,
+        model_name: row.model_name,
         // 1-day
         price_1d: row.horizons[1]?.predicted_price ?? null,
         return_1d: row.horizons[1]?.expected_return_pct ?? null,
@@ -98,6 +99,31 @@ export default function ForecastTable({
               {v > 0 ? "+" : ""}
               {v.toFixed(2)}%
             </Box>
+          );
+        },
+      },
+      {
+        field: "model_name",
+        headerName: "Model",
+        width: 110,
+        renderCell: (params) => {
+          const v = (params.value as string | null) ?? "—";
+          return (
+            <Tooltip title={v !== "—" ? v : ""} placement="top">
+              <Box
+                sx={{
+                  fontFamily: "monospace",
+                  fontSize: "0.72rem",
+                  textTransform: "lowercase",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "100%",
+                }}
+              >
+                {v}
+              </Box>
+            </Tooltip>
           );
         },
       },

@@ -265,3 +265,16 @@ Previous run codebase patterns (still valid):
   - When ALL feature columns are NaN, drop_incomplete_rows drops every row silently. Always verify len(data_dict) > 0 after label generation.
   - FRED_API_KEY is not set in k8s — FRED features are collected but not joined into training DataFrame for the direct-DB path (only used in Feast path)
 ---
+
+## 2026-04-04 - US-006: Add model_name column to ForecastTable and verify it shows in Forecasts tab
+- Added model_name to flatRows mapping in ForecastTable.tsx (sourced from row.model_name)
+- Added GridColDef: field='model_name', headerName='Model', width=110, monospace font, lowercase, text overflow ellipsis
+- Wrapped renderCell in MUI Tooltip showing full model name on hover
+- Column positioned after daily_change_pct column and before 1D forecast group
+- TypeScript 0 errors, npm run build succeeded
+- Playwright verified: forecasts-model-col.png — MODEL column header visible, rows show "catboost_st..." with tooltip for full name, 0 console errors
+- Files modified: services/frontend/src/components/forecasts/ForecastTable.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - MultiHorizonForecastRow already had model_name at top-level — just needed to be mapped into flatRows
+  - DataGrid ellipsis requires: overflow:hidden + textOverflow:ellipsis + whiteSpace:nowrap + maxWidth:100% on the inner Box
+---

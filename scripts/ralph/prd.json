@@ -109,8 +109,8 @@
         "Typecheck passes"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added model_name to flatRows mapping. Added GridColDef for 'Model' column (width=110, monospace, lowercase, ellipsis, Tooltip showing full name). Column positioned after daily_change_pct. TypeScript 0 errors, build OK. Playwright verified: forecasts-model-col.png shows MODEL column with catboost_st... truncated values for 160+ rows."
     },
     {
       "id": "US-007",
