@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Phase 94 context gathered
-last_updated: "2026-04-04T13:07:07.716Z"
+stopped_at: Completed 94-01-PLAN.md
+last_updated: "2026-04-04T13:59:30.059Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 93 — macro-feature-enrichment-vix-sector-etf-spy-return-52wk-highlow-remove-sentiment
+**Current focus:** Phase 94 — fred-macro-feature-pipeline
 
 ## Current Status
 
@@ -440,10 +440,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 93]: Macro join in training_pipeline wrapped in try/except for graceful degradation if yfinance unreachable
 - [Phase 93]: Removed run_in_threadpool import from ws.py since _get_sentiment_sync was deleted and ws_prices does not use it
 - [Phase 93]: Archive-stub pattern: files referencing deleted Feast registry objects raise NotImplementedError or return static available=False
+- [Phase 94]: Used monkeypatch.setenv for FRED_API_KEY isolation in all fetch_fred_macro tests
+- [Phase 94]: TestCreateFredMacroTable uses explicit MagicMock context manager protocol for clean psycopg2 isolation
 
 ## Last Session
 
-- **Stopped at:** Phase 94 context gathered
+- **Stopped at:** Completed 94-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
