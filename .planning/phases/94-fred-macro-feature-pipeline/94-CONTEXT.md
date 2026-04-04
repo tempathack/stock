@@ -32,7 +32,7 @@ VIXCLS is excluded from FRED (already covered by yfinance VIX). All other 14 ser
 - **New `fred_macro_fv`** FeatureView registered in `feature_repo.py` alongside existing `yfinance_macro_fv`
 - `PostgreSQLSource` pointing to `feast_fred_macro`, same pattern as `yfinance_macro_source`
 - No entity key — date-keyed only (same as `yfinance_macro_fv`)
-- **All 14 FRED features added to `_TRAINING_FEATURES`** in `data_loader.py`
+- **All 14 FRED features added to `_TRAINING_FEATURES`** in `feast_store.py`
 - Training join pulls both `yfinance_macro_fv` and `fred_macro_fv` — combined macro context of 19 features (5 yfinance + 14 FRED)
 - Inference path updated to also pull `fred_macro_fv` features from Feast online store
 
@@ -56,7 +56,8 @@ VIXCLS is excluded from FRED (already covered by yfinance VIX). All other 14 ser
 
 ### Existing macro feature pattern (Phase 93)
 - `stock-prediction-platform/ml/feature_store/feature_repo.py` — Feast Entity, FeatureView, PushSource definitions; `yfinance_macro_fv` is the direct template for `fred_macro_fv`
-- `stock-prediction-platform/ml/pipelines/components/data_loader.py` — `create_macro_table()`, `upsert_macro_rows()`, `_TRAINING_FEATURES` list; FRED collector must follow this exact pattern
+- `stock-prediction-platform/ml/pipelines/components/data_loader.py` — `create_macro_table()`, `upsert_macro_rows()`; FRED collector must follow this exact pattern
+- `stock-prediction-platform/ml/features/feast_store.py` — `_TRAINING_FEATURES` list (canonical feature registry); add `fred_macro_fv:*` columns here
 - `stock-prediction-platform/services/api/app/services/yahoo_finance.py` — `fetch_yfinance_macro()` is the reference implementation for the FRED collector
 
 ### K8s ingestion wiring
@@ -86,7 +87,7 @@ No external specs — requirements are fully captured in decisions above.
 ### Established Patterns
 - Wide-format TimescaleDB hypertable per feature group (no long/EAV format)
 - `PostgreSQLSource` with raw SQL `SELECT * FROM table` for Feast offline store
-- `_TRAINING_FEATURES` list in `data_loader.py` is the canonical feature registry — add `fred_macro_fv:*` columns here
+- `_TRAINING_FEATURES` list in `feast_store.py` is the canonical feature registry — add `fred_macro_fv:*` columns here
 - `secretKeyRef` in pod spec for secrets (see `cronjob-training.yaml`)
 
 ### Integration Points
