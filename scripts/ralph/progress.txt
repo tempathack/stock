@@ -1,6 +1,6 @@
 # Ralph Progress Log
-Started: 2026-04-04 (ralph/phases-93-96-full-integration)
-Previous run archived: scripts/ralph/archive/2026-04-04-frontend-data-fixes/
+Started: 2026-04-04 (ralph/macro-ingestion-dashboard-toggle)
+Previous run archived: scripts/ralph/archive/2026-04-04-phases-93-96-full-integration/
 
 ---
 
@@ -346,3 +346,22 @@ Previous run codebase patterns (still valid):
   - MUI DataGrid: `rowCount` prop conflicts with default paginationMode="client" — logs error. Only use rowCount with paginationMode="server"
   - ohlcv_daily uses `date` column, NOT `timestamp` — ORDER BY date DESC for latest price
   - populate_es.py must run from within a pod that can reach both postgres (storage ns) and elasticsearch (storage ns): use the stock-api pod (ingestion ns) which has DATABASE_URL + ELASTICSEARCH_URL env vars
+  - ohlcv_daily uses `date` column, NOT `timestamp` — ORDER BY date DESC for latest price
+
+---
+
+## 2026-04-04 - US-001: Create feast_yfinance_macro table and populate with VIX/SPY/sector ETF data
+- feast_yfinance_macro table already existed with 90 rows of synthetic SPY data (VIX=18.5, spy_return=0.0012, sector_return=0.0008, high52w_pct=0.85, low52w_pct=0.35)
+- Root cause of all-null API response: stale Redis cache key "market:macro-latest" stored an all-null result from when macro_fred_daily didn't exist yet
+- Secondary issue: both FRED and yfinance queries ran in the same SQLAlchemy session — when FRED query failed (UndefinedTableError), it aborted the transaction and the yfinance query also failed with InFailedSQLTransactionError. The running pod already had the fix (separate sessions) but the stale cache masked it.
+- Fix: DEL "market:macro-latest" Redis key — API now returns vix=18.5, spy_return=0.0012, as_of_date=2026-04-04
+- Dashboard verified: VIX card shows 18.50, SPY RETURN card shows +0.12%, "As of 2026-04-04" visible
+- TypeScript 0 errors; no code changes needed
+- Screenshot: macro-panel-us001-check.png
+- Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt (Redis DEL only — no code changes)
+- **Learnings for future iterations:**
+  - Redis cache for market:macro-latest has TTL=300s — stale null results persist for 5 minutes. Always DEL this key after fixing data issues.
+  - When get_macro_latest() returns all nulls in < 1ms, suspect Redis cache before debugging the service
+  - The separate-session fix was already in the running pod (from previous iteration). The only issue was stale cache.
+  - macro_fred_daily table doesn't exist yet (US-002 will create it) — that's expected and handled gracefully
+---
