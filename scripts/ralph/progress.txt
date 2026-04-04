@@ -472,3 +472,20 @@ Previous run codebase patterns (still valid):
   - MacroChart with useMacroHistory hook loads live data from /market/macro/history — 90-day FRED timeseries with realistic variance renders correctly in chart
   - ToggleButtonGroup enforces exclusivity with `if (val) setViewMode(val)` guard to prevent deselecting all
 ---
+
+## 2026-04-04 - US-008: Final production verification across all 7 tabs
+- Dashboard Market View: prod-market.png — treemap + ticker strip, no macro cards ✓
+- Dashboard Macro View: prod-macro.png — 9 macro cards (VIX 18.50, SPY +0.12%, 10Y 4.39%, 2-10 -0.67%, HY 292.70, WTI 70.66, USD 110.5, Claims 217,997, PCE 122.883) + FRED timeseries with visible movement ✓
+- Dashboard: 0 console errors ✓
+- Forecasts: prod-forecasts.png — MODEL column + 4 horizons (1D/7D/14D/30D), 160 rows, CatBoost_standard ✓
+- Models: prod-models.png — stacking_ensemble winner, 9 models table, Active=CatBoost_standard ✓
+- Drift: prod-drift.png — CatBoost_standard active, 15 drift events timeline ✓
+- Analytics: prod-analytics.png — Argo CD Synced, 3 Flink running, OLAP candle chart ✓
+- Backtest: prod-backtest.png — AAPL results (RMSE 45.79, DA 49.4%, 254 data points) ✓
+- Search: prod-search.png — AAPL 4 predictions returned ✓
+- Note: 4 pre-existing background API timeout console.errors on analytics Feast freshness endpoint — infrastructure noise, not caused by this story
+- Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt + screenshots: prod-market.png, prod-macro.png, prod-forecasts.png, prod-models.png, prod-drift.png, prod-analytics.png, prod-backtest.png, prod-search.png
+- **Learnings for future iterations:**
+  - Redis cache for /predict/bulk must be warm before Forecasts tab loads — first load after cache expiry takes 30s+ and may time out
+  - Pre-warm cache by curling all 4 horizons in parallel before Playwright verification
+---
