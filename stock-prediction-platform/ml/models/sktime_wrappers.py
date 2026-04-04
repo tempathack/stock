@@ -168,3 +168,140 @@ class BATSWrapper(_SktimeBase):
         fc.fit(series, fh=[1])
         self.forecast_value_ = float(fc.predict().iloc[0])
         return self
+
+
+# ===========================================================================
+# sktime Regression Module Wrappers
+# ===========================================================================
+
+
+class SktimeRegressionWrapper(BaseEstimator, RegressorMixin):
+    """Thin adapter that reshapes 2D tabular X → 3D for sktime regressors.
+
+    sktime regressors expect X of shape (n_instances, n_dimensions, series_length).
+    The existing pipeline produces X of shape (n_samples, n_features).
+
+    This wrapper reshapes X to (n_samples, 1, n_features) — treating each sample's
+    feature vector as a univariate time series of length n_features — before passing
+    it to the underlying sktime regressor. The sktime model's fit/predict output is
+    passed through unchanged.
+    """
+
+    def _make_regressor(self):
+        """Instantiate the sktime regressor. Override in subclasses."""
+        raise NotImplementedError
+
+    def fit(self, X: np.ndarray, y: np.ndarray):
+        from sklearn.base import clone
+
+        X_3d = X.reshape(X.shape[0], 1, X.shape[1])  # (n, 1, T)
+        self.regressor_ = clone(self._make_regressor())
+        self.regressor_.fit(X_3d, y)
+        return self
+
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        check_is_fitted(self, "regressor_")
+        X_3d = X.reshape(X.shape[0], 1, X.shape[1])
+        return self.regressor_.predict(X_3d)
+
+
+class MiniRocketWrapper(SktimeRegressionWrapper):
+    """MiniROCKET — fastest ROCKET variant, state-of-the-art accuracy on CPU.
+
+    Requires: numba (JIT compilation; results cached after first run).
+    """
+
+    def __init__(self, num_kernels: int = 10_000, max_dilations_per_kernel: int = 32):
+        self.num_kernels = num_kernels
+        self.max_dilations_per_kernel = max_dilations_per_kernel
+
+    def _make_regressor(self):
+        from sktime.regression.kernel_based import RocketRegressor
+
+        return RocketRegressor(
+            rocket_transform="minirocket",
+            num_kernels=self.num_kernels,
+            max_dilations_per_kernel=self.max_dilations_per_kernel,
+        )
+
+
+class RocketWrapper(SktimeRegressionWrapper):
+    """ROCKET — original random convolutional kernel transform regression.
+
+    Requires: numba.
+    """
+
+    def __init__(self, num_kernels: int = 10_000):
+        self.num_kernels = num_kernels
+
+    def _make_regressor(self):
+        from sktime.regression.kernel_based import RocketRegressor
+
+        return RocketRegressor(
+            rocket_transform="rocket",
+            num_kernels=self.num_kernels,
+        )
+
+
+class TimeSeriesForestWrapper(SktimeRegressionWrapper):
+    """TimeSeriesForestRegressor — interval-based ensemble, no extra deps.
+
+    Uses mean, std, and slope summary statistics over random time series
+    intervals. Interpretable and dependency-free.
+    """
+
+    def __init__(self, n_estimators: int = 200, min_interval: int = 3,
+                 n_jobs: int = -1):
+        self.n_estimators = n_estimators
+        self.min_interval = min_interval
+        self.n_jobs = n_jobs
+
+    def _make_regressor(self):
+        from sktime.regression.interval_based import TimeSeriesForestRegressor
+
+        return TimeSeriesForestRegressor(
+            n_estimators=self.n_estimators,
+            min_interval=self.min_interval,
+            n_jobs=self.n_jobs,
+        )
+
+
+class RandomIntervalWrapper(SktimeRegressionWrapper):
+    """RandomIntervalRegressor — random interval features + sklearn regressor.
+
+    Extracts multiple summary statistics from random intervals, then applies
+    a sklearn regressor (default: Ridge). No extra deps beyond core sktime.
+    """
+
+    def __init__(self, n_estimators: int = 200, n_jobs: int = -1):
+        self.n_estimators = n_estimators
+        self.n_jobs = n_jobs
+
+    def _make_regressor(self):
+        from sktime.regression.interval_based import RandomIntervalRegressor
+
+        return RandomIntervalRegressor(
+            n_estimators=self.n_estimators,
+            n_jobs=self.n_jobs,
+        )
+
+
+class Catch22Wrapper(SktimeRegressionWrapper):
+    """Catch22Regressor — 22 canonical time series features + sklearn regressor.
+
+    Extracts 22 interpretable statistical features then applies a linear
+    classifier. Fast inference, lightweight.
+    Requires: pycatch22.
+    """
+
+    def __init__(self, outlier_norm: bool = False, replace_nans: bool = True):
+        self.outlier_norm = outlier_norm
+        self.replace_nans = replace_nans
+
+    def _make_regressor(self):
+        from sktime.regression.feature_based import Catch22Regressor
+
+        return Catch22Regressor(
+            outlier_norm=self.outlier_norm,
+            replace_nans=self.replace_nans,
+        )
