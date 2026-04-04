@@ -7,10 +7,13 @@ import os
 from dataclasses import dataclass, field
 from datetime import date
 
+import time as _time
+
 import numpy as np
 import pandas as pd
 import psycopg2
 import yfinance as yf
+from fredapi import Fred
 
 from ml.features.feast_store import _TRAINING_FEATURES, get_store
 
@@ -462,6 +465,165 @@ def write_yfinance_macro_to_db(
                     ))
                     rows_written += 1
         logger.info("write_yfinance_macro_to_db: upserted %d rows.", rows_written)
+    finally:
+        conn.close()
+
+    return rows_written
+
+
+# ---------------------------------------------------------------------------
+# FRED macro feature collector (Phase 94)
+# ---------------------------------------------------------------------------
+
+_FRED_SERIES: list[str] = [
+    "DGS2", "DGS10", "T10Y2Y", "T10Y3M",
+    "BAMLH0A0HYM2", "DBAA", "T10YIE",
+    "DCOILWTICO", "DTWEXBGS", "DEXJPUS",
+    "ICSA", "NFCI", "CPIAUCSL", "PCEPILFE",
+]
+
+_FRED_COLS: list[str] = [s.lower() for s in _FRED_SERIES]  # 14 lowercase column names
+
+_CREATE_FRED_MACRO_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS feast_fred_macro (
+    timestamp       TIMESTAMPTZ      NOT NULL,
+    created_at      TIMESTAMPTZ      NOT NULL DEFAULT NOW(),
+    dgs2            DOUBLE PRECISION,
+    dgs10           DOUBLE PRECISION,
+    t10y2y          DOUBLE PRECISION,
+    t10y3m          DOUBLE PRECISION,
+    bamlh0a0hym2    DOUBLE PRECISION,
+    dbaa            DOUBLE PRECISION,
+    t10yie          DOUBLE PRECISION,
+    dcoilwtico      DOUBLE PRECISION,
+    dtwexbgs        DOUBLE PRECISION,
+    dexjpus         DOUBLE PRECISION,
+    icsa            DOUBLE PRECISION,
+    nfci            DOUBLE PRECISION,
+    cpiaucsl        DOUBLE PRECISION,
+    pcepilfe        DOUBLE PRECISION,
+    PRIMARY KEY (timestamp)
+);
+SELECT create_hypertable('feast_fred_macro', 'timestamp', if_not_exists => TRUE);
+"""
+
+_UPSERT_FRED_SQL = (
+    "INSERT INTO feast_fred_macro (timestamp, {cols}) "
+    "VALUES (%s, {placeholders}) "
+    "ON CONFLICT (timestamp) DO UPDATE SET {updates}, created_at = NOW();"
+).format(
+    cols=", ".join(_FRED_COLS),
+    placeholders=", ".join(["%s"] * len(_FRED_COLS)),
+    updates=", ".join(f"{c} = EXCLUDED.{c}" for c in _FRED_COLS),
+)
+
+
+def fetch_fred_macro(start_date: str, end_date: str) -> pd.DataFrame:
+    """Fetch 14 FRED macro series; return wide daily DataFrame with forward-fill.
+
+    Reads FRED_API_KEY from the environment. Raises KeyError immediately if not set.
+
+    Args:
+        start_date: ISO date string "YYYY-MM-DD" — window start.
+        end_date:   ISO date string "YYYY-MM-DD" — window end.
+
+    Returns:
+        DataFrame with DatetimeIndex (daily, name="date"), 14 columns:
+        dgs2, dgs10, t10y2y, t10y3m, bamlh0a0hym2, dbaa, t10yie,
+        dcoilwtico, dtwexbgs, dexjpus, icsa, nfci, cpiaucsl, pcepilfe.
+        No NaN values — weekly/monthly series are forward-filled with no limit.
+    """
+    api_key = os.environ["FRED_API_KEY"]  # KeyError if not set — intentional
+    fred = Fred(api_key=api_key)
+    frames: dict[str, pd.Series] = {}
+    for series_id in _FRED_SERIES:
+        s = fred.get_series(
+            series_id,
+            observation_start=start_date,
+            observation_end=end_date,
+        )
+        frames[series_id.lower()] = s
+        _time.sleep(0.5)  # Respect FRED rate limit (120 req/min for authenticated calls)
+
+    wide = pd.DataFrame(frames)
+    date_spine = pd.date_range(start=start_date, end=end_date, freq="D")
+    wide = wide.reindex(date_spine).ffill()  # No limit — carry last value indefinitely
+    wide.index.name = "date"
+    return wide
+
+
+def create_fred_macro_table(settings: DBSettings | None = None) -> None:
+    """Create the feast_fred_macro TimescaleDB hypertable if it does not exist.
+
+    Safe to call multiple times — uses IF NOT EXISTS and if_not_exists => TRUE.
+    No ticker column — feast_fred_macro is date-keyed only (PRIMARY KEY timestamp).
+
+    Args:
+        settings: DBSettings instance; defaults to DBSettings.from_env().
+    """
+    if settings is None:
+        settings = DBSettings.from_env()
+
+    conn = psycopg2.connect(
+        host=settings.host,
+        port=settings.port,
+        dbname=settings.database,
+        user=settings.user,
+        password=settings.password,
+    )
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                cur.execute(_CREATE_FRED_MACRO_TABLE_SQL)
+        logger.info("create_fred_macro_table: feast_fred_macro ready.")
+    finally:
+        conn.close()
+
+
+def write_fred_macro_to_db(
+    macro_df: pd.DataFrame,
+    settings: DBSettings | None = None,
+) -> int:
+    """Write FRED macro rows to feast_fred_macro, upserting on timestamp.
+
+    Args:
+        macro_df: DataFrame with DatetimeIndex (name="date" or numeric) and 14 FRED
+                  columns: dgs2, dgs10, ..., pcepilfe.
+        settings: DBSettings instance; defaults to DBSettings.from_env().
+
+    Returns:
+        Number of rows upserted.
+    """
+    if settings is None:
+        settings = DBSettings.from_env()
+
+    df = macro_df.copy()
+    # Normalise index to a "date" column
+    if "date" not in df.columns:
+        df = df.reset_index()
+        df = df.rename(columns={"index": "date", 0: "date"})
+
+    missing_cols = [c for c in _FRED_COLS if c not in df.columns]
+    if missing_cols:
+        raise ValueError(f"macro_df missing FRED columns: {missing_cols}")
+
+    conn = psycopg2.connect(
+        host=settings.host,
+        port=settings.port,
+        dbname=settings.database,
+        user=settings.user,
+        password=settings.password,
+    )
+    rows_written = 0
+    try:
+        with conn:
+            with conn.cursor() as cur:
+                for _, row in df.iterrows():
+                    cur.execute(_UPSERT_FRED_SQL, tuple(
+                        [row.get("date", row.name)] + [row[c] for c in _FRED_COLS]
+                    ))
+                    rows_written += 1
+        logger.info("write_fred_macro_to_db: upserted %d rows.", rows_written)
     finally:
         conn.close()
 
