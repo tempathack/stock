@@ -41,4 +41,5 @@ class TestFredMacroFeatureView:
     def test_fred_macro_fv_source_query_contains_table(self):
         """fred_macro_source query references feast_fred_macro table."""
         from ml.feature_store.feature_repo import fred_macro_source
-        assert "feast_fred_macro" in fred_macro_source.query
+        # PostgreSQLSource exposes query via get_table_query_string() not .query attribute
+        assert "feast_fred_macro" in fred_macro_source.get_table_query_string()

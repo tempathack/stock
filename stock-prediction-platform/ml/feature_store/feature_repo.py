@@ -9,12 +9,13 @@ feast apply registers metadata only; it does NOT create these tables.
 
 Phase 93: removed reddit_sentiment_fv and reddit_sentiment_push;
           added yfinance_macro_source and yfinance_macro_fv.
+Phase 94: added fred_macro_source and fred_macro_fv (14 FRED economic series).
 """
 from __future__ import annotations
 
 from datetime import timedelta
 
-from feast import Entity, FeatureView, Field
+from feast import Entity, FeatureView, Field, PushSource
 from feast.types import Float64, Int64
 from feast.infra.offline_stores.contrib.postgres_offline_store.postgres_source import (
     PostgreSQLSource,
@@ -109,7 +110,7 @@ technical_indicators_fv = FeatureView(
     ],
     online=True,
     source=indicators_source,
-    stream_source=technical_indicators_push,
+    sink_source=technical_indicators_push,
 )
 
 lag_features_fv = FeatureView(
@@ -160,4 +161,45 @@ yfinance_macro_fv = FeatureView(
         Field(name="low52w_pct",     dtype=Float64),
     ],
     source=yfinance_macro_source,
+)
+
+# ── Phase 94: FRED Macro FeatureView ─────────────────────────────────────────
+# feast_fred_macro stores FRED data with ticker='MACRO' (same entity pattern as
+# yfinance_macro_fv). Online serving: entity_rows=[{"ticker": "MACRO"}].
+
+fred_macro_source = PostgreSQLSource(
+    name="fred_macro_source",
+    query=(
+        "SELECT ticker, timestamp, "
+        "dgs2, dgs10, t10y2y, t10y3m, "
+        "bamlh0a0hym2, dbaa, t10yie, "
+        "dcoilwtico, dtwexbgs, dexjpus, "
+        "icsa, nfci, cpiaucsl, pcepilfe "
+        "FROM feast_fred_macro"
+    ),
+    timestamp_field="timestamp",
+    created_timestamp_column="created_at",
+)
+
+fred_macro_fv = FeatureView(
+    name="fred_macro_fv",
+    entities=[ticker],    # ticker='MACRO' — same online store pattern as stock features
+    ttl=timedelta(days=365),
+    schema=[
+        Field(name="dgs2",         dtype=Float64),
+        Field(name="dgs10",        dtype=Float64),
+        Field(name="t10y2y",       dtype=Float64),
+        Field(name="t10y3m",       dtype=Float64),
+        Field(name="bamlh0a0hym2", dtype=Float64),
+        Field(name="dbaa",         dtype=Float64),
+        Field(name="t10yie",       dtype=Float64),
+        Field(name="dcoilwtico",   dtype=Float64),
+        Field(name="dtwexbgs",     dtype=Float64),
+        Field(name="dexjpus",      dtype=Float64),
+        Field(name="icsa",         dtype=Float64),
+        Field(name="nfci",         dtype=Float64),
+        Field(name="cpiaucsl",     dtype=Float64),
+        Field(name="pcepilfe",     dtype=Float64),
+    ],
+    source=fred_macro_source,
 )
