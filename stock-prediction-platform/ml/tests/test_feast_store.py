@@ -170,3 +170,41 @@ def test_yfinance_macro_features_present():
         assert col in _TRAINING_FEATURES, (
             f"Macro feature {col!r} must be added to _TRAINING_FEATURES in Phase 93"
         )
+
+
+# ============================================================
+# Phase 94: _TRAINING_FEATURES membership tests (RED state)
+# ============================================================
+
+class TestTrainingFeatures:
+    """Phase 94: _TRAINING_FEATURES must include all 14 fred_macro_fv entries."""
+
+    _FRED_FEATURES = [
+        "fred_macro_fv:dgs2",
+        "fred_macro_fv:dgs10",
+        "fred_macro_fv:t10y2y",
+        "fred_macro_fv:t10y3m",
+        "fred_macro_fv:bamlh0a0hym2",
+        "fred_macro_fv:dbaa",
+        "fred_macro_fv:t10yie",
+        "fred_macro_fv:dcoilwtico",
+        "fred_macro_fv:dtwexbgs",
+        "fred_macro_fv:dexjpus",
+        "fred_macro_fv:icsa",
+        "fred_macro_fv:nfci",
+        "fred_macro_fv:cpiaucsl",
+        "fred_macro_fv:pcepilfe",
+    ]
+
+    def test_contains_all_14_fred_entries(self):
+        """All 14 fred_macro_fv:* entries must be present in _TRAINING_FEATURES."""
+        from ml.features.feast_store import _TRAINING_FEATURES
+        for feat in self._FRED_FEATURES:
+            assert feat in _TRAINING_FEATURES, f"Missing from _TRAINING_FEATURES: {feat}"
+
+    def test_total_feature_count_is_49(self):
+        """_TRAINING_FEATURES must have exactly 49 entries (35 existing + 14 FRED)."""
+        from ml.features.feast_store import _TRAINING_FEATURES
+        assert len(_TRAINING_FEATURES) == 49, (
+            f"Expected 49 features, got {len(_TRAINING_FEATURES)}"
+        )
