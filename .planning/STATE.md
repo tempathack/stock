@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 94-03-PLAN.md
-last_updated: "2026-04-04T15:48:20.086Z"
+stopped_at: Completed 95-01-PLAN.md
+last_updated: "2026-04-04T16:11:49.753Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-18)
 
 **Core value:** The winner ML model is always the best-performing, drift-aware regressor — automatically retrained and redeployed whenever prediction quality degrades.
-**Current focus:** Phase 94 — fred-macro-feature-pipeline
+**Current focus:** Phase 95 — dashboard-macro-panel
 
 ## Current Status
 
@@ -445,10 +445,11 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 94]: Implemented FRED functions inline in yahoo_finance.py rather than cross-service import from ml layer to preserve service boundary
 - [Phase 94]: FRED fetch in ingest.py guarded by historical mode condition to avoid FRED rate limit hits on intraday ingestion runs
 - [Phase 94-fred-macro-feature-pipeline]: Option C for StreamingFeaturesResponse: add fred_macro dict field rather than 14 individual float fields — Fewest schema changes, extensible for future FRED columns, consistent with Optional pattern
+- [Phase 95-dashboard-macro-panel]: MacroLatestResponse added to models/schemas.py; get_macro_latest() in market_service.py; dual-table query with per-table null-safety; as_of_date prefers FRED date over yfinance date
 
 ## Last Session
 
-- **Stopped at:** Completed 94-03-PLAN.md
+- **Stopped at:** Completed 95-01-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
