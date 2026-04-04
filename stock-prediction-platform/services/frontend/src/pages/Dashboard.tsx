@@ -7,6 +7,8 @@ import {
   Skeleton,
   Typography,
   Collapse,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import type { MarketOverviewEntry } from "@/api";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -26,6 +28,7 @@ import {
   StreamingFeaturesPanel,
   TopMoversPanel,
   MacroPanel,
+  MacroChart,
 } from "@/components/dashboard";
 import SentimentTimeseriesChart from "@/components/dashboard/SentimentTimeseriesChart";
 import { useMarketOverview, useTickerIndicators, usePrediction } from "@/api";
@@ -381,6 +384,7 @@ export default function Dashboard() {
   const marketQuery     = useMarketOverview();
   const [selected, setSelected] = useState<string | null>(null);
   const [sentimentTicker, setSentimentTicker] = useState<string>("AAPL");
+  const [viewMode, setViewMode] = useState<"market" | "macro">("market");
   const detailRef       = useRef<HTMLDivElement>(null);
 
   const wsUrl = `${(import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/^http/, "ws")}/ws/prices`;
@@ -494,118 +498,174 @@ export default function Dashboard() {
         <Box sx={{ mt: 1.5, height: "1px", background: "linear-gradient(to right, rgba(124,58,237,0.6), rgba(0,245,255,0.3), transparent)" }} />
       </Box>
 
-      {/* ── Ticker Strip ── */}
-      <PriceTickerStrip stocks={stocks} />
+      {/* ── Market / Macro Toggle ── */}
+      <Box sx={{ display: "flex", mb: 3 }}>
+        <ToggleButtonGroup
+          value={viewMode}
+          exclusive
+          onChange={(_e, val) => { if (val) setViewMode(val as "market" | "macro"); }}
+          size="small"
+          sx={{
+            background: "rgba(13,10,36,0.7)",
+            border: "1px solid rgba(124,58,237,0.25)",
+            borderRadius: "10px",
+            "& .MuiToggleButton-root": {
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: "0.72rem",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "rgba(107,96,168,0.6)",
+              border: "none",
+              px: 2.5,
+              py: 0.75,
+              "&.Mui-selected": {
+                background: "rgba(124,58,237,0.25)",
+                color: "#BF5AF2",
+              },
+            },
+          }}
+        >
+          <ToggleButton value="market">Market</ToggleButton>
+          <ToggleButton value="macro">Macro</ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
 
-      {/* ── Treemap ── */}
-      <Box sx={{ mb: 3 }}>
-        {marketQuery.isLoading ? (
-          <Box sx={{ background: "rgba(13,10,36,0.55)", border: "1px solid rgba(124,58,237,0.22)", borderRadius: "18px", p: 2 }}>
-            <Skeleton variant="rectangular" height={480} sx={{ bgcolor: "rgba(124,58,237,0.06)", borderRadius: "12px" }} />
+      {/* ── Ticker Strip ── */}
+      {viewMode === "market" && <PriceTickerStrip stocks={stocks} />}
+
+      {viewMode === "market" && (
+        <>
+          {/* ── Treemap ── */}
+          <Box sx={{ mb: 3 }}>
+            {marketQuery.isLoading ? (
+              <Box sx={{ background: "rgba(13,10,36,0.55)", border: "1px solid rgba(124,58,237,0.22)", borderRadius: "18px", p: 2 }}>
+                <Skeleton variant="rectangular" height={480} sx={{ bgcolor: "rgba(124,58,237,0.06)", borderRadius: "12px" }} />
+              </Box>
+            ) : (
+              <MarketTreemap
+                data={treemapData}
+                selectedTicker={selected}
+                onSelectTicker={handleSelect}
+              />
+            )}
           </Box>
-        ) : (
-          <MarketTreemap
-            data={treemapData}
-            selectedTicker={selected}
+
+          {/* ── Top Movers ── */}
+          <TopMoversPanel
+            stocks={stocks}
+            loading={marketQuery.isLoading}
             onSelectTicker={handleSelect}
           />
-        )}
-      </Box>
 
-      {/* ── Top Movers ── */}
-      <TopMoversPanel
-        stocks={stocks}
-        loading={marketQuery.isLoading}
-        onSelectTicker={handleSelect}
-      />
+          {/* ── Market Sentiment Section ── */}
+          <Box sx={{ mb: 3 }}>
+            <SectionLabel icon={<ElectricBoltIcon />} label="Market Sentiment" accent="#EC4899" />
+            <Box
+              sx={{
+                background: "rgba(7,4,26,0.5)",
+                border: "1px solid rgba(236,72,153,0.15)",
+                borderRadius: "14px",
+                p: 2,
+              }}
+            >
+              {/* Ticker quick-select row */}
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5, flexWrap: "wrap" }}>
+                <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.65rem", color: "rgba(107,96,168,0.7)", mr: 0.5 }}>
+                  Ticker:
+                </Typography>
+                {SENTIMENT_TICKERS.map((t) => (
+                  <Chip
+                    key={t}
+                    label={t}
+                    size="small"
+                    onClick={() => setSentimentTicker(t)}
+                    sx={{
+                      fontFamily: '"JetBrains Mono", monospace',
+                      fontSize: "0.65rem",
+                      fontWeight: 700,
+                      height: 22,
+                      bgcolor: sentimentTicker === t ? "rgba(236,72,153,0.25)" : "rgba(124,58,237,0.1)",
+                      border: `1px solid ${sentimentTicker === t ? "rgba(236,72,153,0.5)" : "rgba(124,58,237,0.2)"}`,
+                      color: sentimentTicker === t ? "#EC4899" : "rgba(240,238,255,0.7)",
+                      "&:hover": { bgcolor: "rgba(236,72,153,0.18)", cursor: "pointer" },
+                    }}
+                  />
+                ))}
+                {/* Sentiment label */}
+                {!sentimentQuery.isLoading && (() => {
+                  const { label, color } = getSentimentLabel(latestSentimentScore);
+                  return (
+                    <Box sx={{ ml: "auto", display: "flex", alignItems: "center", gap: 0.75 }}>
+                      <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: color, boxShadow: `0 0 6px ${color}` }} />
+                      <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.7rem", fontWeight: 700, color }}>
+                        {label}
+                      </Typography>
+                      {latestSentimentScore != null && (
+                        <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.65rem", color: "rgba(107,96,168,0.6)" }}>
+                          ({latestSentimentScore.toFixed(3)})
+                        </Typography>
+                      )}
+                    </Box>
+                  );
+                })()}
+              </Box>
 
-      {/* ── Market Sentiment Section ── */}
-      <Box sx={{ mb: 3 }}>
-        <SectionLabel icon={<ElectricBoltIcon />} label="Market Sentiment" accent="#EC4899" />
-        <Box
-          sx={{
-            background: "rgba(7,4,26,0.5)",
-            border: "1px solid rgba(236,72,153,0.15)",
-            borderRadius: "14px",
-            p: 2,
-          }}
-        >
-          {/* Ticker quick-select row */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5, flexWrap: "wrap" }}>
-            <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.65rem", color: "rgba(107,96,168,0.7)", mr: 0.5 }}>
-              Ticker:
-            </Typography>
-            {SENTIMENT_TICKERS.map((t) => (
-              <Chip
-                key={t}
-                label={t}
-                size="small"
-                onClick={() => setSentimentTicker(t)}
-                sx={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: "0.65rem",
-                  fontWeight: 700,
-                  height: 22,
-                  bgcolor: sentimentTicker === t ? "rgba(236,72,153,0.25)" : "rgba(124,58,237,0.1)",
-                  border: `1px solid ${sentimentTicker === t ? "rgba(236,72,153,0.5)" : "rgba(124,58,237,0.2)"}`,
-                  color: sentimentTicker === t ? "#EC4899" : "rgba(240,238,255,0.7)",
-                  "&:hover": { bgcolor: "rgba(236,72,153,0.18)", cursor: "pointer" },
-                }}
-              />
-            ))}
-            {/* Sentiment label */}
-            {!sentimentQuery.isLoading && (() => {
-              const { label, color } = getSentimentLabel(latestSentimentScore);
-              return (
-                <Box sx={{ ml: "auto", display: "flex", alignItems: "center", gap: 0.75 }}>
-                  <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: color, boxShadow: `0 0 6px ${color}` }} />
-                  <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.7rem", fontWeight: 700, color }}>
-                    {label}
-                  </Typography>
-                  {latestSentimentScore != null && (
-                    <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.65rem", color: "rgba(107,96,168,0.6)" }}>
-                      ({latestSentimentScore.toFixed(3)})
-                    </Typography>
-                  )}
+              {/* Timeseries sparkline / empty state */}
+              {sentimentQuery.isLoading ? (
+                <Box sx={{ mt: 1 }}>
+                  <Skeleton variant="rectangular" height={180} sx={{ bgcolor: "rgba(236,72,153,0.05)", borderRadius: "8px" }} />
                 </Box>
-              );
-            })()}
+              ) : !sentimentQuery.data || sentimentQuery.data.points.length === 0 ? (
+                <Box sx={{ py: 3, textAlign: "center" }}>
+                  <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.72rem", color: "rgba(107,96,168,0.5)" }}>
+                    No sentiment data available
+                  </Typography>
+                  <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.62rem", color: "rgba(107,96,168,0.35)", mt: 0.5 }}>
+                    Reddit pipeline may be starting up
+                  </Typography>
+                </Box>
+              ) : (
+                <SentimentTimeseriesChart ticker={sentimentTicker} />
+              )}
+            </Box>
+          </Box>
+        </>
+      )}
+
+      {viewMode === "macro" && (
+        <>
+          {/* ── Macro Environment — latest value cards ── */}
+          <Box sx={{ mb: 3 }}>
+            <SectionLabel icon={<BarChartIcon />} label="Macro Environment" accent="#00F5FF" />
+            <Box
+              sx={{
+                background: "rgba(7,4,26,0.5)",
+                border: "1px solid rgba(0,245,255,0.1)",
+                borderRadius: "14px",
+                p: 2,
+              }}
+            >
+              <MacroPanel />
+            </Box>
           </Box>
 
-          {/* Timeseries sparkline / empty state */}
-          {sentimentQuery.isLoading ? (
-            <Box sx={{ mt: 1 }}>
-              <Skeleton variant="rectangular" height={180} sx={{ bgcolor: "rgba(236,72,153,0.05)", borderRadius: "8px" }} />
+          {/* ── Historical Trends — 90-day FRED timeseries ── */}
+          <Box sx={{ mb: 3 }}>
+            <SectionLabel icon={<ShowChartIcon />} label="Historical Trends — 90 Days" accent="#00F5FF" />
+            <Box
+              sx={{
+                background: "rgba(7,4,26,0.5)",
+                border: "1px solid rgba(0,245,255,0.1)",
+                borderRadius: "14px",
+                p: 2,
+              }}
+            >
+              <MacroChart />
             </Box>
-          ) : !sentimentQuery.data || sentimentQuery.data.points.length === 0 ? (
-            <Box sx={{ py: 3, textAlign: "center" }}>
-              <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.72rem", color: "rgba(107,96,168,0.5)" }}>
-                No sentiment data available
-              </Typography>
-              <Typography sx={{ fontFamily: '"JetBrains Mono", monospace', fontSize: "0.62rem", color: "rgba(107,96,168,0.35)", mt: 0.5 }}>
-                Reddit pipeline may be starting up
-              </Typography>
-            </Box>
-          ) : (
-            <SentimentTimeseriesChart ticker={sentimentTicker} />
-          )}
-        </Box>
-      </Box>
-
-      {/* ── Macro Environment Section ── */}
-      <Box sx={{ mb: 3 }}>
-        <SectionLabel icon={<BarChartIcon />} label="Macro Environment" accent="#00F5FF" />
-        <Box
-          sx={{
-            background: "rgba(7,4,26,0.5)",
-            border: "1px solid rgba(0,245,255,0.1)",
-            borderRadius: "14px",
-            p: 2,
-          }}
-        >
-          <MacroPanel />
-        </Box>
-      </Box>
+          </Box>
+        </>
+      )}
 
       {/* ── Stock Selector ── */}
       <StockSelector

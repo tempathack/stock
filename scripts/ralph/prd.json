@@ -115,8 +115,8 @@
         "Typecheck passes"
       ],
       "priority": 7,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added useState<'market'|'macro'>('market') + ToggleButtonGroup (MARKET/MACRO) to Dashboard.tsx below PageHeader. Market View: ticker strip, treemap, top movers, sentiment — no MacroPanel. Macro View: 'MACRO ENVIRONMENT' heading + MacroPanel (9 cards) + 'HISTORICAL TRENDS — 90 DAYS' heading + MacroChart. Removed MacroPanel from market view. TypeScript 0 errors, build succeeded. Playwright verified: dashboard-market-tab.png (treemap visible, no macro cards), dashboard-macro-tab.png (9 cards + timeseries chart with moving lines). 0 console errors."
     },
     {
       "id": "US-008",

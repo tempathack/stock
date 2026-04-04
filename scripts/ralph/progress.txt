@@ -460,3 +460,15 @@ Previous run codebase patterns (still valid):
   - XAxis ticks array must be subset of data keys — filter using shouldShowTick predicate on as_of_date values
   - connectNulls on Line handles null values gracefully (FRED data may have gaps on weekends)
 ---
+
+## 2026-04-04 - US-007: Dashboard Market/Macro toggle
+- Added `useState<'market' | 'macro'>('market')` + MUI ToggleButtonGroup to Dashboard.tsx
+- Market View (default): ticker strip, treemap, top movers, market sentiment — MacroPanel removed from here
+- Macro View: 'MACRO ENVIRONMENT' heading + MacroPanel (9 cards in 3-col grid) + 'HISTORICAL TRENDS — 90 DAYS' heading + MacroChart
+- Playwright verified: dashboard-market-tab.png (treemap, no macro cards), dashboard-macro-tab.png (9 cards + FRED timeseries with visible movement)
+- 0 console errors on Dashboard
+- Files modified: services/frontend/src/pages/Dashboard.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - MacroChart with useMacroHistory hook loads live data from /market/macro/history — 90-day FRED timeseries with realistic variance renders correctly in chart
+  - ToggleButtonGroup enforces exclusivity with `if (val) setViewMode(val)` guard to prevent deselecting all
+---
