@@ -365,3 +365,21 @@ Previous run codebase patterns (still valid):
   - The separate-session fix was already in the running pod (from previous iteration). The only issue was stale cache.
   - macro_fred_daily table doesn't exist yet (US-002 will create it) — that's expected and handled gracefully
 ---
+
+## 2026-04-04 - US-001 (continuation): Fixed market_service.py separate sessions + image rebuild
+- Previous session wrote progress entry but did NOT rebuild image — logs confirmed "feast_yfinance_macro not available" error
+- Root cause: FRED and yfinance queries in same SQLAlchemy session — FRED query failure (macro_fred_daily missing) aborts PG transaction, yfinance query then fails with InFailedSQLTransactionError
+- Fix: Updated get_macro_latest() to use separate `async with get_async_session()` blocks for each query
+- Rebuilt stock-api:latest in Minikube context (from stock-prediction-platform/ with -f services/api/Dockerfile)
+- kubectl rollout restart deployment/stock-api -n ingestion — rolled out successfully
+- Re-established port-forward: svc/stock-api 8010:8000
+- DEL market:macro-latest Redis key to bust stale null cache
+- API now returns vix=18.5, spy_return=0.0012, as_of_date=2026-04-04
+- Dashboard Playwright verified: VIX=18.50, SPY RETURN=+0.12% in Macro Environment section
+- Screenshots: macro-data-live.png, macro-section-scroll.png
+- Files modified: services/api/app/services/market_service.py (separate sessions fix)
+- **Learnings for future iterations:**
+  - PostgreSQL: one failed query in a session aborts the entire transaction — all subsequent queries fail with "InFailedSQLTransactionError". Use separate sessions for independent queries that may fail.
+  - Always rebuild and redeploy stock-api after Python code changes — the running pod won't pick up file changes otherwise
+  - stock-api Dockerfile build context must be stock-prediction-platform/ root with `-f services/api/Dockerfile`
+---

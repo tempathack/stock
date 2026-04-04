@@ -278,26 +278,25 @@ async def get_macro_latest() -> MacroLatestResponse:
     fred_row: dict = {}
     yf_row: dict = {}
 
+    # Use separate sessions for each query — a failing query aborts the PG transaction,
+    # which would cause subsequent queries in the same session to also fail.
     try:
         async with get_async_session() as session:
-            try:
-                result = await session.execute(fred_query)
-                row = result.mappings().first()
-                if row:
-                    fred_row = dict(row)
-            except Exception:
-                logger.warning("macro_fred_daily not available — returning nulls for FRED fields")
-
-            try:
-                result = await session.execute(yfinance_query)
-                row = result.mappings().first()
-                if row:
-                    yf_row = dict(row)
-            except Exception:
-                logger.warning("feast_yfinance_macro not available — returning nulls for VIX/SPY fields")
+            result = await session.execute(fred_query)
+            row = result.mappings().first()
+            if row:
+                fred_row = dict(row)
     except Exception:
-        logger.exception("Failed to connect to DB for macro latest — returning all-null response")
-        return MacroLatestResponse()
+        logger.warning("macro_fred_daily not available — returning nulls for FRED fields")
+
+    try:
+        async with get_async_session() as session:
+            result = await session.execute(yfinance_query)
+            row = result.mappings().first()
+            if row:
+                yf_row = dict(row)
+    except Exception:
+        logger.warning("feast_yfinance_macro not available — returning nulls for VIX/SPY fields")
 
     # Determine as_of_date: prefer FRED date, fall back to yfinance date
     as_of: date | None = fred_row.get("as_of_date") or yf_row.get("as_of_date")
