@@ -18,10 +18,9 @@ def _fetch_from_feast(ticker: str) -> StreamingFeaturesResponse:
     Feast 0.61.0 uses a synchronous Redis client internally — calling this
     directly in an async handler would block the event loop.
     """
-    import feast  # lazy import — avoids slow package-level registry init at startup
-
     sampled_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
     try:
+        import feast  # lazy import inside try — avoids 500 when feast not installed
         store = feast.FeatureStore(repo_path=settings.FEAST_STORE_PATH)
         result = store.get_online_features(
             features=[

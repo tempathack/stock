@@ -130,8 +130,8 @@
         "Typecheck passes"
       ],
       "priority": 7,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Verified all Dashboard sections render: Macro Environment (9 cards, all '—' gracefully), Market Sentiment (visible, no data — pipeline down), Top Gainers/Losers, Market Treemap, and AAPL stock detail with KEY METRICS (6 populated cards: $252.62, -0.58%, $3.40T, 41.3M, $232.96, $9-$286) and AAPL HISTORICAL chart with real data. Fixed critical bug: import feast outside try/except in feast_online_service.py caused ModuleNotFoundError to bubble up to uvicorn (bypassing CORS middleware) returning 500 with no CORS headers → streaming-features endpoint now gracefully returns available=false. Rebuilt stock-api Docker image and rolled out. TypeScript 0 errors, build OK. Screenshots: dashboard-full-verify.png, dashboard-macro-section.png, dashboard-streaming-fixed.png."
     },
     {
       "id": "US-008",

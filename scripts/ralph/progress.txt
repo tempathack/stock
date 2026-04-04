@@ -278,3 +278,30 @@ Previous run codebase patterns (still valid):
   - MultiHorizonForecastRow already had model_name at top-level — just needed to be mapped into flatRows
   - DataGrid ellipsis requires: overflow:hidden + textOverflow:ellipsis + whiteSpace:nowrap + maxWidth:100% on the inner Box
 ---
+
+## 2026-04-04 - US-007: Verify Dashboard tab is fully working
+- Verified all Dashboard sections render correctly:
+  - Market Treemap with sectors ✅
+  - Top Gainers/Losers (TopMoversPanel) ✅
+  - Market Sentiment section visible (no data — pipeline down) ✅
+  - MACRO ENVIRONMENT section with 9 indicator cards showing "—" gracefully ✅
+  - AAPL selected via treemap click → KEY METRICS (6 cards: $252.62, -0.58%, $3.40T, 41.3M, $232.96, $9-$286) ✅
+  - AAPL HISTORICAL chart with real BB/SMA/forecast data ✅
+  - Streaming Features: graceful "No live Flink data yet" message ✅
+- Fixed critical bug: `import feast` was OUTSIDE the try/except block in feast_online_service.py
+  - When feast not installed, ModuleNotFoundError escaped FastAPI exception handlers entirely
+  - uvicorn caught it at ASGI level → returned raw 500 with NO CORS headers
+  - Browser received CORS error (no Access-Control-Allow-Origin) instead of JSON
+  - Fix: moved `import feast` inside the try block at line 25 (after sampled_at)
+- Rebuilt stock-api:latest in Minikube context and rolled out (kubectl rollout restart)
+- Re-established port-forward after rollout
+- TypeScript 0 errors, npm run build OK
+- Screenshots: dashboard-full-verify.png, dashboard-macro-section.png, dashboard-streaming-fixed.png
+- Files modified: services/api/app/services/feast_online_service.py, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - When FastAPI returns 500 WITHOUT CORS headers, the exception escaped ALL middleware — check if import or exception is at module scope or outside try/except
+  - `run_in_threadpool` propagates thread exceptions back to the async context; if uncaught by route handler, they escape FastAPI's exception handlers
+  - StockSelector dropdown opens BELOW trigger button — if trigger is at bottom of scrollable container, dropdown is off-viewport; interact via treemap click instead
+  - Playwright screenshot timeout (waiting for fonts) can happen after many interactions — close and reopen browser to reset
+  - The scrollable container in Dashboard is the `<main>` element (overflow: auto), not window — use main.scrollTop to scroll, not window.scrollTo
+---
