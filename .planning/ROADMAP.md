@@ -89,6 +89,12 @@
 | 88 | 3/3 | Complete   | 2026-04-03 | 3 plans |
 | 89 | 2/2 | Complete   | 2026-04-03 | 2 plans |
 | 90 | 4/5 | Complete    | 2026-04-03 | 5 plans |
+| 91 | Phase 91 | Planned | — | — |
+| 92 | Phase 92 | Planned | — | — |
+| 93 | 1/3 | In Progress|  | 3 plans |
+| 94 | FRED Macro Feature Pipeline | Planned | — | 3 plans |
+| 95 | Dashboard Macro Panel | Planned | — | 2 plans |
+| 96 | sktime Statistical Forecasting + Regression Models | Planned | — | 5 plans |
 
 Plans:
 - [ ] 70-01-PLAN.md — FastAPI streaming-features endpoint + feast_online_service + tests
@@ -103,6 +109,11 @@ Plans:
 - [ ] 90-03-PLAN.md — FastAPI elasticsearch_service + /search router + config + schemas
 - [ ] 90-04-PLAN.md — React /search page + API hooks + App.tsx route + Sidebar nav
 - [ ] 90-05-PLAN.md — Playwright browser verification checkpoint
+- [ ] 96-01-PLAN.md — sktime deps (requirements.txt) + SktimeSklearnWrapper compatibility layer (6 forecasting wrappers)
+- [ ] 96-02-PLAN.md — SKTIME_MODELS family in model_configs.py + train_sktime_models() + --skip-sktime flag
+- [ ] 96-03-PLAN.md — Dockerfile update + smoke-test training run + registry verification + git push
+- [ ] 96-04-PLAN.md — sktime regression deps (numba, pycatch22) + SktimeRegressionWrapper + 5 regression wrappers (MiniROCKET, ROCKET, TimeSeriesForest, RandomInterval, Catch22)
+- [ ] 96-05-PLAN.md — SKTIME_REGRESSION_MODELS family + train_sktime_regression_models() + --skip-sktime-regression flag + Numba pre-warm in Dockerfile + E2E validation
 
 ---
 
@@ -1702,6 +1713,51 @@ Plans:
 - [ ] 92-04-PLAN.md — Inference path rewrite (get_online_features_for_ticker, _feast_inference, get_live_prediction branch)
 
 ---
+
+### Phase 93: Macro feature enrichment — add VIX, sector ETF returns, SPY daily return, 52-week high/low pct; remove Reddit sentiment from training, inference, and Feast
+
+**Goal:** Replace sparse Reddit sentiment features with four dense, daily-aligned macro/market features (VIX, sector ETF return, SPY return, 52-week high/low pct) ingested via the existing yfinance pipeline. Remove sentiment from _TRAINING_FEATURES, Feast feature repo, Flink sentiment stream, data_loader fill logic, and the Feast online inference path so no code path reads or writes sentiment features after this phase.
+
+**Requirements:** TBD
+
+**Depends on:** Phase 92
+**Plans:** 1/3 plans executed
+
+Plans:
+- [ ] 93-01-PLAN.md — TDD test scaffolds (RED state): sentiment removal + yfinance macro feature assertions
+- [ ] 93-02-PLAN.md — Implement yfinance macro fetcher: VIX, SPY, sector ETFs, 52wk high/low
+- [ ] 93-03-PLAN.md — Wire into Feast + training pipeline, remove all sentiment code
+
+---
+
+### Phase 94: FRED macro feature pipeline — collect 15 economic indicators via FRED API and join to daily stock training features
+
+**Goal:** Build a FRED data collector that fetches 15 economic time series (DGS2, DGS10, T10Y2Y, T10Y3M, BAMLH0A0HYM2, DBAA, VIXCLS, T10YIE, DCOILWTICO, DTWEXBGS, DEXJPUS, ICSA, NFCI, CPIAUCSL, PCEPILFE) from the FRED API daily, stores them in TimescaleDB, and joins them to the per-stock training DataFrame by date so every stock row gets the same macro context for that day. Wire into Feast as a macro_features_fv FeatureView for both training and inference paths.
+
+**Requirements:** TBD
+
+**Depends on:** Phase 93
+**Plans:** 3 plans
+
+Plans:
+- [ ] 94-01-PLAN.md — TDD test scaffolds (RED state): FredCollector fetch contract
+- [ ] 94-02-PLAN.md — Implement FredCollector, K8s CronJob, FRED_API_KEY secret
+- [ ] 94-03-PLAN.md — Feast FeatureView + join FRED macro to training + inference path
+
+---
+
+### Phase 95: Dashboard macro panel — display live VIX, yield curve, credit spread, oil, and FRED indicators in the Dashboard tab
+
+**Goal:** Add a Macro Environment section to the Dashboard tab that displays the latest values of the macro features added in Phases 93 and 94 — VIX, SPY return, 10Y yield, 2-10 spread, HY credit spread, WTI crude, USD index, initial claims, and core PCE — fetched from TimescaleDB via a new /api/macro/latest endpoint, rendered as a grid of live indicator cards with color-coded change arrows.
+
+**Requirements:** TBD
+
+**Depends on:** Phase 94
+**Plans:** 2 plans
+
+Plans:
+- [ ] 95-01-PLAN.md — Backend: GET /api/macro/latest endpoint
+- [ ] 95-02-PLAN.md — Frontend: MacroPanel component + Dashboard integration + Playwright verification
 
 ## Requirement Traceability
 
