@@ -418,3 +418,233 @@ class TestYfinanceMacroLoader:
                 f"Expected macro column {col!r} not found in result. "
                 f"Got: {list(result.columns)}"
             )
+
+
+# ============================================================
+# Phase 94: FRED macro collector tests (RED state — Plan 01)
+# ============================================================
+
+import os
+import time
+
+
+class TestFetchFredMacro:
+    """Tests for fetch_fred_macro() in data_loader.py."""
+
+    _EXPECTED_COLS = [
+        "dgs2", "dgs10", "t10y2y", "t10y3m",
+        "bamlh0a0hym2", "dbaa", "t10yie",
+        "dcoilwtico", "dtwexbgs", "dexjpus",
+        "icsa", "nfci", "cpiaucsl", "pcepilfe",
+    ]
+
+    def _make_mock_fred(self, mocker_or_patch):
+        """Return a mock Fred instance whose get_series() returns a simple daily Series."""
+        import pandas as pd
+        mock_fred_instance = MagicMock()
+        # Return a sparse Series (only Mondays) to test ffill
+        idx = pd.to_datetime(["2024-01-01", "2024-01-08"])
+        mock_fred_instance.get_series.return_value = pd.Series([1.0, 2.0], index=idx)
+        return mock_fred_instance
+
+    def test_returns_wide_dataframe_with_14_columns(self, monkeypatch):
+        """fetch_fred_macro returns a DataFrame with exactly 14 FRED columns."""
+        from ml.pipelines.components.data_loader import fetch_fred_macro
+        import pandas as pd
+
+        mock_fred_instance = MagicMock()
+        idx = pd.to_datetime(["2024-01-02", "2024-01-03", "2024-01-04"])
+        mock_fred_instance.get_series.return_value = pd.Series([1.0, 2.0, 3.0], index=idx)
+
+        monkeypatch.setenv("FRED_API_KEY", "test_key")
+        with patch("ml.pipelines.components.data_loader.Fred", return_value=mock_fred_instance):
+            result = fetch_fred_macro("2024-01-02", "2024-01-04")
+
+        assert isinstance(result, pd.DataFrame)
+        for col in self._EXPECTED_COLS:
+            assert col in result.columns, f"Missing column: {col}"
+        assert len(result.columns) == 14
+
+    def test_ffill_fills_weekly_gaps(self, monkeypatch):
+        """Forward-fill propagates Monday values to Tue-Sun (no limit)."""
+        from ml.pipelines.components.data_loader import fetch_fred_macro
+        import pandas as pd
+
+        mock_fred_instance = MagicMock()
+        # Sparse: only Monday 2024-01-01 and Monday 2024-01-08 have values
+        idx = pd.to_datetime(["2024-01-01", "2024-01-08"])
+        mock_fred_instance.get_series.return_value = pd.Series([5.0, 10.0], index=idx)
+
+        monkeypatch.setenv("FRED_API_KEY", "test_key")
+        with patch("ml.pipelines.components.data_loader.Fred", return_value=mock_fred_instance):
+            result = fetch_fred_macro("2024-01-01", "2024-01-10")
+
+        # All 10 rows must have non-NaN values (ffill with no limit)
+        assert result.isnull().sum().sum() == 0, "Found NaN after ffill — limit must not be set"
+
+    def test_index_name_is_date(self, monkeypatch):
+        """Result DataFrame index.name == 'date'."""
+        from ml.pipelines.components.data_loader import fetch_fred_macro
+        import pandas as pd
+
+        mock_fred_instance = MagicMock()
+        idx = pd.to_datetime(["2024-01-02"])
+        mock_fred_instance.get_series.return_value = pd.Series([1.0], index=idx)
+
+        monkeypatch.setenv("FRED_API_KEY", "test_key")
+        with patch("ml.pipelines.components.data_loader.Fred", return_value=mock_fred_instance):
+            result = fetch_fred_macro("2024-01-02", "2024-01-02")
+
+        assert result.index.name == "date"
+
+    def test_uses_fred_api_key_from_env(self, monkeypatch):
+        """Fred() is instantiated with the FRED_API_KEY env var value."""
+        from ml.pipelines.components.data_loader import fetch_fred_macro
+        import pandas as pd
+
+        mock_fred_cls = MagicMock()
+        mock_fred_instance = MagicMock()
+        mock_fred_cls.return_value = mock_fred_instance
+        idx = pd.to_datetime(["2024-01-02"])
+        mock_fred_instance.get_series.return_value = pd.Series([1.0], index=idx)
+
+        monkeypatch.setenv("FRED_API_KEY", "secret_key_123")
+        with patch("ml.pipelines.components.data_loader.Fred", mock_fred_cls):
+            fetch_fred_macro("2024-01-02", "2024-01-02")
+
+        mock_fred_cls.assert_called_once_with(api_key="secret_key_123")
+
+
+class TestFetchFredMacroMissingKey:
+    """Test that missing FRED_API_KEY raises KeyError immediately."""
+
+    def test_raises_key_error_when_env_missing(self, monkeypatch):
+        """KeyError raised if FRED_API_KEY not in environment."""
+        from ml.pipelines.components.data_loader import fetch_fred_macro
+
+        monkeypatch.delenv("FRED_API_KEY", raising=False)
+        with pytest.raises(KeyError):
+            fetch_fred_macro("2024-01-02", "2024-01-02")
+
+
+class TestCreateFredMacroTable:
+    """Tests for create_fred_macro_table() in data_loader.py."""
+
+    def test_executes_create_table_sql(self):
+        """create_fred_macro_table() executes SQL containing 'feast_fred_macro'."""
+        from ml.pipelines.components.data_loader import create_fred_macro_table
+
+        mock_conn = MagicMock()
+        mock_cur = MagicMock()
+        mock_conn.__enter__ = MagicMock(return_value=mock_conn)
+        mock_conn.__exit__ = MagicMock(return_value=False)
+        mock_cur.__enter__ = MagicMock(return_value=mock_cur)
+        mock_cur.__exit__ = MagicMock(return_value=False)
+        mock_conn.cursor.return_value = mock_cur
+
+        with patch("ml.pipelines.components.data_loader.psycopg2.connect", return_value=mock_conn):
+            create_fred_macro_table()
+
+        executed_sql = mock_cur.execute.call_args[0][0]
+        assert "feast_fred_macro" in executed_sql
+
+    def test_creates_hypertable(self):
+        """DDL contains create_hypertable('feast_fred_macro', ...)."""
+        from ml.pipelines.components.data_loader import create_fred_macro_table
+
+        mock_conn = MagicMock()
+        mock_cur = MagicMock()
+        mock_conn.__enter__ = MagicMock(return_value=mock_conn)
+        mock_conn.__exit__ = MagicMock(return_value=False)
+        mock_cur.__enter__ = MagicMock(return_value=mock_cur)
+        mock_cur.__exit__ = MagicMock(return_value=False)
+        mock_conn.cursor.return_value = mock_cur
+
+        with patch("ml.pipelines.components.data_loader.psycopg2.connect", return_value=mock_conn):
+            create_fred_macro_table()
+
+        executed_sql = mock_cur.execute.call_args[0][0]
+        assert "create_hypertable" in executed_sql
+        assert "feast_fred_macro" in executed_sql
+
+    def test_idempotent_if_not_exists(self):
+        """DDL contains IF NOT EXISTS to ensure safe repeated calls."""
+        from ml.pipelines.components.data_loader import create_fred_macro_table
+
+        mock_conn = MagicMock()
+        mock_cur = MagicMock()
+        mock_conn.__enter__ = MagicMock(return_value=mock_conn)
+        mock_conn.__exit__ = MagicMock(return_value=False)
+        mock_cur.__enter__ = MagicMock(return_value=mock_cur)
+        mock_cur.__exit__ = MagicMock(return_value=False)
+        mock_conn.cursor.return_value = mock_cur
+
+        with patch("ml.pipelines.components.data_loader.psycopg2.connect", return_value=mock_conn):
+            create_fred_macro_table()
+
+        executed_sql = mock_cur.execute.call_args[0][0]
+        assert "IF NOT EXISTS" in executed_sql
+
+
+class TestWriteFredMacroToDB:
+    """Tests for write_fred_macro_to_db() in data_loader.py."""
+
+    @pytest.fixture
+    def fred_df(self):
+        """Sample 2-row wide FRED DataFrame (DatetimeIndex, 14 columns)."""
+        import pandas as pd
+        idx = pd.to_datetime(["2024-01-02", "2024-01-03"])
+        fred_df = pd.DataFrame({
+            "dgs2": [4.5, 4.6],
+            "dgs10": [4.1, 4.2],
+            "t10y2y": [-0.3, -0.2],
+            "t10y3m": [0.1, 0.1],
+            "bamlh0a0hym2": [3.5, 3.6],
+            "dbaa": [5.2, 5.3],
+            "t10yie": [2.3, 2.4],
+            "dcoilwtico": [75.0, 76.0],
+            "dtwexbgs": [110.0, 111.0],
+            "dexjpus": [150.0, 151.0],
+            "icsa": [200000.0, 201000.0],
+            "nfci": [-0.2, -0.1],
+            "cpiaucsl": [310.0, 310.0],
+            "pcepilfe": [120.0, 120.0],
+        }, index=idx)
+        fred_df.index.name = "date"
+        return fred_df
+
+    def test_upserts_rows_and_returns_count(self, fred_df):
+        """write_fred_macro_to_db returns count of rows written."""
+        from ml.pipelines.components.data_loader import write_fred_macro_to_db
+
+        mock_conn = MagicMock()
+        mock_cur = MagicMock()
+        mock_conn.__enter__ = MagicMock(return_value=mock_conn)
+        mock_conn.__exit__ = MagicMock(return_value=False)
+        mock_cur.__enter__ = MagicMock(return_value=mock_cur)
+        mock_cur.__exit__ = MagicMock(return_value=False)
+        mock_conn.cursor.return_value = mock_cur
+
+        with patch("ml.pipelines.components.data_loader.psycopg2.connect", return_value=mock_conn):
+            count = write_fred_macro_to_db(fred_df)
+
+        assert count == 2
+
+    def test_upsert_sql_contains_on_conflict(self, fred_df):
+        """Upsert SQL must use ON CONFLICT (timestamp) DO UPDATE."""
+        from ml.pipelines.components.data_loader import write_fred_macro_to_db
+
+        mock_conn = MagicMock()
+        mock_cur = MagicMock()
+        mock_conn.__enter__ = MagicMock(return_value=mock_conn)
+        mock_conn.__exit__ = MagicMock(return_value=False)
+        mock_cur.__enter__ = MagicMock(return_value=mock_cur)
+        mock_cur.__exit__ = MagicMock(return_value=False)
+        mock_conn.cursor.return_value = mock_cur
+
+        with patch("ml.pipelines.components.data_loader.psycopg2.connect", return_value=mock_conn):
+            write_fred_macro_to_db(fred_df)
+
+        # Check every execute call for ON CONFLICT
+        all_sql = [str(c[0][0]) for c in mock_cur.execute.call_args_list]
+        assert any("ON CONFLICT" in sql for sql in all_sql), "No ON CONFLICT found in upsert SQL"
