@@ -389,8 +389,13 @@ class MacroLatestResponse(BaseModel):
 
 
 class MacroHistoryPoint(BaseModel):
-    """Single daily FRED macro data point for timeseries charts."""
+    """Single daily macro data point for timeseries charts (FRED + yfinance)."""
     as_of_date: str                       # ISO date string
+    # yfinance macro (feast_yfinance_macro, ticker='SPY')
+    sector_return: float | None = None    # Sector ETF return
+    high52w_pct: float | None = None      # % of 52-week high
+    low52w_pct: float | None = None       # % of 52-week low
+    # FRED macro (macro_fred_daily)
     dgs2: float | None = None             # 2Y Treasury yield
     dgs10: float | None = None            # 10Y Treasury yield
     t10y2y: float | None = None           # 10Y-2Y spread

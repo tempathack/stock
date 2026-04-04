@@ -255,13 +255,24 @@ async def get_macro_history(days: int = 90) -> list[MacroHistoryPoint]:
         return []
 
     query = text("""
-        SELECT as_of_date,
-               dgs2, dgs10, t10y2y, t10y3m,
-               bamlh0a0hym2, dbaa, t10yie,
-               dcoilwtico, dtwexbgs, dexjpus,
-               icsa, nfci, cpiaucsl, pcepilfe
-        FROM macro_fred_daily
-        ORDER BY as_of_date ASC
+        SELECT f.as_of_date,
+               yf.sector_return,
+               yf.high52w_pct,
+               yf.low52w_pct,
+               f.dgs2, f.dgs10, f.t10y2y, f.t10y3m,
+               f.bamlh0a0hym2, f.dbaa, f.t10yie,
+               f.dcoilwtico, f.dtwexbgs, f.dexjpus,
+               f.icsa, f.nfci, f.cpiaucsl, f.pcepilfe
+        FROM macro_fred_daily f
+        LEFT JOIN LATERAL (
+            SELECT sector_return, high52w_pct, low52w_pct
+            FROM feast_yfinance_macro
+            WHERE ticker = 'SPY'
+              AND timestamp::date = f.as_of_date
+            ORDER BY timestamp DESC
+            LIMIT 1
+        ) yf ON TRUE
+        ORDER BY f.as_of_date ASC
         LIMIT :days
     """)
 
@@ -272,6 +283,9 @@ async def get_macro_history(days: int = 90) -> list[MacroHistoryPoint]:
         return [
             MacroHistoryPoint(
                 as_of_date=str(row["as_of_date"]),
+                sector_return=row.get("sector_return"),
+                high52w_pct=row.get("high52w_pct"),
+                low52w_pct=row.get("low52w_pct"),
                 dgs2=row.get("dgs2"),
                 dgs10=row.get("dgs10"),
                 t10y2y=row.get("t10y2y"),
@@ -290,7 +304,7 @@ async def get_macro_history(days: int = 90) -> list[MacroHistoryPoint]:
             for row in rows
         ]
     except Exception:
-        logger.exception("Failed to fetch macro_fred_daily history")
+        logger.exception("Failed to fetch macro history")
         return []
 
 

@@ -503,3 +503,15 @@ Previous run codebase patterns (still valid):
   - feast_yfinance_macro already has sector_return, high52w_pct, low52w_pct populated with synthetic data from Phase 93
   - macro_fred_daily already has t10y3m, dbaa, dexjpus, nfci, cpiaucsl columns
 ---
+
+## 2026-04-04 - US-002: Extend /market/macro/history to include all 19 training macro fields
+- Added sector_return, high52w_pct, low52w_pct fields to MacroHistoryPoint schema in schemas.py
+- Updated get_macro_history() in market_service.py to LEFT JOIN LATERAL feast_yfinance_macro on date
+- Rebuilt stock-api Docker image and rolled out deployment (kubectl rollout restart)
+- Verified: curl 'http://localhost:8010/market/macro/history?days=5' returns all 3 new fields with values
+- Files modified: services/api/app/models/schemas.py, services/api/app/services/market_service.py
+- **Learnings for future iterations:**
+  - Docker build context for stock-api must be stock-prediction-platform/ root (not services/api/) — Dockerfile COPYs ml/ subdirectories
+  - feast_yfinance_macro join uses timestamp::date = f.as_of_date (LATERAL pattern)
+  - Backend tests can't run locally due to missing elasticsearch module — verify with syntax check + curl instead
+---
