@@ -87,8 +87,8 @@
         "Typecheck passes"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Rebuilt stock-ml-pipeline:latest with 49-feature code. Fixed NaN macro fill bug — when yfinance fetch fails in k8s (no internet), macro columns filled with 0 so drop_incomplete_rows doesn't remove all rows. Training job aapl-retrain-v2 completed: 72 linear models trained across 4 horizons. Predictions table has 4 AAPL rows with prediction_date=2026-04-03. /predict/bulk?horizon=7 returns AAPL predicted_price=251.97. Forecasts tab verified via Playwright — forecasts-after-retrain.png shows 160 tickers with all 4 horizon columns. feast_fred_macro table schema updated to include ticker column (DEFAULT MACRO) with composite PK (ticker, timestamp)."
     },
     {
       "id": "US-006",

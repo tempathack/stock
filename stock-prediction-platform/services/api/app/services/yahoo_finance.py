@@ -377,6 +377,7 @@ _FRED_COLS: list[str] = [s.lower() for s in _FRED_SERIES]
 
 _CREATE_FRED_MACRO_TABLE_SQL = """
 CREATE TABLE IF NOT EXISTS feast_fred_macro (
+    ticker          VARCHAR(16)      NOT NULL DEFAULT 'MACRO',
     timestamp       TIMESTAMPTZ      NOT NULL,
     created_at      TIMESTAMPTZ      NOT NULL DEFAULT NOW(),
     dgs2            DOUBLE PRECISION,
@@ -393,15 +394,15 @@ CREATE TABLE IF NOT EXISTS feast_fred_macro (
     nfci            DOUBLE PRECISION,
     cpiaucsl        DOUBLE PRECISION,
     pcepilfe        DOUBLE PRECISION,
-    PRIMARY KEY (timestamp)
+    PRIMARY KEY (ticker, timestamp)
 );
 SELECT create_hypertable('feast_fred_macro', 'timestamp', if_not_exists => TRUE);
 """
 
 _UPSERT_FRED_SQL = (
-    "INSERT INTO feast_fred_macro (timestamp, {cols}) "
-    "VALUES (%s, {placeholders}) "
-    "ON CONFLICT (timestamp) DO UPDATE SET {updates}, created_at = NOW();"
+    "INSERT INTO feast_fred_macro (ticker, timestamp, {cols}) "
+    "VALUES ('MACRO', %s, {placeholders}) "
+    "ON CONFLICT (ticker, timestamp) DO UPDATE SET {updates}, created_at = NOW();"
 ).format(
     cols=", ".join(_FRED_COLS),
     placeholders=", ".join(["%s"] * len(_FRED_COLS)),

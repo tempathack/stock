@@ -232,7 +232,13 @@ def run_training_pipeline(
                     _macro_cols = ["vix", "spy_return", "sector_return", "high52w_pct", "low52w_pct"]
                     for _ticker, _df in data_dict.items():
                         _macro_ticker = macro_df[macro_df["ticker"] == _ticker][_macro_cols]
-                        data_dict[_ticker] = _df.join(_macro_ticker, how="left")
+                        joined = _df.join(_macro_ticker, how="left")
+                        # Fill NaN macro columns with 0 when fetch returned no rows
+                        # (prevents drop_incomplete_rows from removing all training rows)
+                        for _col in _macro_cols:
+                            if _col in joined.columns and joined[_col].isna().all():
+                                joined[_col] = 0.0
+                        data_dict[_ticker] = joined
                     logger.info("Step 1b/12 load_yfinance_macro — macro features joined for %d tickers", len(data_dict))
                 except Exception as _exc:
                     logger.warning("Step 1b/12 load_yfinance_macro — failed (%s); continuing without macro features", _exc)

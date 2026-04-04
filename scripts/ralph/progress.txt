@@ -246,3 +246,22 @@ Previous run codebase patterns (still valid):
   - Cold cache for all 4 horizons takes ~50s — well above the 15s timeout guard added in UI-003; Playwright must wait for warm cache
   - All 4 pages independently functional; no regressions from UI-001 through UI-007 changes
 ---
+
+## 2026-04-04 - US-005: Retrain linear models with full 49-feature set (AAPL canary) and verify Forecasts tab
+- Root cause found: yfinance macro fetch fails in k8s pods (no internet/rate-limited) → 5 macro columns NaN → drop_incomplete_rows removes ALL training rows → 0 models trained
+- Fixed: training_pipeline.py step 1b now fills NaN macro columns with 0 when fetch returns no rows (prevents data loss in drop_incomplete_rows)
+- FRED macro also fails (no FRED_API_KEY) — already handled gracefully with try/except; FRED columns simply not present in training data
+- feast_fred_macro table schema: added ticker column (DEFAULT 'MACRO'), changed PK from (timestamp) to (ticker, timestamp) — in data_loader.py and yahoo_finance.py
+- Rebuilt stock-ml-pipeline:latest from stock-prediction-platform/ with -f ml/Dockerfile (build context must be stock-prediction-platform/, not stock-prediction-platform/ml/)
+- Training job aapl-retrain-v2: 72 linear models trained for AAPL × 4 horizons (1, 7, 14, 30 days)
+- MissingContentMD5 errors at deploy step are pre-existing MinIO issue — not ImportError/KeyError/shape mismatch
+- Predictions table: 4 AAPL rows with prediction_date=2026-04-03 (yesterday = acceptable)
+- /predict/bulk?horizon=7: AAPL predicted_price=251.97 (non-null) ✓
+- Forecasts tab verified via Playwright: forecasts-after-retrain.png — 160 tickers, 4 horizon columns, no console errors
+- Files modified: ml/pipelines/training_pipeline.py (NaN fill fix), ml/pipelines/components/data_loader.py (feast_fred_macro schema), services/api/app/services/yahoo_finance.py (feast_fred_macro schema), scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - stock-ml-pipeline:latest Docker build context must be stock-prediction-platform/ with -f ml/Dockerfile (not stock-prediction-platform/ml/ as build context)
+  - yfinance fails in k8s pods with "No timezone found, symbol may be delisted" — internet not available or rate limited. Fill NaN macro columns with 0 after left join.
+  - When ALL feature columns are NaN, drop_incomplete_rows drops every row silently. Always verify len(data_dict) > 0 after label generation.
+  - FRED_API_KEY is not set in k8s — FRED features are collected but not joined into training DataFrame for the direct-DB path (only used in Feast path)
+---
