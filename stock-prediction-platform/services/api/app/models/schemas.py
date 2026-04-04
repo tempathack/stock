@@ -375,6 +375,28 @@ class MacroLatestResponse(BaseModel):
     t10yie: float | None = None        # 10Y breakeven inflation
 
 
+# ── Macro History (Phase 95 US-004) ───────────────────────────────────────
+
+
+class MacroHistoryPoint(BaseModel):
+    """Single daily FRED macro data point for timeseries charts."""
+    as_of_date: str                       # ISO date string
+    dgs2: float | None = None             # 2Y Treasury yield
+    dgs10: float | None = None            # 10Y Treasury yield
+    t10y2y: float | None = None           # 10Y-2Y spread
+    t10y3m: float | None = None           # 10Y-3M spread
+    bamlh0a0hym2: float | None = None     # HY credit spread (bps)
+    dbaa: float | None = None             # Moody's Baa corporate yield
+    t10yie: float | None = None           # 10Y breakeven inflation
+    dcoilwtico: float | None = None       # WTI crude oil price
+    dtwexbgs: float | None = None         # Broad USD index
+    dexjpus: float | None = None          # JPY/USD exchange rate
+    icsa: float | None = None             # Initial jobless claims
+    nfci: float | None = None             # Chicago Fed National Financial Conditions
+    cpiaucsl: float | None = None         # CPI All Urban Consumers
+    pcepilfe: float | None = None         # Core PCE (ex food & energy)
+
+
 # ── Search ────────────────────────────────────────────────────────────────
 
 

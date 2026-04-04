@@ -16,6 +16,7 @@ from app.models.schemas import (
     CandleBar,
     CandlesResponse,
     IndicatorValues,
+    MacroHistoryPoint,
     MacroLatestResponse,
     MarketOverviewEntry,
     MarketOverviewResponse,
@@ -25,7 +26,7 @@ from app.models.schemas import (
     TickerIndicatorsResponse,
 )
 from app.services.feast_online_service import get_streaming_features
-from app.services.market_service import get_candles, get_macro_latest, get_market_overview, get_sentiment_timeseries, get_ticker_indicators
+from app.services.market_service import get_candles, get_macro_history, get_macro_latest, get_market_overview, get_sentiment_timeseries, get_ticker_indicators
 
 STREAMING_FEATURES_TTL = 5  # 5s — matches frontend poll interval
 SENTIMENT_TIMESERIES_TTL = 120  # 2 minutes — matches 2-min window emission rate
@@ -179,7 +180,25 @@ async def get_sentiment_timeseries_endpoint(
     return response
 
 
-MACRO_LATEST_TTL = 300  # 5 minutes — FRED/yfinance data changes at most daily
+MACRO_LATEST_TTL = 300   # 5 minutes — FRED/yfinance data changes at most daily
+MACRO_HISTORY_TTL = 300  # 5 minutes — same cadence
+
+
+@router.get("/macro/history", response_model=list[MacroHistoryPoint])
+async def get_macro_history_endpoint(days: int = 90) -> list[MacroHistoryPoint]:
+    """Return up to *days* rows from macro_fred_daily sorted ASC by as_of_date.
+
+    Used by the MacroChart timeseries component on the Dashboard Macro View.
+    Cache TTL: 5 minutes.
+    """
+    key = build_key("market", "macro-history", str(days))
+    cached = await cache_get(key)
+    if cached is not None:
+        return [MacroHistoryPoint(**row) for row in cached]
+
+    points = await get_macro_history(days=days)
+    await cache_set(key, [p.model_dump() for p in points], MACRO_HISTORY_TTL)
+    return points
 
 
 @router.get("/macro/latest", response_model=MacroLatestResponse)

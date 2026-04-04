@@ -417,3 +417,18 @@ Previous run codebase patterns (still valid):
   - SIN/COS with different frequencies creates pseudo-random noise without needing pgcrypto — use 2+ frequencies per series
   - /market/macro/latest Redis cache may serve stale flat data for up to 5 min after DB update — acceptable for US-003 since criteria only requires "non-null values"
 ---
+## 2026-04-04 - US-004: Add GET /market/macro/history endpoint and fix /market/macro/latest column mapping
+- Added MacroHistoryPoint Pydantic schema to schemas.py (15 FRED fields: dgs2, dgs10, t10y2y, t10y3m, bamlh0a0hym2, dbaa, t10yie, dcoilwtico, dtwexbgs, dexjpus, icsa, nfci, cpiaucsl, pcepilfe + as_of_date)
+- Added get_macro_history(days=90) to market_service.py: SELECT all 14 FRED cols FROM macro_fred_daily ORDER BY as_of_date ASC LIMIT days
+- Added GET /market/macro/history route to market.py: query param days=90, returns List[MacroHistoryPoint], 5-min Redis cache
+- Column mapping in get_macro_latest() was already correct (bamlh0a0hym2->baml_hy_oas etc.) — no fix needed
+- Rebuilt stock-api with correct build context: docker build -f services/api/Dockerfile stock-prediction-platform/
+- Rolled out: kubectl rollout restart deployment/stock-api -n ingestion
+- Verified: /market/macro/history?days=10 returns 10-item array with varying values per row
+- Verified: /market/macro/latest returns as_of_date=2026-04-04, 11 non-null fields
+- Files modified: services/api/app/models/schemas.py, services/api/app/services/market_service.py, services/api/app/routers/market.py, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Docker build for stock-api requires context = stock-prediction-platform/ (not services/api/) because Dockerfile COPYs ml/ directory
+  - Correct command: docker build -t stock-api:latest -f stock-prediction-platform/services/api/Dockerfile stock-prediction-platform/
+  - Backend pytest failures are pre-existing env issues (no elasticsearch module locally) — not caused by my changes
+---

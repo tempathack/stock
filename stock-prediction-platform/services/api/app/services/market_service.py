@@ -11,7 +11,7 @@ import pandas as pd
 from sqlalchemy import text
 
 from app.models.database import get_async_session, get_engine
-from app.models.schemas import MacroLatestResponse
+from app.models.schemas import MacroHistoryPoint, MacroLatestResponse
 
 logger = logging.getLogger(__name__)
 
@@ -242,6 +242,55 @@ async def get_sentiment_timeseries(ticker: str, hours: int = 10) -> list[dict]:
         ]
     except Exception:
         logger.exception("Failed to fetch sentiment timeseries for %s", ticker)
+        return []
+
+
+async def get_macro_history(days: int = 90) -> list[MacroHistoryPoint]:
+    """Fetch daily FRED macro timeseries for the last *days* calendar days.
+
+    Returns a list of MacroHistoryPoint sorted ascending by as_of_date.
+    Returns [] when the table is empty or DB is unavailable.
+    """
+    if get_engine() is None:
+        return []
+
+    query = text("""
+        SELECT as_of_date,
+               dgs2, dgs10, t10y2y, t10y3m,
+               bamlh0a0hym2, dbaa, t10yie,
+               dcoilwtico, dtwexbgs, dexjpus,
+               icsa, nfci, cpiaucsl, pcepilfe
+        FROM macro_fred_daily
+        ORDER BY as_of_date ASC
+        LIMIT :days
+    """)
+
+    try:
+        async with get_async_session() as session:
+            result = await session.execute(query, {"days": days})
+            rows = result.mappings().all()
+        return [
+            MacroHistoryPoint(
+                as_of_date=str(row["as_of_date"]),
+                dgs2=row.get("dgs2"),
+                dgs10=row.get("dgs10"),
+                t10y2y=row.get("t10y2y"),
+                t10y3m=row.get("t10y3m"),
+                bamlh0a0hym2=row.get("bamlh0a0hym2"),
+                dbaa=row.get("dbaa"),
+                t10yie=row.get("t10yie"),
+                dcoilwtico=row.get("dcoilwtico"),
+                dtwexbgs=row.get("dtwexbgs"),
+                dexjpus=row.get("dexjpus"),
+                icsa=row.get("icsa"),
+                nfci=row.get("nfci"),
+                cpiaucsl=row.get("cpiaucsl"),
+                pcepilfe=row.get("pcepilfe"),
+            )
+            for row in rows
+        ]
+    except Exception:
+        logger.exception("Failed to fetch macro_fred_daily history")
         return []
 
 

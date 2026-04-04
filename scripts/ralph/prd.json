@@ -57,8 +57,8 @@
         "Typecheck passes"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added MacroHistoryPoint schema (15 FRED fields). Added get_macro_history() service. Added GET /market/macro/history?days=90 route with 5-min Redis cache. Column mapping in get_macro_latest() was already correct. Rebuilt stock-api image and rolled out. Verified: /market/macro/history?days=10 returns 10 items with row-by-row varying values; /market/macro/latest returns as_of_date=2026-04-04 with 11 non-null fields."
     },
     {
       "id": "US-005",
