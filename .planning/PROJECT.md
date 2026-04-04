@@ -80,4 +80,4 @@ The winner ML model is always the best-performing, drift-aware regressor — aut
 | Bloomberg Terminal dark aesthetic | Professional trading tool UX standard | Validated in Phase 69 |
 
 ---
-*Last updated: 2026-04-03 — Phase 90 complete (Debezium CDC + Elasticsearch integration: Elasticsearch 8 StatefulSet + Kibana K8s manifests; Debezium Connect pipeline with PostgreSQL source + ES sink connectors for predictions/drift_logs/model_registry; FastAPI /search/* endpoints with AsyncElasticsearch + 30s cache; React /search page with unified search box + 4 tabbed DataGrids; Playwright-verified in live browser)*
+*Last updated: 2026-04-04 — Phase 93 complete (Macro feature enrichment: replaced Reddit sentiment with VIX, sector ETF returns, SPY daily return, 52-week high/low pct via yfinance pipeline; removed all sentiment references from training, Feast registry, Flink stream, data_loader, and online inference paths — zero live code paths reference reddit_sentiment_fv)*
