@@ -344,3 +344,40 @@ class TestFeastDataLoader:
         assert "event_timestamp" in entity_df.columns
         assert entity_df["event_timestamp"].dt.tz is not None, "event_timestamp must be UTC"
         assert set(entity_df["ticker"].unique()) == {"AAPL", "MSFT"}
+
+
+# ---------------------------------------------------------------------------
+# TestYfinanceMacroLoader
+# ── Wave 0 stub — tests will be RED until Plan 93-02 implements load_yfinance_macro() ──
+# ---------------------------------------------------------------------------
+
+
+class TestYfinanceMacroLoader:
+    """Tests for load_yfinance_macro() — yfinance macro feature loader.
+    RED state until 93-02-PLAN.md implements load_yfinance_macro() in data_loader.py.
+    """
+
+    _EXPECTED_MACRO_COLS = [
+        "vix",
+        "spy_return",
+        "sector_return",
+        "high52w_pct",
+        "low52w_pct",
+    ]
+
+    def test_load_yfinance_macro_returns_dataframe(self):
+        """load_yfinance_macro() returns a DataFrame with DatetimeIndex and required macro columns."""
+        from ml.pipelines.components.data_loader import load_yfinance_macro  # noqa: F401 — fails RED until 93-02
+
+        result = load_yfinance_macro(
+            tickers=["AAPL"],
+            start_date="2024-01-01",
+            end_date="2024-03-31",
+        )
+        assert isinstance(result, pd.DataFrame), "load_yfinance_macro() must return a pd.DataFrame"
+        assert isinstance(result.index, pd.DatetimeIndex), "Result must have a DatetimeIndex"
+        for col in self._EXPECTED_MACRO_COLS:
+            assert col in result.columns, (
+                f"Expected macro column {col!r} not found in result. "
+                f"Got: {list(result.columns)}"
+            )

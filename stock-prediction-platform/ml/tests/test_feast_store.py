@@ -131,3 +131,37 @@ def test_online_feature_key_format_no_view_prefix():
         assert ":" in feature, f"Feature {feature!r} must be in 'view:col' format"
         bare = feature.split(":", 1)[1]
         assert ":" not in bare, f"Bare feature name {bare!r} must not contain ':'"
+
+
+# ── Wave 0 additions — sentinel tests for Phase 93 feature coverage ──
+
+
+def test_sentiment_removed_from_training_features():
+    """_TRAINING_FEATURES must NOT contain any reddit_sentiment_fv columns after Phase 93 removes them."""
+    from ml.features.feast_store import _TRAINING_FEATURES
+    sentiment_cols = [
+        "reddit_sentiment_fv:avg_sentiment",
+        "reddit_sentiment_fv:mention_count",
+        "reddit_sentiment_fv:positive_ratio",
+        "reddit_sentiment_fv:negative_ratio",
+    ]
+    for col in sentiment_cols:
+        assert col not in _TRAINING_FEATURES, (
+            f"Sentiment column {col!r} must be removed from _TRAINING_FEATURES in Phase 93"
+        )
+
+
+def test_yfinance_macro_features_present():
+    """_TRAINING_FEATURES must include all 5 yfinance_macro_fv columns added in Phase 93."""
+    from ml.features.feast_store import _TRAINING_FEATURES
+    expected_macro_cols = [
+        "yfinance_macro_fv:vix",
+        "yfinance_macro_fv:spy_return",
+        "yfinance_macro_fv:sector_return",
+        "yfinance_macro_fv:high52w_pct",
+        "yfinance_macro_fv:low52w_pct",
+    ]
+    for col in expected_macro_cols:
+        assert col in _TRAINING_FEATURES, (
+            f"Macro feature {col!r} must be added to _TRAINING_FEATURES in Phase 93"
+        )
