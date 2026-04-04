@@ -362,17 +362,27 @@ class SentimentTimeseriesResponse(BaseModel):
 class MacroLatestResponse(BaseModel):
     """Latest macro indicator snapshot for the Dashboard macro panel."""
     as_of_date: date | None = None
-    vix: float | None = None           # from feast_yfinance_macro (^VIX close)
-    spy_return: float | None = None    # from feast_yfinance_macro
+    # yfinance macro (feast_yfinance_macro, ticker='SPY')
+    vix: float | None = None           # ^VIX close
+    spy_return: float | None = None    # SPY daily return
+    sector_return: float | None = None # Sector ETF return
+    high52w_pct: float | None = None   # % of 52-week high
+    low52w_pct: float | None = None    # % of 52-week low
+    # FRED macro (macro_fred_daily)
+    dgs2: float | None = None          # 2Y Treasury yield
     dgs10: float | None = None         # 10Y Treasury yield
     t10y2y: float | None = None        # 10Y-2Y spread (yield curve)
+    t10y3m: float | None = None        # 10Y-3M spread
     baml_hy_oas: float | None = None   # HY credit spread
+    dbaa: float | None = None          # Moody's Baa corporate yield
+    t10yie: float | None = None        # 10Y breakeven inflation
     wti_crude: float | None = None     # WTI oil price
     usd_broad: float | None = None     # Broad USD index
+    dexjpus: float | None = None       # JPY/USD exchange rate
     icsa: float | None = None          # Initial jobless claims (thousands)
+    nfci: float | None = None          # Chicago Fed National Financial Conditions
+    cpiaucsl: float | None = None      # CPI All Urban Consumers
     core_pce: float | None = None      # Core PCE YoY %
-    dgs2: float | None = None          # 2Y Treasury yield
-    t10yie: float | None = None        # 10Y breakeven inflation
 
 
 # ── Macro History (Phase 95 US-004) ───────────────────────────────────────

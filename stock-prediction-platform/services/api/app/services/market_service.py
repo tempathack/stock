@@ -309,20 +309,24 @@ async def get_macro_latest() -> MacroLatestResponse:
 
     fred_query = text("""
         SELECT as_of_date,
-               dgs10, t10y2y,
+               dgs2, dgs10, t10y2y, t10y3m,
                bamlh0a0hym2 AS baml_hy_oas,
+               dbaa,
+               t10yie,
                dcoilwtico   AS wti_crude,
                dtwexbgs     AS usd_broad,
+               dexjpus,
                icsa,
-               pcepilfe     AS core_pce,
-               dgs2, t10yie
+               nfci,
+               cpiaucsl,
+               pcepilfe     AS core_pce
         FROM macro_fred_daily
         ORDER BY as_of_date DESC
         LIMIT 1
     """)
 
     yfinance_query = text("""
-        SELECT timestamp::date AS as_of_date, vix, spy_return
+        SELECT timestamp::date AS as_of_date, vix, spy_return, sector_return, high52w_pct, low52w_pct
         FROM feast_yfinance_macro
         WHERE ticker = 'SPY'
         ORDER BY timestamp DESC
@@ -359,13 +363,21 @@ async def get_macro_latest() -> MacroLatestResponse:
         as_of_date=as_of,
         vix=yf_row.get("vix"),
         spy_return=yf_row.get("spy_return"),
+        sector_return=yf_row.get("sector_return"),
+        high52w_pct=yf_row.get("high52w_pct"),
+        low52w_pct=yf_row.get("low52w_pct"),
+        dgs2=fred_row.get("dgs2"),
         dgs10=fred_row.get("dgs10"),
         t10y2y=fred_row.get("t10y2y"),
+        t10y3m=fred_row.get("t10y3m"),
         baml_hy_oas=fred_row.get("baml_hy_oas"),
+        dbaa=fred_row.get("dbaa"),
+        t10yie=fred_row.get("t10yie"),
         wti_crude=fred_row.get("wti_crude"),
         usd_broad=fred_row.get("usd_broad"),
+        dexjpus=fred_row.get("dexjpus"),
         icsa=fred_row.get("icsa"),
+        nfci=fred_row.get("nfci"),
+        cpiaucsl=fred_row.get("cpiaucsl"),
         core_pce=fred_row.get("core_pce"),
-        dgs2=fred_row.get("dgs2"),
-        t10yie=fred_row.get("t10yie"),
     )

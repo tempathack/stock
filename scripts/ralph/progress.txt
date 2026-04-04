@@ -489,3 +489,17 @@ Previous run codebase patterns (still valid):
   - Redis cache for /predict/bulk must be warm before Forecasts tab loads — first load after cache expiry takes 30s+ and may time out
   - Pre-warm cache by curling all 4 horizons in parallel before Playwright verification
 ---
+
+## 2026-04-04 - US-001: Extend /market/macro/latest to return all 19 training macro fields
+- Added 8 missing fields to MacroLatestResponse in schemas.py: sector_return, high52w_pct, low52w_pct, t10y3m, dbaa, dexjpus, nfci, cpiaucsl
+- Updated fred_query in get_macro_latest() to SELECT t10y3m, dbaa, dexjpus, nfci, cpiaucsl from macro_fred_daily
+- Updated yfinance_query in get_macro_latest() to SELECT sector_return, high52w_pct, low52w_pct from feast_yfinance_macro
+- Updated MacroLatestResponse constructor call with all new fields
+- Rebuilt stock-api image in Minikube context and redeployed — rollout succeeded
+- Verified: curl http://localhost:8010/market/macro/latest returns all 19 fields with real data
+- Files modified: services/api/app/models/schemas.py, services/api/app/services/market_service.py
+- **Learnings for future iterations:**
+  - Docker build context must be stock-prediction-platform/ (not services/api/) — Dockerfile copies ml/ files
+  - feast_yfinance_macro already has sector_return, high52w_pct, low52w_pct populated with synthetic data from Phase 93
+  - macro_fred_daily already has t10y3m, dbaa, dexjpus, nfci, cpiaucsl columns
+---
