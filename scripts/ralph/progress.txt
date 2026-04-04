@@ -549,3 +549,17 @@ Previous run codebase patterns (still valid):
   - Grid layout (xs:12 sm:6 md:4) auto-expands as items are added — no layout changes needed
   - NFCI color logic: positive = tighter financial conditions = red; < -0.5 = looser = green (opposite of SPY return intuition)
 ---
+
+## 2026-04-04 - US-005: Add all missing macro series to MacroChart series picker
+- Added 11 missing series to SERIES_CONFIG in MacroChart.tsx: t10y3m, dbaa, t10yie, dtwexbgs, dexjpus, nfci, cpiaucsl, pcepilfe, sector_return, high52w_pct, low52w_pct
+- Total series now: 17 (was 6)
+- Default selected series unchanged: dgs10, t10y2y, dcoilwtico
+- Fixed color collision: nfci was #80cbc4 (same as icsa), changed to #4db6ac
+- Screenshots: macro-chart-all-series.png (all 17 chips), macro-chart-baa.png (BAA Yield activated)
+- TypeScript: 0 errors; npm run build: success
+- Browser console: 0 errors, 2 warnings (pre-existing)
+- Files modified: stock-prediction-platform/services/frontend/src/components/dashboard/MacroChart.tsx, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - MacroHistoryPoint already had all 19 fields — chart just needed SERIES_CONFIG entries
+  - Color uniqueness matters: scan existing colors before assigning new ones
+---

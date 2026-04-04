@@ -29,12 +29,23 @@ interface SeriesConfig {
 }
 
 const SERIES_CONFIG: SeriesConfig[] = [
-  { key: "dgs10",        label: "10Y Yield",      color: "#4fc3f7", unit: "%" },
-  { key: "t10y2y",       label: "2-10 Spread",    color: "#f06292", unit: "%" },
-  { key: "dgs2",         label: "2Y Yield",        color: "#81c784", unit: "%" },
-  { key: "bamlh0a0hym2", label: "HY Spread",      color: "#ffb74d", unit: "bps" },
-  { key: "dcoilwtico",   label: "WTI Crude",      color: "#ce93d8", unit: "$" },
-  { key: "icsa",         label: "Jobless Claims",  color: "#80cbc4", unit: "K" },
+  { key: "dgs10",        label: "10Y Yield",        color: "#4fc3f7", unit: "%" },
+  { key: "t10y2y",       label: "2-10 Spread",      color: "#f06292", unit: "%" },
+  { key: "dgs2",         label: "2Y Yield",          color: "#81c784", unit: "%" },
+  { key: "t10y3m",       label: "3M-10Y Spread",    color: "#ffe082", unit: "%" },
+  { key: "bamlh0a0hym2", label: "HY Spread",        color: "#ffb74d", unit: "bps" },
+  { key: "dbaa",         label: "BAA Yield",         color: "#bcaaa4", unit: "%" },
+  { key: "t10yie",       label: "10Y Breakeven",    color: "#ef9a9a", unit: "%" },
+  { key: "dcoilwtico",   label: "WTI Crude",        color: "#ce93d8", unit: "$" },
+  { key: "dtwexbgs",     label: "Trade USD Index",  color: "#b0bec5", unit: "" },
+  { key: "dexjpus",      label: "USD/JPY",           color: "#b39ddb", unit: "" },
+  { key: "icsa",         label: "Jobless Claims",    color: "#80cbc4", unit: "K" },
+  { key: "nfci",         label: "NFCI",              color: "#4db6ac", unit: "" },
+  { key: "cpiaucsl",     label: "CPI",               color: "#ffcc80", unit: "" },
+  { key: "pcepilfe",     label: "Core PCE",          color: "#c5e1a5", unit: "" },
+  { key: "sector_return", label: "Sector Return",   color: "#a5d6a7", unit: "" },
+  { key: "high52w_pct",  label: "52W High %",        color: "#80deea", unit: "" },
+  { key: "low52w_pct",   label: "52W Low %",         color: "#ef9a9a", unit: "" },
 ];
 
 const DEFAULT_SELECTED = new Set<string>(["dgs10", "t10y2y", "dcoilwtico"]);
