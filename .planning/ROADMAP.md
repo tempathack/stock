@@ -91,7 +91,7 @@
 | 90 | 4/5 | Complete    | 2026-04-03 | 5 plans |
 | 91 | Phase 91 | Planned | — | — |
 | 92 | Phase 92 | Planned | — | — |
-| 93 | 4/4 | Complete   | 2026-04-04 | 3 plans |
+| 93 | 4/4 | Complete    | 2026-04-04 | 3 plans |
 | 94 | FRED Macro Feature Pipeline | Planned | — | 3 plans |
 | 95 | Dashboard Macro Panel | Planned | — | 2 plans |
 | 96 | sktime Statistical Forecasting + Regression Models | Planned | — | 5 plans |
