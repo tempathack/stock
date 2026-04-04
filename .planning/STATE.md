@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Phases — Production-Ready
 status: unknown
-stopped_at: Completed 93-03-PLAN.md
-last_updated: "2026-04-04T12:13:15.203Z"
+stopped_at: Completed 93-04-PLAN.md
+last_updated: "2026-04-04T12:55:01.814Z"
 progress:
   total_phases: 63
   completed_phases: 26
@@ -438,10 +438,12 @@ See: .planning/PROJECT.md (updated 2026-03-18)
 - [Phase 93]: load_yfinance_macro returns DatetimeIndex (not MultiIndex) to match plan 01 test contract
 - [Phase 93]: yfinance_macro_fv is offline-only (no online=True) — daily macro features not needed for sub-ms inference
 - [Phase 93]: Macro join in training_pipeline wrapped in try/except for graceful degradation if yfinance unreachable
+- [Phase 93]: Removed run_in_threadpool import from ws.py since _get_sentiment_sync was deleted and ws_prices does not use it
+- [Phase 93]: Archive-stub pattern: files referencing deleted Feast registry objects raise NotImplementedError or return static available=False
 
 ## Last Session
 
-- **Stopped at:** Completed 93-03-PLAN.md
+- **Stopped at:** Completed 93-04-PLAN.md
 - **Timestamp:** 2026-03-30T14:00:00Z
 
 ## Notes
