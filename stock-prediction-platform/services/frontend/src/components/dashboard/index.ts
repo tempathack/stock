@@ -9,3 +9,4 @@ export { default as MobileMarketList } from "./MobileMarketList";
 export { default as SentimentPanel } from "./SentimentPanel";
 export { default as TopMoversPanel } from "./TopMoversPanel";
 export { default as SentimentTimeseriesChart } from "./SentimentTimeseriesChart";
+export { default as MacroPanel } from "./MacroPanel";
