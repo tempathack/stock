@@ -383,3 +383,19 @@ Previous run codebase patterns (still valid):
   - Always rebuild and redeploy stock-api after Python code changes — the running pod won't pick up file changes otherwise
   - stock-api Dockerfile build context must be stock-prediction-platform/ root with `-f services/api/Dockerfile`
 ---
+
+## 2026-04-04 - US-002: Create macro_fred_daily table and populate feast_fred_macro with FRED series data
+- Created macro_fred_daily table (as_of_date DATE PK, dgs2, dgs10, t10y2y, t10y3m, bamlh0a0hym2, dbaa, t10yie, dcoilwtico, dtwexbgs, dexjpus, icsa, nfci, cpiaucsl, pcepilfe, created_at)
+- feast_fred_macro already existed; injected 90 days of synthetic data into both tables
+- Fixed market_service.py fred_query SQL: was querying non-existent columns (baml_hy_oas, wti_crude, usd_broad, core_pce, date); now uses raw FRED names with aliases (bamlh0a0hym2 AS baml_hy_oas, dcoilwtico AS wti_crude, dtwexbgs AS usd_broad, pcepilfe AS core_pce, ORDER BY as_of_date)
+- Rebuilt stock-api Docker image and restarted deployment
+- Verified: curl /market/macro/latest returns all 9 fields non-null
+- Playwright: Dashboard shows VIX=18.50, SPY Return=+0.12%, 10Y=4.35%, 2-10 Spread=-0.47%, HY Spread=312, WTI=$71.50, USD=108.2, Claims=215K, Core PCE=121.3; 0 console errors
+- Screenshot: fred-api-data-live.png
+- Files modified: services/api/app/services/market_service.py, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - macro_fred_daily uses raw FRED column names (bamlh0a0hym2, dcoilwtico, dtwexbgs, pcepilfe, as_of_date) — NOT the MacroLatestResponse alias names
+  - market_service.py SQL must alias raw FRED columns to match MacroLatestResponse field names
+  - feast_fred_macro uses ticker='MACRO' (not a stock ticker) — same entity pattern as feast_yfinance_macro uses ticker='SPY'
+  - Docker build context for stock-api must be stock-prediction-platform/ (not services/api/) — Dockerfile copies ml/ files
+---

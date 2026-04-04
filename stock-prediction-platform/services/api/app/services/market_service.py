@@ -259,11 +259,16 @@ async def get_macro_latest() -> MacroLatestResponse:
         return MacroLatestResponse()
 
     fred_query = text("""
-        SELECT date AS as_of_date,
-               dgs10, t10y2y, baml_hy_oas, wti_crude, usd_broad,
-               icsa, core_pce, dgs2, t10yie
+        SELECT as_of_date,
+               dgs10, t10y2y,
+               bamlh0a0hym2 AS baml_hy_oas,
+               dcoilwtico   AS wti_crude,
+               dtwexbgs     AS usd_broad,
+               icsa,
+               pcepilfe     AS core_pce,
+               dgs2, t10yie
         FROM macro_fred_daily
-        ORDER BY date DESC
+        ORDER BY as_of_date DESC
         LIMIT 1
     """)
 

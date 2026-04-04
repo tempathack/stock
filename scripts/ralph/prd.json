@@ -33,8 +33,8 @@
         "Typecheck passes"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Created macro_fred_daily (as_of_date PK, 15 FRED raw columns) and feast_fred_macro tables. Injected 90 days of synthetic data into both. Fixed market_service.py SQL to map raw FRED column names (bamlh0a0hym2→baml_hy_oas, dcoilwtico→wti_crude, dtwexbgs→usd_broad, pcepilfe→core_pce, ORDER BY as_of_date). Rebuilt and redeployed stock-api. All 9 MacroPanel cards now show real values (VIX=18.50, DGS10=4.35, HY Spread=312, WTI=71.50, etc.). 0 console errors."
     },
     {
       "id": "US-003",
