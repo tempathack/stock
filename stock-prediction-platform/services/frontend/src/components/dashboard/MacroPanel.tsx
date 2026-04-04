@@ -119,6 +119,109 @@ const MACRO_INDICATORS: IndicatorConfig[] = [
     description: "Fed inflation gauge",
     colorFn: () => "gray",
   },
+  {
+    label: "Sector Return",
+    field: "sector_return",
+    format: "+0.2%",
+    unit: "",
+    description: "Sector ETF daily return",
+    colorFn: (v) => {
+      if (v == null) return "gray";
+      if (v > 0) return "green";
+      if (v < 0) return "red";
+      return "gray";
+    },
+  },
+  {
+    label: "52W High %",
+    field: "high52w_pct",
+    format: "0.2f",
+    unit: "",
+    description: "Pct of 52-week high",
+    colorFn: (v) => {
+      if (v == null) return "gray";
+      if (v > 0.9) return "green";
+      return "gray";
+    },
+  },
+  {
+    label: "52W Low %",
+    field: "low52w_pct",
+    format: "0.2f",
+    unit: "",
+    description: "Pct of 52-week low",
+    colorFn: (v) => {
+      if (v == null) return "gray";
+      if (v < 0.1) return "red";
+      return "gray";
+    },
+  },
+  {
+    label: "3M-10Y Spread",
+    field: "t10y3m",
+    format: "+0.2f",
+    unit: "%",
+    description: "3M to 10Y yield spread",
+    colorFn: (v) => {
+      if (v == null) return "gray";
+      if (v < 0) return "red";
+      if (v > 0.5) return "green";
+      return "gray";
+    },
+  },
+  {
+    label: "BAA Yield",
+    field: "dbaa",
+    format: "0.2f",
+    unit: "%",
+    description: "Moody's BAA corporate yield",
+    colorFn: () => "gray",
+  },
+  {
+    label: "USD/JPY",
+    field: "dexjpus",
+    format: "0.1f",
+    unit: "",
+    description: "Japanese yen exchange rate",
+    colorFn: () => "gray",
+  },
+  {
+    label: "NFCI",
+    field: "nfci",
+    format: "+0.2f",
+    unit: "",
+    description: "Natl Financial Conditions",
+    colorFn: (v) => {
+      if (v == null) return "gray";
+      if (v > 0) return "red";
+      if (v < -0.5) return "green";
+      return "gray";
+    },
+  },
+  {
+    label: "CPI Index",
+    field: "cpiaucsl",
+    format: "0.1f",
+    unit: "",
+    description: "Consumer Price Index",
+    colorFn: () => "gray",
+  },
+  {
+    label: "2Y Yield",
+    field: "dgs2",
+    format: "0.2f",
+    unit: "%",
+    description: "2-Year Treasury yield",
+    colorFn: () => "gray",
+  },
+  {
+    label: "10Y Breakeven",
+    field: "t10yie",
+    format: "0.2f",
+    unit: "%",
+    description: "10Y inflation expectations",
+    colorFn: () => "gray",
+  },
 ];
 
 /* ── Color palette ───────────────────────────────────────── */
@@ -270,7 +373,7 @@ function IndicatorCard({ config, value }: IndicatorCardProps) {
 function MacroPanelSkeleton() {
   return (
     <Grid container spacing={1.5}>
-      {Array.from({ length: 9 }).map((_, i) => (
+      {Array.from({ length: 19 }).map((_, i) => (
         <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
           <Box
             sx={{

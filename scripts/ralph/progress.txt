@@ -526,3 +526,26 @@ Previous run codebase patterns (still valid):
   - MacroHistoryPoint already had most FRED fields from Phase 95; only yfinance fields (sector_return, high52w_pct, low52w_pct) were missing
   - MacroLatest (the latest-only interface) had more gaps than MacroHistoryPoint — needed all 8 fields added
 ---
+
+## 2026-04-04 - US-004: Expand MacroPanel to show all 19 training macro indicators
+- Added 10 missing indicator configs to MACRO_INDICATORS in MacroPanel.tsx:
+  sector_return (Sector Return, +0.2%, green/red by sign)
+  high52w_pct (52W High %, 0.2f, green if > 0.9)
+  low52w_pct (52W Low %, 0.2f, red if < 0.1)
+  t10y3m (3M-10Y Spread, +0.2f, %, red if inverted < 0)
+  dbaa (BAA Yield, 0.2f, %, neutral gray)
+  dexjpus (USD/JPY, 0.1f, neutral gray)
+  nfci (NFCI, +0.2f, red if > 0 / green if < -0.5)
+  cpiaucsl (CPI Index, 0.1f, neutral gray)
+  dgs2 (2Y Yield, 0.2f, %, neutral gray)
+  t10yie (10Y Breakeven, 0.2f, %, neutral gray)
+- Updated skeleton from 9 to 19 cards
+- TypeScript 0 errors, npm run build succeeded
+- Playwright verified: macro-all-19-cards.png — 19 cards visible in 7 rows (3+3+3+3+3+3+1), all showing real data (VIX 18.50, SPY +0.12%, CPI 314.8, USD/JPY 149.9, etc.)
+- 0 console errors (2 pre-existing warnings: WS reconnect + ECharts lifecycle, unrelated)
+- Files modified: stock-prediction-platform/services/frontend/src/components/dashboard/MacroPanel.tsx, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - MacroLatest TypeScript interface already had all 19 fields from US-003 — MacroPanel just needed the MACRO_INDICATORS config entries
+  - Grid layout (xs:12 sm:6 md:4) auto-expands as items are added — no layout changes needed
+  - NFCI color logic: positive = tighter financial conditions = red; < -0.5 = looser = green (opposite of SPY return intuition)
+---
