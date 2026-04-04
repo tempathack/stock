@@ -93,7 +93,7 @@
 | 92 | Phase 92 | Planned | — | — |
 | 93 | 4/4 | Complete    | 2026-04-04 | 3 plans |
 | 94 | 3/3 | Complete   | 2026-04-04 | 3 plans |
-| 95 | 2/2 | Complete   | 2026-04-04 | 2 plans |
+| 95 | 2/2 | Complete    | 2026-04-04 | 2 plans |
 | 96 | sktime Statistical Forecasting + Regression Models | Planned | — | 5 plans |
 
 Plans:
