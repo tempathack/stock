@@ -524,6 +524,9 @@ export interface MacroHistoryPoint {
   nfci: number | null;
   cpiaucsl: number | null;
   pcepilfe: number | null;
+  sector_return: number | null;
+  high52w_pct: number | null;
+  low52w_pct: number | null;
 }
 
 export interface MacroLatest {
@@ -539,4 +542,12 @@ export interface MacroLatest {
   core_pce: number | null;
   dgs2: number | null;
   t10yie: number | null;
+  sector_return: number | null;
+  high52w_pct: number | null;
+  low52w_pct: number | null;
+  t10y3m: number | null;
+  dbaa: number | null;
+  dexjpus: number | null;
+  nfci: number | null;
+  cpiaucsl: number | null;
 }

@@ -515,3 +515,14 @@ Previous run codebase patterns (still valid):
   - feast_yfinance_macro join uses timestamp::date = f.as_of_date (LATERAL pattern)
   - Backend tests can't run locally due to missing elasticsearch module — verify with syntax check + curl instead
 ---
+
+## 2026-04-04 - US-003: Update MacroLatest TypeScript interface and fetchMacroLatest to include all 19 fields
+- Added 8 missing fields to MacroLatest interface: sector_return, high52w_pct, low52w_pct, t10y3m, dbaa, dexjpus, nfci, cpiaucsl (all number | null)
+- Added 3 missing fields to MacroHistoryPoint interface: sector_return, high52w_pct, low52w_pct (all number | null) — other fields (t10y3m, dbaa, dexjpus, nfci, cpiaucsl) already present
+- TypeScript 0 errors: npx tsc --noEmit exits clean
+- npm run build succeeds (✓ built in 5.65s)
+- Files modified: stock-prediction-platform/services/frontend/src/api/types.ts, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - MacroHistoryPoint already had most FRED fields from Phase 95; only yfinance fields (sector_return, high52w_pct, low52w_pct) were missing
+  - MacroLatest (the latest-only interface) had more gaps than MacroHistoryPoint — needed all 8 fields added
+---
