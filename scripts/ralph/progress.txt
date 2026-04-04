@@ -318,3 +318,31 @@ Previous run codebase patterns (still valid):
   - Recharts Cell key uniqueness: when dataKey is a date string (YYYY-MM-DD), 1H candle data will have multiple entries per day — always use `${entry.date}-${index}` pattern
   - All 3 tabs (Models, Drift, Analytics) were working without code changes other than the OLAPCandleChart key fix
 ---
+---
+
+## 2026-04-04 - US-009: Verify Backtest and Search tabs — final full-system screenshot pass
+- Backtest tab: Run Backtest for AAPL renders chart + 6 metric cards (RMSE 45.79, MAE 22.62, MAPE 54.86%, R² 0.1531, Dir.Accuracy 49.4%, 254 pts), 0 console errors ✅
+- Search tab: ALL 4 Elasticsearch indices were missing (no Debezium CDC configured) — created and populated directly from PostgreSQL:
+  - stocks index: 160 documents
+  - debezium.public.predictions: 640 documents (160 tickers × 4 horizons)
+  - debezium.public.model_registry: 15 documents
+  - debezium.public.drift_logs: 15 documents
+- Search tab: typing "AAPL" returns PREDICTIONS (4) + STOCKS (1) with real data, 0 console errors ✅
+- Fixed MUI DataGrid console error: removed rowCount prop from all 4 DataGrids in Search.tsx (client-side pagination doesn't use rowCount)
+- Final 7-tab pass — all 0 console errors:
+  - Dashboard: Treemap, Top Gainers/Losers, Market Sentiment visible ✅
+  - Forecasts: 160 tickers, MODEL column (catboost_st...), 4 horizons ✅
+  - Models: 9 models, stacking_ensemble Winner, CatBoost Active ✅
+  - Drift: ActiveModelCard, DriftTimeline 15 events ✅
+  - Analytics: 4 stat cards, Stream Health, Feature Freshness, OLAP Candle, Kafka Lag ✅
+  - Backtest: chart + 6 metric cards ✅
+  - Search: PREDICTIONS (4) + STOCKS (1) for AAPL ✅
+- TypeScript 0 errors, npm run build succeeded
+- Screenshots: backtest-full-verify.png, backtest-after-run.png, search-full-verify.png, search-aapl-predictions.png, final-search.png, final-dashboard.png, final-forecasts.png, final-models.png, final-drift.png, final-analytics.png
+- Files modified: services/frontend/src/pages/Search.tsx (rowCount fix), scripts/ralph/prd.json, scripts/ralph/progress.txt
+- **Learnings for future iterations:**
+  - Elasticsearch indices are NOT auto-populated — Debezium CDC was never configured. Use a one-shot Python script (populate_es.py) to bulk-index from PostgreSQL via the API pod
+  - ES index names must match exactly what elasticsearch_service.py uses: debezium.public.predictions, debezium.public.model_registry, debezium.public.drift_logs, stocks
+  - MUI DataGrid: `rowCount` prop conflicts with default paginationMode="client" — logs error. Only use rowCount with paginationMode="server"
+  - ohlcv_daily uses `date` column, NOT `timestamp` — ORDER BY date DESC for latest price
+  - populate_es.py must run from within a pod that can reach both postgres (storage ns) and elasticsearch (storage ns): use the stock-api pod (ingestion ns) which has DATABASE_URL + ELASTICSEARCH_URL env vars

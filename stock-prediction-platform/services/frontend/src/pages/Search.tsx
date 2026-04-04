@@ -313,7 +313,6 @@ export default function Search() {
               {...GRID_PROPS}
               rows={makeRows(predictions.data.items)}
               columns={predictionsColumns}
-              rowCount={predictions.data.total}
             />
           )}
         </TabPanel>
@@ -331,7 +330,6 @@ export default function Search() {
               {...GRID_PROPS}
               rows={makeRows(models.data.items)}
               columns={modelsColumns}
-              rowCount={models.data.total}
             />
           )}
         </TabPanel>
@@ -349,7 +347,6 @@ export default function Search() {
               {...GRID_PROPS}
               rows={makeRows(driftEvents.data.items)}
               columns={driftColumns}
-              rowCount={driftEvents.data.total}
             />
           )}
         </TabPanel>
@@ -367,7 +364,6 @@ export default function Search() {
               {...GRID_PROPS}
               rows={makeRows(stocks.data.items)}
               columns={stocksColumns}
-              rowCount={stocks.data.total}
             />
           )}
         </TabPanel>
