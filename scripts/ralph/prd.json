@@ -1134,7 +1134,7 @@
         "Commit if changes made: 'fix: [US-070] add prometheus scrape annotations to stock-api deployment'"
       ],
       "priority": 70,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
