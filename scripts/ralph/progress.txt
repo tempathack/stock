@@ -942,3 +942,11 @@ Previous run codebase patterns (still valid):
 - PageHeader titles correct — PASS
 - 0 console errors
 ---
+
+## 2026-04-07 - US-024: Grafana login, home, datasource audit
+- Login: admin/changeme_grafana_local_dev_only (NOT admin/admin — password was changed)
+- 3 datasources: Prometheus(PASS), Loki(PASS), TimescaleDB(present)
+- All provisioned read-only via GitOps
+- 0 console errors
+- **Learnings:** Grafana password is in k8s secret grafana-credentials, not admin/admin
+---

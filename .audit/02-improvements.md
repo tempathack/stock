@@ -602,3 +602,20 @@ No screenshots taken (no errors to document).
 
 ### US-023: PageHeader and Sidebar navigation audit (2026-04-07)
 **Status:** PASS. All 7 nav links present: Dashboard, Models, Forecasts, Drift, Backtest, Analytics, Search. Active highlight (underline) updates correctly per route. PageHeader titles correct per route. 0 console errors.
+
+---
+
+## Grafana Datasource Health
+
+### US-024: Grafana login, home, datasource audit (2026-04-07)
+
+**Status:** PASS — all 3 datasources configured, Prometheus and Loki tests pass
+
+**Login:** admin/changeme_grafana_local_dev_only (default admin/admin has been changed — correct)
+
+**Datasources (3):**
+- Prometheus → http://prometheus.monitoring.svc.cluster.local:9090 — **Test PASS** ("Successfully queried the Prometheus API")
+- Loki → http://loki.monitoring.svc.cluster.local:3100 — **Test PASS** ("Data source successfully connected")
+- TimescaleDB → postgresql.storage.svc.cluster.local:5432 — present, not tested
+
+**Notes:** All datasources are provisioned (read-only in UI) — changes via GitOps per Argo CD policy. 0 console errors.
