@@ -951,8 +951,8 @@
         "Commit: 'feat: [US-059] add X-Request-ID middleware for log correlation'"
       ],
       "priority": 59,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Already implemented: RequestContextMiddleware in middleware.py reads X-Request-ID or generates UUID4, returns it in response headers, registered in main.py. curl verified: X-Request-ID: test-123 echoed back in response."
     },
     {
       "id": "US-060",

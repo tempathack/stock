@@ -1290,3 +1290,10 @@ Previous run codebase patterns (still valid):
   - stock-api service port is 8000 not 80
   - KServe shows degraded because KSERVE_ENABLED=false in ingestion-config ConfigMap
 ---
+
+## 2026-04-07 - US-059: X-Request-ID middleware
+- Already implemented: RequestContextMiddleware in middleware.py reads X-Request-ID header or generates UUID4, binds to structlog contextvars, returns in response headers
+- Registered in main.py via app.add_middleware(RequestContextMiddleware)
+- curl verified: X-Request-ID: test-123 echoed back with 200 OK
+- No code changes needed
+---
