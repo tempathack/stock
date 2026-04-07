@@ -1261,3 +1261,9 @@ Previous run codebase patterns (still valid):
 - Documented in .audit/01-stale-code.md under '## KServe & Kubeflow Status'
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
 ---
+
+## 2026-04-07 - US-056: Compile stale code report
+- Added SUMMARY section to .audit/01-stale-code.md with category totals, TOP 10 issues, quick wins, and migration items
+- Top priority: yfinance pin stale (requirements.txt), CRITICAL dompurify CVE (jspdf), HIGH vite CVE
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+---

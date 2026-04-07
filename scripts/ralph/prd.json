@@ -900,8 +900,8 @@
         "Commit: 'audit: [US-056] compile stale code report section'"
       ],
       "priority": 56,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "SUMMARY section added to .audit/01-stale-code.md with totals, TOP 10 issues, quick wins, and migration items. yfinance pin and jspdf CVE are top priorities. 14 dead Grafana panels, 3 dead React components, 9 stale DB entries."
     },
     {
       "id": "US-057",

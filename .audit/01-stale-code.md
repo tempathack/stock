@@ -963,3 +963,69 @@ Kubeflow Pipelines are running but `smoke-daily-*-dag-driver` pod has `Init:Imag
 - **Kubeflow Pipelines are running** but with high restart counts (ml-pipeline: 29, cache-server: 57)
 - **`smoke-daily` pipeline DAG is failing** — likely image tag mismatch or registry auth issue
 - No stale KServe or Kubeflow YAML definitions found
+
+---
+
+## SUMMARY — Stale Code Findings
+
+_Compiled: 2026-04-07 (US-056)_
+
+### Totals by Category
+
+| Category | Count |
+|----------|-------|
+| Dead Python service functions | 6 |
+| Dead Python modules | 3 (`utils/indicators.py`, `services/kserve_sync_client.py`, `jobs/trigger_intraday.py` – CronJob only) |
+| Unused Python router imports | 2 (pre-existing F401, suppressed with noqa) |
+| Dead React components | 3 (`SentimentGauge.tsx`, `TradingSignalBadge.tsx`, `ModelHealthIndicator.tsx`) |
+| Unused TypeScript types/interfaces | 12 (type anchors, not true dead code) |
+| Dead/skipped Playwright specs | 3 (infra fixme — expected) |
+| Dead pytest tests | 0 |
+| Orphaned K8s manifests | 4 (KafkaConnect CRD, 2 KafkaTopic CRD with invalid names) |
+| Unused ConfigMap env vars | 0 |
+| TODO/FIXME/HACK comments | 0 |
+| Python noqa suppressions | 22 |
+| Python type:ignore suppressions | 7 |
+| TypeScript suppressions | 2 |
+| Deprecated Python packages (major lag) | 2 (`yfinance` pin stale, `xgboost` 2 majors behind) |
+| npm CVE vulnerabilities | 5 (1 CRITICAL, 3 HIGH, 1 MODERATE) |
+| Orphaned PostgreSQL tables | 2 (`permissions`, `managed_infra`) |
+| Unused Kafka topics | 1 (`debezium.public.predictions` orphaned) |
+| Dead Grafana panels | ~14 (ml-perf: 8/12 dead, kafka: 8/8 dead) |
+| Stale model_registry DB entries | 9 (early training runs, is_active=false) |
+
+---
+
+### TOP 10 Most Impactful Issues
+
+| # | Issue | Location | Impact | Action |
+|---|-------|----------|--------|--------|
+| 1 | **`yfinance==0.2.38` pin in requirements.txt** | `services/api/requirements.txt` | HIGH — Docker build will install broken pre-1.0 version | Change to `yfinance>=1.0` |
+| 2 | **CRITICAL dompurify XSS via jspdf** | `package.json` jspdf 2.5.2 | HIGH — XSS in PDF generation | `npm install jspdf@4.2.1` (breaking change) |
+| 3 | **Vite HIGH CVE — path traversal** | `package.json` vite 6.4.1 | HIGH — dev server vulnerability | `npm audit fix` |
+| 4 | **Kafka all 8 dashboard panels dead** | `grafana-dashboard-kafka.yaml` | MEDIUM — monitoring blind spot for Kafka | Add prometheus-client to kafka-consumer |
+| 5 | **ml-perf 8/12 panels dead** | `grafana-dashboard-ml-perf.yaml` | MEDIUM — no ML training/drift visibility | Register `model_last_trained_timestamp`, `drift_events_total` in metrics.py |
+| 6 | **Debezium CDC broken** | K8s storage namespace | MEDIUM — ES indices empty, search returns no results | Fix KafkaMirrorMaker CRD schema or switch to direct ES writes |
+| 7 | **`xgboost==2.0.3`** | `requirements.txt` | MEDIUM — 2 major versions behind (3.2.0) | Upgrade with testing |
+| 8 | **Dead React components (3)** | `src/components/` | LOW — bundle bloat | Delete SentimentGauge, TradingSignalBadge, ModelHealthIndicator |
+| 9 | **9 stale model_registry entries** | PostgreSQL `model_registry` | LOW — UI shows ghost models | `DELETE FROM model_registry WHERE is_active=false AND model_name IN ('CatBoost_standard', 'Ridge_quantile', 'RandomForest_minmax')` |
+| 10 | **`permissions` + `managed_infra` orphaned tables** | PostgreSQL | LOW — wasted schema | Add API endpoints or drop tables |
+
+---
+
+### Quick Wins (< 30 minutes each)
+
+1. `requirements.txt`: `yfinance==0.2.38` → `yfinance>=1.0` (1 line change)
+2. `npm audit fix` to fix vite + picomatch CVEs (non-breaking)
+3. Delete 3 dead React components: SentimentGauge, TradingSignalBadge, ModelHealthIndicator
+4. Run `DELETE FROM model_registry WHERE model_name IN ('CatBoost_standard', 'Ridge_quantile', 'RandomForest_minmax')` to clean ghost entries
+5. Delete `debezium.public.predictions` Kafka topic (auto-created, no manifest, no consumer)
+
+---
+
+### Requires Migration (careful removal)
+
+1. **`jspdf` upgrade to 4.2.1** — PDF export API changed; needs update in export-related components
+2. **`xgboost` 2→3 upgrade** — DMatrix API changes; ML pipeline testing required
+3. **ES/Kibana CDC pipeline repair** — Debezium CRD schema mismatch needs Strimzi version alignment
+4. **Dead Python modules** — `utils/indicators.py` safe to delete; `kserve_sync_client.py` verify no CronJob references first
