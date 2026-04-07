@@ -1166,7 +1166,7 @@
         "Commit: 'feat: [US-072] populate sentiment_timeseries \u2014 fix pipeline or seed synthetic data'"
       ],
       "priority": 72,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
