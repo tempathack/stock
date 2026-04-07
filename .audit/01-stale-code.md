@@ -234,3 +234,30 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 - 0 dead jobs/middleware/rate_limit/logging modules — all active
 - `utils/indicators.py` is empty stub (3 lines) — safe to delete
 
+
+---
+
+## Dead ML Pipeline Code
+
+### US-037: ML pipeline dead code scan (2026-04-07)
+
+**File inventory:** 75 Python files (39 pipeline/model files + 36 test files)
+
+**SHAP guard:** ✓ Properly handled via `try/except ImportError` in `explainer.py` — not a flag but equivalent protection.
+
+**Pipeline component coverage:** All components in `ml/pipelines/components/` referenced from `training_pipeline.py` or `drift_pipeline.py`.
+
+**Storage backends:** Both `storage_backends.py` and `s3_storage.py` are active:
+- `storage_backends.py`: abstract `StorageBackend` + `create_storage_backend()` factory — used by `registry.py`
+- `s3_storage.py`: concrete MinIO/S3 implementation — lazy-imported in 4 pipeline files
+
+**sktime integration:** `sktime_wrappers.py` defined, functions called from `model_trainer.py` (`train_sktime_models`, `train_sktime_regression_models`) — ACTIVE via Phase 96
+
+**pit_validator.py:** Referenced from `feature_store/__init__.py` — ACTIVE
+
+**Commented-out stages:** None found in `ml/pipelines/` scan.
+
+**No dead ML code found** — all pipeline stages, feature files, and model modules are referenced.
+
+**Minor note:** `shap_analysis.py` imports `shap` at module level (line 8) without guard — should be inside try/except. But this is only imported by `explainer.py` which has the guard, so practically safe.
+

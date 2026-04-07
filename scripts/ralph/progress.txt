@@ -1061,3 +1061,13 @@ Previous run codebase patterns (still valid):
 - utils/indicators.py: EMPTY STUB (3 lines) — dead file, real logic in ml/features/indicators.py
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-037: Stale Code: Dead Python code — ML pipeline scan
+- 39 ML pipeline/model files + 36 test files — all active
+- SHAP guard: try/except ImportError in explainer.py (not _shap_available flag but equivalent)
+- shap_analysis.py imports shap at module level — minor risk but mitigated by explainer guard
+- sktime_wrappers.py: called from model_trainer.py (train_sktime_models, train_sktime_regression_models)
+- storage_backends.py + s3_storage.py: both active (abstract + concrete)
+- No dead pipeline stages, no commented-out code found
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---

@@ -604,8 +604,8 @@
         "Document dead ML code in .audit/01-stale-code.md under '## Dead ML Pipeline Code'"
       ],
       "priority": 37,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. No dead ML code. SHAP guarded via try/except ImportError in explainer.py. All pipeline components active. sktime_wrappers.py called from model_trainer.py. storage_backends.py+s3_storage.py both active. No commented-out stages."
     },
     {
       "id": "US-038",
