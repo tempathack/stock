@@ -219,8 +219,8 @@
         "Document feature distribution data freshness (last updated date visible?)"
       ],
       "priority": 13,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Implemented /models/drift/feature-distributions endpoint using feature_store table. 12 features monitored with real training vs recent histograms. Wired into Drift.tsx via useFeatureDistributions hook."
     },
     {
       "id": "US-014",

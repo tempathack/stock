@@ -25,6 +25,7 @@ import type {
   DriftEventSearchResponse,
   StockSearchResponse,
   MacroLatest,
+  FeatureDistributionResponse,
 } from "./types";
 
 /* ── query key constants ───────────────────────────────── */
@@ -43,6 +44,7 @@ export const queryKeys = {
   tickerIndicators: (ticker: string) => ["market", "indicators", ticker] as const,
   rollingPerformance: (days: number) => ["models", "drift", "rolling-performance", days] as const,
   retrainStatus: ["models", "retrain-status"] as const,
+  featureDistributions: (n: number) => ["models", "drift", "feature-distributions", n] as const,
   backtest: (ticker: string, start?: string, end?: string, horizon?: number) =>
     ["backtest", ticker, start, end, horizon] as const,
 };
@@ -181,6 +183,20 @@ export function useRetrainStatus() {
       );
       return data;
     },
+  });
+}
+
+export function useFeatureDistributions(nFeatures = 12) {
+  return useQuery({
+    queryKey: queryKeys.featureDistributions(nFeatures),
+    queryFn: async () => {
+      const { data } = await apiClient.get<FeatureDistributionResponse>(
+        "/models/drift/feature-distributions",
+        { params: { n_features: nFeatures } },
+      );
+      return data;
+    },
+    staleTime: 5 * 60 * 1000,
   });
 }
 

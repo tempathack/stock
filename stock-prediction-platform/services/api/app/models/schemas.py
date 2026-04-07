@@ -117,6 +117,27 @@ class RetrainStatusResponse(BaseModel):
     previous_oos_metrics: dict = {}   # OOS metrics for the row before current
 
 
+class HistogramBin(BaseModel):
+    bin: str
+    count: int
+
+
+class FeatureDistributionEntry(BaseModel):
+    feature: str
+    training_bins: list[HistogramBin] = []
+    recent_bins: list[HistogramBin] = []
+    ks_stat: float | None = None
+    psi_value: float | None = None
+    is_drifted: bool = False
+
+
+class FeatureDistributionResponse(BaseModel):
+    features: list[FeatureDistributionEntry] = []
+    training_period: str = ""
+    recent_period: str = ""
+    count: int = 0
+
+
 # ── Market ────────────────────────────────────────────────────────────────
 
 

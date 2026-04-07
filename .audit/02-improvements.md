@@ -326,3 +326,34 @@ Status: IN PROGRESS
 - audit-p12-rolling-perf.png — RollingPerformanceChart (empty state)
 - audit-p12-drift-timeline.png — DriftTimeline (15 events)
 
+
+---
+
+### US-013: Drift Page — FeatureDistributionChart Audit (2026-04-07)
+
+**Status:** IMPLEMENTED & PASS
+
+**Gap found:** FeatureDistributionChart was hardcoded with `distributions={[]}` and returned null (invisible). No backend endpoint existed to provide training vs. recent feature distributions.
+
+**Fix implemented:**
+1. Added `/models/drift/feature-distributions` endpoint to FastAPI (`services/api/app/routers/models.py`)
+   - Queries `feature_store` table (7.2M rows, 46 features, 150 tickers, 2022–2026)
+   - Extracts drifted features from `drift_logs.details_json->per_feature` (KS/PSI stats)
+   - Computes 10-bin training vs recent histograms (training ≤ 1yr ago, recent ≥ 60d ago)
+   - Returns percentage-normalized bin counts with KS stat and PSI value per feature
+2. Added `FeatureDistributionEntry` and `FeatureDistributionResponse` schemas to `schemas.py`
+3. Added `useFeatureDistributions(nFeatures)` React Query hook to `queries.ts`
+4. Wired hook into `Drift.tsx`, mapping snake_case API response to camelCase component props
+
+**Verified working:**
+- `/models/drift/feature-distributions?n_features=12` returns 12 features (rsi_14, macd_line, bb_upper drifted; 9 stable) with 10 histogram bins each ✅
+- FeatureDistributionChart accordion renders with "12 features monitored" ✅
+- Feature cards show "Drifted" chip for rsi_14, macd_line, bb_upper with KS/PSI stats ✅
+- 0 console errors ✅
+- TypeScript 0 errors, `npm run build` passes ✅
+
+**Data freshness:** Training period ≤ 2025-04-07, recent period ≥ 2026-02-06. No "last updated" date displayed in UI — chart shows period labels from API response but not surfaced to component.
+
+**Screenshots:**
+- audit-p13-feature-dist.png — Full drift page with accordion expanded, feature cards visible
+- audit-p13-feature-select.png — Scroll showing 12 features monitored header

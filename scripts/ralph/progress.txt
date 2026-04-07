@@ -800,3 +800,19 @@ Previous run codebase patterns (still valid):
   - Rolling performance chart gap is a data gap, not a bug — endpoint exists at /models/drift/rolling-performance but DB has 0 rows
   - Drift page is fully functional with real drift events from the API
 ---
+
+## 2026-04-07 - US-013: Drift Page — FeatureDistributionChart Audit
+- **Gap:** FeatureDistributionChart was hardcoded with `distributions={[]}`, returning null. No backend endpoint existed.
+- **Implemented** `/models/drift/feature-distributions` endpoint:
+  - Queries `feature_store` (7.2M rows) for training (≤1yr) vs recent (≥60d) distributions
+  - Extracts drifted features from `drift_logs.details_json->per_feature` for KS/PSI overlay
+  - Computes 10-bin percentage histograms per feature
+  - Added `FeatureDistributionEntry` + `FeatureDistributionResponse` Pydantic schemas
+- **Frontend:** Added `useFeatureDistributions()` hook, wired into Drift.tsx
+- **Verified:** 12 features rendered, 3 drifted (rsi_14, macd_line, bb_upper), 0 console errors
+- Files created/modified: `services/api/app/routers/models.py`, `app/models/schemas.py`, `services/frontend/src/api/queries.ts`, `api/types.ts`, `pages/Drift.tsx`, `.audit/02-improvements.md`, `scripts/ralph/prd.json`
+- **Learnings for future iterations:**
+  - `feature_store` table has 7.2M rows with 46 features — usable for real distribution histograms
+  - Use `get_async_session()` (not `engine.connect()`) for DB access in FastAPI routers
+  - FeatureDistributionChart returns null when distributions=[]; accordion only renders with data
+---

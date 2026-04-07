@@ -18,7 +18,7 @@ import {
   RetrainStatusPanel,
   FeatureDistributionChart,
 } from "@/components/drift";
-import { useModelDrift, useModelComparison, useRollingPerformance, useRetrainStatus } from "@/api";
+import { useModelDrift, useModelComparison, useRollingPerformance, useRetrainStatus, useFeatureDistributions } from "@/api";
 import type { ActiveModelInfo, RetrainStatus } from "@/api";
 
 export default function Drift() {
@@ -26,6 +26,7 @@ export default function Drift() {
   const modelsQuery = useModelComparison();
   const rollingPerfQuery = useRollingPerformance();
   const retrainQuery = useRetrainStatus();
+  const featureDistQuery = useFeatureDistributions(12);
 
   const activeModel: ActiveModelInfo | null = useMemo(() => {
     const active = modelsQuery.data?.models.find((m) => m.is_active);
@@ -192,7 +193,16 @@ export default function Drift() {
       </Box>
 
       {/* Row 4: Feature Distributions (collapsible accordion) */}
-      <FeatureDistributionChart distributions={[]} />
+      <FeatureDistributionChart
+        distributions={(featureDistQuery.data?.features ?? []).map((f) => ({
+          feature: f.feature,
+          trainingBins: f.training_bins,
+          recentBins: f.recent_bins,
+          ksStat: f.ks_stat,
+          psiValue: f.psi_value,
+          isDrifted: f.is_drifted,
+        }))}
+      />
     </Container>
   );
 }
