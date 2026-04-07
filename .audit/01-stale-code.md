@@ -588,3 +588,60 @@ _Recorded: 2026-04-07_
 ### No Known CVEs Found
 - None of the pinned packages have publicly disclosed critical CVEs as of 2026-04-07
 - `numpy==1.26.4` has a resolved issue (CVE-2024-29071) — upgrade to 1.26.4+ (current) is fine
+
+## Deprecated npm Packages
+
+_Recorded: 2026-04-07_
+
+### Version Lag Summary (npm outdated)
+
+| Package | Current | Latest | Gap | Risk |
+|---------|---------|--------|-----|------|
+| `@mui/material` | 7.3.9 | **9.0.0** | MAJOR | HIGH — MUI v9 is out; v7 still supported |
+| `@mui/icons-material` | 7.3.9 | **9.0.0** | MAJOR | HIGH — same as above |
+| `@mui/lab` | 7.0.1-beta.23 | **9.0.0-beta.2** | MAJOR | MEDIUM |
+| `jspdf` | 2.5.2 | **4.2.1** | MAJOR | **CVE** — see Security below |
+| `jspdf-autotable` | 3.8.4 | **5.0.7** | MAJOR | **CVE** — depends on vulnerable jspdf |
+| `echarts` | 5.5.1 | **6.0.0** | MAJOR | LOW — 6.x has breaking tree-shaking API |
+| `react` | 18.3.1 | 19.2.4 | MAJOR | MEDIUM — React 19 has breaking concurrent changes |
+| `react-dom` | 18.3.1 | 19.2.4 | MAJOR | MEDIUM |
+| `@types/react` | 18.3.28 | 19.2.14 | MAJOR | LOW — types only |
+| `typescript` | 5.6.3 | 6.0.2 | MAJOR | LOW — TS 6.x breaking changes to bundler interop |
+| `vite` | 6.4.1 | **8.0.7** | MAJOR | **CVE** — see Security below |
+| `@vitejs/plugin-react` | 4.7.0 | 6.0.1 | MAJOR | LOW |
+| `@tanstack/react-query` | 5.91.3 | 5.96.2 | PATCH | LOW |
+| `axios` | 1.13.6 | 1.14.0 | PATCH | LOW |
+
+---
+
+### Security Vulnerabilities (npm audit — 5 total)
+
+| Severity | Package | CVE | Fix |
+|----------|---------|-----|-----|
+| **CRITICAL** | `dompurify` (via `jspdf`) | Mutation-XSS, prototype pollution, URI validation bypass | Upgrade `jspdf` to >=4.2.1 (breaking) |
+| **HIGH** | `jspdf` <=4.2.0 | Depends on vulnerable dompurify | Upgrade to 4.2.1 |
+| **HIGH** | `jspdf-autotable` <=3.8.4 | Depends on vulnerable jspdf | Upgrade to >=5.0 |
+| **HIGH** | `vite` <=6.4.1 | Arbitrary file read via dev server WebSocket; path traversal in .map handling | `npm audit fix` |
+| **MODERATE** | `picomatch` 4.0.0–4.0.3 | ReDoS via extglob quantifiers; method injection | `npm audit fix` |
+
+**Priority fixes:**
+1. `dompurify` CRITICAL — used by `jspdf` for PDF generation. XSS risk if any user-controlled content enters PDF. **Upgrade jspdf to 4.2.1** (breaking API change required).
+2. `vite` HIGH — dev server only (not production); path traversal risk during local development. Run `npm audit fix`.
+
+---
+
+### Charting Library Audit
+
+Only **recharts** is used. `lightweight-charts` is NOT in package.json and NOT imported anywhere.
+
+- `recharts ^3.8.0` — primary charting lib used throughout (ComposedChart, BarChart, etc.)
+- `echarts ^5.5.1` — secondary lib; used in `MarketTreemap.tsx` for treemap rendering
+- `lightweight-charts` — NOT present, NOT used
+
+No duplication issue. Two charting libs serve distinct use cases (recharts = time-series/bar, echarts = treemap).
+
+---
+
+### MUI Version Note
+
+Package.json uses **MUI v7** (`@mui/material ^7.3.9`). MUI v9 is available but is a major version with breaking changes to styling engine and component APIs. The codebase was designed for MUI v5 (per CLAUDE.md) but has been upgraded to v7. Upgrade to v9 is non-trivial.

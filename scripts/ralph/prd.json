@@ -760,8 +760,8 @@
         "Document findings in .audit/01-stale-code.md under '## Deprecated npm Packages'"
       ],
       "priority": 47,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "5 vulnerabilities: CRITICAL dompurify via jspdf, HIGH vite path traversal, HIGH picomatch ReDoS. MUI is on v7 (latest is v9). recharts is primary charting lib; echarts used for treemap only; lightweight-charts absent. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-048",

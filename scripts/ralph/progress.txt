@@ -1156,3 +1156,16 @@ Previous run codebase patterns (still valid):
   - requirements.txt yfinance pin is wrong — needs to be bumped to >=1.0 for correct API
   - Do NOT upgrade numpy to 2.x until SHAP supports it (currently requires numba+numpy<2.0)
 ---
+
+## 2026-04-07 - US-047: Stale Code: Deprecated npm package audit
+- Ran npm outdated — 22 packages behind; MUI v7 (latest v9), jspdf 2.x (vulnerable), vite 6.x (vulnerable)
+- Ran npm audit — 5 vulnerabilities: 1 CRITICAL (dompurify via jspdf), 3 HIGH, 1 MODERATE
+- recharts is primary charting lib; echarts used for treemap; lightweight-charts NOT present
+- MUI is v7 in package.json (CLAUDE.md says v5 but was upgraded to v7)
+- Documented in .audit/01-stale-code.md under '## Deprecated npm Packages'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - jspdf has a CRITICAL dompurify CVE — fix: upgrade to jspdf@4.2.1 (breaking API)
+  - vite has HIGH path traversal CVE — fix: npm audit fix
+  - MUI is v7 not v5 as stated in CLAUDE.md scripts/ralph section — update expectations accordingly
+---
