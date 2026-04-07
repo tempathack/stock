@@ -186,8 +186,8 @@
         "curl 'http://localhost:8010/models/list' \u2014 verify response includes model_id, trained_at, features_count"
       ],
       "priority": 11,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS: ModelDetailPanel updates on row click, shows training metadata (model_name/scaler/saved_at/hyperparams/OOS metrics). SHAP bar chart and beeswarm both render. 0 console errors. Issues: /models/list 404 (use /models/comparison), features_count absent from API."
     },
     {
       "id": "US-012",

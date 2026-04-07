@@ -772,3 +772,18 @@ Previous run codebase patterns (still valid):
   - FoldPerformanceChart uses mock data from `utils/mockModelData.ts:generateModelDetail()` — no real fold API endpoint exists
   - XGBoost and LightGBM were never trained/registered in this deployment — only 9 models present
 ---
+
+## 2026-04-07 - US-011: Models Page — ModelDetailPanel Audit
+- Navigated to http://localhost:5173/models, verified ModelDetailPanel loads by default with stacking_ensemble selected
+- Clicked CatBoost_standard row — panel correctly updated (model_name, version, status, scaler, saved_at, fold_stability, hyperparams, OOS metrics)
+- SHAP Feature Importance bar chart renders with 15 features ✓
+- SHAP Value Distribution beeswarm renders ✓
+- Fold-by-Fold Performance chart renders (5 folds, MAE/RMSE/R²) ✓
+- 0 console errors, 0 warnings
+- Screenshots: audit-p11-models-initial.png, audit-p11-model-detail.png
+- Documented in .audit/02-improvements.md
+- **Issues documented:** /models/list returns 404 (endpoint is /models/comparison); features_count absent from API; model_name displayed as heading only (not labeled field)
+- **Learnings for future iterations:**
+  - /models/list does NOT exist — correct endpoint is /models/comparison
+  - features_count is NOT in the models/comparison response — no training feature count exposed by API
+---

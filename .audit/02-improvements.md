@@ -270,3 +270,36 @@ Status: IN PROGRESS
 - audit-p10-winner.png — WinnerCard stacking_ensemble visible
 - audit-p10-comparison-table.png — ModelComparisonTable with 9 model rows
 - audit-p10-fold-chart.png — FoldPerformanceChart + SHAP charts (scrolled to bottom)
+
+---
+
+### US-011: Models Page — ModelDetailPanel Audit (2026-04-07)
+
+**Status:** PASS
+
+**Verified working:**
+- Navigate to http://localhost:5173/models — ModelDetailPanel already open by default showing stacking_ensemble ✓
+- Clicked CatBoost_standard row — DetailPanel updated to show CatBoost_standard v1 (Active), Scaler=Standard, Saved At=3/22/2026, Fold Stability=0.0089, Hyperparameters: depth=6 iterations=500 learning_rate=0.05 ✓
+- OOS Metrics panel shows r2/mae/mape/rmse/directional_accuracy for selected model ✓
+- "In-Sample vs Out-of-Sample Metrics" section renders with metric values ✓
+- Feature Importance (SHAP) bar chart renders with 15 features ✓
+- SHAP Value Distribution beeswarm plot renders ✓
+- Fold-by-Fold Performance chart renders with 5 folds (MAE/RMSE/R² bars) ✓
+- 0 console errors, 0 warnings
+
+**API findings:**
+- `/models/list` does NOT exist — returns 404. Actual endpoint is `/models/comparison`
+- `/models/comparison` response keys: `model_name`, `scaler_variant`, `version`, `is_winner`, `is_active`, `traffic_weight`, `oos_metrics`, `fold_stability`, `best_params`, `saved_at`
+- **`features_count` is NOT in the API response** — detail panel has no feature count display
+- **`model_id` field is absent** — API uses `model_name` as the identifier (no separate integer ID)
+- **`trained_at` field is absent** — UI shows `saved_at` labeled as "Saved At"
+
+**Issues found:**
+1. **`/models/list` endpoint missing**: PRD acceptance criteria references `curl http://localhost:8010/models/list` but this route returns 404. The comparison data comes from `/models/comparison`. Low priority — frontend is unaffected.
+2. **Feature count not exposed or displayed**: Neither the API nor the UI shows how many features the model was trained on. Given the recent feature count change (49 features after macro additions vs. earlier models trained on fewer), this would be useful for stale-model detection.
+3. **model_name displayed as heading only**: The detail panel shows `model_name` as a heading (`<h6>`) rather than a labeled key-value field. It correctly matches registry names from `/models/comparison`.
+
+**Screenshots:**
+- audit-p11-models-initial.png — Models page initial state (stacking_ensemble selected)
+- audit-p11-model-detail.png — Full page with CatBoost_standard selected, detail panel updated
+
