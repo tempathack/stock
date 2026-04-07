@@ -1017,7 +1017,7 @@
         "Document fix or root cause in .audit/02-improvements.md under '## Flink Sentiment Writer Fix'"
       ],
       "priority": 63,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

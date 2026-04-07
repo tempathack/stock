@@ -933,3 +933,19 @@ Axios interceptor in `services/frontend/src/api/client.ts` retries transient ser
 - **Strategy:** up to 3 retries with exponential backoff — 1s / 2s / 4s delays
 - **Dev logging:** `console.debug` logs each retry attempt (retryCount/maxRetries, delay, status) — only in development mode (`import.meta.env.DEV`)
 - **Implementation:** `_retryCount` tracked on the axios request config via `RetryConfig` extension interface
+
+## Flink Sentiment Writer Fix
+
+**Audited:** 2026-04-07 (US-063)
+
+`kubectl get flinkdeployment -n flink` shows all Flink jobs including `sentiment-writer` in **RUNNING / STABLE** state.
+
+| Deployment | Job Status | Lifecycle State |
+|---|---|---|
+| feast-writer | RUNNING | STABLE |
+| indicator-stream | RUNNING | STABLE |
+| ohlcv-normalizer | RUNNING | STABLE |
+| sentiment-stream | RUNNING | STABLE |
+| sentiment-writer | RUNNING | STABLE |
+
+All pods healthy, Flink Kubernetes Operator running (`flink-kubernetes-operator-7848cffc97-z9ffc` 1/1). No fix required — sentiment writer is operational.
