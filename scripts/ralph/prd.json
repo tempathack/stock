@@ -884,8 +884,8 @@
         "Document KServe/Kubeflow status in .audit/01-stale-code.md under '## KServe & Kubeflow Status'"
       ],
       "priority": 55,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Both KServe InferenceServices READY (main+canary). stock-sklearn-mlserver ClusterServingRuntime registered. Kubeflow running but high restarts (ml-pipeline:29, cache-server:57). smoke-daily DAG Init:ImagePullBackOff. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-056",

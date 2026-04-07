@@ -1252,3 +1252,12 @@ Previous run codebase patterns (still valid):
   - model_registry table uses simple model_name column (no scaler_variant); MinIO dirs have name+scaler combined
   - horizon_* dirs in MinIO are multi-horizon models not tracked in DB
 ---
+
+## 2026-04-07 - US-055: KServe & Kubeflow status audit
+- Both InferenceServices READY: stock-model-serving and stock-model-serving-canary
+- stock-sklearn-mlserver ClusterServingRuntime registered (custom)
+- Kubeflow Pipelines running but high restart counts (29-57)
+- smoke-daily pipeline DAG pod has Init:ImagePullBackOff
+- Documented in .audit/01-stale-code.md under '## KServe & Kubeflow Status'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+---

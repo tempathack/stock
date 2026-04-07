@@ -918,3 +918,48 @@ _Recorded: 2026-04-07_
 - 9 rows: `CatBoost_standard` (model_id 1,4,7), `Ridge_quantile` (2,5,8), `RandomForest_minmax` (3,6,9)
 - These are early training run registrations that were superseded but DB rows not cleaned up
 - **is_active=false** for all — not serving live traffic. Low priority.
+
+## KServe & Kubeflow Status
+
+_Recorded: 2026-04-07_
+
+### KServe InferenceServices
+
+| Name | READY | URL | Age |
+|------|-------|-----|-----|
+| `stock-model-serving` | **True** | http://stock-model-serving-ml.example.com | 13d |
+| `stock-model-serving-canary` | **True** | http://stock-model-serving-canary-ml.example.com | 13d |
+
+Both InferenceServices are READY. Both main and canary are deployed and healthy.
+
+### ClusterServingRuntimes (KServe)
+
+- `kserve-sklearnserver` — sklearn (built-in)
+- `kserve-mlserver` — sklearn (mlserver)
+- `stock-sklearn-mlserver` — sklearn (custom, project-specific)
+- 7 other built-in runtimes (huggingface, lightgbm, paddle, pmml, tensorflow, pytorch, triton)
+
+Custom `stock-sklearn-mlserver` is registered as expected.
+
+### Kubeflow Pipelines
+
+| Pod | Status | Restarts |
+|-----|--------|----------|
+| `ml-pipeline` | Running | 29 |
+| `ml-pipeline-ui` | Running | 29 |
+| `ml-pipeline-scheduledworkflow` | Running | 2 |
+| `metadata-grpc-deployment` | Running | 26 |
+| `cache-server` | Running | 57 |
+| `ml-pipeline-visualizationserver` | Running | 28 |
+| `mysql` | Running | 3 |
+| `minio` (kubeflow ns) | Running | 2 |
+| `smoke-daily-*-dag-driver` | Init:ImagePullBackOff | 0 |
+
+Kubeflow Pipelines are running but `smoke-daily-*-dag-driver` pod has `Init:ImagePullBackOff` — a scheduled pipeline DAG is failing to pull its image.
+
+### Assessment
+
+- **Both KServe InferenceServices are READY** — no stale definitions
+- **Kubeflow Pipelines are running** but with high restart counts (ml-pipeline: 29, cache-server: 57)
+- **`smoke-daily` pipeline DAG is failing** — likely image tag mismatch or registry auth issue
+- No stale KServe or Kubeflow YAML definitions found
