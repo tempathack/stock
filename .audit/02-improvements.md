@@ -640,3 +640,23 @@ No screenshots taken (no errors to document).
 | Active Pods / Pods by Namespace | REAL DATA | visible |
 
 **Issues:** Error Rate % no data (HIGH), Inference Errors no data (MEDIUM), Prediction p95=10s red (investigate).
+
+---
+
+## Grafana ML Dashboard Gaps
+
+### US-026: Grafana ML Performance dashboard audit (2026-04-07)
+
+**Status:** PASS (audit) — 2 error panels No data, KServe metrics absent
+
+| Panel | Status |
+|---|---|
+| Predictions by Model | REAL DATA — CatBoost_standard, cached, stacking_ensemble in legend |
+| Prediction Latency p95 | REAL DATA — 0–20s range |
+| Inference Errors Over Time | NO DATA |
+| Error Rate by Ticker | NO DATA |
+| Success vs Error Ratio | REAL DATA — db_fallback/cached segments |
+| Model Comparison | REAL DATA — 3 model rows |
+
+**KServe metrics:** Absent — models serving via db_fallback, not live KServe inference.
+**Training Duration panel:** Not found in visible area.

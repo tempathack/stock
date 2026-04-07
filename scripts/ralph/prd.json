@@ -429,8 +429,8 @@
         "Document whether KServe inference metrics are appearing"
       ],
       "priority": 26,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. Predictions by Model: CatBoost_standard+cached+stacking_ensemble in legend. Inference Errors+Error Rate by Ticker: No data. Success/Error ratio + Model Comparison: data. KServe metrics absent — db_fallback mode. Training Duration panel not found."
     },
     {
       "id": "US-027",

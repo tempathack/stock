@@ -957,3 +957,11 @@ Previous run codebase patterns (still valid):
 - Prediction p95=10s RED — alarming or stale value
 - 0 console errors
 ---
+
+## 2026-04-07 - US-026: Grafana ML Performance dashboard audit
+- Predictions by Model: real data, legend shows CatBoost_standard/cached/stacking_ensemble
+- Inference Errors + Error Rate by Ticker: No data
+- Success/Error ratio + Model Comparison table: real data
+- KServe metrics absent — db_fallback mode, not live inference
+- Training Duration panel not found in visible area
+---
