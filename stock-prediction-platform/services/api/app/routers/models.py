@@ -15,6 +15,7 @@ from app.cache import (
     invalidate_models,
     invalidate_predictions,
 )
+from app.metrics import drift_score_current
 from app.config import settings
 from app.models.schemas import (
     ABResultsModelEntry,
@@ -272,14 +273,17 @@ async def drift_feature_distributions(n_features: int = 12, bins: int = 10) -> F
                     ]
 
                 fs = feature_stats.get(feature, {})
+                ks = fs.get("ks_statistic")
                 result_entries.append(FeatureDistributionEntry(
                     feature=feature,
                     training_bins=to_bins(train_vals),
                     recent_bins=to_bins(recent_vals),
-                    ks_stat=fs.get("ks_statistic"),
+                    ks_stat=ks,
                     psi_value=fs.get("psi"),
                     is_drifted=bool(fs.get("drifted", False)),
                 ))
+                if ks is not None:
+                    drift_score_current.labels(feature=feature, model_id="active").set(ks)
 
         response = FeatureDistributionResponse(
             features=result_entries,

@@ -1085,7 +1085,7 @@
         "Commit: 'feat: [US-067] expose drift score as Prometheus gauge metric'"
       ],
       "priority": 67,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
