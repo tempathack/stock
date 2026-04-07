@@ -620,3 +620,23 @@ Previous run codebase patterns (still valid):
   - Minikube was stopped — must start before any K8s operations: `minikube start --driver=docker`
   - Notable non-critical issues: argocd-dex-server in Error, kubeflow smoke pods stuck on ImagePullBackOff
 ---
+
+## 2026-04-07 - US-002: Playwright: Dashboard — Market tab full feature audit
+- Navigated to http://localhost:5173/ via Playwright MCP (redirects to /dashboard)
+- Started Vite dev server (npm run dev) since it wasn't running
+- Verified all 6 acceptance criteria via live browser:
+  1. Dashboard loads with real live data, WS CONNECTED banner
+  2. Ticker search: typed 'AAPL' → dropdown showed AAPL Apple Inc. -0.58% $252.62
+  3. Selected AAPL → price cards showed Current Price $252.62, Daily Change -0.58%, Market Cap $3.40T, Volume 41.3M, VWAP $232.96, 52W Range $9-$286
+  4. Historical chart rendered with BB Lower/Upper, Close, SMA 20/50/200, Forecast lines (Intraday candle unavailable)
+  5. Top Movers: AMD +4.14%, DOW +3.45% (gainers), CTAS -3.98%, TSLA -3.55% (losers) ✓
+  6. Market Treemap: sector blocks rendered for TECHNOLOGY, COMM SERVICES, FINANCIALS, etc. — 62 gainers, 98 losers ✓
+- 0 console errors, 2 warnings (WebSocket reconnect + ECharts disposed instance)
+- Issues documented in .audit/02-improvements.md
+- Screenshots: audit-p02-dashboard-market.png, audit-p02-search-dropdown.png, audit-p02-price-cards.png, audit-p02-treemap.png, audit-p02-top-movers.png
+- **Learnings for future iterations:**
+  - Vite dev server must be started before Playwright navigation (npm run dev --port 5173)
+  - Dashboard stock selector panel is a collapsible at bottom — click to expand, then search input appears
+  - Intraday candle data is known unavailable — document but not a blocker
+  - 52W Range $9 low for AAPL is a data bug worth noting
+---
