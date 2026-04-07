@@ -477,8 +477,8 @@
         "Document Loki health in .audit/02-improvements.md under '## Loki Log Aggregation Health'"
       ],
       "priority": 29,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Loki datasource connected but EMPTY. Promtail Running but broken — cannot reach K8s API (10.96.0.1:443 no route to host). Zero log streams. All namespace queries return No logs found. Root cause documented."
     },
     {
       "id": "US-030",

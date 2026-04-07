@@ -983,3 +983,14 @@ Previous run codebase patterns (still valid):
 - Screenshots: audit-p28-grafana-flink.png, audit-p28-flink-jobs.png
 - **Learnings:** Failed Checkpoints=1 per Flink job is normal — first checkpoint attempt during job startup before state backend is fully initialized; not ongoing failure.
 ---
+
+## 2026-04-07 - US-029: Playwright: Grafana — Explore tab (Loki log search) audit
+- Loki datasource confirmed present in Grafana Explore
+- Promtail pod Running (1/1) but BROKEN: cannot reach K8s API server (10.96.0.1:443 "no route to host")
+- Promtail fails kubernetes_sd_configs discovery → no pods found → no logs shipped to Loki
+- Loki /loki/api/v1/series returns empty array — zero streams
+- All queries (namespace=ingestion, ml, app=stock-api) return "No logs found"
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Screenshots: audit-p29-explore-loki.png, audit-p29-loki-ingestion.png, audit-p29-loki-stock-api.png, audit-p29-loki-ml.png
+- **Learnings:** Promtail in DaemonSet uses fieldSelector=spec.nodeName for pod discovery; if K8s ClusterIP unreachable (Minikube CNI issue), it silently fails to ship logs but pod stays Running.
+---

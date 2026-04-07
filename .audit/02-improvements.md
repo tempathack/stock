@@ -717,3 +717,32 @@ All 5 FlinkDeployments RUNNING/STABLE.
 - Failed Checkpoints showing 1 for most jobs (YELLOW) — likely initial startup checkpoint failure, not ongoing (LOW severity)
 - Throughput charts show legend but visual scaling hard to read at compressed time range
 
+
+---
+
+## Loki Log Aggregation Health
+
+### US-029: Grafana Explore / Loki audit (2026-04-07)
+
+**Promtail status:** Running (`promtail-v949h`, 1/1 Ready), but BROKEN
+
+**Root cause:** Promtail cannot discover pods — Kubernetes API (`10.96.0.1:443`) returns `no route to host`:
+```
+failed to list *v1.Pod: dial tcp 10.96.0.1:443: connect: no route to host
+```
+
+**Consequence:** Zero log streams in Loki. All LogQL queries return "No logs found":
+- `{namespace="ingestion"}` → No logs
+- `{namespace="ml"}` → No logs
+- `{app="stock-api"}` → No logs
+- `/loki/api/v1/series` → `{"status":"success","data":[]}` (empty)
+
+**Loki pod:** Running (`loki-78d86995c4-tcdr2`, 1/1 Ready) — Loki itself is healthy but has no data.
+
+**Promtail config:** Uses `kubernetes_sd_configs` with `role: pod` + `fieldSelector=spec.nodeName` — requires API server access.
+
+**Fix required (MEDIUM severity):**
+1. Verify Promtail ServiceAccount has `get/list/watch` on pods (`ClusterRole` binding)
+2. Check if `10.96.0.1` (kubernetes ClusterIP) is reachable from Promtail pod — possible Minikube CNI issue
+3. May need `--host-network: true` or NodePort access to fix routing
+
