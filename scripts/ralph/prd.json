@@ -1051,7 +1051,7 @@
         "Commit: 'docs: [US-065] add OpenAPI tags and descriptions to all FastAPI routes'"
       ],
       "priority": 65,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/models", tags=["models"])
 
 
-@router.get("/comparison", response_model=ModelComparisonResponse)
+@router.get("/comparison", response_model=ModelComparisonResponse, summary="Compare all registered models by metrics")
 async def models_comparison() -> ModelComparisonResponse:
     """Return model metrics comparison sorted by OOS RMSE.
 
@@ -90,7 +90,7 @@ async def models_comparison() -> ModelComparisonResponse:
     return response
 
 
-@router.get("/drift/rolling-performance", response_model=RollingPerformanceResponse)
+@router.get("/drift/rolling-performance", response_model=RollingPerformanceResponse, summary="Get rolling model performance metrics")
 async def drift_rolling_performance(days: int = 30) -> RollingPerformanceResponse:
     """Return rolling prediction error metrics for the active model."""
     key = build_key("models", "rolling-perf", str(days))
@@ -113,7 +113,7 @@ async def drift_rolling_performance(days: int = 30) -> RollingPerformanceRespons
     return response
 
 
-@router.get("/retrain-status", response_model=RetrainStatusResponse)
+@router.get("/retrain-status", response_model=RetrainStatusResponse, summary="Get most recent model training status")
 async def retrain_status() -> RetrainStatusResponse:
     """Return metadata about the most recent model training event."""
     key = build_key("models", "retrain-status")
@@ -129,7 +129,7 @@ async def retrain_status() -> RetrainStatusResponse:
     return response
 
 
-@router.get("/drift", response_model=DriftStatusResponse)
+@router.get("/drift", response_model=DriftStatusResponse, summary="Get recent drift detection events")
 async def models_drift() -> DriftStatusResponse:
     """Return recent drift detection events.
 
@@ -172,7 +172,7 @@ async def models_drift() -> DriftStatusResponse:
     return response
 
 
-@router.get("/drift/feature-distributions", response_model=FeatureDistributionResponse)
+@router.get("/drift/feature-distributions", response_model=FeatureDistributionResponse, summary="Get feature distribution comparison for drift monitoring")
 async def drift_feature_distributions(n_features: int = 12, bins: int = 10) -> FeatureDistributionResponse:
     """Return training vs recent feature distributions for drift monitoring.
 
@@ -294,7 +294,7 @@ async def drift_feature_distributions(n_features: int = 12, bins: int = 10) -> F
         raise HTTPException(status_code=502, detail="Feature distribution query failed") from exc
 
 
-@router.post("/cache/invalidate")
+@router.post("/cache/invalidate", summary="Invalidate prediction and model caches")
 async def invalidate_cache() -> dict:
     """Invalidate prediction and model caches after retrain."""
     pred_count = await invalidate_predictions()
@@ -304,7 +304,7 @@ async def invalidate_cache() -> dict:
     return {"invalidated_keys": total, "status": "ok"}
 
 
-@router.get("/ab-results", response_model=ABResultsResponse)
+@router.get("/ab-results", response_model=ABResultsResponse, summary="Get A/B model testing accuracy comparison")
 async def ab_results(request: Request, days: int = 30) -> ABResultsResponse:
     """Return A/B model testing accuracy comparison."""
     if not settings.AB_TESTING_ENABLED:
