@@ -1318,3 +1318,4 @@ Previous run codebase patterns (still valid):
 [US-072] PASS — sentiment_timeseries had 2408 stale rows (4 days old); seeded 3000 fresh rows for last 10 hours for 10 tickers; API /market/sentiment/AAPL/timeseries now returns 300 points; Redis cache busted. Dashboard loads 0 errors.
 [US-073] PASS — Redis PONG; hits=149 misses=808; predict:bulk:1 cold=8.4s cached=15ms (560x speedup); documented in .audit/02-improvements.md.
 [US-074] PASS — tsconfig.json already has strict:true, noUncheckedIndexedAccess:true; npx tsc --noEmit = 0 errors; dashboard loads with 0 runtime null errors.
+[US-075] PASS — Appended IMPROVEMENTS SUMMARY, Remaining Unimplemented, Critical Bugs Found, and Performance Bottlenecks sections to .audit/02-improvements.md.

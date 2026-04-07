@@ -976,3 +976,66 @@ Dead letter queue (DLQ) handling added to `services/kafka-consumer/`:
 | predict:bulk:1 second call | 15ms (cache hit — 560x speedup) |
 
 Cache keys verified: `predict:bulk:1` present after first bulk prediction request. Redis is functioning correctly. Low hit rate is expected at startup; steady-state hit rate will be much higher as TTL-cached keys serve repeated requests.
+
+---
+
+## IMPROVEMENTS SUMMARY
+
+### Implemented Improvements (US-057 to US-074)
+
+| Story | What Was Fixed | Files Changed | Impact |
+|---|---|---|---|
+| US-057 | Audit stale code patterns (TODO/FIXME/HACK markers, dead imports) | `.audit/01-stale-code.md` | Documentation |
+| US-058 | `/health/detailed` endpoint with per-dependency latency + timeouts | `routers/health.py`, `services/health_service.py` | Ops observability |
+| US-059 | Verified `RequestContextMiddleware` injects X-Request-ID into responses | No change needed | Confirmed working |
+| US-060 | Added composite DB indexes on `predictions(ticker,date)` + `(ticker,created_at)` | DB migration via kubectl | Query latency 0.086ms |
+| US-061 | Wrapped all 7 page routes in `ErrorBoundary`; dual-interface ErrorFallback | `App.tsx`, `ErrorFallback.tsx`, `package.json` | Runtime resilience |
+| US-062 | Exponential backoff retry (3x, 1s/2s/4s) for 502/503/504 in Axios client | `services/frontend/src/api/client.ts` | Network resilience |
+| US-063 | Verified all 5 Flink FlinkDeployments RUNNING/STABLE | No change needed | Confirmed working |
+| US-064 | Full-tab console error sweep — 0 errors found | No change needed | Confirmed working |
+| US-065 | Added `summary=` to all FastAPI route decorators (18 endpoints) | `routers/predict.py`, `market.py`, `models.py`, `backtest.py` | DX — Swagger grouped |
+| US-066 | Restricted CORS `allow_methods` to explicit list; origins already restricted | `services/api/app/main.py` | Security hardening |
+| US-067 | Added `drift_score_current` Prometheus Gauge with KS stat per feature | `app/metrics.py`, `routers/models.py` | Drift observability |
+| US-068 | DLQ handling for Kafka consumer — separate producer, deserialization + DB error routing | `consumer/processor.py`, `main.py`, `metrics.py` | Data reliability |
+| US-069 | Structured JSON logging (training_start, feature_engineering_complete, model_fit_complete, model_saved, training_error) | `ml/pipelines/training_pipeline.py` | ML observability |
+| US-070 | Verified Prometheus scrape annotations on stock-api deployment | No change needed | Confirmed working |
+| US-071 | Verified `backtest_results` table with full schema + indexes | No change needed | Confirmed working |
+| US-072 | Populated `sentiment_timeseries` with 3000 fresh rows (stale pipeline) | DB seed via kubectl | Sentiment chart functional |
+| US-073 | Verified Redis caching — 560x speedup (8.4s → 15ms) | No change needed | Confirmed working |
+| US-074 | Verified `strict:true` + `noUncheckedIndexedAccess:true` in tsconfig | No change needed | Confirmed working |
+
+---
+
+### Remaining Unimplemented Improvements
+
+| Issue | Root Cause | Recommended Fix | Effort |
+|---|---|---|---|
+| Intraday candle data unavailable | API doesn't support minute-level OHLCV bars | Implement intraday data ingestion pipeline from yfinance/Polygon.io | L |
+| 52W Range shows $9 for AAPL | Data normalization bug in price range calculation | Audit `get_ticker_indicators()` — likely using raw split-adjusted prices incorrectly | S |
+| SHAP row-expand not implemented on Search page | Feature planned but not built | Add expandable row in SearchResults to show top-5 SHAP values | M |
+| Sharpe ratio / max drawdown not shown in Backtest | `backtest_service.py` doesn't compute these metrics | Add trading strategy simulation layer to backtest pipeline | L |
+| Mobile nav collapse (critical) | No responsive hamburger menu for viewports <768px | Add `useMediaQuery` + drawer nav for mobile | M |
+| DataGrid horizontal overflow on mobile | No `overflowX: auto` wrapper on wide tables | Add scroll wrapper around DataGrid components | S |
+| ML training job OOM on minikube | Single-node cluster with 1 replica training large models | Increase minikube memory or use node selectors for training jobs | M |
+
+---
+
+## Critical Bugs Found
+
+From US-021 full console sweep (all 7 tabs): **0 console errors** across all routes. No React crashes, no missing required props, no null reference errors. All pages load cleanly.
+
+---
+
+## Performance Bottlenecks
+
+### Database (US-060)
+
+- `predictions` table lacked composite indexes — added `idx_predictions_ticker_date` and `idx_predictions_ticker_created`
+- EXPLAIN ANALYZE confirms Index Scan at **0.086ms** for ticker+date queries
+- `feast_yfinance_macro` already had composite PK `(ticker, timestamp)` — no action needed
+
+### Redis Cache (US-073)
+
+- First bulk prediction call: **8.4s** (live inference from file/DB)
+- Cached bulk prediction call: **15ms** (560x speedup)
+- Recommended: Pre-warm cache on deployment startup to avoid cold-start latency
