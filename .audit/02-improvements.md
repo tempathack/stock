@@ -619,3 +619,24 @@ No screenshots taken (no errors to document).
 - TimescaleDB → postgresql.storage.svc.cluster.local:5432 — present, not tested
 
 **Notes:** All datasources are provisioned (read-only in UI) — changes via GitOps per Argo CD policy. 0 console errors.
+
+---
+
+## Grafana API Health Dashboard
+
+### US-025: Grafana API Health dashboard panel audit (2026-04-07)
+
+**Status:** PASS (audit) — 2 panels No data, 1 alarming value
+
+| Panel | Status | Value |
+|---|---|---|
+| Request Rate | REAL DATA | ~0.25–0.45 req/s |
+| Error Rate % | NO DATA | Metric query returning nothing |
+| p50/p95/p99 Latency | REAL DATA | 50ms / 95ms / 99ms |
+| Latency Distribution | REAL DATA | spikes to ~1s visible |
+| Prediction Request Rate | REAL DATA | ~0–0.03 req/s |
+| Prediction Latency p95 | REAL DATA (RED) | 10s — alarming |
+| Inference Errors | NO DATA | metric not wired |
+| Active Pods / Pods by Namespace | REAL DATA | visible |
+
+**Issues:** Error Rate % no data (HIGH), Inference Errors no data (MEDIUM), Prediction p95=10s red (investigate).

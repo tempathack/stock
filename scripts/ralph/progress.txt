@@ -950,3 +950,10 @@ Previous run codebase patterns (still valid):
 - 0 console errors
 - **Learnings:** Grafana password is in k8s secret grafana-credentials, not admin/admin
 ---
+
+## 2026-04-07 - US-025: Grafana API Health dashboard audit
+- 11 panels: most have data. Request Rate=0.25-0.45 rps, latency p50/95/99=50/95/99ms
+- No data: Error Rate%, Inference Errors — metric queries broken
+- Prediction p95=10s RED — alarming or stale value
+- 0 console errors
+---
