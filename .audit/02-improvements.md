@@ -884,3 +884,40 @@ Metrics verified against Prometheus at `http://localhost:9090/api/v1/label/__nam
 1. **ml-perf missing metrics**: The ML training CronJobs don't push custom metrics to Prometheus. `model_last_trained_timestamp`, `drift_severity_score`, `drift_events_total` were planned but never registered in `metrics.py`.
 2. **kafka-consumer missing metrics**: The `kafka-consumer` service (Python) doesn't include `prometheus-client`. No metrics server exposed.
 3. **`model_inference_errors_total` / `feast_stale_features_total`**: Defined in `metrics.py` and incremented in code but will only appear in Prometheus after the first error/stale event occurs.
+
+## Database Performance Improvements
+
+_Recorded: 2026-04-07_
+
+### Existing Indexes Verified
+
+| Table | Index | Covers |
+|-------|-------|--------|
+| `predictions` | `predictions_pkey` | id |
+| `predictions` | `idx_predictions_ticker` | ticker |
+| `predictions` | `idx_predictions_date` | prediction_date |
+| `predictions` | `idx_predictions_model_id` | model_id |
+| `feast_yfinance_macro` | `feast_yfinance_macro_pkey` | (ticker, timestamp) PK |
+| `feast_yfinance_macro` | `feast_yfinance_macro_timestamp_idx` | timestamp DESC |
+| `feature_store` | `idx_feature_store_ticker_date` | (ticker, date) |
+| `macro_fred_daily` | `macro_fred_daily_pkey` | as_of_date PK |
+
+### New Indexes Created
+
+```sql
+CREATE INDEX IF NOT EXISTS idx_predictions_ticker_date
+  ON predictions(ticker, prediction_date DESC);
+
+CREATE INDEX IF NOT EXISTS idx_predictions_ticker_created
+  ON predictions(ticker, created_at DESC);
+```
+
+### EXPLAIN ANALYZE Result
+
+```
+SELECT * FROM predictions WHERE ticker='AAPL' ORDER BY prediction_date DESC LIMIT 10
+→ Index Scan using idx_predictions_ticker  (actual time=0.016..0.017 rows=4)
+→ Execution Time: 0.086 ms
+```
+
+Index Scan confirmed (not Seq Scan). `feast_yfinance_macro` already has composite PK on (ticker, timestamp) — no additional index needed.

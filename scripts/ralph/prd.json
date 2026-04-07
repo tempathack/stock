@@ -967,8 +967,8 @@
         "Commit: 'perf: [US-060] add missing indexes on predictions and feast tables'"
       ],
       "priority": 60,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Created idx_predictions_ticker_date(ticker,prediction_date DESC) and idx_predictions_ticker_created. feast_yfinance_macro already has composite PK(ticker,timestamp). EXPLAIN ANALYZE shows Index Scan 0.086ms. Documented in .audit/02-improvements.md."
     },
     {
       "id": "US-061",

@@ -1297,3 +1297,10 @@ Previous run codebase patterns (still valid):
 - curl verified: X-Request-ID: test-123 echoed back with 200 OK
 - No code changes needed
 ---
+
+## 2026-04-07 - US-060: PostgreSQL index improvements
+- Created idx_predictions_ticker_date(ticker, prediction_date DESC) and idx_predictions_ticker_created
+- feast_yfinance_macro already has composite PK(ticker,timestamp) — no new index needed
+- EXPLAIN ANALYZE: Index Scan, 0.086ms execution time
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json
+---
