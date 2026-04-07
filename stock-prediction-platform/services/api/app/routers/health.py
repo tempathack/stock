@@ -12,7 +12,7 @@ from pydantic import BaseModel
 from app.cache import get_redis
 from app.config import settings
 from app.models.database import get_pool_status
-from app.services.health_service import check_db, run_deep_checks
+from app.services.health_service import check_db, run_deep_checks, run_detailed_checks
 
 
 class PoolStatus(BaseModel):
@@ -56,6 +56,26 @@ class DeepHealthResponse(BaseModel):
     components: dict[str, ComponentCheck]
     db_pool: PoolStatus | None = None
     redis_status: str | None = None
+
+
+class DetailedDepCheck(BaseModel):
+    """Per-dependency result for /health/detailed."""
+
+    status: str
+    latency_ms: float | None = None
+    topic_count: int | None = None
+    model_ready: bool | None = None
+    message: str | None = None
+
+
+class DetailedHealthResponse(BaseModel):
+    """Response model for /health/detailed."""
+
+    overall: str
+    db: DetailedDepCheck
+    redis: DetailedDepCheck
+    kafka: DetailedDepCheck
+    kserve: DetailedDepCheck
 
 
 class K8sHealthResponse(BaseModel):
@@ -127,6 +147,23 @@ async def health_deep() -> DeepHealthResponse:
         components=components,
         db_pool=PoolStatus(**pool) if pool else None,
         redis_status=redis_status,
+    )
+
+
+@router.get("/health/detailed", response_model=DetailedHealthResponse)
+async def health_detailed() -> DetailedHealthResponse:
+    """Detailed dependency health: DB+latency, Redis+latency, Kafka topic count, KServe readiness.
+
+    Each check has a 3s timeout. overall is 'healthy' when all deps are ok/disabled,
+    'degraded' when any dep reports error or warning.
+    """
+    result = await run_detailed_checks()
+    return DetailedHealthResponse(
+        overall=result["overall"],
+        db=DetailedDepCheck(**result["db"]),
+        redis=DetailedDepCheck(**result["redis"]),
+        kafka=DetailedDepCheck(**result["kafka"]),
+        kserve=DetailedDepCheck(**result["kserve"]),
     )
 
 

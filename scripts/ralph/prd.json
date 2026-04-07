@@ -934,8 +934,8 @@
         "Commit: 'feat: [US-058] add /health/detailed endpoint with per-dependency status'"
       ],
       "priority": 58,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added /health/detailed endpoint. DB: ok 25.7ms, Redis: ok 23.6ms, Kafka: ok 6 topics, KServe: degraded (KSERVE_ENABLED=false). All checks have 3s asyncio.timeout. Concurrent via asyncio.gather."
     },
     {
       "id": "US-059",

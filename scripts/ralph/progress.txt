@@ -1276,3 +1276,17 @@ Previous run codebase patterns (still valid):
 - No code changes needed — already implemented in a previous session
 - Files modified: scripts/ralph/prd.json
 ---
+
+## 2026-04-07 - US-058: Add /health/detailed endpoint
+- Added run_detailed_checks() to health_service.py with check_db_detailed, check_redis_detailed, check_kafka_detailed, check_kserve_detailed
+- Each check uses asyncio.timeout(3.0), all run concurrently via asyncio.gather
+- Added DetailedDepCheck + DetailedHealthResponse Pydantic models to health.py
+- Added /health/detailed endpoint to health router
+- Rebuilt Docker image (build context from repo root) + rollout restart
+- curl verified: DB ok 25.7ms, Redis ok 23.6ms, Kafka ok 6 topics, KServe degraded (disabled)
+- Files modified: services/api/app/services/health_service.py, services/api/app/routers/health.py, prd.json
+- **Learnings for future iterations:**
+  - Docker build must be run from repo root (not services/api/) to access ml/ dir in Dockerfile
+  - stock-api service port is 8000 not 80
+  - KServe shows degraded because KSERVE_ENABLED=false in ingestion-config ConfigMap
+---
