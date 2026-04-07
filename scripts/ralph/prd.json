@@ -445,8 +445,8 @@
         "Document Kafka health conclusion: (a) metrics flowing, (b) partial, (c) no metrics"
       ],
       "priority": 27,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS (audit). PARTIAL metrics: pod status/CPU/memory/scrape targets=real data. Consumer lag+messages rate+DB write metrics=No data. Kafka JMX exporter not deployed. 3 pods UP: kafka-consumer(x2)+stock-api."
     },
     {
       "id": "US-028",

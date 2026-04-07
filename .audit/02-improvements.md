@@ -660,3 +660,24 @@ No screenshots taken (no errors to document).
 
 **KServe metrics:** Absent — models serving via db_fallback, not live KServe inference.
 **Training Duration panel:** Not found in visible area.
+
+---
+
+## Grafana Kafka Dashboard Gaps
+
+### US-027: Grafana Kafka & Infrastructure dashboard audit (2026-04-07)
+
+**Conclusion: PARTIAL — infrastructure metrics flowing, Kafka app metrics absent**
+
+| Panel | Status |
+|---|---|
+| Messages Consumed Rate | NO DATA |
+| Consumer Lag | NO DATA |
+| Batch Write Duration p50/p95 | NO DATA |
+| Batch Write Rate | NO DATA |
+| Pod Status | REAL DATA — 3 pods UP |
+| Scrape Targets | REAL DATA — 8 targets all Status=1 |
+| Pod CPU Usage | REAL DATA — 10–30% |
+| Pod Memory Usage | REAL DATA — ~1.25 GiB |
+
+**Root cause:** Kafka JMX/consumer-lag exporter not deployed. kafka-consumer pods are UP but not exposing Prometheus metrics. No broker/partition panels in this dashboard.

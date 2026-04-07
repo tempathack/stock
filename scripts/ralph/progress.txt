@@ -965,3 +965,10 @@ Previous run codebase patterns (still valid):
 - KServe metrics absent — db_fallback mode, not live inference
 - Training Duration panel not found in visible area
 ---
+
+## 2026-04-07 - US-027: Grafana Kafka & Infrastructure dashboard audit
+- PARTIAL: pod status/CPU/memory=data, consumer lag/messages rate=No data
+- Kafka JMX/consumer-lag exporter not deployed — application metrics absent
+- 3 pods UP: kafka-consumer(x2), stock-api
+- 8 scrape targets all healthy
+---
