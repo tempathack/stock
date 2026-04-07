@@ -340,3 +340,29 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **MacroLatest fields all accounted for** in MacroPanel.tsx ✓
 
+
+---
+
+## Dead/Skipped Test Files
+
+### US-041: Pytest dead/skipped test audit (2026-04-07)
+
+**API tests (`services/api/tests/`):**
+- 143 tests collected total; 11 test files fail to collect due to `ModuleNotFoundError: No module named 'elasticsearch'` in local env
+- Erroring files: `test_analytics_router.py`, `test_candles_router.py`, `test_health.py`, `test_health_deep.py`, `test_ingest.py`, `test_market_router.py`, `test_metrics.py`, `test_models_router.py`, `test_predict.py`, `test_predict_horizon.py`, `test_sentiment_ws.py`
+- **Root cause:** `elasticsearch` package not installed locally — tests are valid in the container/CI environment
+- **Not dead code** — missing local dependency, not stale tests
+
+**Unconditional `pytest.skip()` calls:** NONE found
+
+**`@pytest.mark.skip` (no condition):** NONE found
+
+**ML tests (`ml/tests/`):**
+- `@pytest.mark.skipif` used conditionally (e.g. `"xgboost" not in BOOSTER_MODELS`) — valid conditional skips, not dead
+
+**Backtest results table:** No tests reference `backtest_results` table — not a gap
+
+**Collectible test results (119/143 available):** 117 passed, 2 failed (`test_streaming_features.py` — endpoint mocking issue, not dead code)
+
+**Summary:** No dead or unconditionally-skipped test files. 11 collection errors are local env issues (elasticsearch missing).
+

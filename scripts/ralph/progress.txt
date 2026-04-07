@@ -1096,3 +1096,12 @@ Previous run codebase patterns (still valid):
 - MacroLatest all 13+ fields referenced in MacroPanel.tsx ✓
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-041: Stale Code: Unused Python pytest tests and 100%-skip test files
+- No unconditional pytest.skip() or @pytest.mark.skip found in any test file
+- 11 API test files fail collection: ModuleNotFoundError elasticsearch (local env gap, not dead tests)
+- ML tests use @pytest.mark.skipif conditionally (booster availability) — valid
+- 119/143 collectible tests: 117 pass, 2 fail (test_streaming_features mock issue)
+- No backtest_results table tests found
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
