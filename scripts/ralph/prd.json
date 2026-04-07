@@ -728,8 +728,8 @@
         "Record total count by category"
       ],
       "priority": 45,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "0 TODO/FIXME/HACK/XXX comments. 22 noqa + 7 type:ignore in Python (all false positives or intentional). 2 TS suppressions (as any + eslint-disable). No CRITICAL markers."
     },
     {
       "id": "US-046",

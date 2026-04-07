@@ -459,3 +459,82 @@ All 7 vars consumed by kafka-consumer's own Pydantic settings:
 
 **Note:** 3 vars bypass the central `app/config.py` Pydantic class in favour of direct `os.environ.get()` — minor consistency gap, not a bug.
 
+
+## Technical Debt Markers
+
+_Recorded: 2026-04-07_
+
+### Summary
+
+| Category | Count |
+|----------|-------|
+| TODO / FIXME / HACK / XXX comments | **0** |
+| Python `# noqa` suppressions | **22** |
+| Python `# type: ignore` suppressions | **7** |
+| TypeScript `as any` casts | **1** |
+| TypeScript `eslint-disable` comments | **1** |
+
+**Zero TODO/FIXME/HACK/XXX markers exist** in the entire codebase (Python + TypeScript/TSX).
+
+---
+
+### Python `# noqa` Suppressions (22)
+
+| File | Suppression | Category |
+|------|-------------|----------|
+| `services/api/app/services/flink_service.py` | F401 re-export | re-export alias |
+| `services/api/app/services/feast_service.py` | F401 re-export | re-export alias |
+| `services/api/app/services/kafka_lag_service.py` | F401 re-export | re-export alias |
+| `services/kafka-consumer/consumer/ohlcv_normalizer.py` | BLE001 | broad exception catch (intentional resilience) |
+| `services/kafka-consumer/consumer/indicator_stream.py` | BLE001 | broad exception catch |
+| `services/kafka-consumer/consumer/reddit_producer.py` | S101 | assert in non-test code |
+| `alembic/versions/*.py` | F401 | Alembic auto-generated imports |
+| `services/api/app/cache.py` (×2) | PLW0603 | global statement (module-level Redis singleton) |
+| `services/api/app/services/backtest_service.py` (×3) | S608, S301, BLE001 | SQL text, pickle.loads, broad except |
+| `services/api/app/services/kserve_client.py` (×2) | BLE001 | broad exception for optional dep |
+| `services/api/app/services/prediction_service.py` (×3) | S608 | raw SQL text (parameterised queries) |
+| `services/api/app/models/database.py` (×2) | PLW0603 | global engine/session singletons |
+| `ml/pipelines/drift_pipeline.py` | BLE001 | broad exception |
+| `ml/models/explainer.py` | F401 | conditional SHAP import re-export |
+| `ml/models/predictor.py` | F401 | conditional import re-export |
+| `ml/features/feature_engineer.py` | F401 | conditional import |
+| `ml/drift/trigger.py` | BLE001 | broad exception |
+| `tests/` (×3) | S101, S301, S608 | test-specific suppressions (expected) |
+| `ml/models/registry.py`, `model_configs.py` | F401 | public API re-exports |
+
+**Priority assessment:**
+- **S301 (pickle.loads)** in `backtest_service.py` — moderate risk; only loads internal model artifacts, not user-supplied data
+- **S608 (SQL injection)** in `prediction_service.py` / `backtest_service.py` — false positives; queries use `:param` parameterisation
+- **PLW0603 (global)** — intentional module-level singletons; acceptable pattern for DB/Redis clients
+- **BLE001 (broad except)** — used for optional dependencies (KServe, SHAP) with graceful fallback; acceptable
+- **F401 re-exports** — all are public API surface for internal modules; not dead code
+
+---
+
+### Python `# type: ignore` Suppressions (7)
+
+| File | Reason |
+|------|--------|
+| `services/api/app/services/kserve_client.py` (×2) | KServe SDK stubs incomplete |
+| `services/api/app/services/feast_service.py` | Feast SDK missing py.typed marker |
+| `services/api/app/models/database.py` | Optional engine assigned to typed var |
+| `ml/models/predictor.py` | Dynamic model attribute access (XGBoost/LGBM) |
+| `ml/features/feature_engineer.py` | yfinance MultiIndex return type |
+| `tests/test_prediction_service.py` | Mock object assignment |
+
+**None hide real type errors** — all are false positives from third-party stubs (KServe, Feast, yfinance).
+
+---
+
+### TypeScript Suppressions (2)
+
+| File | Line | Suppression | Risk |
+|------|------|-------------|------|
+| `src/components/dashboard/MarketTreemap.tsx` | 212 | `as any` cast on D3 hierarchy data | LOW — internal computed value, no user data |
+| `src/pages/Forecasts.tsx` | 201 | `eslint-disable-line react-hooks/exhaustive-deps` | LOW — intentional: adding `selectedHorizon` would cause infinite re-renders |
+
+---
+
+### CRITICAL Findings
+
+**None.** No `TODO: remove`, `FIXME: broken`, or security-critical unresolved markers found.

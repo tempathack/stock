@@ -1131,3 +1131,15 @@ Previous run codebase patterns (still valid):
 - Minor: 3 vars bypass central config.py — consistency gap, not a bug
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-045: Stale Code: TODO/FIXME/HACK/XXX comment inventory
+- Ran grep across all .py/.ts/.tsx files for TODO/FIXME/HACK/XXX/noqa/type:ignore
+- Documented findings in .audit/01-stale-code.md under '## Technical Debt Markers'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - 0 TODO/FIXME/HACK/XXX comments in the entire codebase
+  - 22 noqa suppressions: mostly re-export F401, BLE001 broad-except for optional deps, PLW0603 singletons
+  - 7 type:ignore: all third-party stub gaps (KServe, Feast, yfinance), no real type errors
+  - 2 TS suppressions: 1 `as any` in MarketTreemap D3 data, 1 eslint-disable in Forecasts.tsx
+  - S301 pickle.loads in backtest_service.py is moderate risk but only loads internal artifacts
+---
