@@ -379,8 +379,8 @@
         "Check console errors — document in .audit/02-improvements.md"
       ],
       "priority": 23,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. All 7 nav links present. Active underline updates per route. PageHeader correct. 0 errors."
     },
     {
       "id": "US-024",

@@ -935,3 +935,10 @@ Previous run codebase patterns (still valid):
 - Models: CSV+PDF buttons present and enabled
 - 0 console errors
 ---
+
+## 2026-04-07 - US-023: PageHeader and Sidebar navigation audit
+- All 7 nav links: Dashboard, Models, Forecasts, Drift, Backtest, Analytics, Search
+- Active underline highlight updates per route — PASS
+- PageHeader titles correct — PASS
+- 0 console errors
+---

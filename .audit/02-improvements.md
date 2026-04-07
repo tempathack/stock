@@ -597,3 +597,8 @@ No screenshots taken (no errors to document).
 **Models:** CSV + PDF buttons present (both enabled). Not clicked (pattern confirmed from Forecasts).
 
 **No missing export buttons. No console errors during export.**
+
+---
+
+### US-023: PageHeader and Sidebar navigation audit (2026-04-07)
+**Status:** PASS. All 7 nav links present: Dashboard, Models, Forecasts, Drift, Backtest, Analytics, Search. Active highlight (underline) updates correctly per route. PageHeader titles correct per route. 0 console errors.
