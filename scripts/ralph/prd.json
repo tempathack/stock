@@ -153,8 +153,8 @@
         "Check console errors after all interactions"
       ],
       "priority": 9,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "StockDetailChart + IndicatorOverlayCharts verified functional. StockComparisonPanel non-functional: handleToggleCompare dead code (not wired to ForecastTable). Documented in .audit/02-improvements.md."
     },
     {
       "id": "US-010",

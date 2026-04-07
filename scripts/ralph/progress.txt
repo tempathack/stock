@@ -742,3 +742,17 @@ Previous run codebase patterns (still valid):
   - StockShapPanel uses only ShapBarChart with mock data; ShapBeeswarmPlot is a standalone component not yet wired up
   - /predict/{ticker} endpoint returns no SHAP data — improvement tracked in .audit/02-improvements.md
 ---
+
+## 2026-04-07 - US-009: Playwright: Forecasts page — StockComparisonPanel and StockDetailChart audit
+- Navigated to http://localhost:5173/forecasts — table loaded with real data (TSLA, BWA, AWK, CTSH etc.)
+- StockDetailChart VERIFIED: clicking a row opens detail drawer with price history + forecast line (TSLA, AWK)
+- IndicatorOverlayCharts VERIFIED: RSI (14), MACD (12/26/9), Bollinger Band Width all render with real data
+- SHAP Feature Importance panel renders with feature bars ✓
+- StockComparisonPanel: non-functional — `handleToggleCompare` defined in Forecasts.tsx but NOT passed to ForecastTable (no such prop). `comparisonTickers` always `[]`. Panel shows placeholder only.
+- 0 console errors, 0 warnings
+- Files modified: .audit/02-improvements.md (US-009 section added), scripts/ralph/prd.json (US-009 passes: true)
+- Screenshots: audit-p09-forecasts-loaded.png, audit-p09-detail-chart.png, audit-p09-indicator-overlay.png, audit-p09-comparison-placeholder.png
+- **Learnings for future iterations:**
+  - ForecastTable has no onToggleCompare prop — comparison panel wiring is incomplete dead code
+  - StockDetailChart and IndicatorOverlayCharts are fully working; opened by clicking any DataGrid row
+---

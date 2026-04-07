@@ -218,3 +218,27 @@ Status: IN PROGRESS
 - audit-p07-forecasts.png — full Forecasts page with table loaded
 - audit-p07-horizon-7d.png — detail drawer with 1D/7D/14D/30D horizon toggle + CHD charts + SHAP panel
 
+
+---
+
+### US-009: Forecasts — StockComparisonPanel and StockDetailChart audit (2026-04-07)
+
+**Status:** PARTIAL PASS — StockDetailChart and IndicatorOverlayCharts fully functional; StockComparisonPanel non-functional (dead code wiring)
+
+**Verified working:**
+- StockDetailChart renders: TSLA/AWK price history + 7-day forecast line with predicted price dot ✓
+- IndicatorOverlayCharts verified: RSI (14), MACD (12/26/9), Bollinger Band Width all render with real data ✓
+- SHAP Feature Importance panel renders alongside detail chart ✓
+- Horizon toggle (1D/7D/14D/30D) present in detail drawer ✓
+- 0 console errors, 0 warnings
+
+**Issues found:**
+1. **StockComparisonPanel is non-functional — dead code wiring.** The `handleToggleCompare` function is defined in `Forecasts.tsx` but is never passed to `ForecastTable` (which has no `onToggleCompare` prop). As a result, `comparisonTickers` state always remains `[]` and the panel permanently shows the placeholder "Select 2+ stocks in the table to compare side by side." There is no UI mechanism to populate it.
+   - Root cause: `ForecastTable` props are `{rows, selectedTicker, onSelectTicker}` — no comparison toggle prop
+   - Fix needed: add `onToggleCompare` and `comparisonTickers` props to `ForecastTable`, wire MUI DataGrid checkbox selection or an "Add to Compare" button per row
+
+**Screenshots:**
+- audit-p09-forecasts-loaded.png — Forecasts table with real data
+- audit-p09-detail-chart.png — full-page view of StockDetailChart (TSLA) + IndicatorOverlayCharts
+- audit-p09-indicator-overlay.png — viewport: RSI + MACD + Bollinger Band overlays visible
+- audit-p09-comparison-placeholder.png — StockComparisonPanel shows placeholder (no trigger mechanism)
