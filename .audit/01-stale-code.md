@@ -140,3 +140,27 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Note:** MinIO not port-forwarded on 9001 by default (`scripts/deploy-all.sh` may not include MinIO forward). Used `kubectl port-forward -n storage svc/minio 9002:9001` to access. Credentials differ from story assumption (minio/minio123 wrong; actual: minioadmin/minioadmin123).
 
+
+---
+
+## Python Unused Imports — Routers
+
+### US-034: Router unused imports scan (2026-04-07)
+
+**Syntax check:** All routers compile cleanly (`python3 -m py_compile` exit 0)
+
+**Unused imports (flake8 F401):**
+| File | Import | Severity |
+|---|---|---|
+| `health.py:7` | `from typing import Any` | LOW — remove |
+| `ingest.py:5` | `import threading` | LOW — remove |
+| `ingest.py:8` | `from fastapi import HTTPException` | LOW — remove |
+| `ingest.py:10` | `from app.config import settings` | LOW — remove |
+| `ws.py:7` | `from datetime.datetime import datetime` | LOW — remove |
+
+**Route ordering check (predict.py):** CORRECT — `/bulk` registered at line 67, `/{ticker}` at line 166. No path-capture bug.
+
+**Macro fields (market.py):** All macro endpoints use relevant fields via `get_macro_latest()` and `get_macro_history()` — no dead field references found.
+
+**Summary:** 5 unused imports across 3 files — all LOW severity cosmetic issues. No logic errors or dead code in routing logic.
+

@@ -556,8 +556,8 @@
         "Document unused imports in .audit/01-stale-code.md under '## Python Unused Imports — Routers'"
       ],
       "priority": 34,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. No syntax errors. 5 unused imports: typing.Any (health.py), threading/HTTPException/settings (ingest.py), datetime.datetime (ws.py). predict.py route order correct (/bulk before /{ticker}). No dead code in routing logic."
     },
     {
       "id": "US-035",

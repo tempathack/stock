@@ -1036,3 +1036,11 @@ Previous run codebase patterns (still valid):
 - Screenshots: none — CLI-only (TLS issue)
 - **Learnings:** ArgoCD app list only works with argocd CLI + port-forward + insecure login. kubectl get applications only works if CRDs installed in active namespace; needs -n argocd flag but also argocd-repo-server must be healthy. Playwright cannot screenshot ArgoCD without trust-all-certs config.
 ---
+
+## 2026-04-07 - US-034: Stale Code: Python unused imports scan — API routers
+- All routers compile clean (0 syntax errors)
+- Unused imports: health.py:Any, ingest.py:threading+HTTPException+settings, ws.py:datetime
+- predict.py route ordering correct: /bulk (L67) before /{ticker} (L166) — no bug
+- market.py macro fields all used via service functions
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
