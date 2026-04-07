@@ -366,3 +366,34 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Summary:** No dead or unconditionally-skipped test files. 11 collection errors are local env issues (elasticsearch missing).
 
+
+---
+
+## Dead Playwright Spec Files
+
+### US-042: Playwright fixme/skip spec audit (2026-04-07)
+
+**Total tests: 123 in 18 files** (from `--list`)
+
+**Infra spec fixme/skip breakdown:**
+| Spec | Tests | fixme | skip | Status |
+|---|---|---|---|---|
+| `argocd.spec.ts` | 4 | 0 | 4 | Conditional — skips if ArgoCD unreachable (service probe in beforeAll) |
+| `flink-web-ui.spec.ts` | 5 | 1 | 2 | Conditional — infra probe pattern |
+| `grafana-flink-72.spec.ts` | 10 | 4 | 2 | Mixed — fixme = infra not bootstrapped, skip = unreachable |
+| `grafana.spec.ts` | 11 | 18 | 3 | Heavy fixme — Grafana auth/panels need bootstrap |
+| `k8s-dashboard.spec.ts` | 6 | 4 | 3 | Mixed — K8s Dashboard probe |
+| `kubeflow.spec.ts` | 8 | 6 | 2 | Heavy fixme — KFP pipeline not bootstrapped |
+| `minio.spec.ts` | 7 | 4 | 2 | Mixed — MinIO probe |
+| `prometheus.spec.ts` | 11 | 12 | 2 | Heavy fixme — metric queries need data |
+
+**Key finding:** All `test.skip()` calls are **conditional** — they are inside `beforeAll` blocks that probe service availability at runtime. If the service is up, tests run; if not, they skip gracefully. Not dead code per CLAUDE.md: _"test.fixme() is NOT a failure — it means infrastructure not bootstrapped yet, which is expected"_.
+
+**`test.fixme()` usage:** Per project instructions, fixme = infra not bootstrapped. Heavy fixme in grafana.spec.ts (18) and kubeflow.spec.ts (6) reflects incomplete bootstrap, not dead tests.
+
+**Sanity specs (`drift-data-sanity.spec.ts`, `backtest-data-sanity.spec.ts`):**
+- Test valid endpoints: `/models/comparison`, `/models/drift`, `/models/retrain-status`, `/backtest/{ticker}`
+- All endpoints confirmed active in US-034/US-016 audits ✓
+
+**Verdict:** No dead Playwright specs. All fixme/skip usage follows project patterns from CLAUDE.md.
+

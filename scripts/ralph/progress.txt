@@ -1105,3 +1105,13 @@ Previous run codebase patterns (still valid):
 - No backtest_results table tests found
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-042: Stale Code: Playwright spec files that always fixme — dead e2e tests
+- 123 tests in 18 files total
+- All test.skip() are conditional (beforeAll service probe pattern)
+- test.fixme() = infra not bootstrapped per CLAUDE.md — expected, not dead
+- grafana.spec.ts: 18 fixme (heavy but valid — Grafana panels need bootstrap)
+- kubeflow.spec.ts: 6 fixme (KFP pipeline not bootstrapped)
+- drift-data-sanity + backtest-data-sanity test valid live endpoints
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---

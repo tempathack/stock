@@ -680,8 +680,8 @@
         "Document dead E2E specs in .audit/01-stale-code.md under '## Dead Playwright Spec Files'"
       ],
       "priority": 42,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. No dead E2E specs. All skip() calls conditional (service probe in beforeAll). fixme = infra not bootstrapped per CLAUDE.md pattern. Sanity specs test valid endpoints. 123 tests across 18 files."
     },
     {
       "id": "US-043",
