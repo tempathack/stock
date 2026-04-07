@@ -1004,3 +1004,13 @@ Previous run codebase patterns (still valid):
 - Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 - Screenshots: audit-p30-alerting.png, audit-p30-alert-rules.png
 ---
+
+## 2026-04-07 - US-031: Playwright: Grafana — Prometheus Targets page audit
+- 26 targets total: 26 UP, 0 DOWN, 0 UNKNOWN — perfect health
+- flink-jobs job: 10/10 UP (5 Flink JMs + 5 TMs in flink namespace)
+- kubernetes-pods job: 16/16 UP (stock-api, kafka-consumer x2, cert-manager x3, flink pods)
+- stock-api confirmed scraped: ingestion/stock-api-cdd66f7d9-2qq5p ✓
+- kafka-consumer x2 confirmed UP but no consumer lag metrics (JMX exporter not installed — US-027 root cause)
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Screenshots: audit-p31-prom-targets.png
+---

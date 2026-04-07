@@ -509,8 +509,8 @@
         "Document any targets with UNKNOWN state"
       ],
       "priority": 31,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "26 UP / 0 DOWN / 0 UNKNOWN. stock-api (ingestion ns) confirmed scraped. kafka-consumer x2 (processing ns) UP. All 10 Flink pods UP. 100% scrape success."
     },
     {
       "id": "US-032",

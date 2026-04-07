@@ -770,3 +770,27 @@ failed to list *v1.Pod: dial tcp 10.96.0.1:443: connect: no route to host
 
 **Summary:** Alert configuration is correct — all 4 expected rules present. No alerts firing. Loki alert error is downstream of Promtail issue (US-029). No critical issues in alerting itself.
 
+
+---
+
+## Prometheus Scrape Targets
+
+### US-031: Prometheus Targets audit (2026-04-07)
+
+**Total targets: 26 UP, 0 DOWN, 0 UNKNOWN**
+
+| Job | Count | Namespaces | Key Pods |
+|---|---|---|---|
+| flink-jobs | 10/10 UP | flink | All 5 Flink JMs + TMs |
+| kubernetes-pods | 16/16 UP | flink, cert-manager, ingestion, processing | stock-api, kafka-consumer x2, cert-manager x3 |
+
+**Notable targets confirmed UP:**
+- `ingestion/stock-api-cdd66f7d9-2qq5p` ✓ — FastAPI backend scraped
+- `processing/kafka-consumer-78875d9b96-t8m62` ✓ — Kafka consumer scrape UP
+- `processing/kafka-consumer-78875d9b96-tbr7z` ✓ — 2nd Kafka consumer UP
+- All 10 Flink pods (5 JMs + 5 TMs) scraped via flink-jobs job ✓
+
+**Missing:** No Prometheus self-scrape target visible in active list (may be static config). No Grafana or Loki targets.
+
+**Status: HEALTHY** — 100% scrape success rate.
+
