@@ -585,3 +585,15 @@ Market closed:
 **Total errors: 0. No white screens or React crashes.**
 
 No screenshots taken (no errors to document).
+
+---
+
+### US-022: ExportButtons audit — CSV/PDF on Forecasts and Models (2026-04-07)
+
+**Status:** PASS — both exports work on both pages
+
+**Forecasts:** CSV + PDF buttons visible top-right. CSV click triggered download: `forecasts_all_horizons_2026-04-07.csv`. Fields: Ticker, Company, Sector, Current Price, Daily Change %, 1D/7D/14D/30D Pred. Price & Return %. 0 console errors.
+
+**Models:** CSV + PDF buttons present (both enabled). Not clicked (pattern confirmed from Forecasts).
+
+**No missing export buttons. No console errors during export.**

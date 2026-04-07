@@ -363,8 +363,8 @@
         "Document export file format and whether it contains expected fields"
       ],
       "priority": 22,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. Forecasts: CSV+PDF buttons visible, CSV download confirmed (forecasts_all_horizons_2026-04-07.csv) with Ticker/Company/Sector/Price/1D-30D cols. Models: CSV+PDF buttons present. 0 console errors."
     },
     {
       "id": "US-023",

@@ -928,3 +928,10 @@ Previous run codebase patterns (still valid):
 - No white screens or React crashes
 - No screenshots needed (no errors)
 ---
+
+## 2026-04-07 - US-022: ExportButtons audit — CSV/PDF on Forecasts and Models
+- Forecasts: CSV+PDF buttons top-right, CSV download triggered: forecasts_all_horizons_2026-04-07.csv
+- CSV fields: Ticker, Company, Sector, Current Price, Daily Change%, 1D/7D/14D/30D Pred. Price & Return%
+- Models: CSV+PDF buttons present and enabled
+- 0 console errors
+---
