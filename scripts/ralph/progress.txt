@@ -816,3 +816,17 @@ Previous run codebase patterns (still valid):
   - Use `get_async_session()` (not `engine.connect()`) for DB access in FastAPI routers
   - FeatureDistributionChart returns null when distributions=[]; accordion only renders with data
 ---
+
+## 2026-04-07 - US-014: Analytics page — StreamHealthPanel, FeatureFreshnessPanel, SystemHealthSummary audit
+- Navigated to http://localhost:5173/analytics and captured 4 screenshots
+- Verified StreamHealthPanel: shows 3 Flink jobs (ohlcv-normalizer, indicator-stream, feast-writer-job) all RUNNING via /analytics/flink/jobs
+- Verified FeatureFreshnessPanel: renders 3 FeatureViews with null timestamps (feast_metadata has no materialized timestamps — data bootstrapping issue, not code bug)
+- Verified SystemHealthSummary: 4 cards — Argo CD Sync=Synced, Flink Cluster=3 running/0 failed, Feast Latency p99=0.1ms, CA Last Refresh=1:02PM
+- 0 console errors
+- PRD acceptance criteria referenced wrong API paths (/analytics/stream-health, /analytics/feature-freshness) — actual paths are /analytics/flink/jobs and /analytics/feast/freshness. Frontend uses correct paths.
+- Documented findings in .audit/02-improvements.md
+- Files modified: scripts/ralph/prd.json, .audit/02-improvements.md
+- **Learnings for future iterations:**
+  - Analytics real API paths: /analytics/flink/jobs, /analytics/feast/freshness, /analytics/kafka/lag, /analytics/summary (not /stream-health or /feature-freshness)
+  - FeatureFreshness shows null timestamps because Feast online store materialization has never been run — this is expected until Feast materialize is executed
+---

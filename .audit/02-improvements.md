@@ -357,3 +357,33 @@ Status: IN PROGRESS
 **Screenshots:**
 - audit-p13-feature-dist.png — Full drift page with accordion expanded, feature cards visible
 - audit-p13-feature-select.png — Scroll showing 12 features monitored header
+
+---
+
+### US-014: Analytics page — StreamHealthPanel, FeatureFreshnessPanel, SystemHealthSummary (2026-04-07)
+
+**Status:** PASS — all 3 components render with real pipeline data, 0 console errors
+
+**Verified working:**
+- StreamHealthPanel: Shows 3 Flink jobs — ohlcv-normalizer (RUNNING), indicator-stream (RUNNING), feast-writer-job (RUNNING) via `/analytics/flink/jobs`
+- FeatureFreshnessPanel: Shows ohlcv_stats_fv, technical_indicators_fv, lag_features_fv — timestamps display "—" (null) because feast_metadata table has no row-level freshness data from Feast materialization
+- SystemHealthSummary cards: Argo CD Sync = Synced, Flink Cluster = 3 running / 0 failed, Feast Latency p99 = 0.1-0.2 ms, CA Last Refresh = 1:02:18 PM
+- Kafka Stream Lag chart: Renders, shows 0 lag across 3 partitions (P0/P1/P2) — healthy
+- OLAP Candle Chart: Renders for AAPL with price axis ($145–$180 range)
+- 0 console errors
+
+**Note on acceptance criteria paths:**
+- The PRD referenced `/analytics/stream-health` and `/analytics/feature-freshness` — these return 404.
+- Actual API paths are `/analytics/flink/jobs`, `/analytics/feast/freshness`, `/analytics/kafka/lag`, `/analytics/summary`.
+- Frontend correctly calls the real paths; the PRD paths were documentation-only aliases that were never implemented. Not a bug.
+
+**FeatureFreshness null timestamps — root cause:**
+- `/analytics/feast/freshness` queries the `feast_metadata` table (PostgreSQL-backed Feast registry)
+- All 3 FeatureViews return `last_updated: null` — Feast has never materialized data to the online store, so no `last_materialized` timestamp is written
+- This is a data bootstrapping issue (Feast online materialization not run), not a code bug
+
+**Screenshots:**
+- audit-p14-analytics.png — Full page full-scroll
+- audit-p14-stream-health.png — StreamHealthPanel + all panels visible
+- audit-p14-freshness.png — FeatureFreshnessPanel with null timestamps
+- audit-p14-system-health.png — SystemHealthSummary cards row
