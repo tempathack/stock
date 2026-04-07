@@ -1034,7 +1034,7 @@
         "Commit: 'fix: [US-064] resolve console errors found in full-tab audit'"
       ],
       "priority": 64,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
