@@ -917,8 +917,8 @@
         "Commit: 'feat: [US-057] add model_name column to ForecastTable'"
       ],
       "priority": 57,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Model column already present in ForecastTable.tsx (field: model_name, headerName: 'Model', width: 110) and MultiHorizonForecastRow type has model_name: string. Screenshot confirmed 'stacking_ensemble' visible. Already implemented."
     },
     {
       "id": "US-058",

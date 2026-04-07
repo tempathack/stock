@@ -1267,3 +1267,12 @@ Previous run codebase patterns (still valid):
 - Top priority: yfinance pin stale (requirements.txt), CRITICAL dompurify CVE (jspdf), HIGH vite CVE
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
 ---
+
+## 2026-04-07 - US-057: Fix model_name column in ForecastTable
+- Checked ForecastTable.tsx — model_name column already implemented (field, headerName='Model', Tooltip)
+- MultiHorizonForecastRow.model_name: string already in types.ts
+- Playwright screenshot confirmed 'stacking_en...' model column visible in table
+- Screenshot: audit-fix-57-model-col.png
+- No code changes needed — already implemented in a previous session
+- Files modified: scripts/ralph/prd.json
+---
