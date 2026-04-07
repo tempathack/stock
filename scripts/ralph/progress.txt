@@ -845,3 +845,15 @@ Previous run codebase patterns (still valid):
   - Acceptance criteria used wrong endpoint names — actual are /analytics/flink/jobs and /analytics/feast/freshness
   - FeatureFreshnessPanel freshness gap is a data pipeline issue (feast_metadata not updated), not a frontend bug
 ---
+
+## 2026-04-07 - US-015: Analytics page — OLAPCandleChart and StreamLagMonitor audit
+- Screenshots: audit-p15-olap-candle.png, audit-p15-stream-lag.png
+- StreamLagMonitor: /analytics/kafka/lag returns P0/P1/P2 all at lag=0, total_lag=0 — working
+- OLAPCandleChart: shell renders (title, ticker picker, interval toggle, y-axis $145-$180) but NO candlesticks
+- Root cause: API returns ts field, frontend CandlePoint type expects date; XAxis dataKey="date" finds nothing
+- Second bug: bodyRange:[min,max] tuple passed to Recharts Bar (expects scalar) — candlestick shape renders nothing
+- Documented in .audit/02-improvements.md
+- **Learnings:**
+  - OLAPCandleChart is broken due to ts/date mismatch AND bodyRange tuple issue — needs a dedicated fix story
+  - Kafka lag endpoint is /analytics/kafka/lag (not /analytics/kafka-lag)
+---

@@ -405,3 +405,24 @@ Status: IN PROGRESS
 - **FeatureFreshnessPanel shows `—` for all 3 feature view timestamps** (`ohlcv_stats_fv`, `technical_indicators_fv`, `lag_features_fv`). API endpoint `/analytics/feast/freshness` returns `last_updated: null` for all views — feast_metadata table is not being populated with last-write timestamps.
 
 **Note:** Acceptance criteria referenced `/analytics/stream-health` and `/analytics/feature-freshness` — actual endpoints are `/analytics/flink/jobs` and `/analytics/feast/freshness`.
+
+---
+
+### US-015: Analytics page — OLAPCandleChart and StreamLagMonitor audit (2026-04-07)
+
+**Status:** PASS (audit complete) — OLAPCandleChart has a rendering bug
+
+**StreamLagMonitor:** FUNCTIONAL
+- `/analytics/kafka/lag` returns: topic=processed-features, consumer_group=feast-writer-group, P0/P1/P2 all at lag=0, total_lag=0
+- Note: acceptance criteria referenced `/analytics/kafka-lag` (404) — actual endpoint is `/analytics/kafka/lag`
+- All partitions at 0 lag indicates either healthy consumer or no messages flowing
+
+**OLAPCandleChart: RENDERS SHELL, NO CANDLESTICKS**
+- API `/market/candles?ticker=AAPL&interval=1h` returns 35 candles (data IS available, last bar: 2026-03-23)
+- Root cause: two bugs compounding:
+  1. `CandlePoint` type has `date` field but API returns `ts` field — XAxis dataKey="date" matches nothing
+  2. `bodyRange: [number, number]` passed to Recharts `<Bar>` — Bar expects scalar, not tuple; range rendering not supported natively
+- Fix needed: rename `ts→date` in API serialization OR update frontend type; fix `bodyRange` rendering for proper candlestick shape
+- 0 console errors (no network failures — chart just renders empty)
+
+**Console errors:** None

@@ -251,8 +251,8 @@
         "curl 'http://localhost:8010/analytics/kafka-lag' — document response"
       ],
       "priority": 15,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS (audit). StreamLagMonitor: /analytics/kafka/lag returns 35 candles, P0/P1/P2 lag=0, total_lag=0 — healthy. OLAPCandleChart: shell renders but no candlesticks — two bugs: (1) API returns ts field but CandlePoint type expects date, XAxis dataKey=date matches nothing; (2) bodyRange:[number,number] tuple passed to Recharts Bar which expects scalar. Fix: rename ts→date in API or frontend type; fix bodyRange rendering. 0 console errors."
     },
     {
       "id": "US-016",
