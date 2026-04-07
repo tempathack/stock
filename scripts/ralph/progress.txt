@@ -869,3 +869,16 @@ Previous run codebase patterns (still valid):
   - Backtest endpoint is GET /backtest/{ticker}?start=&end= not POST /backtest/run
   - Current impl is prediction-accuracy metrics, not portfolio strategy metrics
 ---
+
+## 2026-04-07 - US-017: Search page audit — stock search, predictions, SHAP results
+- Screenshots: audit-p17-search.png, audit-p17-search-aapl.png, audit-p17-aapl-detail.png, audit-p17-msft.png
+- Search page loads with full input, PREDICTIONS/MODELS/DRIFT EVENTS/STOCKS tabs
+- AAPL: 4 predictions with price/return/confidence (real DB data from 2026-04-03)
+- MSFT: 4 predictions, all with confidence values
+- Gap: row click → no SHAP expansion. No drawer/modal/expand implemented in Search UI
+- /search?q=AAPL returns 404 — actual endpoints are /search/stocks and /search/predictions
+- 0 console errors
+- **Learnings:**
+  - Search router uses /search/stocks, /search/predictions, /search/models, /search/drift-events (NOT /search?q=)
+  - SHAP row-expand not implemented in Search page — predictions table is read-only
+---

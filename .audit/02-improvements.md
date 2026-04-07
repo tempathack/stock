@@ -448,3 +448,20 @@ Status: IN PROGRESS
 - Total return: NOT implemented
 
 **Console errors:** None
+
+---
+
+### US-017: Search page — stock search, predictions, SHAP results (2026-04-07)
+
+**Status:** PASS with gap — SHAP row-expand not implemented
+
+**API:** /search/stocks?q=AAPL returns 1 result (Apple Inc). /search/predictions?q=AAPL returns 4 predictions with predicted_price, actual_price, expected_return, confidence.
+
+**Verified working:**
+- Search input with placeholder loads correctly
+- AAPL predictions: 4 rows — $253.24/+0.25%/conf=0.91, $251.97/-0.26%/conf=0.82, $250.14/-0.98%/conf=0.90, $251.15/-0.58%/conf=0.75
+- MSFT predictions: 4 rows — all with confidence values and expected returns
+- MODELS (0), DRIFT EVENTS (0), STOCKS (1) tabs present
+- 0 console errors
+
+**Gap:** Clicking a prediction row does NOT expand a detail panel with SHAP values. Click has no effect — no drawer, modal, or expanded row. SHAP feature importance per prediction is not implemented in the Search UI.

@@ -283,8 +283,8 @@
         "curl 'http://localhost:8010/search?q=AAPL' — verify response includes predictions and confidence"
       ],
       "priority": 17,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS with gap. Search loads, AAPL predictions: 4 rows (price/return/confidence). MSFT: 4 rows. 0 console errors. Gap: clicking result row has no effect — no SHAP detail panel/drawer implemented. STOCKS tab shows 1 result, MODELS/DRIFT EVENTS show 0."
     },
     {
       "id": "US-018",
