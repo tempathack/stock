@@ -866,3 +866,55 @@ The ES index names (`debezium.public.predictions` etc.) are expected to be popul
 - **Partially broken** — data flow from PostgreSQL → Kafka → ES via Debezium CDC is broken
 - The `stocks` index may need manual population (no CDC path for stocks table)
 - **High restart count on Kibana (32 restarts)** is a stability concern but it's currently running
+
+## Stale MinIO Model Artifacts
+
+_Recorded: 2026-04-07_
+
+### MinIO `model-artifacts` Bucket
+
+```
+/data/model-artifacts/
+├── model_registry/
+│   ├── bayesian_ridge_quantile/   (2026-03-31)
+│   ├── elastic_net_minmax/        (2026-03-24)
+│   ├── elastic_net_standard/      (2026-03-24)
+│   ├── horizon_14d/               (2026-04-04 — multi-horizon)
+│   ├── horizon_1d/                (2026-04-04 — multi-horizon)
+│   ├── horizon_30d/               (2026-04-04 — multi-horizon)
+│   ├── horizon_7d/                (2026-04-04 — multi-horizon)
+│   ├── lasso_minmax/              (2026-03-24)
+│   ├── lasso_standard/            (2026-03-31)
+│   ├── linear_regression_quantile/ (2026-03-31)
+│   ├── ridge_minmax/              (2026-03-31)
+│   ├── ridge_standard/            (2026-03-31)
+│   ├── runs/                      (2026-04-04 — experiment runs)
+│   └── stacking_ensemble_meta_ridge/ (2026-03-24)
+├── serving/
+│   ├── active/                    (2026-04-03 — active serving model)
+│   └── canary/                    (2026-03-27 — canary model)
+└── flink-checkpoints/
+```
+
+### DB Registry vs MinIO Comparison
+
+| model_registry Name | MinIO Directory | Match? |
+|---------------------|-----------------|--------|
+| `CatBoost_standard` (×3, oldest) | None found | **STALE DB** — no MinIO artifact |
+| `RandomForest_minmax` (×3) | None found | **STALE DB** — no MinIO artifact |
+| `Ridge_quantile` (×3) | None found | **STALE DB** — no MinIO artifact |
+| `stacking_ensemble` (active) | `stacking_ensemble_meta_ridge/` | MATCH |
+| `elastic_net` | `elastic_net_minmax/`, `elastic_net_standard/` | MATCH |
+| `bayesian_ridge` | `bayesian_ridge_quantile/` | MATCH |
+| `ridge` | `ridge_minmax/`, `ridge_standard/` | MATCH |
+| `lasso` | `lasso_minmax/`, `lasso_standard/` | MATCH |
+| `linear_regression` | `linear_regression_quantile/` | MATCH |
+
+### Orphaned MinIO Artifacts (no DB entry)
+- `horizon_1d/`, `horizon_7d/`, `horizon_14d/`, `horizon_30d/` — multi-horizon models, likely added after initial registry was populated. **Not in model_registry DB** but ARE referenced by the multi-horizon prediction code.
+- `runs/` — MLflow-style experiment run artifacts. Not in model_registry.
+
+### Stale DB Entries (DB entry but no MinIO artifact)
+- 9 rows: `CatBoost_standard` (model_id 1,4,7), `Ridge_quantile` (2,5,8), `RandomForest_minmax` (3,6,9)
+- These are early training run registrations that were superseded but DB rows not cleaned up
+- **is_active=false** for all — not serving live traffic. Low priority.

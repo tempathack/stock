@@ -1240,3 +1240,15 @@ Previous run codebase patterns (still valid):
   - ES integration exists but depends on Debezium CDC for data population
   - Kibana has 32 restarts — may indicate memory/resource issues
 ---
+
+## 2026-04-07 - US-054: Stale MinIO model artifacts audit
+- MinIO has 14 dirs in model_registry, 2 dirs in serving (active/canary)
+- 9 stale DB entries (CatBoost/RandomForest/Ridge_quantile from early runs, is_active=false, no MinIO artifacts)
+- horizon_1d/7d/14d/30d in MinIO but not in model_registry DB (multi-horizon models added later)
+- stacking_ensemble (active model) has matching MinIO artifact
+- Documented in .audit/01-stale-code.md under '## Stale MinIO Model Artifacts'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - model_registry table uses simple model_name column (no scaler_variant); MinIO dirs have name+scaler combined
+  - horizon_* dirs in MinIO are multi-horizon models not tracked in DB
+---

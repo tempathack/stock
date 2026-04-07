@@ -868,8 +868,8 @@
         "Document stale model files in .audit/01-stale-code.md under '## Stale MinIO Model Artifacts'"
       ],
       "priority": 54,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "9 stale DB entries (CatBoost/RandomForest/Ridge_quantile from early runs, is_active=false, no MinIO artifacts). horizon_1d/7d/14d/30d in MinIO but no DB entries (multi-horizon models). Serving/active + serving/canary both present. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-055",
