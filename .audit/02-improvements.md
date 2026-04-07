@@ -746,3 +746,27 @@ failed to list *v1.Pod: dial tcp 10.96.0.1:443: connect: no route to host
 2. Check if `10.96.0.1` (kubernetes ClusterIP) is reachable from Promtail pod — possible Minikube CNI issue
 3. May need `--host-network: true` or NodePort access to fix routing
 
+
+---
+
+## Alert Rules Health
+
+### US-030: Prometheus Alertmanager rules audit (2026-04-07)
+
+**Prometheus alert rules (`/etc/prometheus/alert_rules.yml > stock-prediction-alerts`):**
+| Rule | State | Notes |
+|---|---|---|
+| HighDriftSeverity | INACTIVE (0 active) | OK — no severe drift |
+| HighAPIErrorRate | INACTIVE (0 active) | OK — no high error rate |
+| HighConsumerLag | INACTIVE (0 active) | OK — no consumer lag |
+| HighPredictionLatencyP95 | INACTIVE (0 active) | OK — p95 within threshold |
+
+**Grafana alert rules:** 6 total — 1 error, 5 normal
+- `loki-log-alerts` (Grafana managed): 1 error because Loki datasource can't fetch alert rules (Promtail broken)
+- `stock-prediction-alerts` (Mimir/Cortex/Loki): 4 normal (matches Prometheus rules above)
+
+**Firing alerts:** NONE (`/api/v1/alerts` returns empty array)
+**Pending alerts:** NONE
+
+**Summary:** Alert configuration is correct — all 4 expected rules present. No alerts firing. Loki alert error is downstream of Promtail issue (US-029). No critical issues in alerting itself.
+

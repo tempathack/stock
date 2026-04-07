@@ -493,8 +493,8 @@
         "Document alerting health in .audit/02-improvements.md under '## Alert Rules Health'"
       ],
       "priority": 30,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. 4 rules present: HighDriftSeverity, HighAPIErrorRate, HighConsumerLag, HighPredictionLatencyP95 — all INACTIVE. 0 alerts firing. Loki alert error is downstream of Promtail issue (US-029)."
     },
     {
       "id": "US-031",

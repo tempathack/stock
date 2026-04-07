@@ -994,3 +994,13 @@ Previous run codebase patterns (still valid):
 - Screenshots: audit-p29-explore-loki.png, audit-p29-loki-ingestion.png, audit-p29-loki-stock-api.png, audit-p29-loki-ml.png
 - **Learnings:** Promtail in DaemonSet uses fieldSelector=spec.nodeName for pod discovery; if K8s ClusterIP unreachable (Minikube CNI issue), it silently fails to ship logs but pod stays Running.
 ---
+
+## 2026-04-07 - US-030: Playwright: Grafana — Prometheus Alertmanager rules and firing alerts audit
+- Grafana /alerting/list: 6 rules (1 error from Loki datasource, 5 normal)
+- Prometheus /alerts: 4 rules in stock-prediction-alerts group, all INACTIVE, 0 firing, 0 pending
+- Rules confirmed: HighDriftSeverity, HighAPIErrorRate, HighConsumerLag, HighPredictionLatencyP95
+- No FIRING ALERTS — system operating within thresholds
+- Loki alert rule 1 error is downstream of Promtail broken (US-029), not a new issue
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Screenshots: audit-p30-alerting.png, audit-p30-alert-rules.png
+---
