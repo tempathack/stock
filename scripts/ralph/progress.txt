@@ -830,3 +830,18 @@ Previous run codebase patterns (still valid):
   - Analytics real API paths: /analytics/flink/jobs, /analytics/feast/freshness, /analytics/kafka/lag, /analytics/summary (not /stream-health or /feature-freshness)
   - FeatureFreshness shows null timestamps because Feast online store materialization has never been run — this is expected until Feast materialize is executed
 ---
+
+## 2026-04-07 - US-014: Analytics page — StreamHealthPanel, FeatureFreshnessPanel, SystemHealthSummary audit
+- Navigated to http://localhost:5173/analytics via Playwright MCP
+- Took 4 screenshots: audit-p14-analytics.png, audit-p14-stream-health.png, audit-p14-freshness.png, audit-p14-system-health.png
+- StreamHealthPanel: 3 Flink jobs RUNNING (ohlcv-normalizer, indicator-stream, feast-writer-job)
+- SystemHealthSummary: 4 live cards — Argo CD=Synced, Flink=3/0, Feast latency=0.1ms, CA refresh=11:02 AM
+- Kafka Stream Lag: 0 messages lag, live chart working
+- FeatureFreshnessPanel: renders but all 3 views show — (feast_metadata.last_updated is null)
+- OLAP Candle Chart: frame renders, no candle data plotted
+- 0 console errors
+- Documented in .audit/02-improvements.md
+- **Learnings:**
+  - Acceptance criteria used wrong endpoint names — actual are /analytics/flink/jobs and /analytics/feast/freshness
+  - FeatureFreshnessPanel freshness gap is a data pipeline issue (feast_metadata not updated), not a frontend bug
+---

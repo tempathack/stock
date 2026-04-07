@@ -387,3 +387,21 @@ Status: IN PROGRESS
 - audit-p14-stream-health.png — StreamHealthPanel + all panels visible
 - audit-p14-freshness.png — FeatureFreshnessPanel with null timestamps
 - audit-p14-system-health.png — SystemHealthSummary cards row
+
+---
+
+### US-014: Analytics Page — StreamHealthPanel, FeatureFreshnessPanel, SystemHealthSummary (2026-04-07)
+
+**Status:** PASS with one data gap
+
+**Verified working:**
+- StreamHealthPanel: 3 Flink jobs all RUNNING (`ohlcv-normalizer`, `indicator-stream`, `feast-writer-job`)
+- SystemHealthSummary cards: Argo CD=Synced, Flink=3 running/0 failed, Feast latency=0.1ms, CA Last Refresh=11:02 AM
+- Kafka Stream Lag: 0 messages total lag, live per-partition chart working
+- OLAP Candle Chart: frame, controls, ticker selector render — no candle data plotted
+- 0 console errors
+
+**Issue found:**
+- **FeatureFreshnessPanel shows `—` for all 3 feature view timestamps** (`ohlcv_stats_fv`, `technical_indicators_fv`, `lag_features_fv`). API endpoint `/analytics/feast/freshness` returns `last_updated: null` for all views — feast_metadata table is not being populated with last-write timestamps.
+
+**Note:** Acceptance criteria referenced `/analytics/stream-health` and `/analytics/feature-freshness` — actual endpoints are `/analytics/flink/jobs` and `/analytics/feast/freshness`.
