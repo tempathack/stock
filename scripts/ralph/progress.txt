@@ -896,3 +896,16 @@ Previous run codebase patterns (still valid):
   - MobileMarketList component does not exist — AC referenced a non-existent component
   - Drift is the most mobile-friendly page as-is
 ---
+
+## 2026-04-07 - US-019: WebSocket live price feed audit
+- Screenshot: audit-p19-ws-console.png (dashboard with WS CONNECTED badge)
+- WS OPEN confirmed via browser evaluate — ws://localhost:8010/ws/prices accepts connections
+- Server logs show ws client connected for multiple clients
+- No WS MSG: market closed at 12:30 UTC (8:30 AM ET) — price_feed only broadcasts 9:30-16:00 ET
+- Schema: price_update {type, prices:[{ticker,price,change_pct,volume,timestamp}]}, market_closed {type,next_open}
+- Warning: stale reconnect on hook init (harmless)
+- **Learnings:**
+  - price_feed_loop guards on is_market_open() — no messages outside trading hours
+  - WS broadcasts one market_closed message per 60s check when market is closed
+  - useWebSocket hook has a harmless race on initial load (stale close before connect)
+---

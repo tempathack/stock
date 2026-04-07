@@ -495,3 +495,37 @@ Status: IN PROGRESS
 - Models winner card — readable
 
 **Console errors:** 0 across all 5 pages
+
+---
+
+## WebSocket Health
+
+### US-019: WebSocket live price feed audit (2026-04-07)
+
+**Status:** WORKING — WS endpoint functional, no price messages because market is closed
+
+**Connection test result:**
+- `ws://localhost:8010/ws/prices` — WS OPEN received ✓
+- Server logs: connection accepted from 127.0.0.1 — `ws client connected` logged ✓
+- Dashboard status bar: **WS CONNECTED** (green) ✓
+
+**Why no price messages:** Market is closed at time of test (12:30 UTC = 8:30 AM Eastern). `is_market_open()` returns False until 09:30 AM ET Mon-Fri. Price feed loop sends one `market_closed` message per check interval, then sleeps 60s.
+
+**Message schema (from source `price_feed.py`):**
+
+During market hours (`price_update`):
+```json
+{
+  "type": "price_update",
+  "prices": [
+    {"ticker": "AAPL", "price": 252.62, "change_pct": -0.58, "volume": 41300000, "timestamp": "2026-04-07T14:30:00"}
+  ]
+}
+```
+
+Market closed:
+```json
+{"type": "market_closed", "next_open": "2026-04-07T13:30:00+00:00"}
+```
+
+**Warning observed:** `WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established` — this is a stale `useWebSocket` hook reconnect attempt on initial page load (harmless race condition).

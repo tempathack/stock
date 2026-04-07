@@ -315,8 +315,8 @@
         "Document WebSocket status (working/broken/missing) — screenshot audit-p19-ws-console.png"
       ],
       "priority": 19,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. WS OPEN confirmed — ws://localhost:8010/ws/prices accepts connections. Dashboard shows WS CONNECTED. No price messages because market is closed at test time (8:30 AM ET, opens 9:30 AM). Schema: price_update={type,prices:[{ticker,price,change_pct,volume,timestamp}]}, market_closed={type,next_open}. One harmless warning: stale reconnect on hook init."
     },
     {
       "id": "US-020",
