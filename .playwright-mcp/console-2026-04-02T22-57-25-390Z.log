@@ -1,0 +1,40 @@
+[   15898ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   15899ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   15899ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   17005ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   17005ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   17005ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   22020ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   22021ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   22021ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   23035ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   23035ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   23035ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   28048ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   28048ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   28048ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   29065ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   29066ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   29066ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   34074ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   34074ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   34074ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   35088ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/ALL' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   35088ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-B8od38nx.js:105
+[   35088ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/ALL:0
+[   61568ms] [WARNING] MUI: The LoadingButton component functionality is now part of the Button component from Material UI.
+
+You should use `import Button from '@mui/material/Button'`
+or `import { Button } from '@mui/material'` @ http://192.168.49.2:30080/assets/Backtest-CM7-NKWR.js:0
+[   63341ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://192.168.49.2:30080/assets/CartesianChart-Gy-5Ay0a.js:140
+[   63341ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://192.168.49.2:30080/assets/CartesianChart-Gy-5Ay0a.js:140
+[   63492ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://192.168.49.2:30080/assets/CartesianChart-Gy-5Ay0a.js:140

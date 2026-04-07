@@ -1,0 +1,7 @@
+[   25995ms] [LOG] JQMIGRATE: Migrate is installed, version 3.4.1 @ https://jacob-munich.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1:1
+[   28543ms] [ERROR] Permissions policy violation: payment is not allowed in this document. @ https://www.opentable.de/dTjaAynZ1x/daLw0MrC/xj/LXk9kV3X/QS1lInI/HVI/6Hmh0fXFs?v=959343df-fc6f-5af2-9eb8-fc4b980658dd:0
+[   32791ms] [LOG] opt-in @ https://jacob-munich.com/wp-content/plugins/complianz-gdpr/cookiebanner/js/complianz.min.js?ver=1773777589:0
+[   32797ms] [LOG] %c POPUP BUILDER AVAILABLE DEBUG DETAILS background: #eeeeee; color: #000000 @ https://jacob-munich.com/wp-content/plugins/popup-builder/public/js/DebugReport.js?ver=4.4.3:6
+[   32818ms] [INFO] LayerSlider initialized | core: 7.15.1-stable | WP Plugin: 7.15.1 @ https://jacob-munich.com/wp-content/themes/enfold/config-layerslider/LayerSlider/assets/static/layerslider/js/layerslider.kreaturamedia.jquery.js?ver=7.15.1:10
+[   32818ms] [INFO] Find updates and docs @ https://layerslider.com/ @ https://jacob-munich.com/wp-content/themes/enfold/config-layerslider/LayerSlider/assets/static/layerslider/js/layerslider.kreaturamedia.jquery.js?ver=7.15.1:10
+[   34983ms] [ERROR] Permissions policy violation: payment is not allowed in this document. @ https://www.opentable.de/dTjaAynZ1x/daLw0MrC/xj/LXk9kV3X/QS1lInI/HVI/6Hmh0fXFs?v=959343df-fc6f-5af2-9eb8-fc4b980658dd:0

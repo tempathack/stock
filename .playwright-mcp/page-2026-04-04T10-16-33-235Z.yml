@@ -1,0 +1,351 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Financial Indicators" [ref=e66] [cursor=pointer]:
+          - /url: /categories/46
+        - text: ">"
+        - link "Financial Activity Measures" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32457
+    - generic [ref=e68]:
+      - generic "STLFSI4"
+      - generic [ref=e69]:
+        - heading "Add to favorites St. Louis Fed Financial Stress Index (STLFSI4)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: St. Louis Fed Financial Stress Index (STLFSI4)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-03-27: -0.1828"
+              - generic "Apr 1, 2026 10:08 AM CDT" [ref=e85]: "Updated: Apr 1, 2026 10:08 AM CDT"
+              - 'link "Next Release Date: Apr 8, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=187&y=2026
+                - generic "Apr 8, 2026" [ref=e88]: "Next Release Date: Apr 8, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Index,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Weekly,
+              - generic [ref=e98]: Ending Friday
+          - generic [ref=e101]:
+            - generic [ref=e103]:
+              - generic "1 year date range" [ref=e104] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e105] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e106] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e107] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: From
+                - textbox "Change start date" [ref=e112]
+              - generic [ref=e114]: to
+              - textbox "Change end date" [ref=e116]
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - button "Edit Graph " [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]:
+                  - text: Edit Graph
+                  - generic [ref=e121]: 
+              - text: 
+            - generic [ref=e123]:
+              - button "Download" [ref=e124] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e125]: 
+              - text: 
+        - generic "Full screen" [ref=e130] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e131]: 
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - button "Share Graph " [ref=e136] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e137]: 
+              - text:   
+            - generic [ref=e138]:
+              - button "Account Tools " [ref=e139] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e140]: 
+              - text:     
+          - generic [ref=e142]:
+            - link "Share on X" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e144] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e145]: 
+            - link "Share on Reddit" [ref=e146] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e147]: 
+            - link "Post to Linkedin" [ref=e148] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e149]: 
+        - generic [ref=e151]:
+          - generic [ref=e153]:
+            - heading "Notes" [level=2] [ref=e154]
+            - generic [ref=e155]:
+              - paragraph [ref=e156]:
+                - strong [ref=e157]: "Source:"
+                - link "Federal Reserve Bank of St. Louis" [ref=e158] [cursor=pointer]:
+                  - /url: http://www.stlouisfed.org/
+                  - text: Federal Reserve Bank of St. Louis
+                  - generic [ref=e159]: 
+              - paragraph [ref=e160]:
+                - strong [ref=e161]: "Release:"
+                - text: St. Louis Fed Financial Stress Index
+              - paragraph [ref=e163]:
+                - strong [ref=e164]: "Units:"
+                - generic [ref=e165]: Index, Not Seasonally Adjusted
+              - paragraph [ref=e166]:
+                - strong [ref=e167]: "Frequency:"
+                - generic [ref=e168]: Weekly, Ending Friday
+              - heading "Notes:" [level=4] [ref=e170]
+              - paragraph [ref=e171]:
+                - text: "The STLFSI4 measures the degree of financial stress in the markets and is constructed from 18 weekly data series: seven interest rate series, six yield spreads and five other indicators. Each of these variables captures some aspect of financial stress. Accordingly, as the level of financial stress in the economy changes, the data series are likely to move together."
+                - text: "How to Interpret the Index:"
+                - text: The average value of the index, which begins in late 1993, is designed to be zero. Thus, zero is viewed as representing normal financial market conditions. Values below zero suggest below-average financial market stress, while values above zero suggest above-average financial market stress.
+                - text: "More information:"
+                - text: The STLFSI4 is the third revision (i.e.,
+                - link "STLFSI3" [ref=e172] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/STLFSI3
+                - text: and
+                - link "STLFSI2" [ref=e173] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/STLFSI2
+                - text: of the original
+                - link "STLFSI" [ref=e174] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/STLFSI
+                - text: . Whereas the STLFSI3 used the past
+                - link "90-day average backward-looking secured overnight financing rate (SOFR)" [ref=e175] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/SOFR90DAYAVG
+                - text: in two of their yield spreads, the STLFSI4 uses
+                - link "the 90-day forward-looking SOFR" [ref=e176] [cursor=pointer]:
+                  - /url: https://www.cmegroup.com/market-data/cme-group-benchmark-administration/term-sofr.html
+                - text: in its place. For more information, see
+                - link "\"The St. Louis Fed’s Financial Stress Index, Version 4.0\"" [ref=e177] [cursor=pointer]:
+                  - /url: https://fredblog.stlouisfed.org/2022/11/the-st-louis-feds-financial-stress-index-version-4/
+                - text: . For information on earlier STLFSIs, see
+                - link "\"Measuring Financial Market Stress\"" [ref=e178] [cursor=pointer]:
+                  - /url: https://files.stlouisfed.org/files/htdocs/publications/es/10/ES1002.pdf
+                - text: ","
+                - link "\"The St. Louis Fed’s Financial Stress Index, Version 2.0.\"" [ref=e179] [cursor=pointer]:
+                  - /url: https://fredblog.stlouisfed.org/2020/03/the-st-louis-feds-financial-stress-index-version-2-0/
+                - text: ", and"
+                - link "\"The St. Louis Fed’s Financial Stress Index, Version 3.0\"" [ref=e180] [cursor=pointer]:
+                  - /url: https://fredblog.stlouisfed.org/2022/01/the-st-louis-feds-financial-stress-index-version-3-0/
+                - text: .
+              - generic [ref=e181]:
+                - heading "Suggested Citation:" [level=4] [ref=e182]
+                - paragraph [ref=e184]: Federal Reserve Bank of St. Louis, St. Louis Fed Financial Stress Index [STLFSI4], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/STLFSI4, April 4, 2026.
+          - generic [ref=e186]:
+            - heading "Related Data and Content" [level=2] [ref=e187]
+            - generic [ref=e188]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e189]
+              - generic [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Commercial and Industrial Loans, Large Domestically Chartered Commercial Banks" [ref=e192] [cursor=pointer]:
+                    - /url: /series/CIBOARD
+                    - img [ref=e193]
+                  - generic [ref=e194]:
+                    - text: ...
+                    - link "Commercial and Industrial Loans, Large Domestically Chartered Commercial Banks" [ref=e195] [cursor=pointer]:
+                      - /url: /series/CIBOARD
+                      - strong [ref=e196]: Commercial and Industrial Loans, Large Domestically Chartered Commercial Banks
+                - generic [ref=e197]:
+                  - 'link "St. Louis Fed Economic News Index: Real GDP Nowcast" [ref=e198] [cursor=pointer]':
+                    - /url: /series/STLENI
+                    - img [ref=e199]
+                  - generic [ref=e200]:
+                    - text: ...
+                    - 'link "St. Louis Fed Economic News Index: Real GDP Nowcast" [ref=e201] [cursor=pointer]':
+                      - /url: /series/STLENI
+                      - strong [ref=e202]: "St. Louis Fed Economic News Index: Real GDP Nowcast"
+                - generic [ref=e203]:
+                  - link "Loans and Leases in Bank Credit, All Commercial Banks" [ref=e204] [cursor=pointer]:
+                    - /url: /series/TOTLL
+                    - img [ref=e205]
+                  - generic [ref=e206]:
+                    - text: ...
+                    - link "Loans and Leases in Bank Credit, All Commercial Banks" [ref=e207] [cursor=pointer]:
+                      - /url: /series/TOTLL
+                      - strong [ref=e208]: Loans and Leases in Bank Credit, All Commercial Banks
+                - generic [ref=e209]:
+                  - link "St. Louis Fed Financial Stress Index (DISCONTINUED)" [ref=e210] [cursor=pointer]:
+                    - /url: /series/STLFSI3
+                    - img [ref=e211]
+                  - generic [ref=e212]:
+                    - text: ...
+                    - link "St. Louis Fed Financial Stress Index (DISCONTINUED)" [ref=e213] [cursor=pointer]:
+                      - /url: /series/STLFSI3
+                      - strong [ref=e214]: St. Louis Fed Financial Stress Index (DISCONTINUED)
+                - text: ... ... ... ...
+                - generic [ref=e215]:
+                  - button "click to see more" [ref=e216] [cursor=pointer]: See More...
+                  - separator [ref=e217]
+              - heading "Content Suggestions" [level=3] [ref=e218]
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - link "The St. Louis Fed’s Financial Stress Index, version 4" [ref=e221] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2022/11/the-st-louis-feds-financial-stress-index-version-4/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e222]
+                  - generic [ref=e223]: FRED Blog
+                  - generic [ref=e224]:
+                    - text: ...
+                    - link "The St. Louis Fed’s Financial Stress Index, version 4" [ref=e225] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2022/11/the-st-louis-feds-financial-stress-index-version-4/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e226]: The St. Louis Fed’s Financial Stress Index, version 4
+                - generic [ref=e227]:
+                  - link "St. Louis Fed Financial Stress Index" [ref=e228] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=STLFSI4&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e229]
+                  - generic [ref=e230]: ALFRED Vintage Series
+                  - generic [ref=e231]:
+                    - text: ...
+                    - link "St. Louis Fed Financial Stress Index" [ref=e232] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=STLFSI4&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e233]: St. Louis Fed Financial Stress Index
+                - generic [ref=e234]:
+                  - 'link "University of Michigan: Consumer Sentiment" [ref=e235] [cursor=pointer]':
+                    - /url: /series/UMCSENT
+                    - img [ref=e236]
+                  - generic [ref=e237]:
+                    - text: ...
+                    - 'link "University of Michigan: Consumer Sentiment" [ref=e238] [cursor=pointer]':
+                      - /url: /series/UMCSENT
+                      - strong [ref=e239]: "University of Michigan: Consumer Sentiment"
+              - heading "Related Categories" [level=3] [ref=e240]
+              - generic [ref=e241]:
+                - link "Financial Activity Measures" [ref=e242] [cursor=pointer]:
+                  - /url: /categories/32457
+                - link "Financial Indicators" [ref=e243] [cursor=pointer]:
+                  - /url: /categories/46
+                - link "Money, Banking, & Finance" [ref=e244] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e246]
+              - link "More Series from St. Louis Fed Financial Stress Index" [ref=e248] [cursor=pointer]:
+                - /url: /release?rid=187
+              - heading "Tags" [level=3] [ref=e250]
+              - generic:
+                - link "Financial Stress Index" [ref=e251] [cursor=pointer]:
+                  - /url: /tags/series?t=fsi
+                - link "Weekly" [ref=e252] [cursor=pointer]:
+                  - /url: /tags/series?t=weekly
+                - link "St. Louis Fed" [ref=e253] [cursor=pointer]:
+                  - /url: /tags/series?t=frb%20stl
+                - 'link "Copyrighted: Citation Required" [ref=e254] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Nation" [ref=e255] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e256] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e257] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e260]:
+    - generic [ref=e261]:
+      - generic [ref=e262]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e263]
+        - generic [ref=e266]:
+          - textbox "email" [ref=e267]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e268] [cursor=pointer]
+      - generic [ref=e269]:
+        - heading "Follow us" [level=3] [ref=e270]
+        - generic [ref=e271]:
+          - link "Saint Louis Fed linkedin page" [ref=e273] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e274]: 
+            - generic [ref=e275]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e277] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e278]: 
+            - generic [ref=e279]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e281] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e282]: 
+            - generic [ref=e283]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e285] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e286]: 
+            - generic [ref=e287]: Saint Louis Fed YouTube page
+    - generic [ref=e289]:
+      - heading "Need Help?" [level=3] [ref=e290]
+      - generic [ref=e291]:
+        - link "Questions or Comments" [ref=e293] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e295] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e296]
+      - generic [ref=e297]:
+        - link "Legal" [ref=e299] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e301] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

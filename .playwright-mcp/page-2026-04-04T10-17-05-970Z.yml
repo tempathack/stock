@@ -1,0 +1,370 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Population, Employment, & Labor Markets" [ref=e65] [cursor=pointer]:
+          - /url: /categories/10
+        - text: ">"
+        - link "Job Openings and Labor Turnover (JOLTS)" [ref=e66] [cursor=pointer]:
+          - /url: /categories/32241
+        - text: ">"
+        - link "Job Openings (Levels and Rates)" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32243
+    - generic [ref=e68]:
+      - generic "JTSJOL"
+      - generic [ref=e69]:
+        - 'heading "Add to favorites Job Openings: Total Nonfarm (JTSJOL)" [level=1] [ref=e73]':
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: "Job Openings: Total Nonfarm (JTSJOL)"
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "Feb 2026: 6,882"
+              - generic "Mar 31, 2026 9:11 AM CDT" [ref=e85]: "Updated: Mar 31, 2026 9:11 AM CDT"
+              - 'link "Next Release Date: May 5, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=192&y=2026
+                - generic "May 5, 2026" [ref=e88]: "Next Release Date: May 5, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Level in Thousands,
+              - generic [ref=e93]: Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Monthly
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - button "Share Graph " [ref=e135] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e136]: 
+              - text:   
+            - generic [ref=e137]:
+              - button "Account Tools " [ref=e138] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e139]: 
+              - text:     
+          - generic [ref=e141]:
+            - link "Share on X" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Share on Reddit" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Post to Linkedin" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+        - generic [ref=e150]:
+          - generic [ref=e152]:
+            - heading "Notes" [level=2] [ref=e153]
+            - generic [ref=e154]:
+              - paragraph [ref=e155]:
+                - strong [ref=e156]: "Source:"
+                - link "U.S. Bureau of Labor Statistics" [ref=e157] [cursor=pointer]:
+                  - /url: https://www.bls.gov/
+                  - text: U.S. Bureau of Labor Statistics
+                  - generic [ref=e158]: 
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "Release:"
+                - link "Job Openings and Labor Turnover Survey" [ref=e161] [cursor=pointer]:
+                  - /url: http://www.bls.gov/jlt/
+                  - text: Job Openings and Labor Turnover Survey
+                  - generic [ref=e162]: 
+              - paragraph [ref=e164]:
+                - strong [ref=e165]: "Units:"
+                - generic [ref=e166]: Level in Thousands, Seasonally Adjusted
+              - paragraph [ref=e167]:
+                - strong [ref=e168]: "Frequency:"
+                - generic [ref=e169]: Monthly
+              - heading "Notes:" [level=4] [ref=e171]
+              - paragraph [ref=e172]:
+                - text: Total Nonfarm Job Openings are a measure of all jobs that are not filled on the last business day of the month. A job is considered open if a specific position exists and there is work available for it, the job can be started within 30 days, and there is active recruiting for the position.
+                - text: Total Nonfarm Job Openings are measured by the Job Openings and Labor Turnover Survey (JOLTS) and published by the Bureau of Labor Statistics (BLS). These data are a unique economic indicator of unmet demand for labor and labor shortages. Economists, government officials, and researchers use Job Openings as a measure of tightness within job markets.
+                - text: Note that the set of available job openings may decline because openings become filled, or because previous openings are removed without filling positions.
+                - text: "For more information, see:"
+                - text: U.S. Bureau of Labor Statistics,
+                - link "Job Openings and Labor Turnover Survey Overview Page" [ref=e173] [cursor=pointer]:
+                  - /url: https://www.bls.gov/jlt/jltover.htm#purpose
+                - text: U.S. Bureau of Labor Statistics,
+                - link "Data Definitions" [ref=e174] [cursor=pointer]:
+                  - /url: https://www.bls.gov/jlt/jltdef.htm#2
+              - generic [ref=e175]:
+                - heading "Suggested Citation:" [level=4] [ref=e176]
+                - paragraph [ref=e178]: "U.S. Bureau of Labor Statistics, Job Openings: Total Nonfarm [JTSJOL], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/JTSJOL, April 4, 2026."
+          - generic [ref=e180]:
+            - heading "Release Tables" [level=2] [ref=e181]
+            - generic [ref=e182]:
+              - generic [ref=e183]: Job Openings and Labor Turnover Survey
+              - list [ref=e184]:
+                - listitem [ref=e185]:
+                  - 'link "Link to release table: Job Openings and Labor Turnover Survey, Job Openings by Industry and Region: Levels, Seasonally Adjusted" [ref=e186] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=192&eid=6615#snid=6616
+                    - generic [ref=e187]: 
+                    - text: "Job Openings by Industry and Region: Levels, Seasonally Adjusted"
+          - generic [ref=e189]:
+            - heading "Related Data and Content" [level=2] [ref=e190]
+            - generic [ref=e191]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e192]
+              - generic [ref=e193]:
+                - generic [ref=e194]:
+                  - 'link "Quits: Total Nonfarm" [ref=e195] [cursor=pointer]':
+                    - /url: /series/JTSQUR
+                    - img [ref=e196]
+                  - generic [ref=e197]:
+                    - text: ...
+                    - 'link "Quits: Total Nonfarm" [ref=e198] [cursor=pointer]':
+                      - /url: /series/JTSQUR
+                      - strong [ref=e199]: "Quits: Total Nonfarm"
+                - generic [ref=e200]:
+                  - link "Unemployment Level" [ref=e201] [cursor=pointer]:
+                    - /url: /series/UNEMPLOY
+                    - img [ref=e202]
+                  - generic [ref=e203]:
+                    - text: ...
+                    - link "Unemployment Level" [ref=e204] [cursor=pointer]:
+                      - /url: /series/UNEMPLOY
+                      - strong [ref=e205]: Unemployment Level
+                - generic [ref=e206]:
+                  - 'link "Hires: Total Nonfarm" [ref=e207] [cursor=pointer]':
+                    - /url: /series/JTSHIL
+                    - img [ref=e208]
+                  - generic [ref=e209]:
+                    - text: ...
+                    - 'link "Hires: Total Nonfarm" [ref=e210] [cursor=pointer]':
+                      - /url: /series/JTSHIL
+                      - strong [ref=e211]: "Hires: Total Nonfarm"
+                - generic [ref=e212]:
+                  - link "All Employees, Total Nonfarm" [ref=e213] [cursor=pointer]:
+                    - /url: /series/PAYEMS
+                    - img [ref=e214]
+                  - generic [ref=e215]:
+                    - text: ...
+                    - link "All Employees, Total Nonfarm" [ref=e216] [cursor=pointer]:
+                      - /url: /series/PAYEMS
+                      - strong [ref=e217]: All Employees, Total Nonfarm
+                - text: ... ... ... ...
+                - generic [ref=e218]:
+                  - button "click to see more" [ref=e219] [cursor=pointer]: See More...
+                  - separator [ref=e220]
+              - heading "Content Suggestions" [level=3] [ref=e221]
+              - generic [ref=e222]:
+                - generic [ref=e223]:
+                  - link "Complementing public data with private data" [ref=e224] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2023/11/complementing-public-data-with-private-data/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e225]
+                  - generic [ref=e226]: FRED Blog
+                  - generic [ref=e227]:
+                    - text: ...
+                    - link "Complementing public data with private data" [ref=e228] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2023/11/complementing-public-data-with-private-data/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e229]: Complementing public data with private data
+                - generic [ref=e230]:
+                  - link "Recent changes in job openings and job postings" [ref=e231] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2023/08/recent-changes-in-job-openings-and-job-postings/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e232]
+                  - generic [ref=e233]: FRED Blog
+                  - generic [ref=e234]:
+                    - text: ...
+                    - link "Recent changes in job openings and job postings" [ref=e235] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2023/08/recent-changes-in-job-openings-and-job-postings/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e236]: Recent changes in job openings and job postings
+                - generic [ref=e237]:
+                  - 'link "The job openings-to-unemployment ratio: Labor markets are in better balance" [ref=e238] [cursor=pointer]':
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/07/the-job-openings-to-unemployment-ratio-labor-markets-are-in-better-balance/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e239]
+                  - generic [ref=e240]: FRED Blog
+                  - generic [ref=e241]:
+                    - text: ...
+                    - 'link "The job openings-to-unemployment ratio: Labor markets are in better balance" [ref=e242] [cursor=pointer]':
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/07/the-job-openings-to-unemployment-ratio-labor-markets-are-in-better-balance/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e243]: "The job openings-to-unemployment ratio: Labor markets are in better balance"
+                - generic [ref=e244]:
+                  - 'link "Job Openings: Total Nonfarm" [ref=e245] [cursor=pointer]':
+                    - /url: https://alfred.stlouisfed.org/series?seid=JTSJOL&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e246]
+                  - generic [ref=e247]: ALFRED Vintage Series
+                  - generic [ref=e248]:
+                    - text: ...
+                    - 'link "Job Openings: Total Nonfarm" [ref=e249] [cursor=pointer]':
+                      - /url: https://alfred.stlouisfed.org/series?seid=JTSJOL&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e250]: "Job Openings: Total Nonfarm"
+                - text: ...
+                - generic [ref=e251]:
+                  - button "click to see more" [ref=e252] [cursor=pointer]: See More...
+                  - separator [ref=e253]
+              - heading "Other Formats" [level=3] [ref=e254]
+              - generic [ref=e255]:
+                - link "Monthly, Not Seasonally Adjusted" [ref=e256] [cursor=pointer]:
+                  - /url: /series/JTUJOL
+                - link "Rate, Monthly, Not Seasonally Adjusted" [ref=e257] [cursor=pointer]:
+                  - /url: /series/JTUJOR
+                - link "Rate, Monthly, Seasonally Adjusted" [ref=e258] [cursor=pointer]:
+                  - /url: /series/JTSJOR
+              - heading "Related Categories" [level=3] [ref=e260]
+              - generic [ref=e261]:
+                - link "Job Openings (Levels and Rates)" [ref=e262] [cursor=pointer]:
+                  - /url: /categories/32243
+                - link "Job Openings and Labor Turnover (JOLTS)" [ref=e263] [cursor=pointer]:
+                  - /url: /categories/32241
+                - link "Population, Employment, & Labor Markets" [ref=e264] [cursor=pointer]:
+                  - /url: /categories/10
+              - heading "Releases" [level=3] [ref=e266]
+              - link "More Series from Job Openings and Labor Turnover Survey" [ref=e268] [cursor=pointer]:
+                - /url: /release?rid=192
+              - heading "Tags" [level=3] [ref=e270]
+              - generic:
+                - link "Job Openings" [ref=e271] [cursor=pointer]:
+                  - /url: /tags/series?t=job%20openings
+                - link "Vacancy" [ref=e272] [cursor=pointer]:
+                  - /url: /tags/series?t=vacancy
+                - link "Job Openings and Labor Turnover" [ref=e273] [cursor=pointer]:
+                  - /url: /tags/series?t=jolts
+                - link "Nonfarm" [ref=e274] [cursor=pointer]:
+                  - /url: /tags/series?t=nonfarm
+                - link "Seasonally Adjusted" [ref=e275] [cursor=pointer]:
+                  - /url: /tags/series?t=sa
+                - link "Bureau of Labor Statistics" [ref=e276] [cursor=pointer]:
+                  - /url: /tags/series?t=bls
+                - link "Monthly" [ref=e277] [cursor=pointer]:
+                  - /url: /tags/series?t=monthly
+                - link "Nation" [ref=e278] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e279] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e280] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+        - text:    
+  - text:  
+  - generic [ref=e283]:
+    - generic [ref=e284]:
+      - generic [ref=e285]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e286]
+        - generic [ref=e289]:
+          - textbox "email" [ref=e290]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e291] [cursor=pointer]
+      - generic [ref=e292]:
+        - heading "Follow us" [level=3] [ref=e293]
+        - generic [ref=e294]:
+          - link "Saint Louis Fed linkedin page" [ref=e296] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e297]: 
+            - generic [ref=e298]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e300] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e301]: 
+            - generic [ref=e302]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e304] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e305]: 
+            - generic [ref=e306]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e308] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e309]: 
+            - generic [ref=e310]: Saint Louis Fed YouTube page
+    - generic [ref=e312]:
+      - heading "Need Help?" [level=3] [ref=e313]
+      - generic [ref=e314]:
+        - link "Questions or Comments" [ref=e316] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e318] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e319]
+      - generic [ref=e320]:
+        - link "Legal" [ref=e322] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e324] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

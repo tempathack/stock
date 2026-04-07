@@ -1,0 +1,360 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+        - text: ">"
+        - link "Interest Rate Spreads" [ref=e67] [cursor=pointer]:
+          - /url: /categories/33446
+    - generic [ref=e68]:
+      - generic "T10Y2Y"
+      - generic [ref=e69]:
+        - heading "Add to favorites 10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity (T10Y2Y)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: 10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity (T10Y2Y)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-03: 0.51"
+              - generic "Apr 3, 2026 5:22 PM CDT" [ref=e85]: "Updated: Apr 3, 2026 5:22 PM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=304&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - button "Share Graph " [ref=e135] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e136]: 
+              - text:   
+            - generic [ref=e137]:
+              - button "Account Tools " [ref=e138] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e139]: 
+              - text:     
+          - generic [ref=e141]:
+            - link "Share on X" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Share on Reddit" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Post to Linkedin" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+        - generic [ref=e150]:
+          - generic [ref=e152]:
+            - heading "Notes" [level=2] [ref=e153]
+            - generic [ref=e154]:
+              - paragraph [ref=e155]:
+                - strong [ref=e156]: "Source:"
+                - link "Federal Reserve Bank of St. Louis" [ref=e157] [cursor=pointer]:
+                  - /url: http://www.stlouisfed.org/
+                  - text: Federal Reserve Bank of St. Louis
+                  - generic [ref=e158]: 
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "Release:"
+                - text: Interest Rate Spreads
+              - paragraph [ref=e162]:
+                - strong [ref=e163]: "Units:"
+                - generic [ref=e164]: Percent, Not Seasonally Adjusted
+              - paragraph [ref=e165]:
+                - strong [ref=e166]: "Frequency:"
+                - generic [ref=e167]: Daily
+              - heading "Notes:" [level=4] [ref=e169]
+              - paragraph [ref=e170]:
+                - text: Starting with the update on June 21, 2019, the Treasury bond data used in calculating interest rate spreads is obtained directly from the
+                - link "U.S. Treasury Department" [ref=e171] [cursor=pointer]:
+                  - /url: https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield
+                - text: .
+                - text: Series is calculated as the spread between 10-Year Treasury Constant Maturity (BC_10YEAR) and 2-Year Treasury Constant Maturity (BC_2YEAR). Both underlying series are published at the
+                - link "U.S. Treasury Department" [ref=e172] [cursor=pointer]:
+                  - /url: https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield
+                - text: .
+              - generic [ref=e173]:
+                - heading "Suggested Citation:" [level=4] [ref=e174]
+                - paragraph [ref=e176]: Federal Reserve Bank of St. Louis, 10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity [T10Y2Y], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/T10Y2Y, April 4, 2026.
+          - generic [ref=e178]:
+            - heading "Related Data and Content" [level=2] [ref=e179]
+            - generic [ref=e180]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e181]
+              - generic [ref=e182]:
+                - generic [ref=e183]:
+                  - link "10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity" [ref=e184] [cursor=pointer]:
+                    - /url: /series/T10Y3M
+                    - img [ref=e185]
+                  - generic [ref=e186]:
+                    - text: ...
+                    - link "10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity" [ref=e187] [cursor=pointer]:
+                      - /url: /series/T10Y3M
+                      - strong [ref=e188]: 10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity
+                - generic [ref=e189]:
+                  - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis" [ref=e190] [cursor=pointer]:
+                    - /url: /series/DGS10
+                    - img [ref=e191]
+                  - generic [ref=e192]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis" [ref=e193] [cursor=pointer]:
+                      - /url: /series/DGS10
+                      - strong [ref=e194]: Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis
+                - generic [ref=e195]:
+                  - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e196] [cursor=pointer]:
+                    - /url: /series/BAMLH0A0HYM2
+                    - img [ref=e197]
+                  - generic [ref=e198]:
+                    - text: ...
+                    - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e199] [cursor=pointer]:
+                      - /url: /series/BAMLH0A0HYM2
+                      - strong [ref=e200]: ICE BofA US High Yield Index Option-Adjusted Spread
+                - generic [ref=e201]:
+                  - link "10-Year Breakeven Inflation Rate" [ref=e202] [cursor=pointer]:
+                    - /url: /series/T10YIE
+                    - img [ref=e203]
+                  - generic [ref=e204]:
+                    - text: ...
+                    - link "10-Year Breakeven Inflation Rate" [ref=e205] [cursor=pointer]:
+                      - /url: /series/T10YIE
+                      - strong [ref=e206]: 10-Year Breakeven Inflation Rate
+                - text: ... ... ... ...
+                - generic [ref=e207]:
+                  - button "click to see more" [ref=e208] [cursor=pointer]: See More...
+                  - separator [ref=e209]
+              - heading "Content Suggestions" [level=3] [ref=e210]
+              - generic [ref=e211]:
+                - generic [ref=e212]:
+                  - link "Dating a recession" [ref=e213] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2020/06/dating-a-recession/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e214]
+                  - generic [ref=e215]: FRED Blog
+                  - generic [ref=e216]:
+                    - text: ...
+                    - link "Dating a recession" [ref=e217] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2020/06/dating-a-recession/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e218]: Dating a recession
+                - generic [ref=e219]:
+                  - link "Constructing forward interest rates in FRED" [ref=e220] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2023/05/constructing-forward-interest-rates-in-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e221]
+                  - generic [ref=e222]: FRED Blog
+                  - generic [ref=e223]:
+                    - text: ...
+                    - link "Constructing forward interest rates in FRED" [ref=e224] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2023/05/constructing-forward-interest-rates-in-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e225]: Constructing forward interest rates in FRED
+                - generic [ref=e226]:
+                  - link "What's up (or down) with the yield curve?" [ref=e227] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2018/08/whats-up-or-down-with-the-yield-curve/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e228]
+                  - generic [ref=e229]: FRED Blog
+                  - generic [ref=e230]:
+                    - text: ...
+                    - link "What's up (or down) with the yield curve?" [ref=e231] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2018/08/whats-up-or-down-with-the-yield-curve/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e232]: What's up (or down) with the yield curve?
+                - generic [ref=e233]:
+                  - link "10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity" [ref=e234] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=T10Y2Y&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e235]
+                  - generic [ref=e236]: ALFRED Vintage Series
+                  - generic [ref=e237]:
+                    - text: ...
+                    - link "10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity" [ref=e238] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=T10Y2Y&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e239]: 10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity
+                - text: ... ... ... ... ... ...
+                - generic [ref=e240]:
+                  - button "click to see more" [ref=e241] [cursor=pointer]: See More...
+                  - separator [ref=e242]
+              - heading "Other Formats" [level=3] [ref=e243]
+              - link "Monthly, Not Seasonally Adjusted" [ref=e245] [cursor=pointer]:
+                - /url: /series/T10Y2YM
+              - heading "Related Categories" [level=3] [ref=e247]
+              - generic [ref=e248]:
+                - link "Interest Rate Spreads" [ref=e249] [cursor=pointer]:
+                  - /url: /categories/33446
+                - link "Interest Rates" [ref=e250] [cursor=pointer]:
+                  - /url: /categories/22
+                - link "Money, Banking, & Finance" [ref=e251] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e253]
+              - link "More Series from Interest Rate Spreads" [ref=e255] [cursor=pointer]:
+                - /url: /release?rid=304
+              - heading "Tags" [level=3] [ref=e257]
+              - generic:
+                - link "2-Year" [ref=e258] [cursor=pointer]:
+                  - /url: /tags/series?t=2-year
+                - link "Yield Curve" [ref=e259] [cursor=pointer]:
+                  - /url: /tags/series?t=yield%20curve
+                - link "Spread" [ref=e260] [cursor=pointer]:
+                  - /url: /tags/series?t=spread
+                - link "10-Year" [ref=e261] [cursor=pointer]:
+                  - /url: /tags/series?t=10-year
+                - link "Maturity" [ref=e262] [cursor=pointer]:
+                  - /url: /tags/series?t=maturity
+                - link "Treasury" [ref=e263] [cursor=pointer]:
+                  - /url: /tags/series?t=treasury
+                - link "Interest Rate" [ref=e264] [cursor=pointer]:
+                  - /url: /tags/series?t=interest%20rate
+                - link "Interest" [ref=e265] [cursor=pointer]:
+                  - /url: /tags/series?t=interest
+                - link "Daily" [ref=e266] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "St. Louis Fed" [ref=e267] [cursor=pointer]:
+                  - /url: /tags/series?t=frb%20stl
+                - link "Rate" [ref=e268] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - 'link "Copyrighted: Citation Required" [ref=e269] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Nation" [ref=e270] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e271] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e272] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e275]:
+    - generic [ref=e276]:
+      - generic [ref=e277]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e278]
+        - generic [ref=e281]:
+          - textbox "email" [ref=e282]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e283] [cursor=pointer]
+      - generic [ref=e284]:
+        - heading "Follow us" [level=3] [ref=e285]
+        - generic [ref=e286]:
+          - link "Saint Louis Fed linkedin page" [ref=e288] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e289]: 
+            - generic [ref=e290]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e292] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e293]: 
+            - generic [ref=e294]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e296] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e297]: 
+            - generic [ref=e298]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e300] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e301]: 
+            - generic [ref=e302]: Saint Louis Fed YouTube page
+    - generic [ref=e304]:
+      - heading "Need Help?" [level=3] [ref=e305]
+      - generic [ref=e306]:
+        - link "Questions or Comments" [ref=e308] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e310] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e311]
+      - generic [ref=e312]:
+        - link "Legal" [ref=e314] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e316] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

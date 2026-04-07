@@ -1,0 +1,109 @@
+[      82ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[     183ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[     184ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     184ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[     184ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/drift' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[     184ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     184ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/drift:0
+[     184ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[     184ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     185ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[     384ms] [WARNING] WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useWebSocket.ts:76
+[     404ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[     404ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     404ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[    1188ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/drift' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[    1188ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1188ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/drift:0
+[    1408ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[    1409ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1409ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[   30191ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   30191ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30191ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[   31419ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   31419ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   31419ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[   32424ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   32424ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   32424ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[   60189ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   60189ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60189ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[   60202ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   60202ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60202ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[   62433ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   62433ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   62433ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[   63438ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   63438ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   63439ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[   90209ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   90209ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   90210ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[   93446ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   93446ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   93446ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[   94451ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[   94451ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   94451ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  120193ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  120193ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120193ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[  120216ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  120217ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120217ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  124458ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  124458ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  124458ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  125463ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  125464ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  125464ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  150336ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  150342ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  150349ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  155512ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  155512ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  155515ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  156527ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  156527ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  156527ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  180197ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  180197ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180197ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[  180355ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  180355ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180355ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  186556ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  186556ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  186557ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  187577ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  187577ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  187577ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  210364ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  210364ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  210364ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  217608ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  217608ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  217609ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  218614ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  218614ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  218615ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  240202ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  240202ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240203ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[  240371ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  240371ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240371ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  248651ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  248651ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  248651ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  249658ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/overview' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  249658ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  249659ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/overview:0
+[  596880ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  596893ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  596903ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  596946ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts:9
+[  596946ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts:9

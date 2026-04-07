@@ -1,0 +1,265 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: SP
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: S&P 500 AI
+          - paragraph [ref=e9]: Platform
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e12]
+          - paragraph [ref=e14]: Dashboard
+        - link "Models" [ref=e15] [cursor=pointer]:
+          - /url: /models
+          - img [ref=e16]
+          - paragraph [ref=e19]: Models
+        - link "Forecasts" [ref=e20] [cursor=pointer]:
+          - /url: /forecasts
+          - img [ref=e21]
+          - paragraph [ref=e23]: Forecasts
+        - link "Drift" [ref=e24] [cursor=pointer]:
+          - /url: /drift
+          - img [ref=e25]
+          - paragraph [ref=e27]: Drift
+        - link "Backtest" [ref=e28] [cursor=pointer]:
+          - /url: /backtest
+          - img [ref=e29]
+          - paragraph [ref=e31]: Backtest
+        - link "Analytics" [ref=e32] [cursor=pointer]:
+          - /url: /analytics
+          - img [ref=e33]
+          - paragraph [ref=e36]: Analytics
+        - link "Search" [ref=e37] [cursor=pointer]:
+          - /url: /search
+          - img [ref=e38]
+          - paragraph [ref=e40]: Search
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e45]: API
+          - generic [ref=e48]: KAFKA
+          - generic [ref=e51]: DB
+        - generic [ref=e52]: 08:28:35 PM
+    - main [ref=e53]:
+      - generic [ref=e58]:
+        - generic [ref=e60]:
+          - paragraph [ref=e63]: Market Dashboard
+          - paragraph [ref=e66]: WS connected
+        - group [ref=e69]:
+          - button "Market" [ref=e70] [cursor=pointer]: Market
+          - button "Macro" [active] [pressed] [ref=e71] [cursor=pointer]: Macro
+        - generic [ref=e429]:
+          - generic [ref=e430]:
+            - img [ref=e433]
+            - paragraph [ref=e435]: Macro Environment
+          - generic [ref=e437]:
+            - generic [ref=e438]:
+              - generic [ref=e440]:
+                - generic [ref=e441]:
+                  - paragraph [ref=e442]: VIX
+                  - img [ref=e444]
+                - paragraph [ref=e447]: "18.50"
+                - paragraph [ref=e448]: Volatility Index
+              - generic [ref=e450]:
+                - generic [ref=e451]:
+                  - paragraph [ref=e452]: SPY Return
+                  - img [ref=e454]
+                - paragraph [ref=e457]: +0.12%
+                - paragraph [ref=e458]: S&P 500 daily return
+              - generic [ref=e460]:
+                - generic [ref=e461]:
+                  - paragraph [ref=e462]: 10Y Yield
+                  - img [ref=e464]
+                - generic [ref=e466]:
+                  - paragraph [ref=e467]: "4.39"
+                  - paragraph [ref=e468]: "%"
+                - paragraph [ref=e469]: 10-Year Treasury
+              - generic [ref=e471]:
+                - generic [ref=e472]:
+                  - paragraph [ref=e473]: 2-10 Spread
+                  - img [ref=e475]
+                - generic [ref=e477]:
+                  - paragraph [ref=e478]: "-0.67"
+                  - paragraph [ref=e479]: "%"
+                - paragraph [ref=e480]: Yield curve spread
+              - generic [ref=e482]:
+                - generic [ref=e483]:
+                  - paragraph [ref=e484]: HY Spread
+                  - img [ref=e486]
+                - generic [ref=e488]:
+                  - paragraph [ref=e489]: "292.70"
+                  - paragraph [ref=e490]: "%"
+                - paragraph [ref=e491]: High yield OAS
+              - generic [ref=e493]:
+                - generic [ref=e494]:
+                  - paragraph [ref=e495]: WTI Crude
+                  - img [ref=e497]
+                - generic [ref=e499]:
+                  - paragraph [ref=e500]: "70.66"
+                  - paragraph [ref=e501]: $
+                - paragraph [ref=e502]: Oil price ($/bbl)
+              - generic [ref=e504]:
+                - generic [ref=e505]:
+                  - paragraph [ref=e506]: USD Index
+                  - img [ref=e508]
+                - paragraph [ref=e511]: "110.5"
+                - paragraph [ref=e512]: Broad dollar index
+              - generic [ref=e514]:
+                - generic [ref=e515]:
+                  - paragraph [ref=e516]: Initial Claims
+                  - img [ref=e518]
+                - generic [ref=e520]:
+                  - paragraph [ref=e521]: 217,997
+                  - paragraph [ref=e522]: K
+                - paragraph [ref=e523]: Weekly jobless claims
+              - generic [ref=e525]:
+                - generic [ref=e526]:
+                  - paragraph [ref=e527]: Core PCE
+                  - img [ref=e529]
+                - generic [ref=e531]:
+                  - paragraph [ref=e532]: "122.883"
+                  - paragraph [ref=e533]: idx
+                - paragraph [ref=e534]: Fed inflation gauge
+              - generic [ref=e536]:
+                - generic [ref=e537]:
+                  - paragraph [ref=e538]: Sector Return
+                  - img [ref=e540]
+                - paragraph [ref=e543]: +0.08%
+                - paragraph [ref=e544]: Sector ETF daily return
+              - generic [ref=e546]:
+                - generic [ref=e547]:
+                  - paragraph [ref=e548]: 52W High %
+                  - img [ref=e550]
+                - paragraph [ref=e553]: "0.85"
+                - paragraph [ref=e554]: Pct of 52-week high
+              - generic [ref=e556]:
+                - generic [ref=e557]:
+                  - paragraph [ref=e558]: 52W Low %
+                  - img [ref=e560]
+                - paragraph [ref=e563]: "0.35"
+                - paragraph [ref=e564]: Pct of 52-week low
+              - generic [ref=e566]:
+                - generic [ref=e567]:
+                  - paragraph [ref=e568]: 3M-10Y Spread
+                  - img [ref=e570]
+                - generic [ref=e572]:
+                  - paragraph [ref=e573]: "-0.49"
+                  - paragraph [ref=e574]: "%"
+                - paragraph [ref=e575]: 3M to 10Y yield spread
+              - generic [ref=e577]:
+                - generic [ref=e578]:
+                  - paragraph [ref=e579]: BAA Yield
+                  - img [ref=e581]
+                - generic [ref=e583]:
+                  - paragraph [ref=e584]: "5.45"
+                  - paragraph [ref=e585]: "%"
+                - paragraph [ref=e586]: Moody's BAA corporate yield
+              - generic [ref=e588]:
+                - generic [ref=e589]:
+                  - paragraph [ref=e590]: USD/JPY
+                  - img [ref=e592]
+                - paragraph [ref=e595]: "149.9"
+                - paragraph [ref=e596]: Japanese yen exchange rate
+              - generic [ref=e598]:
+                - generic [ref=e599]:
+                  - paragraph [ref=e600]: NFCI
+                  - img [ref=e602]
+                - paragraph [ref=e605]: "-0.10"
+                - paragraph [ref=e606]: Natl Financial Conditions
+              - generic [ref=e608]:
+                - generic [ref=e609]:
+                  - paragraph [ref=e610]: CPI Index
+                  - img [ref=e612]
+                - paragraph [ref=e615]: "314.8"
+                - paragraph [ref=e616]: Consumer Price Index
+              - generic [ref=e618]:
+                - generic [ref=e619]:
+                  - paragraph [ref=e620]: 2Y Yield
+                  - img [ref=e622]
+                - generic [ref=e624]:
+                  - paragraph [ref=e625]: "4.82"
+                  - paragraph [ref=e626]: "%"
+                - paragraph [ref=e627]: 2-Year Treasury yield
+              - generic [ref=e629]:
+                - generic [ref=e630]:
+                  - paragraph [ref=e631]: 10Y Breakeven
+                  - img [ref=e633]
+                - generic [ref=e635]:
+                  - paragraph [ref=e636]: "2.25"
+                  - paragraph [ref=e637]: "%"
+                - paragraph [ref=e638]: 10Y inflation expectations
+            - paragraph [ref=e640]: As of 2026-04-04
+        - generic [ref=e641]:
+          - generic [ref=e642]:
+            - img [ref=e645]
+            - paragraph [ref=e647]: Historical Trends — 90 Days
+          - generic [ref=e649]:
+            - generic [ref=e650]:
+              - button "10Y Yield" [ref=e651] [cursor=pointer]:
+                - generic [ref=e652]: 10Y Yield
+              - button "2-10 Spread" [ref=e653] [cursor=pointer]:
+                - generic [ref=e654]: 2-10 Spread
+              - button "2Y Yield" [ref=e655] [cursor=pointer]:
+                - generic [ref=e656]: 2Y Yield
+              - button "3M-10Y Spread" [ref=e657] [cursor=pointer]:
+                - generic [ref=e658]: 3M-10Y Spread
+              - button "HY Spread" [ref=e659] [cursor=pointer]:
+                - generic [ref=e660]: HY Spread
+              - button "BAA Yield" [ref=e661] [cursor=pointer]:
+                - generic [ref=e662]: BAA Yield
+              - button "10Y Breakeven" [ref=e663] [cursor=pointer]:
+                - generic [ref=e664]: 10Y Breakeven
+              - button "WTI Crude" [ref=e665] [cursor=pointer]:
+                - generic [ref=e666]: WTI Crude
+              - button "Trade USD Index" [ref=e667] [cursor=pointer]:
+                - generic [ref=e668]: Trade USD Index
+              - button "USD/JPY" [ref=e669] [cursor=pointer]:
+                - generic [ref=e670]: USD/JPY
+              - button "Jobless Claims" [ref=e671] [cursor=pointer]:
+                - generic [ref=e672]: Jobless Claims
+              - button "NFCI" [ref=e673] [cursor=pointer]:
+                - generic [ref=e674]: NFCI
+              - button "CPI" [ref=e675] [cursor=pointer]:
+                - generic [ref=e676]: CPI
+              - button "Core PCE" [ref=e677] [cursor=pointer]:
+                - generic [ref=e678]: Core PCE
+              - button "Sector Return" [ref=e679] [cursor=pointer]:
+                - generic [ref=e680]: Sector Return
+              - button "52W High %" [ref=e681] [cursor=pointer]:
+                - generic [ref=e682]: 52W High %
+              - button "52W Low %" [ref=e683] [cursor=pointer]:
+                - generic [ref=e684]: 52W Low %
+            - generic [ref=e686]:
+              - list [ref=e688]:
+                - listitem [ref=e689]:
+                  - img "10Y Yield legend icon" [ref=e690]
+                  - text: 10Y Yield
+                - listitem [ref=e692]:
+                  - img "2-10 Spread legend icon" [ref=e693]
+                  - text: 2-10 Spread
+                - listitem [ref=e695]:
+                  - img "WTI Crude legend icon" [ref=e696]
+                  - text: WTI Crude
+              - application [ref=e698]:
+                - generic [ref=e713]:
+                  - generic [ref=e714]:
+                    - generic [ref=e716]: Jan 15
+                    - generic [ref=e718]: Feb 1
+                    - generic [ref=e720]: Feb 15
+                    - generic [ref=e722]: Mar 1
+                    - generic [ref=e724]: Mar 15
+                    - generic [ref=e726]: Apr 1
+                  - generic [ref=e727]:
+                    - generic [ref=e729]: "-30"
+                    - generic [ref=e731]: "0"
+                    - generic [ref=e733]: "30"
+                    - generic [ref=e735]: "60"
+                    - generic [ref=e737]: "90"
+        - generic [ref=e420] [cursor=pointer]:
+          - img [ref=e422]
+          - generic [ref=e424]:
+            - paragraph [ref=e425]: Select a stock to analyze
+            - paragraph [ref=e426]: Choose from 160 S&P 500 stocks
+          - img [ref=e427]
+  - generic [ref=e738]: "-30"

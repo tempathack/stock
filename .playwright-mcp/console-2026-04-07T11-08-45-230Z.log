@@ -1,0 +1,9 @@
+[      62ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[  477875ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  477876ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health/k8s:0
+[  477899ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  477899ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health:0
+[  477903ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  477903ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/overview:0
+[  478904ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  478904ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/overview:0

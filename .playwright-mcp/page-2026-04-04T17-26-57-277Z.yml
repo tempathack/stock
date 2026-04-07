@@ -1,0 +1,202 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SP
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: S&P 500 AI
+        - paragraph [ref=e9]: Platform
+    - navigation [ref=e10]:
+      - link "Dashboard" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e12]
+        - paragraph [ref=e14]: Dashboard
+      - link "Models" [ref=e15] [cursor=pointer]:
+        - /url: /models
+        - img [ref=e16]
+        - paragraph [ref=e19]: Models
+      - link "Forecasts" [ref=e20] [cursor=pointer]:
+        - /url: /forecasts
+        - img [ref=e21]
+        - paragraph [ref=e23]: Forecasts
+      - link "Drift" [ref=e24] [cursor=pointer]:
+        - /url: /drift
+        - img [ref=e25]
+        - paragraph [ref=e27]: Drift
+      - link "Backtest" [ref=e28] [cursor=pointer]:
+        - /url: /backtest
+        - img [ref=e29]
+        - paragraph [ref=e31]: Backtest
+      - link "Analytics" [ref=e32] [cursor=pointer]:
+        - /url: /analytics
+        - img [ref=e33]
+        - paragraph [ref=e36]: Analytics
+      - link "Search" [ref=e37] [cursor=pointer]:
+        - /url: /search
+        - img [ref=e38]
+        - paragraph [ref=e40]: Search
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e45]: API
+        - generic [ref=e48]: KAFKA
+        - generic [ref=e51]: DB
+      - generic [ref=e52]: 07:26:56 PM
+  - main [ref=e53]:
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - heading "Drift Monitoring" [level=4] [ref=e62]
+        - paragraph [ref=e64]: Model drift detection and auto-retrain status
+      - generic [ref=e66]:
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - heading "CatBoost_standard" [level=6] [ref=e73]
+              - generic [ref=e75]: Active
+            - generic [ref=e76]:
+              - generic [ref=e77]: "Scaler: standard"
+              - generic [ref=e78]:
+                - text: "Version:"
+                - generic [ref=e79]: v1
+              - generic [ref=e80]: "Trained: Mar 22, 2026"
+          - generic [ref=e81]:
+            - generic "Out-of-sample Root Mean Squared Error" [ref=e82]:
+              - generic [ref=e83]: RMSE
+              - paragraph [ref=e84]: "0.0234"
+            - generic "Out-of-sample Mean Absolute Error" [ref=e85]:
+              - generic [ref=e86]: MAE
+              - paragraph [ref=e87]: "0.0187"
+            - generic "Directional Accuracy — percentage of correct up/down predictions" [ref=e88]:
+              - generic [ref=e89]: Dir. Acc
+              - paragraph [ref=e90]: 62.0%
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - heading "Retraining Status" [level=6] [ref=e95]
+            - generic [ref=e97]: Up to Date
+          - text: "Last retrained: Mar 31, 2026, 14:30 GMT+2"
+          - generic [ref=e98]:
+            - generic [ref=e100]:
+              - text: Previous Model
+              - paragraph [ref=e101]: ridge
+              - heading "1.4089" [level=6] [ref=e102]
+              - generic [ref=e103]: MAE 0.1523
+            - separator [ref=e105]
+            - generic [ref=e107]:
+              - text: Current Model
+              - paragraph [ref=e108]: lasso
+              - heading "1.4120" [level=6] [ref=e109]
+              - generic [ref=e110]: MAE 0.1463
+      - generic [ref=e111]:
+        - heading "Rolling Model Performance" [level=6] [ref=e112]
+        - generic [ref=e113]: 30-day rolling RMSE, MAE, and Directional Accuracy
+        - paragraph [ref=e115]: No performance data available
+      - generic [ref=e117]:
+        - heading "Drift Event Timeline" [level=6] [ref=e118]
+        - generic [ref=e119]: 15 events detected
+        - list [ref=e120]:
+          - listitem [ref=e121]:
+            - generic [ref=e122]: Mar 24, 2026, 09:29
+            - generic [ref=e127]:
+              - generic [ref=e128]:
+                - generic [ref=e130]: Data
+                - generic [ref=e132]: Medium
+                - generic [ref=e134]: Drifted
+              - generic [ref=e135]:
+                - generic [ref=e137]: rsi_14
+                - generic [ref=e139]: macd_line
+          - listitem [ref=e140]:
+            - generic [ref=e141]: Mar 24, 2026, 09:28
+            - generic [ref=e146]:
+              - generic [ref=e147]:
+                - generic [ref=e149]: Data
+                - generic [ref=e151]: Medium
+                - generic [ref=e153]: Drifted
+              - generic [ref=e154]:
+                - generic [ref=e156]: rsi_14
+                - generic [ref=e158]: macd_line
+          - listitem [ref=e159]:
+            - generic [ref=e160]: Mar 24, 2026, 09:03
+            - generic [ref=e165]:
+              - generic [ref=e166]:
+                - generic [ref=e168]: Data
+                - generic [ref=e170]: Medium
+                - generic [ref=e172]: Drifted
+              - generic [ref=e173]:
+                - generic [ref=e175]: rsi_14
+                - generic [ref=e177]: macd_line
+          - listitem [ref=e178]:
+            - generic [ref=e179]: Mar 23, 2026, 21:29
+            - generic [ref=e185]:
+              - generic [ref=e187]: Prediction
+              - generic [ref=e189]: Low
+              - generic [ref=e191]: Drifted
+          - listitem [ref=e192]:
+            - generic [ref=e193]: Mar 23, 2026, 21:28
+            - generic [ref=e199]:
+              - generic [ref=e201]: Prediction
+              - generic [ref=e203]: Low
+              - generic [ref=e205]: Drifted
+          - listitem [ref=e206]:
+            - generic [ref=e207]: Mar 23, 2026, 21:03
+            - generic [ref=e213]:
+              - generic [ref=e215]: Prediction
+              - generic [ref=e217]: Low
+              - generic [ref=e219]: Drifted
+          - listitem [ref=e220]:
+            - generic [ref=e221]: Mar 21, 2026, 21:29
+            - generic [ref=e227]:
+              - generic [ref=e229]: Concept
+              - generic [ref=e231]: High
+              - generic [ref=e233]: Drifted
+          - listitem [ref=e234]:
+            - generic [ref=e235]: Mar 21, 2026, 21:28
+            - generic [ref=e241]:
+              - generic [ref=e243]: Concept
+              - generic [ref=e245]: High
+              - generic [ref=e247]: Drifted
+          - listitem [ref=e248]:
+            - generic [ref=e249]: Mar 21, 2026, 21:03
+            - generic [ref=e255]:
+              - generic [ref=e257]: Concept
+              - generic [ref=e259]: High
+              - generic [ref=e261]: Drifted
+          - listitem [ref=e262]:
+            - generic [ref=e263]: Mar 19, 2026, 21:29
+            - generic [ref=e268]:
+              - generic [ref=e269]:
+                - generic [ref=e271]: Data
+                - generic [ref=e273]: Low
+                - generic [ref=e275]: Drifted
+              - generic [ref=e278]: bb_upper
+          - listitem [ref=e279]:
+            - generic [ref=e280]: Mar 19, 2026, 21:28
+            - generic [ref=e285]:
+              - generic [ref=e286]:
+                - generic [ref=e288]: Data
+                - generic [ref=e290]: Low
+                - generic [ref=e292]: Drifted
+              - generic [ref=e295]: bb_upper
+          - listitem [ref=e296]:
+            - generic [ref=e297]: Mar 19, 2026, 21:03
+            - generic [ref=e302]:
+              - generic [ref=e303]:
+                - generic [ref=e305]: Data
+                - generic [ref=e307]: Low
+                - generic [ref=e309]: Drifted
+              - generic [ref=e312]: bb_upper
+          - listitem [ref=e313]:
+            - generic [ref=e314]: Mar 17, 2026, 21:29
+            - generic [ref=e320]:
+              - generic [ref=e322]: Prediction
+              - generic [ref=e324]: Medium
+              - generic [ref=e326]: Drifted
+          - listitem [ref=e327]:
+            - generic [ref=e328]: Mar 17, 2026, 21:28
+            - generic [ref=e334]:
+              - generic [ref=e336]: Prediction
+              - generic [ref=e338]: Medium
+              - generic [ref=e340]: Drifted
+          - listitem [ref=e341]:
+            - generic [ref=e342]: Mar 17, 2026, 21:03
+            - generic [ref=e347]:
+              - generic [ref=e349]: Prediction
+              - generic [ref=e351]: Medium
+              - generic [ref=e353]: Drifted

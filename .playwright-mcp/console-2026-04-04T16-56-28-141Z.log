@@ -1,0 +1,5 @@
+[      62ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[     802ms] [WARNING] You are loading @emotion/react when it is already loaded. Running multiple instances may cause problems. This can happen if multiple versions are used, or if multiple builds of the same version are used. @ http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:3049
+[     925ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[    1172ms] [WARNING] WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useWebSocket.ts:76
+[    1928ms] [WARNING] [ECharts] Instance ec_1775321789261 has been disposed @ http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:7472

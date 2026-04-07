@@ -1,0 +1,63 @@
+[      84ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/health/k8s' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[      84ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      85ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/health/k8s:0
+[      85ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/health' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[      85ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      85ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/health:0
+[      92ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/models/drift' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[      92ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      92ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/models/drift:0
+[     178ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[     178ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[     178ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[    1098ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/models/drift' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[    1098ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[    1098ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/models/drift:0
+[    1190ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[    1190ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[    1190ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[   15344ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/models/comparison' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/models:0
+[   15344ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   15344ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/models/comparison:0
+[   16351ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/models/comparison' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/models:0
+[   16351ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   16351ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/models/comparison:0
+[   17322ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   17322ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   17322ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[   18344ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   18345ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   18345ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[   30094ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/health' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   30094ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   30094ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/health:0
+[   48363ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   48364ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   48364ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[   49379ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   49379ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   49379ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[   52562ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   58563ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   60086ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   60086ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[   60096ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   60096ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   67564ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   79381ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   79381ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   79566ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   80382ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   80382ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   90098ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   90098ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   94569ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   94569ms] [WARNING] useWebSocket: max reconnect attempts reached @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[  110385ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[  110385ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  111386ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[  111386ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  120087ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[  120087ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  120099ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[  120099ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0

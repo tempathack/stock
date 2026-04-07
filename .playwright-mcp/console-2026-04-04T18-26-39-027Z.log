@@ -1,0 +1,5 @@
+[      87ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[   30285ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts?t=1775326268304:9
+[   30288ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts?t=1775326268304:9
+[   30288ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts?t=1775326268304:9
+[   30288ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts?t=1775326268304:9

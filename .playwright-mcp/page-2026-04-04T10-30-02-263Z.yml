@@ -1,0 +1,357 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+        - text: ">"
+        - link "Treasury Constant Maturity" [ref=e67] [cursor=pointer]:
+          - /url: /categories/115
+    - generic [ref=e68]:
+      - generic "DGS7"
+      - generic [ref=e69]:
+        - heading "Add to favorites Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis (DGS7)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis (DGS7)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-02: 4.12"
+              - generic "Apr 3, 2026 3:16 PM CDT" [ref=e85]: "Updated: Apr 3, 2026 3:16 PM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=18&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - button "Share Graph " [ref=e135] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e136]: 
+              - text:   
+            - generic [ref=e137]:
+              - button "Account Tools " [ref=e138] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e139]: 
+              - text:     
+          - generic [ref=e141]:
+            - link "Share on X" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Share on Reddit" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Post to Linkedin" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+        - generic [ref=e150]:
+          - generic [ref=e152]:
+            - heading "Notes" [level=2] [ref=e153]
+            - generic [ref=e154]:
+              - paragraph [ref=e155]:
+                - strong [ref=e156]: "Source:"
+                - link "Board of Governors of the Federal Reserve System (US)" [ref=e157] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov
+                  - text: Board of Governors of the Federal Reserve System (US)
+                  - generic [ref=e158]: 
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "Release:"
+                - link "H.15 Selected Interest Rates" [ref=e161] [cursor=pointer]:
+                  - /url: http://www.federalreserve.gov/releases/h15/
+                  - text: H.15 Selected Interest Rates
+                  - generic [ref=e162]: 
+              - paragraph [ref=e164]:
+                - strong [ref=e165]: "Units:"
+                - generic [ref=e166]: Percent, Not Seasonally Adjusted
+              - paragraph [ref=e167]:
+                - strong [ref=e168]: "Frequency:"
+                - generic [ref=e169]: Daily
+              - heading "Notes:" [level=4] [ref=e171]
+              - paragraph
+              - paragraph [ref=e172]:
+                - text: For further information regarding treasury constant maturity data, please refer to the
+                - link "H.15 Statistical Release notes" [ref=e173] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/releases/h15/default.htm
+                - text: and the
+                - link "Treasury Yield Curve Methodology" [ref=e174] [cursor=pointer]:
+                  - /url: https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology
+                - text: .
+                - text: For questions on the data, please contact the
+                - link "data source" [ref=e175] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/apps/ContactUs/feedback.aspx?refurl=/releases/h15/%
+                - text: . For questions on FRED functionality, please contact us
+                - link "here" [ref=e176] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/contactus/
+                - text: .
+              - paragraph
+              - generic [ref=e177]:
+                - heading "Suggested Citation:" [level=4] [ref=e178]
+                - paragraph [ref=e180]: Board of Governors of the Federal Reserve System (US), Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis [DGS7], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DGS7, April 4, 2026.
+          - generic [ref=e182]:
+            - heading "Release Tables" [level=2] [ref=e183]
+            - generic [ref=e184]:
+              - generic [ref=e185]: H.15 Selected Interest Rates
+              - list [ref=e186]:
+                - listitem [ref=e187]:
+                  - 'link "Link to release table: H.15 Selected Interest Rates, Selected Interest Rates Instruments, Yields in percent per annum: Daily" [ref=e188] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=18&eid=289#snid=323
+                    - generic [ref=e189]: 
+                    - text: "Selected Interest Rates Instruments, Yields in percent per annum: Daily"
+          - generic [ref=e191]:
+            - heading "Related Data and Content" [level=2] [ref=e192]
+            - generic [ref=e193]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e194]
+              - generic [ref=e195]:
+                - generic [ref=e196]:
+                  - link "Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment Basis" [ref=e197] [cursor=pointer]:
+                    - /url: /series/DGS3
+                    - img [ref=e198]
+                  - generic [ref=e199]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment Basis" [ref=e200] [cursor=pointer]:
+                      - /url: /series/DGS3
+                      - strong [ref=e201]: Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment Basis
+                - generic [ref=e202]:
+                  - link "Market Yield on U.S. Treasury Securities at 6-Month Constant Maturity, Quoted on an Investment Basis" [ref=e203] [cursor=pointer]:
+                    - /url: /series/DGS6MO
+                    - img [ref=e204]
+                  - generic [ref=e205]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 6-Month Constant Maturity, Quoted on an Investment Basis" [ref=e206] [cursor=pointer]:
+                      - /url: /series/DGS6MO
+                      - strong [ref=e207]: Market Yield on U.S. Treasury Securities at 6-Month Constant Maturity, Quoted on an Investment Basis
+                - generic [ref=e208]:
+                  - link "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis" [ref=e209] [cursor=pointer]:
+                    - /url: /series/DGS5
+                    - img [ref=e210]
+                  - generic [ref=e211]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis" [ref=e212] [cursor=pointer]:
+                      - /url: /series/DGS5
+                      - strong [ref=e213]: Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis
+                - generic [ref=e214]:
+                  - link "Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e215] [cursor=pointer]:
+                    - /url: /series/DFII7
+                    - img [ref=e216]
+                  - generic [ref=e217]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e218] [cursor=pointer]:
+                      - /url: /series/DFII7
+                      - strong [ref=e219]: Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed
+                - text: ... ... ... ...
+                - generic [ref=e220]:
+                  - button "click to see more" [ref=e221] [cursor=pointer]: See More...
+                  - separator [ref=e222]
+              - heading "Content Suggestions" [level=3] [ref=e223]
+              - generic [ref=e224]:
+                - generic [ref=e225]:
+                  - link "Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis" [ref=e226] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=DGS7&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e227]
+                  - generic [ref=e228]: ALFRED Vintage Series
+                  - generic [ref=e229]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis" [ref=e230] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=DGS7&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e231]: Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis
+                - generic [ref=e232]:
+                  - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis" [ref=e233] [cursor=pointer]:
+                    - /url: /series/DGS10
+                    - img [ref=e234]
+                  - generic [ref=e235]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis" [ref=e236] [cursor=pointer]:
+                      - /url: /series/DGS10
+                      - strong [ref=e237]: Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis
+              - heading "Other Formats" [level=3] [ref=e238]
+              - generic [ref=e239]:
+                - link "Annual, Not Seasonally Adjusted" [ref=e240] [cursor=pointer]:
+                  - /url: /series/RIFLGFCY07NA
+                - link "Monthly, Not Seasonally Adjusted" [ref=e241] [cursor=pointer]:
+                  - /url: /series/GS7
+                - link "Weekly, Not Seasonally Adjusted" [ref=e242] [cursor=pointer]:
+                  - /url: /series/WGS7YR
+              - heading "Related Categories" [level=3] [ref=e244]
+              - generic [ref=e245]:
+                - link "Treasury Constant Maturity" [ref=e246] [cursor=pointer]:
+                  - /url: /categories/115
+                - link "Interest Rates" [ref=e247] [cursor=pointer]:
+                  - /url: /categories/22
+                - link "Money, Banking, & Finance" [ref=e248] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e250]
+              - link "More Series from H.15 Selected Interest Rates" [ref=e252] [cursor=pointer]:
+                - /url: /release?rid=18
+              - heading "Tags" [level=3] [ref=e254]
+              - generic:
+                - link "7-Year" [ref=e255] [cursor=pointer]:
+                  - /url: /tags/series?t=7-year
+                - link "H.15 Selected Interest Rates" [ref=e256] [cursor=pointer]:
+                  - /url: /tags/series?t=h15
+                - link "Maturity" [ref=e257] [cursor=pointer]:
+                  - /url: /tags/series?t=maturity
+                - link "Treasury" [ref=e258] [cursor=pointer]:
+                  - /url: /tags/series?t=treasury
+                - link "Interest Rate" [ref=e259] [cursor=pointer]:
+                  - /url: /tags/series?t=interest%20rate
+                - link "Interest" [ref=e260] [cursor=pointer]:
+                  - /url: /tags/series?t=interest
+                - link "Daily" [ref=e261] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "Board of Governors" [ref=e262] [cursor=pointer]:
+                  - /url: /tags/series?t=frb
+                - link "Rate" [ref=e263] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - link "Nation" [ref=e264] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e265] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e266] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e267] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e270]:
+    - generic [ref=e271]:
+      - generic [ref=e272]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e273]
+        - generic [ref=e276]:
+          - textbox "email" [ref=e277]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e278] [cursor=pointer]
+      - generic [ref=e279]:
+        - heading "Follow us" [level=3] [ref=e280]
+        - generic [ref=e281]:
+          - link "Saint Louis Fed linkedin page" [ref=e283] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e284]: 
+            - generic [ref=e285]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e287] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e288]: 
+            - generic [ref=e289]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e291] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e292]: 
+            - generic [ref=e293]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e295] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e296]: 
+            - generic [ref=e297]: Saint Louis Fed YouTube page
+    - generic [ref=e299]:
+      - heading "Need Help?" [level=3] [ref=e300]
+      - generic [ref=e301]:
+        - link "Questions or Comments" [ref=e303] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e305] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e306]
+      - generic [ref=e307]:
+        - link "Legal" [ref=e309] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e311] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

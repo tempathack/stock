@@ -1,0 +1,2 @@
+[     365ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://api.stlouisfed.org/fred/series?series_id=ICSA&api_key=&file_type=json:0
+[     519ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://api.stlouisfed.org/favicon.ico:0

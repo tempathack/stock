@@ -1,0 +1,188 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - heading "Federal Reserve Economic Data" [level=1] [ref=e5]
+      - navigation [ref=e6]:
+        - generic [ref=e7]:
+          - generic [ref=e8]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e9] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e10]
+            - separator [ref=e11]
+          - generic [ref=e12]:
+            - link "FRED homepage" [ref=e14] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e15]
+            - generic [ref=e16]:
+              - generic [ref=e17]:
+                - listbox [ref=e18]:
+                  - option [selected] [ref=e19]
+                - combobox [ref=e22]:
+                  - list
+                  - searchbox "Search" [ref=e24]
+                - button "Submit Search" [ref=e25] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e26]: 
+              - navigation [ref=e27]:
+                - list [ref=e28]:
+                  - listitem [ref=e29]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e31] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e32]
+                  - listitem [ref=e33]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e38] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e39]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e43]:
+        - separator [ref=e44]
+        - navigation [ref=e45]:
+          - list [ref=e47]:
+            - listitem [ref=e48]:
+              - link "Release Calendar" [ref=e49] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e50]:
+              - button "Tools " [ref=e52] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e53]: 
+            - listitem [ref=e54]:
+              - link "News" [ref=e55] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e56]:
+              - link "Blog" [ref=e57] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org/
+            - listitem [ref=e58]:
+              - button "About " [ref=e60] [cursor=pointer]:
+                - text: About
+                - generic [ref=e61]: 
+    - generic [ref=e63]:
+      - complementary [ref=e65]:
+        - paragraph [ref=e66]:
+          - link "RSS Feed " [ref=e67] [cursor=pointer]:
+            - /url: /feed/
+            - text: RSS Feed
+            - generic [ref=e68]: 
+        - heading "Recent Posts" [level=2] [ref=e69]
+        - list [ref=e70]:
+          - listitem [ref=e71]:
+            - link "FRED Expands Chicago Fed Advance Retail Trade Summary Data" [ref=e72] [cursor=pointer]:
+              - /url: https://news.research.stlouisfed.org/2026/04/fred-expands-chicago-fed-advance-retail-trade-summary-data/
+          - listitem [ref=e73]:
+            - link "Teaching about the economics of oil | Bring FRED into the Classroom | April 2026" [ref=e74] [cursor=pointer]:
+              - /url: https://news.research.stlouisfed.org/2026/03/teaching-about-the-economics-of-oil-bring-fred-into-the-classroom-april-2026/
+          - listitem [ref=e75]:
+            - link "Teaching about the CPI basket | Bring FRED into the Classroom | March 2026" [ref=e76] [cursor=pointer]:
+              - /url: https://news.research.stlouisfed.org/2026/03/teaching-about-cpi-basket-bring-fred-into-the-classroom-march-2026/
+          - listitem [ref=e77]:
+            - link "FRED Expands AD&Co U.S. Mortgage High Yield Index Data" [ref=e78] [cursor=pointer]:
+              - /url: https://news.research.stlouisfed.org/2026/02/fred-expands-adco-u-s-mortgage-high-yield-index-data/
+          - listitem [ref=e79]:
+            - link "FRED Expands Nasdaq Daily Index Data" [ref=e80] [cursor=pointer]:
+              - /url: https://news.research.stlouisfed.org/2026/02/fred-expands-nasdaq-daily-index-data/
+        - iframe [ref=e81]:
+          - generic [ref=f8e3]:
+            - link "FRED - Federal Reserve Economic Data" [ref=f8e4] [cursor=pointer]:
+              - /url: https://fred.stlouisfed.org/
+              - img "FRED - Federal Reserve Economic Data" [ref=f8e5]
+            - generic [ref=f8e7]:
+              - link "CPI" [ref=f8e8] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/series/CPIAUCSL/?utm_source=fred-glance-widget&utm_medium=widget&utm_campaign=fred-glance-widget
+                - strong [ref=f8e9]: CPI
+              - strong [ref=f8e10]: "+2.4"
+              - text: "% Chg. from Yr. Ago on Feb 2026"
+            - generic [ref=f8e12]:
+              - link "Civ. Unemploy. Rate" [ref=f8e13] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/series/UNRATE/?utm_source=fred-glance-widget&utm_medium=widget&utm_campaign=fred-glance-widget
+                - strong [ref=f8e14]: Civ. Unemploy. Rate
+              - strong [ref=f8e15]: "4.3"
+              - text: "% on Mar 2026"
+            - generic [ref=f8e17]:
+              - link "10-Yr. Treas. Rate" [ref=f8e18] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/series/DGS10/?utm_source=fred-glance-widget&utm_medium=widget&utm_campaign=fred-glance-widget
+                - strong [ref=f8e19]: 10-Yr. Treas. Rate
+              - strong [ref=f8e20]: "4.31"
+              - text: "% on 2026-04-02"
+            - generic [ref=f8e22]:
+              - link "Real GDP" [ref=f8e23] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/series/GDPC1/?utm_source=fred-glance-widget&utm_medium=widget&utm_campaign=fred-glance-widget
+                - strong [ref=f8e24]: Real GDP
+              - strong [ref=f8e25]: "+0.7"
+              - text: "%, Comp. Annual Rate of Chg. on Q4 2025"
+            - generic [ref=f8e27]:
+              - link "IP" [ref=f8e28] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/series/INDPRO/?utm_source=fred-glance-widget&utm_medium=widget&utm_campaign=fred-glance-widget
+                - strong [ref=f8e29]: IP
+              - strong [ref=f8e30]: "+0.2"
+              - text: "% Chg. on Feb 2026"
+            - generic [ref=f8e32]:
+              - link "Payroll Employment" [ref=f8e33] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/series/PAYEMS/?utm_source=fred-glance-widget&utm_medium=widget&utm_campaign=fred-glance-widget
+                - strong [ref=f8e34]: Payroll Employment
+              - strong [ref=f8e35]: "+178"
+              - text: Chg., Thous. of Persons on Mar 2026
+            - link "... and 840,000+ more series in FRED" [ref=f8e37] [cursor=pointer]:
+              - /url: https://fred.stlouisfed.org/?utm_source=fred-glance-widget&utm_medium=widget&utm_campaign=fred-glance-widget
+              - strong [ref=f8e38]: ... and 840,000+ more series in FRED
+      - generic [ref=e83]:
+        - heading "ICE Benchmark Administration Ltd (IBA) Data To Be Removed From FRED" [level=1] [ref=e84]:
+          - link "ICE Benchmark Administration Ltd (IBA) Data To Be Removed From FRED" [ref=e85] [cursor=pointer]:
+            - /url: https://news.research.stlouisfed.org/2022/01/ice-benchmark-administration-ltd-iba-data-to-be-removed-from-fred/
+        - generic [ref=e86]:
+          - text: Posted on
+          - link "January 10, 2022" [ref=e87] [cursor=pointer]:
+            - /url: https://news.research.stlouisfed.org/2022/01/ice-benchmark-administration-ltd-iba-data-to-be-removed-from-fred/
+        - generic [ref=e88]:
+          - paragraph [ref=e89]: On January 31, 2022, FRED will no longer include data from ICE Benchmark Administration Limited (IBA).
+          - paragraph [ref=e90]: All series from the datasets below will be deleted from the FRED database, Excel Add-in, Mobile applications, APIs, and all other FRED services.
+          - list [ref=e91]:
+            - listitem [ref=e92]: ICE Libor Rates
+            - listitem [ref=e93]: ICE Swap Rates
+            - listitem [ref=e94]: "LMBA Gold Price: Daily Prices"
+            - listitem [ref=e95]: "LMBA Silver Price: Daily Prices"
+          - paragraph [ref=e96]: Custom links to these series or custom graphs that contain these series may be broken or may return unexpected results. We apologize for this inconvenience and hope you continue to find value in our free data services.
+          - paragraph
+        - generic [ref=e98]:
+          - text: Posted in
+          - link "FRED Announcements" [ref=e99] [cursor=pointer]:
+            - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+    - text:  
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - heading "Subscribe to the FRED newsletter" [level=3] [ref=e104]
+          - generic [ref=e107]:
+            - textbox "email" [ref=e108]:
+              - /placeholder: Email
+            - button "Subscribe" [ref=e109] [cursor=pointer]
+        - generic [ref=e110]:
+          - heading "Follow us" [level=3] [ref=e111]
+          - generic [ref=e112]:
+            - link "Saint Louis Fed linkedin page" [ref=e114] [cursor=pointer]:
+              - /url: http://bit.ly/d056zL
+              - generic [ref=e115]: 
+              - generic [ref=e116]: Saint Louis Fed linkedin page
+            - link "Saint Louis Fed facebook page" [ref=e118] [cursor=pointer]:
+              - /url: https://www.facebook.com/stlfed
+              - generic [ref=e119]: 
+              - generic [ref=e120]: Saint Louis Fed facebook page
+            - link "Saint Louis Fed X page" [ref=e122] [cursor=pointer]:
+              - /url: http://bit.ly/9ngC3L
+              - generic [ref=e123]: 
+              - generic [ref=e124]: Saint Louis Fed X page
+            - link "Saint Louis Fed YouTube page" [ref=e126] [cursor=pointer]:
+              - /url: http://bit.ly/aY9TVF
+              - generic [ref=e127]: 
+              - generic [ref=e128]: Saint Louis Fed YouTube page
+      - generic [ref=e130]:
+        - heading "Need Help?" [level=3] [ref=e131]
+        - generic [ref=e132]:
+          - link "Questions or Comments" [ref=e134] [cursor=pointer]:
+            - /url: //fred.stlouisfed.org/contactus/
+          - link "FRED Help" [ref=e136] [cursor=pointer]:
+            - /url: //fredhelp.stlouisfed.org/
+        - separator [ref=e137]
+        - generic [ref=e138]:
+          - link "Legal" [ref=e140] [cursor=pointer]:
+            - /url: //fred.stlouisfed.org/legal/
+          - link "Privacy Notice & Policy" [ref=e142] [cursor=pointer]:
+            - /url: //research.stlouisfed.org/privacy.html

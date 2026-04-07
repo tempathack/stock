@@ -1,0 +1,23 @@
+[      84ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      84ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[      84ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      84ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[      84ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      84ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[     102ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[     102ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[     102ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[    1086ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[    1086ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[    1103ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[    1103ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[    3104ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[    9105ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   18106ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   30087ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   30087ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   30107ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://192.168.49.2:30080/assets/Dashboard-DZHPN7ax.js:66
+[   31106ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   31106ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   32107ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   32107ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0

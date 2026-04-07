@@ -1,0 +1,212 @@
+[      66ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[     269ms] [WARNING] WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useWebSocket.ts:76
+[     411ms] [WARNING] [ECharts] Instance ec_1775322237718 has been disposed @ http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:7472
+[  117722ms] [WARNING] WebSocket connection to 'ws://localhost:8010/ws/sentiment/AAPL' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useSentimentSocket.ts:51
+[  117776ms] TypeError: Cannot set properties of null (setting 'innerHTML')
+    at TooltipHTMLContent2.setContent (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:64857:22)
+    at TooltipView2._showTooltipContent (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65509:22)
+    at TooltipView2.<anonymous> (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65421:14)
+    at TooltipView2._showOrMove (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65314:62)
+    at TooltipView2._showSeriesItemTooltip (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65420:12)
+    at TooltipView2._tryShow (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65299:16)
+    at TooltipView2.manuallyShowTip (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65227:14)
+    at http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65153:39
+[  117776ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  117777ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  117777ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  119267ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  119267ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  119268ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  124276ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  124276ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  124276ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  125290ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  125290ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  125290ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  130303ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  130303ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  130304ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  131317ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  131318ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  131318ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  136331ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  136331ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  136332ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  137347ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  137348ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  137348ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  142427ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  142428ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  142428ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  143441ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  143441ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  143441ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  148454ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  148454ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  148454ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  149467ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  149467ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  149467ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  154475ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  154475ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  154475ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  155488ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  155488ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  155489ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  160502ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  160502ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  160502ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  161514ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  161514ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  161514ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  166526ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  166526ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  166526ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  167539ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  167539ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  167539ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  172552ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  172553ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  172553ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  173564ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  173564ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  173565ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  178577ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  178577ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  178577ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  179589ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  179590ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  179590ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  184598ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  184598ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  184598ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  186112ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  186113ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  186113ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  191130ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  191130ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  191130ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  192149ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  192149ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  192149ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  197163ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  197163ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  197163ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  198175ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  198175ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  198175ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  203187ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  203187ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  203187ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  204204ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  204204ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  204204ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  209213ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  209213ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  209213ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  210226ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  210226ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  210227ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  215235ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  215235ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  215235ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  216247ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  216247ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  216247ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  221258ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  221258ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  221259ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  222271ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  222271ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  222271ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  227284ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  227284ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  227285ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  228297ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  228297ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  228297ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  233310ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  233310ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  233310ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  234322ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  234322ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  234322ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  239330ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  239330ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  239330ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  240338ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  240338ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240338ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  245346ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  245347ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  245347ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  246359ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  246360ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  246360ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  251373ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  251373ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  251374ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  252385ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  252385ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  252385ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  257398ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  257398ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  257398ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  258411ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  258411ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  258412ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  263424ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  263424ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  263425ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  264438ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  264438ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  264438ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  269451ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  269452ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  269452ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  270459ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  270459ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  270460ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  275468ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  275468ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  275468ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  276480ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  276481ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  276481ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  281493ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  281493ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  281494ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  282506ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  282506ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  282506ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  287516ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  287516ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  287516ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  288526ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  288526ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  288526ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  293535ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  293535ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  293535ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  294544ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/market/streaming-features/AAPL' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/dashboard:0
+[  294544ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  294544ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  299842ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  299842ms] [ERROR] Failed to load resource: net::ERR_EMPTY_RESPONSE @ http://localhost:8010/market/streaming-features/AAPL:0
+[  300197ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300197ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health/k8s:0
+[  300247ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300247ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health:0
+[  300843ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300843ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  300966ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/macro/latest:0
+[  301018ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  301018ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/overview:0
+[  302020ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  302020ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/overview:0
+[  302835ms] [ERROR] WebSocket connection to 'ws://localhost:8010/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[  306116ms] [ERROR] WebSocket connection to 'ws://localhost:8010/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[  306409ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  306409ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/streaming-features/AAPL:0
+[  307410ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  307410ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/market/streaming-features/AAPL:0

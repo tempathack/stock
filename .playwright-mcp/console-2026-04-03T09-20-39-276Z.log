@@ -1,0 +1,115 @@
+[      81ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=184df7c7:21608
+[     285ms] [WARNING] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: WebSocket is closed before the connection is established. @ http://localhost:3000/src/hooks/useWebSocket.ts:76
+[     445ms] [WARNING] [ECharts] Instance ec_1775208039514 has been disposed @ http://localhost:3000/node_modules/.vite/deps/echarts.js?v=184df7c7:7472
+[   14061ms] [WARNING] WebSocket connection to 'ws://localhost:8000/ws/sentiment/AMD' failed: WebSocket is closed before the connection is established. @ http://localhost:3000/src/hooks/useSentimentSocket.ts:51
+[   14093ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   14094ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   14094ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   15730ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   15730ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   15731ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   20744ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   20744ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   20744ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   21758ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   21758ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   21758ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   26771ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   26771ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   26771ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   27785ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   27785ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   27786ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   32794ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   32794ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   32795ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   33808ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   33808ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   33808ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   38822ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   38822ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   38822ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   39835ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   39835ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   39836ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   44848ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   44848ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   44849ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   45861ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   45862ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   45862ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   50875ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   50875ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   50875ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   51888ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   51888ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   51889ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   56901ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   56901ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   56901ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   57914ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   57914ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   57914ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   62922ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   62922ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   62922ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   63935ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   63935ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   63935ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   68948ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   68948ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   68948ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   69962ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   69962ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   69962ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   74976ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   74976ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   74976ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   75988ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   75988ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   75988ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   79395ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/market/sentiment/AMD/timeseries:0
+[   79396ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:3000/src/api/client.ts:9
+[   79404ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/market/sentiment/AMD/timeseries:0
+[   79404ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:3000/src/api/client.ts:9
+[   80409ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/market/sentiment/AMD/timeseries:0
+[   80409ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:3000/src/api/client.ts:9
+[   80996ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   80997ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   80997ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   82011ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   82011ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   82012ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   87025ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   87025ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   87026ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   88038ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   88038ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   88038ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   93047ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   93047ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   93047ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   94061ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   94061ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   94062ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[   99076ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[   99076ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[   99076ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[  100090ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[  100090ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[  100091ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[  105104ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[  105105ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[  105105ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[  106119ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[  106120ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[  106120ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[  111130ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[  111130ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[  111131ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[  112142ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[  112142ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[  112142ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0
+[  117157ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/AMD' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:3000/dashboard:0
+[  117158ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[  117158ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/AMD:0

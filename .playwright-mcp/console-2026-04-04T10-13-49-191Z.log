@@ -1,0 +1,3 @@
+[    2145ms] TypeError: Failed to execute 'getComputedStyle' on 'Window': parameter 1 is not of type 'Element'.
+    at e (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.bottomextra.min.js:1:609)
+    at https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.bottomextra.min.js:1:721

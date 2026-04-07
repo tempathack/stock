@@ -1,0 +1,11 @@
+[     650ms] [ERROR] TypeError: Failed to fetch
+    at Ei.request (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149462)
+    at Ei.get (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149958)
+    at Q4.fetchChartData (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:40513)
+    at Q4.componentDidMount (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:39885)
+    at oue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32986)
+    at iue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32757)
+    at Nje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32254)
+    at Dje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:42577)
+    at ha (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:41903)
+    at cue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:37167) @ https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:22

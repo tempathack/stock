@@ -1,0 +1,556 @@
+[     103ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[     174ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     174ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[     174ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     174ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[     174ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     174ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[     266ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[     266ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[     269ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[     270ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[     294ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     294ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[     294ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     294ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[     294ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     294ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[     294ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     295ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[     295ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     295ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/candles?ticker=AAPL&interval=1h&limit=100:0
+[     295ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     295ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[    1176ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1176ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[    1296ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1296ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   10297ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   10297ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   15298ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   15298ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   15300ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   15300ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[   20300ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   20300ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   30185ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30186ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   30301ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30301ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[   30309ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   30309ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   30310ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30310ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[   30312ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30312ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[   30312ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30312ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   31298ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   31299ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   32300ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   32300ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   40315ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   40316ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   45314ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   45314ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   45316ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   45316ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[   50318ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   50318ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   60175ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60176ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[   60194ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60194ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   60307ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60308ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[   60313ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60313ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[   60317ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   60317ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   60320ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60320ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[   60339ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60339ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   62302ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   62302ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   63304ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   63304ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   70342ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   70342ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   75323ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   75323ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   75324ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   75324ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[   80345ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   80345ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   90202ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   90202ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   90313ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   90313ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[   90318ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   90318ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[   90327ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   90327ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[   90329ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   90329ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[   90367ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   90367ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[   93306ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   93306ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   94307ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   94308ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  100370ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  100370ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  105331ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  105332ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  105332ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  105333ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  110373ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  110373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  120177ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120177ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  120210ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120210ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  120317ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120318ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  120321ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120322ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  120335ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  120335ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  120336ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120336ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  120376ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120376ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  124309ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  124309ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  125311ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  125311ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  130379ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  130379ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  135338ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  135338ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  135339ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  135339ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  140382ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  140382ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  150218ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  150218ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  150323ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  150323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  150328ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  150328ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  150341ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  150342ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  150343ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  150343ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  150385ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  150385ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  155313ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  155313ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  156315ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  156315ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  160388ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  160388ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  165346ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  165346ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  165347ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  165347ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  170390ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  170391ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  180179ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180179ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  180225ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180225ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  180328ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180328ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  180333ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180333ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  180350ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  180350ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  180351ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180352ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  180393ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180393ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  186317ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  186318ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  187319ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  187319ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  190395ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  190396ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  195355ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  195355ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  195356ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  195357ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  200398ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  200398ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  210232ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  210232ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  210334ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  210334ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  210339ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  210339ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  210359ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  210360ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  210361ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  210361ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  210400ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  210400ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  217321ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  217321ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  218323ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  218323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  220403ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  220403ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  225364ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  225364ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  225365ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  225365ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  230405ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  230405ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  240181ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240181ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  240237ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240237ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  240337ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240337ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  240343ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240343ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  240368ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  240368ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  240369ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240369ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  240408ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  240408ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  248325ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  248325ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  249327ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  249328ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  250411ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  250411ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  255372ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  255372ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  255373ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  255373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  260414ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  260414ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  270241ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  270242ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  270344ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  270344ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  270348ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  270349ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  270376ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  270376ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  270377ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  270377ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  270416ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  270417ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  279330ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  279330ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  280332ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  280332ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  280418ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  280419ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  285380ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  285380ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  285381ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  285382ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  290421ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  290421ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  300183ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300183ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  300249ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300249ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  300350ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300350ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  300354ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300355ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  300384ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  300384ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  300385ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300386ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  300423ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  300424ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  310334ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  310334ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  310426ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  310426ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  311336ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  311336ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  313374ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  313374ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  313376ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  313376ms] [WARNING] The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=729f0356:7127
+[  313386ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  313387ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/summary:0
+[  313387ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  313387ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/flink/jobs:0
+[  313387ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  313387ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/feast/freshness:0
+[  313387ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  313387ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  313387ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  313387ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/candles?ticker=AAPL&interval=1h&limit=100:0
+[  313387ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  313387ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/analytics/kafka/lag:0
+[  314388ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  314389ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  315067ms] [WARNING] MUI: The LoadingButton component functionality is now part of the Button component from Material UI.
+
+You should use `import Button from '@mui/material/Button'`
+or `import { Button } from '@mui/material'` @ http://localhost:5173/node_modules/.vite/deps/@mui_lab_LoadingButton.js?v=729f0356:34
+[  315085ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  315086ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  316087ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  316087ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  316904ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  316904ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[  316904ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  316904ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/comparison:0
+[  316904ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  316904ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift/rolling-performance?days=30:0
+[  316904ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  316904ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/retrain-status:0
+[  317906ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  317906ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[  317906ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  317906ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/comparison:0
+[  317906ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  317906ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift/rolling-performance?days=30:0
+[  317907ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  317907ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/retrain-status:0
+[  319583ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  319584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=1:0
+[  319584ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  319584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=7:0
+[  319584ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  319584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=14:0
+[  319584ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  319584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=30:0
+[  319584ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  319584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  319584ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  319584ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/horizons:0
+[  320585ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  320586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=1:0
+[  320586ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  320586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=7:0
+[  320586ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  320586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=14:0
+[  320586ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  320586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=30:0
+[  320588ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  320588ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  320588ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  320588ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/horizons:0
+[  322055ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  322055ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/comparison:0
+[  323057ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  323057ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/comparison:0
+[  330257ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  330257ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  360185ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  360185ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  360262ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  360262ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  390267ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  390267ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  420187ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  420187ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  420271ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  420271ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  450277ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  450277ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  458062ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:963
+[  458063ms] [ERROR] WebSocket connection to 'ws://localhost:5173/' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/@vite/client:1034
+[  459324ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[  459391ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  459391ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  459392ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[  459394ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  459394ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  459394ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  459402ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/drift' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  459402ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  459403ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/drift:0
+[  459541ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/comparison' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  459541ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  459542ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/comparison:0
+[  460407ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/drift' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  460407ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  460407ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/drift:0
+[  460546ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/comparison' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  460547ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  460547ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/comparison:0
+[  460799ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[  460860ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  460860ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  460860ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[  460860ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/drift' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  460860ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  460860ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/drift:0
+[  460860ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  460860ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  460861ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  460903ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/comparison' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  460903ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  460903ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/comparison:0
+[  461869ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/drift' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  461869ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  461869ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/drift:0
+[  461907ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/models/comparison' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  461907ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  461908ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/models/comparison:0
+[  490873ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  490874ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  490874ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0
+[  520865ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health/k8s' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  520865ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  520866ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health/k8s:0
+[  520880ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8010/health' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/models:0
+[  520880ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  520880ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8010/health:0

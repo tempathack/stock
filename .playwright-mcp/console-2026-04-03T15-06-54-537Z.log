@@ -1,0 +1,64 @@
+[      69ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[     119ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     120ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[     120ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     120ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[     120ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     120ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[     243ms] [WARNING] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useWebSocket.ts:76
+[     246ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     246ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[     254ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[    1122ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1123ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[    1247ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1248ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[    3249ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[    6258ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[   12251ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[   18261ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[   18261ms] [WARNING] useWebSocket: max reconnect attempts reached @ http://localhost:5173/src/hooks/useWebSocket.ts:57
+[   27254ms] [ERROR] WebSocket connection to 'ws://localhost:8000/ws/prices' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/hooks/useWebSocket.ts:21
+[   27254ms] [WARNING] useWebSocket: max reconnect attempts reached @ http://localhost:5173/src/hooks/useWebSocket.ts:57
+[   30124ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30124ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   31252ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   31252ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   32254ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   32254ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   60122ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60122ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[   60128ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   60128ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   62261ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   62261ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   63263ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   63263ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   90132ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   90132ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[   93269ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   93269ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[   94271ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   94271ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  120124ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120124ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  120139ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  120139ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  124279ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  124279ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  125281ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  125281ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  150146ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  150147ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  155286ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  155286ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  156287ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  156287ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  180126ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180126ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[  180153ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  180153ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[  186295ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  186295ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[  187297ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[  187297ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0

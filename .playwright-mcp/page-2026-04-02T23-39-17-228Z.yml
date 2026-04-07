@@ -1,0 +1,370 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: SP
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: S&P 500 AI
+          - paragraph [ref=e9]: Platform
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e12]
+          - paragraph [ref=e14]: Dashboard
+        - link "Models" [active] [ref=e15] [cursor=pointer]:
+          - /url: /models
+          - img [ref=e16]
+          - paragraph [ref=e19]: Models
+        - link "Forecasts" [ref=e20] [cursor=pointer]:
+          - /url: /forecasts
+          - img [ref=e21]
+          - paragraph [ref=e23]: Forecasts
+        - link "Drift" [ref=e24] [cursor=pointer]:
+          - /url: /drift
+          - img [ref=e25]
+          - paragraph [ref=e27]: Drift
+        - link "Backtest" [ref=e28] [cursor=pointer]:
+          - /url: /backtest
+          - img [ref=e29]
+          - paragraph [ref=e31]: Backtest
+        - link "Analytics" [ref=e32] [cursor=pointer]:
+          - /url: /analytics
+          - img [ref=e33]
+          - paragraph [ref=e36]: Analytics
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e41]: API
+          - generic [ref=e44]: KAFKA
+          - generic [ref=e47]: DB
+        - generic [ref=e48]: 01:39:16 AM
+    - main [ref=e49]:
+      - generic [ref=e391]:
+        - generic [ref=e392]:
+          - heading "Model Comparison" [level=4] [ref=e395]
+          - paragraph [ref=e397]: Compare ML model performance across evaluation metrics
+        - group [ref=e400]:
+          - button "CSV" [ref=e401] [cursor=pointer]:
+            - img [ref=e403]
+            - text: CSV
+          - button "PDF" [ref=e405] [cursor=pointer]:
+            - img [ref=e407]
+            - text: PDF
+        - generic [ref=e410]:
+          - generic [ref=e411]:
+            - generic [ref=e412]:
+              - generic [ref=e413]:
+                - img [ref=e414]
+                - generic [ref=e416]: Winner
+              - heading "CatBoost_standard" [level=5] [ref=e417]
+            - generic [ref=e418]:
+              - generic [ref=e419]:
+                - text: OOS RMSE
+                - paragraph [ref=e420]: "0.023400"
+              - generic [ref=e421]:
+                - text: OOS R²
+                - paragraph [ref=e422]: "0.8470"
+              - generic [ref=e423]:
+                - text: Fold Stability
+                - paragraph [ref=e424]: "0.0089"
+              - generic [ref=e425]:
+                - text: Scaler
+                - paragraph [ref=e426]: standard
+          - generic [ref=e427]: Selected based on lowest OOS RMSE with stable cross-validation performance
+        - generic [ref=e429]:
+          - generic [ref=e430]:
+            - generic: Search models
+            - generic [ref=e431]:
+              - textbox "Search models" [ref=e432]:
+                - /placeholder: Filter by model name…
+              - group:
+                - generic: Search models
+          - generic [ref=e433]:
+            - grid [ref=e434]:
+              - row "Model Name Scaler OOS RMSE Sort OOS MAE OOS R² OOS MAPE Dir. Accuracy Fold Stability Status" [ref=e435]:
+                - columnheader "Model Name" [ref=e436] [cursor=pointer]:
+                  - generic [ref=e438]: Model Name
+                  - generic [ref=e439]:
+                    - img
+                - columnheader "Scaler" [ref=e440] [cursor=pointer]:
+                  - generic [ref=e442]: Scaler
+                  - generic [ref=e443]:
+                    - img
+                - columnheader "OOS RMSE Sort" [ref=e444] [cursor=pointer]:
+                  - generic [ref=e446]: OOS RMSE
+                  - generic "Sort" [ref=e448]:
+                    - button "Sort" [ref=e449]:
+                      - img [ref=e450]
+                  - generic [ref=e452]:
+                    - img
+                - columnheader "OOS MAE" [ref=e453] [cursor=pointer]:
+                  - generic [ref=e455]: OOS MAE
+                  - generic [ref=e456]:
+                    - img
+                - columnheader "OOS R²" [ref=e457] [cursor=pointer]:
+                  - generic [ref=e459]: OOS R²
+                  - generic [ref=e460]:
+                    - img
+                - columnheader "OOS MAPE" [ref=e461] [cursor=pointer]:
+                  - generic [ref=e463]: OOS MAPE
+                  - generic [ref=e464]:
+                    - img
+                - columnheader "Dir. Accuracy" [ref=e465] [cursor=pointer]:
+                  - generic [ref=e467]: Dir. Accuracy
+                  - generic [ref=e468]:
+                    - img
+                - columnheader "Fold Stability" [ref=e469] [cursor=pointer]:
+                  - generic [ref=e471]: Fold Stability
+                  - generic [ref=e472]:
+                    - img
+                - columnheader "Status" [ref=e473]:
+                  - generic [ref=e475]: Status
+                  - generic [ref=e476]:
+                    - img
+              - rowgroup [ref=e477]:
+                - row "★ CatBoost_standard standard 0.023400 0.018700 0.8470 3.12% 62.00% 0.0089 Active" [ref=e478] [cursor=pointer]:
+                  - gridcell "★ CatBoost_standard" [ref=e479]:
+                    - generic [ref=e480]:
+                      - generic [ref=e481]: ★
+                      - generic [ref=e482]: CatBoost_standard
+                  - gridcell "standard" [ref=e483]
+                  - gridcell "0.023400" [ref=e484]:
+                    - generic [ref=e485]: "0.023400"
+                  - gridcell "0.018700" [ref=e486]:
+                    - generic [ref=e487]: "0.018700"
+                  - gridcell "0.8470" [ref=e488]:
+                    - generic [ref=e489]: "0.8470"
+                  - gridcell "3.12%" [ref=e490]:
+                    - generic [ref=e491]: 3.12%
+                  - gridcell "62.00%" [ref=e492]:
+                    - generic [ref=e493]: 62.00%
+                  - gridcell "0.0089" [ref=e494]:
+                    - generic [ref=e495]: "0.0089"
+                  - gridcell "Active" [ref=e496]:
+                    - generic [ref=e498]: Active
+                - row "RandomForest_minmax minmax 0.035600 0.028900 0.7830 4.45% 58.00% 0.0156 Inactive" [ref=e499] [cursor=pointer]:
+                  - gridcell "RandomForest_minmax" [ref=e500]:
+                    - generic [ref=e502]: RandomForest_minmax
+                  - gridcell "minmax" [ref=e503]
+                  - gridcell "0.035600" [ref=e504]:
+                    - generic [ref=e505]: "0.035600"
+                  - gridcell "0.028900" [ref=e506]:
+                    - generic [ref=e507]: "0.028900"
+                  - gridcell "0.7830" [ref=e508]:
+                    - generic [ref=e509]: "0.7830"
+                  - gridcell "4.45%" [ref=e510]:
+                    - generic [ref=e511]: 4.45%
+                  - gridcell "58.00%" [ref=e512]:
+                    - generic [ref=e513]: 58.00%
+                  - gridcell "0.0156" [ref=e514]:
+                    - generic [ref=e515]: "0.0156"
+                  - gridcell "Inactive" [ref=e516]:
+                    - generic [ref=e518]: Inactive
+                - row "Ridge_quantile quantile 0.041200 0.033400 0.7250 5.21% 55.00% 0.0124 Inactive" [ref=e519] [cursor=pointer]:
+                  - gridcell "Ridge_quantile" [ref=e520]:
+                    - generic [ref=e522]: Ridge_quantile
+                  - gridcell "quantile" [ref=e523]
+                  - gridcell "0.041200" [ref=e524]:
+                    - generic [ref=e525]: "0.041200"
+                  - gridcell "0.033400" [ref=e526]:
+                    - generic [ref=e527]: "0.033400"
+                  - gridcell "0.7250" [ref=e528]:
+                    - generic [ref=e529]: "0.7250"
+                  - gridcell "5.21%" [ref=e530]:
+                    - generic [ref=e531]: 5.21%
+                  - gridcell "55.00%" [ref=e532]:
+                    - generic [ref=e533]: 55.00%
+                  - gridcell "0.0124" [ref=e534]:
+                    - generic [ref=e535]: "0.0124"
+                  - gridcell "Inactive" [ref=e536]:
+                    - generic [ref=e538]: Inactive
+            - generic [ref=e541]:
+              - paragraph [ref=e542]: "Rows per page:"
+              - generic [ref=e543]:
+                - 'combobox "Rows per page: 25" [ref=e544] [cursor=pointer]': "25"
+                - textbox: "25"
+                - img
+              - paragraph [ref=e545]: 1–3 of 3
+              - generic [ref=e546]:
+                - button "Go to previous page" [disabled]:
+                  - img
+                - button "Go to next page" [disabled]:
+                  - img
+        - generic [ref=e548]:
+          - generic [ref=e550]:
+            - generic [ref=e551]:
+              - heading "CatBoost_standard" [level=6] [ref=e552]
+              - generic [ref=e554]: v1
+              - generic [ref=e556]: Active
+            - generic [ref=e557]:
+              - generic [ref=e558]:
+                - text: Scaler
+                - paragraph [ref=e559]: standard
+              - generic [ref=e560]:
+                - text: Saved At
+                - paragraph [ref=e561]: 3/22/2026, 9:29:22 PM
+              - generic [ref=e562]:
+                - text: Fold Stability
+                - paragraph [ref=e563]: "0.0089"
+            - generic [ref=e564]:
+              - text: Hyperparameters
+              - separator [ref=e565]
+              - generic [ref=e566]:
+                - generic [ref=e567]:
+                  - text: depth
+                  - paragraph [ref=e568]: "6"
+                - generic [ref=e569]:
+                  - text: iterations
+                  - paragraph [ref=e570]: "500"
+                - generic [ref=e571]:
+                  - text: learning_rate
+                  - paragraph [ref=e572]: "0.05"
+            - generic [ref=e573]:
+              - text: OOS Metrics
+              - separator [ref=e574]
+              - generic [ref=e575]:
+                - generic [ref=e576]:
+                  - text: r2
+                  - paragraph [ref=e577]: "0.8470"
+                - generic [ref=e578]:
+                  - text: mae
+                  - paragraph [ref=e579]: "0.0187"
+                - generic [ref=e580]:
+                  - text: mape
+                  - paragraph [ref=e581]: "0.0312"
+                - generic [ref=e582]:
+                  - text: rmse
+                  - paragraph [ref=e583]: "0.0234"
+                - generic [ref=e584]:
+                  - text: directional_accuracy
+                  - paragraph [ref=e585]: "0.6200"
+          - generic [ref=e587]:
+            - heading "In-Sample vs Out-of-Sample Metrics" [level=6] [ref=e588]
+            - separator [ref=e589]
+            - generic [ref=e590]:
+              - generic [ref=e591]:
+                - text: r2
+                - paragraph [ref=e592]: "0.8470"
+              - generic [ref=e593]:
+                - text: mae
+                - paragraph [ref=e594]: "0.0187"
+              - generic [ref=e595]:
+                - text: mape
+                - paragraph [ref=e596]: "0.0312"
+              - generic [ref=e597]:
+                - text: rmse
+                - paragraph [ref=e598]: "0.0234"
+              - generic [ref=e599]:
+                - text: directional_accuracy
+                - paragraph [ref=e600]: "0.6200"
+        - generic [ref=e601]:
+          - heading "Detailed Analysis — CatBoost_standard" [level=6] [ref=e602]
+          - generic [ref=e603]:
+            - generic [ref=e605]:
+              - heading "Feature Importance (SHAP)" [level=6] [ref=e606]
+              - generic [ref=e607]:
+                - list [ref=e608]:
+                  - listitem [ref=e609]:
+                    - generic [ref=e610]:
+                      - img [ref=e613]
+                      - generic [ref=e615]: Importance
+                - img [ref=e616]:
+                  - generic [ref=e635]:
+                    - generic [ref=e637]: "0.00"
+                    - generic [ref=e639]: "0.01"
+                    - generic [ref=e641]: "0.02"
+                    - generic [ref=e643]: "0.03"
+                    - generic [ref=e645]: "0.04"
+                    - generic [ref=e647]: "0.05"
+                    - generic [ref=e649]: "0.06"
+                    - generic [ref=e651]: "0.07"
+                    - generic [ref=e653]: "0.08"
+                    - generic [ref=e655]: "0.09"
+                    - generic [ref=e657]: "0.10"
+                    - generic [ref=e659]: "0.11"
+                    - generic [ref=e661]: "0.12"
+                    - generic [ref=e663]: "0.13"
+                    - generic [ref=e665]: "0.14"
+                    - generic [ref=e667]: "0.15"
+                  - generic [ref=e668]:
+                    - generic [ref=e670]: ema_…
+                    - generic [ref=e672]: bb_u…
+                    - generic [ref=e674]: macd…
+                    - generic [ref=e676]: bb_l…
+                    - generic [ref=e678]: sma_…
+                    - generic [ref=e680]: sma_…
+                    - generic [ref=e682]: ema_…
+                    - generic [ref=e684]: rsi_…
+                    - generic [ref=e686]: volu…
+                    - generic [ref=e688]: macd…
+                    - generic [ref=e690]: ret…
+                    - generic [ref=e692]: clos…
+                    - generic [ref=e694]: atr
+                    - generic [ref=e696]: retu…
+                    - generic [ref=e698]: clos…
+            - generic [ref=e700]:
+              - heading "SHAP Value Distribution" [level=6] [ref=e701]
+              - application [ref=e704]:
+                - generic [ref=e1260]:
+                  - generic [ref=e1261]:
+                    - generic [ref=e1263]: "-0.14"
+                    - generic [ref=e1265]: "-0.07"
+                    - generic [ref=e1267]: "0"
+                    - generic [ref=e1269]: "0.07"
+                    - generic [ref=e1271]: "0.14"
+                  - generic [ref=e1272]: SHAP Value
+                  - generic [ref=e1273]:
+                    - generic [ref=e1275]: ema_12
+                    - generic [ref=e1277]: sma_50
+                    - generic [ref=e1279]: bb_lower
+                    - generic [ref=e1281]: bb_upper
+                    - generic [ref=e1283]: ema_26
+                    - generic [ref=e1285]: macd_signal
+                    - generic [ref=e1287]: sma_200
+                    - generic [ref=e1289]: macd_line
+                    - generic [ref=e1291]: atr
+                    - generic [ref=e1293]: rsi_14
+                    - generic [ref=e1295]: return_5d
+                    - generic [ref=e1297]: close_lag_1
+                    - generic [ref=e1299]: return_21d
+                    - generic [ref=e1301]: volume_sma_20
+                    - generic [ref=e1303]: close_lag_21
+              - generic [ref=e1304]:
+                - generic [ref=e1305]: Low
+                - generic [ref=e1307]: High
+                - generic [ref=e1308]: Feature Value
+          - generic [ref=e1310]:
+            - heading "Fold-by-Fold Performance — CatBoost_standard" [level=6] [ref=e1311]
+            - generic [ref=e1313]:
+              - list [ref=e1315]:
+                - listitem [ref=e1316]:
+                  - img "MAE legend icon" [ref=e1317]
+                  - text: MAE
+                - listitem [ref=e1319]:
+                  - img "RMSE legend icon" [ref=e1320]
+                  - text: RMSE
+                - listitem [ref=e1322]:
+                  - img "R² legend icon" [ref=e1323]
+                  - text: R²
+              - application [ref=e1325]:
+                - generic [ref=e1395]:
+                  - generic [ref=e1396]:
+                    - generic [ref=e1398]: Fold 1
+                    - generic [ref=e1400]: Fold 2
+                    - generic [ref=e1402]: Fold 3
+                    - generic [ref=e1404]: Fold 4
+                    - generic [ref=e1406]: Fold 5
+                  - generic [ref=e1407]:
+                    - generic [ref=e1409]: "0"
+                    - generic [ref=e1411]: "0.004"
+                    - generic [ref=e1413]: "0.008"
+                    - generic [ref=e1415]: "0.012"
+                    - generic [ref=e1417]: "0.016"
+                  - generic [ref=e1418]: RMSE / MAE
+                  - generic [ref=e1419]:
+                    - generic [ref=e1421]: "0"
+                    - generic [ref=e1423]: "0.25"
+                    - generic [ref=e1425]: "0.5"
+                    - generic [ref=e1427]: "0.75"
+                    - generic [ref=e1429]: "1"
+                  - generic [ref=e1430]: R²
+  - generic [ref=e1431]: "0.25"

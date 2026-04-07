@@ -1,0 +1,397 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+        - text: ">"
+        - link "FRB Rates - discount, fed funds, primary credit" [ref=e67] [cursor=pointer]:
+          - /url: /categories/118
+    - generic [ref=e68]:
+      - generic "DFF"
+      - generic [ref=e69]:
+        - heading "Add to favorites Federal Funds Effective Rate (DFF)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: Federal Funds Effective Rate (DFF)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-02: 3.64"
+              - generic "Apr 3, 2026 3:16 PM CDT" [ref=e85]: "Updated: Apr 3, 2026 3:16 PM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=18&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily,
+              - generic [ref=e98]: 7-Day
+          - generic [ref=e101]:
+            - generic [ref=e103]:
+              - generic "1 year date range" [ref=e104] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e105] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e106] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e107] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: From
+                - textbox "Change start date" [ref=e112]
+              - generic [ref=e114]: to
+              - textbox "Change end date" [ref=e116]
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - button "Edit Graph " [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]:
+                  - text: Edit Graph
+                  - generic [ref=e121]: 
+              - text: 
+            - generic [ref=e123]:
+              - button "Download" [ref=e124] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e125]: 
+              - text: 
+        - generic "Full screen" [ref=e130] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e131]: 
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - button "Share Graph " [ref=e136] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e137]: 
+              - text:   
+            - generic [ref=e138]:
+              - button "Account Tools " [ref=e139] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e140]: 
+              - text:     
+          - generic [ref=e142]:
+            - link "Share on X" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e144] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e145]: 
+            - link "Share on Reddit" [ref=e146] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e147]: 
+            - link "Post to Linkedin" [ref=e148] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e149]: 
+        - generic [ref=e151]:
+          - generic [ref=e153]:
+            - heading "Notes" [level=2] [ref=e154]
+            - generic [ref=e155]:
+              - paragraph [ref=e156]:
+                - strong [ref=e157]: "Source:"
+                - link "Board of Governors of the Federal Reserve System (US)" [ref=e158] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov
+                  - text: Board of Governors of the Federal Reserve System (US)
+                  - generic [ref=e159]: 
+              - paragraph [ref=e160]:
+                - strong [ref=e161]: "Release:"
+                - link "H.15 Selected Interest Rates" [ref=e162] [cursor=pointer]:
+                  - /url: http://www.federalreserve.gov/releases/h15/
+                  - text: H.15 Selected Interest Rates
+                  - generic [ref=e163]: 
+              - paragraph [ref=e165]:
+                - strong [ref=e166]: "Units:"
+                - generic [ref=e167]: Percent, Not Seasonally Adjusted
+              - paragraph [ref=e168]:
+                - strong [ref=e169]: "Frequency:"
+                - generic [ref=e170]: Daily, 7-Day
+              - heading "Notes:" [level=4] [ref=e172]
+              - paragraph
+              - paragraph [ref=e173]:
+                - text: For additional historical federal funds rate data, please see
+                - link "Daily Federal Funds Rate from 1928-1954" [ref=e174] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/categories/33951
+                - text: .
+                - text: The federal funds rate is the interest rate at which depository institutions trade federal funds (balances held at Federal Reserve Banks) with each other overnight. When a depository institution has surplus balances in its reserve account, it lends to other banks in need of larger balances. In simpler terms, a bank with excess cash, which is often referred to as liquidity, will lend to another bank that needs to quickly raise liquidity. (1) The rate that the borrowing institution pays to the lending institution is determined between the two banks; the weighted average rate for all of these types of negotiations is called the effective federal funds rate.(2) The effective federal funds rate is essentially determined by the market but is influenced by the Federal Reserve as it uses the Interest on Reserve Balances rate to steer the federal funds rate toward the target range.(2)
+                - text: "The Federal Open Market Committee (FOMC) meets eight times a year to determine the federal funds target range. The Fed's primary tool for influencing the federal funds rate is the interest the Fed pays on the funds that banks hold as reserve balances at their Federal Reserve Bank, which is the Interest on Reserves Balances (IORB) rate. Because banks are unlikely to lend funds in the federal funds market for less than they get paid in their reserve balance account at the Federal Reserve, the Interest on Reserve Balances (IORB) is an effective tool for guiding the federal funds rate. (3) Whether the Federal Reserve raises or lowers the target range for the federal funds rate depends on the state of the economy. If the FOMC believes the economy is growing too fast and inflation pressures are inconsistent with the dual mandate of the Federal Reserve, the Committee may temper economic activity by raising the target range for federal funds rate, and increasing the IORB rate to steer the federal funds rate into the target range. In the opposing scenario, the FOMC may spur greater economic activity by lowering the target range for federal funds rate, and decreasing the IORB rate to steer the federal funds rate into the target range. (3) Therefore, the FOMC must observe the current state of the economy to determine the best course of monetary policy that will maximize economic growth while adhering to the dual mandate set forth by Congress. In making its monetary policy decisions, the FOMC considers a wealth of economic data, such as: trends in prices and wages, employment, consumer spending and income, business investments, and foreign exchange markets."
+                - text: The federal funds rate is the central interest rate in the U.S. financial market. It influences other interest rates such as the prime rate, which is the rate banks charge their customers with higher credit ratings. Additionally, the federal funds rate indirectly influences longer- term interest rates such as mortgages, loans, and savings, all of which are very important to consumer wealth and confidence.(2)
+                - text: References
+                - text: (1) Federal Reserve Bank of New York. "Federal funds." Fedpoints, August 2007.
+                - text: (2)
+                - link "Monetary Policy" [ref=e175] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/monetarypolicy.htm
+                - text: ", Board of Governors of the Federal Reserve System."
+                - text: (3)
+                - link "The Fed Explained" [ref=e176] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/aboutthefed/files/the-fed-explained.pdf
+                - text: ", Board of Governors of the Federal Reserve System"
+                - text: For further information, see
+                - link "The Fed's New Monetary Policy Tools" [ref=e177] [cursor=pointer]:
+                  - /url: https://www.stlouisfed.org/publications/page-one-economics/2020/08/03/the-feds-new-monetary-policy-tools
+                - text: ", Page One Economics, Federal Reserve Bank of St. Louis."
+                - text: For questions on the data, please contact the
+                - link "data source" [ref=e178] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/apps/ContactUs/feedback.aspx?refurl=/releases/h15/%
+                - text: . For questions on FRED functionality, please contact us
+                - link "here" [ref=e179] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/contactus/
+                - text: .
+              - paragraph
+              - generic [ref=e180]:
+                - heading "Suggested Citation:" [level=4] [ref=e181]
+                - paragraph [ref=e183]: Board of Governors of the Federal Reserve System (US), Federal Funds Effective Rate [DFF], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DFF, April 4, 2026.
+          - generic [ref=e185]:
+            - heading "Release Tables" [level=2] [ref=e186]
+            - generic [ref=e187]:
+              - generic [ref=e188]: H.15 Selected Interest Rates
+              - list [ref=e189]:
+                - listitem [ref=e190]:
+                  - 'link "Link to release table: H.15 Selected Interest Rates, Selected Interest Rates Instruments, Yields in percent per annum: Daily" [ref=e191] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=18&eid=289#snid=292
+                    - generic [ref=e192]: 
+                    - text: "Selected Interest Rates Instruments, Yields in percent per annum: Daily"
+          - generic [ref=e194]:
+            - heading "Related Data and Content" [level=2] [ref=e195]
+            - generic [ref=e196]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e197]
+              - generic [ref=e198]:
+                - generic [ref=e199]:
+                  - link "Effective Federal Funds Rate" [ref=e200] [cursor=pointer]:
+                    - /url: /series/EFFR
+                    - img [ref=e201]
+                  - generic [ref=e202]:
+                    - text: ...
+                    - link "Effective Federal Funds Rate" [ref=e203] [cursor=pointer]:
+                      - /url: /series/EFFR
+                      - strong [ref=e204]: Effective Federal Funds Rate
+                - generic [ref=e205]:
+                  - link "Federal Funds Target Range - Upper Limit" [ref=e206] [cursor=pointer]:
+                    - /url: /series/DFEDTARU
+                    - img [ref=e207]
+                  - generic [ref=e208]:
+                    - text: ...
+                    - link "Federal Funds Target Range - Upper Limit" [ref=e209] [cursor=pointer]:
+                      - /url: /series/DFEDTARU
+                      - strong [ref=e210]: Federal Funds Target Range - Upper Limit
+                - generic [ref=e211]:
+                  - link "Sticky Price Consumer Price Index less Food and Energy" [ref=e212] [cursor=pointer]:
+                    - /url: /series/CORESTICKM159SFRBATL
+                    - img [ref=e213]
+                  - generic [ref=e214]:
+                    - text: ...
+                    - link "Sticky Price Consumer Price Index less Food and Energy" [ref=e215] [cursor=pointer]:
+                      - /url: /series/CORESTICKM159SFRBATL
+                      - strong [ref=e216]: Sticky Price Consumer Price Index less Food and Energy
+                - generic [ref=e217]:
+                  - link "Interest Rates, Discount Rate for United States" [ref=e218] [cursor=pointer]:
+                    - /url: /series/INTDSRUSM193N
+                    - img [ref=e219]
+                  - generic [ref=e220]:
+                    - text: ...
+                    - link "Interest Rates, Discount Rate for United States" [ref=e221] [cursor=pointer]:
+                      - /url: /series/INTDSRUSM193N
+                      - strong [ref=e222]: Interest Rates, Discount Rate for United States
+                - text: ... ... ... ...
+                - generic [ref=e223]:
+                  - button "click to see more" [ref=e224] [cursor=pointer]: See More...
+                  - separator [ref=e225]
+              - heading "Content Suggestions" [level=3] [ref=e226]
+              - generic [ref=e227]:
+                - generic [ref=e228]:
+                  - link "Rates related to monetary policy" [ref=e229] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/04/rates-related-to-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e230]
+                  - generic [ref=e231]: FRED Blog
+                  - generic [ref=e232]:
+                    - text: ...
+                    - link "Rates related to monetary policy" [ref=e233] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/04/rates-related-to-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e234]: Rates related to monetary policy
+                - generic [ref=e235]:
+                  - link "Workday and weekday data in FRED" [ref=e236] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/06/workday-and-weekday-data-in-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e237]
+                  - generic [ref=e238]: FRED Blog
+                  - generic [ref=e239]:
+                    - text: ...
+                    - link "Workday and weekday data in FRED" [ref=e240] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/06/workday-and-weekday-data-in-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e241]: Workday and weekday data in FRED
+                - generic [ref=e242]:
+                  - link "Managing interest rates for monetary policy" [ref=e243] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/11/managing-interest-rates-for-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e244]
+                  - generic [ref=e245]: FRED Blog
+                  - generic [ref=e246]:
+                    - text: ...
+                    - link "Managing interest rates for monetary policy" [ref=e247] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/11/managing-interest-rates-for-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e248]: Managing interest rates for monetary policy
+                - generic [ref=e249]:
+                  - link "Federal Funds Effective Rate" [ref=e250] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=DFF&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e251]
+                  - generic [ref=e252]: ALFRED Vintage Series
+                  - generic [ref=e253]:
+                    - text: ...
+                    - link "Federal Funds Effective Rate" [ref=e254] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=DFF&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e255]: Federal Funds Effective Rate
+                - text: ... ... ... ...
+                - generic [ref=e256]:
+                  - button "click to see more" [ref=e257] [cursor=pointer]: See More...
+                  - separator [ref=e258]
+              - heading "Other Formats" [level=3] [ref=e259]
+              - generic [ref=e260]:
+                - link "Annual, Not Seasonally Adjusted" [ref=e261] [cursor=pointer]:
+                  - /url: /series/RIFSPFFNA
+                - link "Biweekly, Not Seasonally Adjusted" [ref=e262] [cursor=pointer]:
+                  - /url: /series/RIFSPFFNBWAW
+                - link "Daily, Not Seasonally Adjusted" [ref=e263] [cursor=pointer]:
+                  - /url: /series/RIFSPFFNB
+                - link "Monthly, Not Seasonally Adjusted" [ref=e264] [cursor=pointer]:
+                  - /url: /series/FEDFUNDS
+                - link "Weekly, Not Seasonally Adjusted" [ref=e265] [cursor=pointer]:
+                  - /url: /series/FF
+              - heading "Related Categories" [level=3] [ref=e267]
+              - generic [ref=e268]:
+                - link "FRB Rates - discount, fed funds, primary credit" [ref=e269] [cursor=pointer]:
+                  - /url: /categories/118
+                - link "Interest Rates" [ref=e270] [cursor=pointer]:
+                  - /url: /categories/22
+                - link "Money, Banking, & Finance" [ref=e271] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e273]
+              - link "More Series from H.15 Selected Interest Rates" [ref=e275] [cursor=pointer]:
+                - /url: /release?rid=18
+              - heading "Tags" [level=3] [ref=e277]
+              - generic:
+                - link "H.15 Selected Interest Rates" [ref=e278] [cursor=pointer]:
+                  - /url: /tags/series?t=h15
+                - link "Federal" [ref=e279] [cursor=pointer]:
+                  - /url: /tags/series?t=federal
+                - link "Interest Rate" [ref=e280] [cursor=pointer]:
+                  - /url: /tags/series?t=interest%20rate
+                - link "Interest" [ref=e281] [cursor=pointer]:
+                  - /url: /tags/series?t=interest
+                - link "Daily" [ref=e282] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "Board of Governors" [ref=e283] [cursor=pointer]:
+                  - /url: /tags/series?t=frb
+                - link "Rate" [ref=e284] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - link "Nation" [ref=e285] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e286] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e287] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e288] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e291]:
+    - generic [ref=e292]:
+      - generic [ref=e293]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e294]
+        - generic [ref=e297]:
+          - textbox "email" [ref=e298]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e299] [cursor=pointer]
+      - generic [ref=e300]:
+        - heading "Follow us" [level=3] [ref=e301]
+        - generic [ref=e302]:
+          - link "Saint Louis Fed linkedin page" [ref=e304] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e305]: 
+            - generic [ref=e306]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e308] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e309]: 
+            - generic [ref=e310]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e312] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e313]: 
+            - generic [ref=e314]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e316] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e317]: 
+            - generic [ref=e318]: Saint Louis Fed YouTube page
+    - generic [ref=e320]:
+      - heading "Need Help?" [level=3] [ref=e321]
+      - generic [ref=e322]:
+        - link "Questions or Comments" [ref=e324] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e326] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e327]
+      - generic [ref=e328]:
+        - link "Legal" [ref=e330] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e332] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

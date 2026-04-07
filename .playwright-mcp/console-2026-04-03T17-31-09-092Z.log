@@ -1,0 +1,17 @@
+[      86ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[   19840ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=14:0
+[   19840ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=30:0
+[   19841ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   19842ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   19895ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=1:0
+[   19895ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   20221ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=7:0
+[   20221ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   41412ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=1:0
+[   41413ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   41426ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=7:0
+[   41427ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   41433ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=14:0
+[   41434ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   41453ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=30:0
+[   41453ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9

@@ -1,0 +1,22 @@
+[
+  {
+    "type": "debug",
+    "text": "[vite] connecting..."
+  },
+  {
+    "type": "info",
+    "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold"
+  },
+  {
+    "type": "debug",
+    "text": "[vite] connected."
+  },
+  {
+    "type": "warning",
+    "text": "WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established."
+  },
+  {
+    "type": "warning",
+    "text": "[ECharts] Instance ec_1775557879588 has been disposed"
+  }
+]

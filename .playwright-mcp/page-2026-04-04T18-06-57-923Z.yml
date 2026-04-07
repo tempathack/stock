@@ -1,0 +1,166 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: SP
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: S&P 500 AI
+          - paragraph [ref=e9]: Platform
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e12]
+          - paragraph [ref=e14]: Dashboard
+        - link "Models" [ref=e15] [cursor=pointer]:
+          - /url: /models
+          - img [ref=e16]
+          - paragraph [ref=e19]: Models
+        - link "Forecasts" [ref=e20] [cursor=pointer]:
+          - /url: /forecasts
+          - img [ref=e21]
+          - paragraph [ref=e23]: Forecasts
+        - link "Drift" [ref=e24] [cursor=pointer]:
+          - /url: /drift
+          - img [ref=e25]
+          - paragraph [ref=e27]: Drift
+        - link "Backtest" [ref=e28] [cursor=pointer]:
+          - /url: /backtest
+          - img [ref=e29]
+          - paragraph [ref=e31]: Backtest
+        - link "Analytics" [ref=e32] [cursor=pointer]:
+          - /url: /analytics
+          - img [ref=e33]
+          - paragraph [ref=e36]: Analytics
+        - link "Search" [ref=e37] [cursor=pointer]:
+          - /url: /search
+          - img [ref=e38]
+          - paragraph [ref=e40]: Search
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e45]: API
+          - generic [ref=e48]: KAFKA
+          - generic [ref=e51]: DB
+        - generic [ref=e52]: 08:06:57 PM
+    - main [ref=e53]:
+      - generic [ref=e58]:
+        - heading "Backtest" [level=4] [ref=e59]
+        - generic [ref=e61]:
+          - generic [ref=e64]:
+            - generic [ref=e65]: Ticker
+            - generic [ref=e66]:
+              - combobox "Ticker" [ref=e67]: AAPL
+              - group:
+                - generic: Ticker
+          - generic [ref=e70]:
+            - generic [ref=e71]: Start Date
+            - generic [ref=e72]:
+              - textbox "Start Date" [ref=e73]: 2025-04-04
+              - group:
+                - generic: Start Date
+          - generic [ref=e75]:
+            - generic [ref=e76]: End Date
+            - generic [ref=e77]:
+              - textbox "End Date" [ref=e78]: 2026-04-04
+              - group:
+                - generic: End Date
+          - generic [ref=e80]:
+            - combobox [ref=e81] [cursor=pointer]: All Horizons
+            - textbox
+            - img
+            - group
+          - generic "Run backtest with selected parameters" [ref=e83]:
+            - button "Run Backtest" [ref=e84] [cursor=pointer]:
+              - img [ref=e86]
+              - text: Run Backtest
+          - group [ref=e89]:
+            - button "CSV" [ref=e94] [cursor=pointer]:
+              - img [ref=e96]
+              - text: CSV
+            - button "PDF" [ref=e98] [cursor=pointer]:
+              - img [ref=e100]
+              - text: PDF
+        - generic [ref=e102]:
+          - paragraph [ref=e104]:
+            - text: "Model: naive_sma7 · Horizon:"
+            - generic [ref=e105]: 7d
+            - text: "· Period: 2025-04-04 → 2026-03-25"
+          - generic [ref=e106]:
+            - heading "Actual vs Predicted — AAPL" [level=6] [ref=e107]
+            - generic [ref=e109]:
+              - list [ref=e111]:
+                - listitem [ref=e112]:
+                  - img "Actual legend icon" [ref=e113]
+                  - text: Actual
+                - listitem [ref=e115]:
+                  - img "Predicted legend icon" [ref=e116]
+                  - text: Predicted
+              - application [ref=e118]:
+                - generic [ref=e144]:
+                  - generic [ref=e145]:
+                    - generic [ref=e147]: Apr 11
+                    - generic [ref=e149]: Apr 23
+                    - generic [ref=e151]: May 5
+                    - generic [ref=e153]: May 15
+                    - generic [ref=e155]: May 27
+                    - generic [ref=e157]: Jun 6
+                    - generic [ref=e159]: Jun 18
+                    - generic [ref=e161]: Jun 30
+                    - generic [ref=e163]: Jul 10
+                    - generic [ref=e165]: Jul 22
+                    - generic [ref=e167]: Aug 1
+                    - generic [ref=e169]: Aug 13
+                    - generic [ref=e171]: Aug 25
+                    - generic [ref=e173]: Sep 4
+                    - generic [ref=e175]: Sep 16
+                    - generic [ref=e177]: Sep 26
+                    - generic [ref=e179]: Oct 8
+                    - generic [ref=e181]: Oct 20
+                    - generic [ref=e183]: Oct 30
+                    - generic [ref=e185]: Nov 11
+                    - generic [ref=e187]: Nov 21
+                    - generic [ref=e189]: Dec 3
+                    - generic [ref=e191]: Dec 15
+                    - generic [ref=e193]: Dec 25
+                    - generic [ref=e195]: Jan 6
+                    - generic [ref=e197]: Jan 16
+                    - generic [ref=e199]: Jan 28
+                    - generic [ref=e201]: Feb 9
+                    - generic [ref=e203]: Feb 19
+                    - generic [ref=e205]: Mar 3
+                    - generic [ref=e207]: Mar 13
+                    - generic [ref=e209]: Mar 25
+                  - generic [ref=e210]:
+                    - generic [ref=e212]: "0"
+                    - generic [ref=e214]: "75"
+                    - generic [ref=e216]: "150"
+                    - generic [ref=e218]: "225"
+                    - generic [ref=e220]: "300"
+                  - generic [ref=e221]: Price ($)
+          - generic [ref=e222]:
+            - generic "Lower is better — measures average prediction error magnitude" [ref=e224]:
+              - generic [ref=e225]:
+                - heading "45.7903" [level=3] [ref=e226]
+                - text: Root Mean Squared Error
+            - generic "Lower is better — average absolute difference between predicted and actual" [ref=e228]:
+              - generic [ref=e229]:
+                - heading "22.6224" [level=3] [ref=e230]
+                - text: Mean Absolute Error
+            - generic "Lower is better — error as a percentage of actual value" [ref=e232]:
+              - generic [ref=e233]:
+                - heading "54.86%" [level=3] [ref=e234]
+                - text: Mean Abs % Error
+            - generic "Higher is better — proportion of variance explained (1.0 = perfect)" [ref=e236]:
+              - generic [ref=e237]:
+                - heading "0.1531" [level=3] [ref=e238]
+                - text: R² Score
+            - generic "Higher is better — percentage of correct up/down direction predictions" [ref=e240]:
+              - generic [ref=e241]:
+                - heading "49.4%" [level=3] [ref=e242]
+                - text: Directional Accuracy
+            - generic "Number of data points used in the backtest" [ref=e244]:
+              - generic [ref=e245]:
+                - heading "254" [level=3] [ref=e246]
+                - text: Total Data Points
+  - generic [ref=e247]: "0"
+  - tooltip "Run backtest with selected parameters" [ref=e248]:
+    - generic [ref=e249]: Run backtest with selected parameters

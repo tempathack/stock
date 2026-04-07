@@ -1,0 +1,425 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Population, Employment, & Labor Markets" [ref=e65] [cursor=pointer]:
+          - /url: /categories/10
+        - text: ">"
+        - link "Weekly Initial Claims" [ref=e66] [cursor=pointer]:
+          - /url: /categories/32240
+    - generic [ref=e67]:
+      - generic "IC4WSA"
+      - generic [ref=e68]:
+        - heading "Add to favorites 4-Week Moving Average of Initial Claims (IC4WSA)" [level=1] [ref=e72]:
+          - generic "Add to favorites" [ref=e74] [cursor=pointer]: 
+          - text: 4-Week Moving Average of Initial Claims (IC4WSA)
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - text: 
+            - generic [ref=e78]:
+              - button "Observations" [ref=e80] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e81]: 
+              - generic [ref=e82]: "2026-03-28: 207,750"
+              - generic "Apr 2, 2026 3:16 PM CDT" [ref=e84]: "Updated: Apr 2, 2026 3:16 PM CDT"
+              - 'link "Next Release Date: Apr 9, 2026" [ref=e86] [cursor=pointer]':
+                - /url: /releases/calendar?rid=180&y=2026
+                - generic "Apr 9, 2026" [ref=e87]: "Next Release Date: Apr 9, 2026"
+            - generic [ref=e88]:
+              - paragraph [ref=e89]: "Units:"
+              - generic [ref=e91]: Number,
+              - generic [ref=e92]: Seasonally Adjusted
+            - generic [ref=e93]:
+              - paragraph [ref=e94]: "Frequency:"
+              - generic [ref=e96]: Weekly,
+              - generic [ref=e97]: Ending Saturday
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]: 1967-01-28
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]: 2026-03-28
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic [ref=e127]:
+          - generic [ref=e134]:
+            - region "FRED Graph" [ref=e136]:
+              - generic [ref=e137]:
+                - paragraph [ref=e138]: Chart
+                - generic [ref=e139]: Line chart with 3088 data points.
+                - button "View as data table, Chart" [ref=e141] [cursor=pointer]
+                - generic [ref=e142]: The chart has 1 X axis displaying xAxis. Data ranges from 1967-01-28 1:00:00 to 2026-03-28 1:00:00.
+                - generic [ref=e143]: The chart has 2 Y axes displaying Number and yAxisRight.
+              - generic [ref=e147]:
+                - generic:
+                  - region "Toggle series visibility, Chart":
+                    - list:
+                      - listitem:
+                        - button "Show 4-Week Moving Average of Initial Claims" [pressed] [ref=e148] [cursor=pointer]
+                - img "Interactive FRED Graph" [ref=e149]:
+                  - region "4-Week Moving Average of Initial Claims series with 3088 points" [ref=e168]
+                  - generic [ref=e172]:
+                    - generic [ref=e173]: "0"
+                    - generic [ref=e174]: 1,000,000
+                    - generic [ref=e175]: 2,000,000
+                    - generic [ref=e176]: 3,000,000
+                    - generic [ref=e177]: 4,000,000
+                    - generic [ref=e178]: 5,000,000
+                    - generic [ref=e179]: 6,000,000
+                  - generic [ref=e180]:
+                    - generic [ref=e181]: "1970"
+                    - generic [ref=e182]: "1975"
+                    - generic [ref=e183]: "1980"
+                    - generic [ref=e184]: "1985"
+                    - generic [ref=e185]: "1990"
+                    - generic [ref=e186]: "1995"
+                    - generic [ref=e187]: "2000"
+                    - generic [ref=e188]: "2005"
+                    - generic [ref=e189]: "2010"
+                    - generic [ref=e190]: "2015"
+                    - generic [ref=e191]: "2020"
+                    - generic [ref=e192]: "2025"
+                - generic [ref=e193] [cursor=pointer]: 4-Week Moving Average of Initial Claims
+                - generic [ref=e194]: Number
+              - generic [ref=e196]: End of interactive chart.
+              - generic [ref=e197]:
+                - generic [ref=e198]:
+                  - generic [ref=e199]:
+                    - text: "Source: U.S. Employment and Training Administration"
+                    - generic [ref=e200]: via FRED®
+                  - link [ref=e203] [cursor=pointer]:
+                    - /url: https://fredhelp.stlouisfed.org/fred/data/understanding-the-data/recession-bars/
+                    - emphasis [ref=e204]: Shaded areas indicate U.S. recessions.
+                - generic [ref=e205]: fred.stlouisfed.org
+            - option "Number" [selected]
+            - option "Change, Number"
+            - option "Change from Year Ago, Number"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Index (Scale value to 100 for chosen date)"
+            - option "Weekly, Ending Saturday" [selected]
+            - option "Biweekly, Ending Wednesday"
+            - option "Biweekly, Ending Monday"
+            - option "Monthly"
+            - option "Quarterly"
+            - option "Semiannual"
+            - option "Annual"
+            - combobox "customize your graph data by combining other series with your existing series." [ref=e207]
+            - option "Select" [selected]
+            - option "Change"
+            - option "Change from Year Ago"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Natural Log"
+            - option "Index (Scale value to 100 for chosen date)"
+          - generic "Full screen" [ref=e208] [cursor=pointer]:
+            - text: Fullscreen
+            - generic [ref=e209]: 
+        - generic [ref=e211]:
+          - generic [ref=e212]:
+            - generic [ref=e213]:
+              - button "Share Graph " [ref=e214] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e215]: 
+              - text:   
+            - generic [ref=e216]:
+              - button "Account Tools " [ref=e217] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e218]: 
+              - text:     
+          - generic [ref=e220]:
+            - link "Share on X" [ref=e221] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e222] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e223]: 
+            - link "Share on Reddit" [ref=e224] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e225]: 
+            - link "Post to Linkedin" [ref=e226] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e227]: 
+        - generic [ref=e229]:
+          - generic [ref=e231]:
+            - heading "Notes" [level=2] [ref=e232]
+            - generic [ref=e233]:
+              - paragraph [ref=e234]:
+                - strong [ref=e235]: "Source:"
+                - link "U.S. Employment and Training Administration" [ref=e236] [cursor=pointer]:
+                  - /url: http://www.doleta.gov
+                  - text: U.S. Employment and Training Administration
+                  - generic [ref=e237]: 
+              - paragraph [ref=e238]:
+                - strong [ref=e239]: "Release:"
+                - link "Unemployment Insurance Weekly Claims Report" [ref=e240] [cursor=pointer]:
+                  - /url: http://www.dol.gov/ui/data.pdf
+                  - text: Unemployment Insurance Weekly Claims Report
+                  - generic [ref=e241]: 
+              - paragraph [ref=e243]:
+                - strong [ref=e244]: "Units:"
+                - generic [ref=e245]: Number, Seasonally Adjusted
+              - paragraph [ref=e246]:
+                - strong [ref=e247]: "Frequency:"
+                - generic [ref=e248]: Weekly, Ending Saturday
+              - heading "Notes:" [level=4] [ref=e250]
+              - paragraph [ref=e251]: An initial claim is a claim filed by an unemployed individual after a separation from an employer. The claim requests a determination of basic eligibility for the Unemployment Insurance program.
+              - generic [ref=e252]:
+                - heading "Suggested Citation:" [level=4] [ref=e253]
+                - paragraph [ref=e255]: U.S. Employment and Training Administration, 4-Week Moving Average of Initial Claims [IC4WSA], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/IC4WSA, April 4, 2026.
+          - generic [ref=e257]:
+            - heading "Release Tables" [level=2] [ref=e258]
+            - generic [ref=e259]:
+              - generic [ref=e260]: Unemployment Insurance Weekly Claims Report
+              - list [ref=e261]:
+                - listitem [ref=e262]:
+                  - 'link "Link to release table: Unemployment Insurance Weekly Claims Report, Unemployment Claims, Weekly" [ref=e263] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=180&eid=258888#snid=258891
+                    - generic [ref=e264]: 
+                    - text: Unemployment Claims, Weekly
+          - generic [ref=e266]:
+            - heading "Related Data and Content" [level=2] [ref=e267]
+            - generic [ref=e268]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e269]
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - link "4-Week Moving Average of Continued Claims (Insured Unemployment)" [ref=e272] [cursor=pointer]:
+                    - /url: /series/CC4WSA
+                    - img [ref=e273]
+                  - generic [ref=e274]:
+                    - text: ...
+                    - link "4-Week Moving Average of Continued Claims (Insured Unemployment)" [ref=e275] [cursor=pointer]:
+                      - /url: /series/CC4WSA
+                      - strong [ref=e276]: 4-Week Moving Average of Continued Claims (Insured Unemployment)
+                - generic [ref=e277]:
+                  - link "Continued Claims (Insured Unemployment)" [ref=e278] [cursor=pointer]:
+                    - /url: /series/CCSA
+                    - img [ref=e279]
+                  - generic [ref=e280]:
+                    - text: ...
+                    - link "Continued Claims (Insured Unemployment)" [ref=e281] [cursor=pointer]:
+                      - /url: /series/CCSA
+                      - strong [ref=e282]: Continued Claims (Insured Unemployment)
+                - generic [ref=e283]:
+                  - link "Initial Claims" [ref=e284] [cursor=pointer]:
+                    - /url: /series/ICSA
+                    - img [ref=e285]
+                  - generic [ref=e286]:
+                    - text: ...
+                    - link "Initial Claims" [ref=e287] [cursor=pointer]:
+                      - /url: /series/ICSA
+                      - strong [ref=e288]: Initial Claims
+                - generic [ref=e289]:
+                  - 'link "Motor Vehicle Retail Sales: Heavy Weight Trucks" [ref=e290] [cursor=pointer]':
+                    - /url: /series/HTRUCKSSAAR
+                    - img [ref=e291]
+                  - generic [ref=e292]:
+                    - text: ...
+                    - 'link "Motor Vehicle Retail Sales: Heavy Weight Trucks" [ref=e293] [cursor=pointer]':
+                      - /url: /series/HTRUCKSSAAR
+                      - strong [ref=e294]: "Motor Vehicle Retail Sales: Heavy Weight Trucks"
+                - text: ... ... ... ...
+                - generic [ref=e295]:
+                  - button "click to see more" [ref=e296] [cursor=pointer]: See More...
+                  - separator [ref=e297]
+              - heading "Content Suggestions" [level=3] [ref=e298]
+              - generic [ref=e299]:
+                - generic [ref=e300]:
+                  - link "A good use of moving averages" [ref=e301] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2015/08/a-good-use-of-moving-averages/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e302]
+                  - generic [ref=e303]: FRED Blog
+                  - generic [ref=e304]:
+                    - text: ...
+                    - link "A good use of moving averages" [ref=e305] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2015/08/a-good-use-of-moving-averages/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e306]: A good use of moving averages
+                - generic [ref=e307]:
+                  - link "What can we claim about initial claims?" [ref=e308] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2019/07/what-can-we-claim-about-initial-claims/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e309]
+                  - generic [ref=e310]: FRED Blog
+                  - generic [ref=e311]:
+                    - text: ...
+                    - link "What can we claim about initial claims?" [ref=e312] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2019/07/what-can-we-claim-about-initial-claims/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e313]: What can we claim about initial claims?
+                - generic [ref=e314]:
+                  - link "The unemployment bathtub" [ref=e315] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2015/11/the-unemployment-bathtub/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e316]
+                  - generic [ref=e317]: FRED Blog
+                  - generic [ref=e318]:
+                    - text: ...
+                    - link "The unemployment bathtub" [ref=e319] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2015/11/the-unemployment-bathtub/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e320]: The unemployment bathtub
+                - generic [ref=e321]:
+                  - link "4-Week Moving Average of Initial Claims" [ref=e322] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=IC4WSA&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e323]
+                  - generic [ref=e324]: ALFRED Vintage Series
+                  - generic [ref=e325]:
+                    - text: ...
+                    - link "4-Week Moving Average of Initial Claims" [ref=e326] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=IC4WSA&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e327]: 4-Week Moving Average of Initial Claims
+                - text: ... ... ...
+                - generic [ref=e328]:
+                  - button "click to see more" [ref=e329] [cursor=pointer]: See More...
+                  - separator [ref=e330]
+              - heading "Related Categories" [level=3] [ref=e331]
+              - generic [ref=e332]:
+                - link "Weekly Initial Claims" [ref=e333] [cursor=pointer]:
+                  - /url: /categories/32240
+                - link "Population, Employment, & Labor Markets" [ref=e334] [cursor=pointer]:
+                  - /url: /categories/10
+              - heading "Releases" [level=3] [ref=e336]
+              - link "More Series from Unemployment Insurance Weekly Claims Report" [ref=e338] [cursor=pointer]:
+                - /url: /release?rid=180
+              - heading "Tags" [level=3] [ref=e340]
+              - generic:
+                - link "Moving Average" [ref=e341] [cursor=pointer]:
+                  - /url: /tags/series?t=moving%20average
+                - link "Initial Claims" [ref=e342] [cursor=pointer]:
+                  - /url: /tags/series?t=initial%20claims
+                - link "1-Month" [ref=e343] [cursor=pointer]:
+                  - /url: /tags/series?t=1-month
+                - link "Employment and Training Administration" [ref=e344] [cursor=pointer]:
+                  - /url: /tags/series?t=eta
+                - link "Average" [ref=e345] [cursor=pointer]:
+                  - /url: /tags/series?t=average
+                - link "Weekly" [ref=e346] [cursor=pointer]:
+                  - /url: /tags/series?t=weekly
+                - link "Seasonally Adjusted" [ref=e347] [cursor=pointer]:
+                  - /url: /tags/series?t=sa
+                - link "Nation" [ref=e348] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e349] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e350] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+        - text:    
+  - text:  
+  - generic [ref=e353]:
+    - generic [ref=e354]:
+      - generic [ref=e355]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e356]
+        - generic [ref=e359]:
+          - textbox "email" [ref=e360]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e361] [cursor=pointer]
+      - generic [ref=e362]:
+        - heading "Follow us" [level=3] [ref=e363]
+        - generic [ref=e364]:
+          - link "Saint Louis Fed linkedin page" [ref=e366] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e367]: 
+            - generic [ref=e368]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e370] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e371]: 
+            - generic [ref=e372]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e374] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e375]: 
+            - generic [ref=e376]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e378] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e379]: 
+            - generic [ref=e380]: Saint Louis Fed YouTube page
+    - generic [ref=e382]:
+      - heading "Need Help?" [level=3] [ref=e383]
+      - generic [ref=e384]:
+        - link "Questions or Comments" [ref=e386] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e388] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e389]
+      - generic [ref=e390]:
+        - link "Legal" [ref=e392] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e394] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

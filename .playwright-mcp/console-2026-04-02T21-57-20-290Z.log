@@ -1,0 +1,6 @@
+[     102ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ http://localhost:3000/dashboards:0
+[  189010ms] [WARNING] WebSocket connection to 'ws://localhost:3000/api/live/ws' failed: WebSocket is closed before the connection is established. @ http://localhost:3000/public/build/3644.93bade7d48e3d75173f7.js:660
+[  223591ms] [ERROR] WebSocket connection to 'ws://localhost:3000/api/live/ws' failed: Connection closed before receiving a handshake response @ http://localhost:3000/public/build/3644.93bade7d48e3d75173f7.js:660
+[  254790ms] [WARNING] WebSocket connection to 'ws://localhost:3000/api/live/ws' failed: WebSocket is closed before the connection is established. @ http://localhost:3000/public/build/3644.93bade7d48e3d75173f7.js:660
+[  287182ms] [WARNING] WebSocket connection to 'ws://localhost:3000/api/live/ws' failed: WebSocket is closed before the connection is established. @ http://localhost:3000/public/build/3644.93bade7d48e3d75173f7.js:660
+[  319891ms] [WARNING] WebSocket connection to 'ws://localhost:3000/api/live/ws' failed: WebSocket is closed before the connection is established. @ http://localhost:3000/public/build/3644.93bade7d48e3d75173f7.js:660

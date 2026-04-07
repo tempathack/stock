@@ -1,0 +1,63 @@
+[      88ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:21608
+[   11075ms] TypeError: Cannot read properties of undefined (reading 'map')
+    at joinForecastData (http://localhost:3000/src/utils/forecastUtils.ts?t=1775206274612:8:22)
+    at http://localhost:3000/src/pages/Forecasts.tsx?t=1775206591901:195:14
+    at updateMemo (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:12258:27)
+    at Object.useMemo (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:12774:24)
+    at useMemo (http://localhost:3000/node_modules/.vite/deps/chunk-ZMLY2J2T.js?v=e93d3680:1094:29)
+    at Forecasts (http://localhost:3000/src/pages/Forecasts.tsx?t=1775206591901:192:25)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:11596:26)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:14630:28)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:15972:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:3680:22)
+[   11077ms] TypeError: Cannot read properties of undefined (reading 'map')
+    at joinForecastData (http://localhost:3000/src/utils/forecastUtils.ts?t=1775206274612:8:22)
+    at http://localhost:3000/src/pages/Forecasts.tsx?t=1775206591901:195:14
+    at updateMemo (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:12258:27)
+    at Object.useMemo (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:12774:24)
+    at useMemo (http://localhost:3000/node_modules/.vite/deps/chunk-ZMLY2J2T.js?v=e93d3680:1094:29)
+    at Forecasts (http://localhost:3000/src/pages/Forecasts.tsx?t=1775206591901:192:25)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:11596:26)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:14630:28)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:15972:22)
+    at HTMLUnknownElement.callCallback2 (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:3680:22)
+[   11078ms] [ERROR] The above error occurred in the <Forecasts> component:
+
+    at Forecasts (http://localhost:3000/src/pages/Forecasts.tsx?t=1775206591901:176:28)
+    at Suspense
+    at RenderedRoute (http://localhost:3000/node_modules/.vite/deps/react-router-dom.js?v=e93d3680:6355:26)
+    at Outlet (http://localhost:3000/node_modules/.vite/deps/react-router-dom.js?v=e93d3680:7143:26)
+    at main
+    at http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:2408:45
+    at Box3 (http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:5420:19)
+    at div
+    at http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:2408:45
+    at Box3 (http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:5420:19)
+    at Layout
+    at RenderedRoute (http://localhost:3000/node_modules/.vite/deps/react-router-dom.js?v=e93d3680:6355:26)
+    at Routes (http://localhost:3000/node_modules/.vite/deps/react-router-dom.js?v=e93d3680:7222:3)
+    at Router (http://localhost:3000/node_modules/.vite/deps/react-router-dom.js?v=e93d3680:7152:13)
+    at BrowserRouter (http://localhost:3000/node_modules/.vite/deps/react-router-dom.js?v=e93d3680:10363:3)
+    at QueryClientProvider (http://localhost:3000/node_modules/.vite/deps/@tanstack_react-query.js?v=e93d3680:3193:3)
+    at QueryProvider (http://localhost:3000/src/providers/QueryProvider.tsx:27:41)
+    at App
+    at DefaultPropsProvider (http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:6085:3)
+    at RtlProvider (http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:6061:3)
+    at ThemeProvider2 (http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:6017:5)
+    at ThemeProvider3 (http://localhost:3000/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=e93d3680:6237:5)
+    at ThemeProviderNoVars (http://localhost:3000/node_modules/.vite/deps/chunk-IAZ2UTAW.js?v=e93d3680:277:10)
+    at ThemeProvider (http://localhost:3000/node_modules/.vite/deps/chunk-IAZ2UTAW.js?v=e93d3680:426:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries. @ http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:14079
+[   11078ms] TypeError: Cannot read properties of undefined (reading 'map')
+    at joinForecastData (http://localhost:3000/src/utils/forecastUtils.ts?t=1775206274612:8:22)
+    at http://localhost:3000/src/pages/Forecasts.tsx?t=1775206591901:195:14
+    at updateMemo (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:12258:27)
+    at Object.useMemo (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:12774:24)
+    at useMemo (http://localhost:3000/node_modules/.vite/deps/chunk-ZMLY2J2T.js?v=e93d3680:1094:29)
+    at Forecasts (http://localhost:3000/src/pages/Forecasts.tsx?t=1775206591901:192:25)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:11596:26)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:14630:28)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:15972:22)
+    at beginWork$1 (http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:19806:22)

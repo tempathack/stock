@@ -1,0 +1,54 @@
+[    1424ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fred.stlouisfed.org/graph/api/series/?id=CPILFESL&width=1320:0
+[    1424ms] [ERROR] TypeError: Failed to fetch
+    at Ei.request (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149462)
+    at Ei.get (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149958)
+    at Q4.fetchChartData (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:40513)
+    at Q4.componentDidMount (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:39885)
+    at oue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32986)
+    at iue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32757)
+    at Nje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32254)
+    at Dje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:42577)
+    at ha (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:41903)
+    at cue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:37167) @ https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:22
+[    1425ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fred.stlouisfed.org/graph/api/series/hasmap/CPILFESL:0
+[    1428ms] TypeError: Cannot read properties of null (reading 'chart')
+    at https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:40543
+    at https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149782
+[    1428ms] TypeError: Failed to fetch
+    at Q4.fetchMapSetup (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:41081)
+    at Q4.componentDidMount (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:39910)
+    at oue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32986)
+    at iue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32757)
+    at Nje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32254)
+    at Dje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:42577)
+    at ha (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:41903)
+    at cue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:37167)
+    at _ (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:1:10107)
+    at MessagePort.W (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:1:10466)
+[    2769ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fred.stlouisfed.org/graph/api/series/?id=DTWEXBGS&width=1320:0
+[    2769ms] [ERROR] TypeError: Failed to fetch
+    at Ei.request (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149462)
+    at Ei.get (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149958)
+    at Q4.fetchChartData (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:40513)
+    at Q4.componentDidMount (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:39885)
+    at oue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32986)
+    at iue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32757)
+    at Nje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32254)
+    at Dje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:42577)
+    at ha (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:41903)
+    at cue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:37167) @ https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:22
+[    2770ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fred.stlouisfed.org/graph/api/series/hasmap/DTWEXBGS:0
+[    2771ms] TypeError: Cannot read properties of null (reading 'chart')
+    at https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:40543
+    at https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149782
+[    2772ms] TypeError: Failed to fetch
+    at Q4.fetchMapSetup (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:41081)
+    at Q4.componentDidMount (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:91:39910)
+    at oue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32986)
+    at iue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32757)
+    at Nje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32254)
+    at Dje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:42577)
+    at ha (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:41903)
+    at cue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:37167)
+    at _ (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:1:10107)
+    at MessagePort.W (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:1:10466)
