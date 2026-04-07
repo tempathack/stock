@@ -1196,3 +1196,10 @@ Previous run codebase patterns (still valid):
   - Flink consumer groups exist (flink-feast-writer etc) but no active members — Flink jobs not processing
   - debezium.public.predictions topic auto-created by Debezium CDC (not in manifests)
 ---
+
+## 2026-04-07 - US-050: Unused Prometheus metrics audit
+- Checked all 4 metrics defined in metrics.py against usage in services/api/
+- All 4 metrics are actively incremented: prediction_requests_total, prediction_latency_seconds, model_inference_errors_total, feast_stale_features_total
+- Documented in .audit/01-stale-code.md under '## Unused Prometheus Metrics'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+---

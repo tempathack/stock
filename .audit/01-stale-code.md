@@ -763,3 +763,22 @@ _Recorded: 2026-04-07_
 - 2/6 topics with ACTIVE consumers (`historical-data`, `intraday-data`)
 - 3/6 topics with registered but INACTIVE consumer groups (Flink down)
 - 1/6 topic ORPHANED (`debezium.public.predictions` — no manifest, no consumer)
+
+## Unused Prometheus Metrics
+
+_Recorded: 2026-04-07_
+
+### Metric Inventory
+
+| Metric | Type | Labels | Used? | Where |
+|--------|------|--------|-------|-------|
+| `prediction_requests_total` | Counter | ticker, model, status | **YES** | `routers/predict.py` — incremented on every request path (cached, success, error) |
+| `prediction_latency_seconds` | Histogram | ticker, model | **YES** | `routers/predict.py` — observed with `time.monotonic()` timing |
+| `model_inference_errors_total` | Counter | ticker, error_type | **YES** | `routers/predict.py` — incremented on `PredictionError` and inference exceptions |
+| `feast_stale_features_total` | Counter | ticker, reason | **YES** | `services/prediction_service.py` — incremented when Feast is unavailable or returns stale features |
+
+### Result
+
+**0 unused metrics.** All 4 custom Prometheus metrics defined in `metrics.py` are actively incremented in production code paths.
+
+The `prometheus_fastapi_instrumentator` package additionally auto-instruments all HTTP endpoint latency and status code counters — these are not defined in `metrics.py` but are registered at startup in `main.py`.
