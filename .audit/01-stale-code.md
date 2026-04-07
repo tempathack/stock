@@ -538,3 +538,53 @@ _Recorded: 2026-04-07_
 ### CRITICAL Findings
 
 **None.** No `TODO: remove`, `FIXME: broken`, or security-critical unresolved markers found.
+
+## Deprecated Python Packages
+
+_Recorded: 2026-04-07_
+
+### Version Lag Summary
+
+| Package | Pinned | Latest | Gap | Risk |
+|---------|--------|--------|-----|------|
+| `yfinance` | 0.2.38 | 1.2.0 | MAJOR | **HIGH** — requirements.txt pin is pre-1.0; installed env has 1.2.0 |
+| `xgboost` | 2.0.3 | 3.2.0 | MAJOR | MEDIUM — 3.x has breaking API changes in `DMatrix` and GPU paths |
+| `scikit-learn` | 1.4.2 | 1.8.0 | MINOR | LOW — no breaking changes in 1.x series |
+| `shap` | 0.45.1 | 0.51.0 | MINOR | LOW — numba/numpy constraint already managed with noqa guard |
+| `lightgbm` | 4.3.0 | 4.6.0 | MINOR | LOW |
+| `fastapi` | 0.111.0 | 0.135.3 | MINOR | LOW — no breaking changes in 0.1xx series |
+| `pydantic` | 2.7.1 | 2.12.5 | MINOR | LOW — already on v2; patch updates are safe |
+| `sqlalchemy` | 2.0.30 | 2.0.49 | PATCH | LOW |
+| `numpy` | 1.26.4 | 2.4.4 | MAJOR | **INTENTIONAL CAP** — SHAP/numba require numpy<2.0 (see progress.txt) |
+| `psycopg2-binary` | 2.9.9 | 2.9.11 | PATCH | LOW (legacy — see below) |
+
+---
+
+### Notable Issues
+
+**`yfinance==0.2.38` in requirements.txt is STALE (CRITICAL)**
+- requirements.txt pins `0.2.38` but the runtime environment has `1.2.0` installed
+- progress.txt explicitly requires `>= 1.0` (MultiIndex `.droplevel(1)` API)
+- The Docker image will install `0.2.38` which will BREAK the API on next rebuild
+- **Action required:** Update requirements.txt to `yfinance>=1.0`
+
+**`numpy==1.26.4` — Intentional cap (do NOT upgrade)**
+- SHAP (0.45.1) uses numba which requires numpy<2.0
+- Upgrading to numpy 2.x will break SHAP feature importance explanations
+- Safe to upgrade once SHAP >= 0.46 (which added numpy 2.x support)
+
+**`xgboost==2.0.3` — 2 major versions behind**
+- XGBoost 3.x introduced breaking changes in `DMatrix`, `Booster.predict()` return types
+- Upgrade requires testing all ML pipeline paths before deployment
+
+**`psycopg2-binary` — Legacy adapter**
+- `psycopg2-binary` is the legacy PostgreSQL adapter for Python
+- `psycopg` (v3) is the modern replacement with async-native support
+- Migration is significant but worthwhile for long-term maintenance
+- Not deprecated or vulnerable — medium-term tech debt
+
+---
+
+### No Known CVEs Found
+- None of the pinned packages have publicly disclosed critical CVEs as of 2026-04-07
+- `numpy==1.26.4` has a resolved issue (CVE-2024-29071) — upgrade to 1.26.4+ (current) is fine

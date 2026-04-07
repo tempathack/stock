@@ -1143,3 +1143,16 @@ Previous run codebase patterns (still valid):
   - 2 TS suppressions: 1 `as any` in MarketTreemap D3 data, 1 eslint-disable in Forecasts.tsx
   - S301 pickle.loads in backtest_service.py is moderate risk but only loads internal artifacts
 ---
+
+## 2026-04-07 - US-046: Stale Code: Deprecated Python package audit
+- Ran pip index versions for top 10 packages in requirements.txt
+- Key finding: yfinance==0.2.38 in requirements.txt is STALE — env has 1.2.0, Docker build will install 0.2.38 and BREAK on next rebuild
+- numpy capped at 1.26.4 intentionally — SHAP/numba require numpy<2.0
+- xgboost 2 major versions behind (2.0.3 vs 3.2.0) — breaking changes in 3.x DMatrix API
+- psycopg2-binary legacy but not CVE-affected
+- Documented in .audit/01-stale-code.md under '## Deprecated Python Packages'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - requirements.txt yfinance pin is wrong — needs to be bumped to >=1.0 for correct API
+  - Do NOT upgrade numpy to 2.x until SHAP supports it (currently requires numba+numpy<2.0)
+---

@@ -744,8 +744,8 @@
         "Document deprecated/outdated packages in .audit/01-stale-code.md under '## Deprecated Python Packages'"
       ],
       "priority": 46,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "yfinance==0.2.38 in requirements.txt is STALE (env has 1.2.0); xgboost 2 major versions behind (3.2.0); numpy capped at 1.x intentionally for SHAP/numba; psycopg2-binary legacy but not CVE-affected. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-047",
