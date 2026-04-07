@@ -525,8 +525,8 @@
         "List any unexpected or orphaned buckets"
       ],
       "priority": 32,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. Both buckets present: model-artifacts (294 objects/24.1MiB, 3 subfolders) + drift-logs (1 object/132KiB). Note: credentials are minioadmin/minioadmin123, not minio/minio123. Port-forward to 9002 needed (9001 already in use locally)."
     },
     {
       "id": "US-033",

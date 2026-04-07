@@ -112,3 +112,31 @@ kubectl port-forward svc/prometheus -n monitoring 9090:9090
 ```
 
 Note: API port-forward required pod-level forward (not svc-level) due to pod restart after minikube start.
+
+---
+
+## MinIO Artifact Inventory
+
+### US-032: MinIO console audit (2026-04-07)
+
+**Access:** `minioadmin / minioadmin123` (via MINIO_ROOT_USER/MINIO_ROOT_PASSWORD from `minio-secrets` secret in `storage` namespace)
+
+**Buckets (2 total, no unexpected/orphaned buckets):**
+
+| Bucket | Objects | Size | Access | Contents |
+|---|---|---|---|---|
+| model-artifacts | 294 | 24.1 MiB | PRIVATE | flink-checkpoints/, model_registry/, serving/ |
+| drift-logs | 1 | 132.0 KiB | PRIVATE | drift_logs/ folder |
+
+**model-artifacts structure:**
+- `flink-checkpoints/` — Flink state backend checkpoints
+- `model_registry/` — Trained model pickle/joblib files
+- `serving/` — Model artifacts for KServe serving
+
+**drift-logs structure:**
+- `drift_logs/` — 1 file, 132 KiB — JSONL drift detection log
+
+**Status:** Both expected buckets present with correct content. 294 model artifacts = healthy training pipeline output. 1 drift log file = drift detection running.
+
+**Note:** MinIO not port-forwarded on 9001 by default (`scripts/deploy-all.sh` may not include MinIO forward). Used `kubectl port-forward -n storage svc/minio 9002:9001` to access. Credentials differ from story assumption (minio/minio123 wrong; actual: minioadmin/minioadmin123).
+

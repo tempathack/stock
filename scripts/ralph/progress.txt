@@ -1014,3 +1014,14 @@ Previous run codebase patterns (still valid):
 - Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 - Screenshots: audit-p31-prom-targets.png
 ---
+
+## 2026-04-07 - US-032: Playwright: MinIO console audit — buckets and model artifacts
+- MinIO accessible via kubectl port-forward -n storage svc/minio 9002:9001 (9001 occupied locally)
+- Credentials: minioadmin/minioadmin123 (NOT minio/minio123 as story assumed)
+- Bucket 1: model-artifacts — 294 objects, 24.1 MiB — subfolders: flink-checkpoints/, model_registry/, serving/
+- Bucket 2: drift-logs — 1 object, 132.0 KiB — subfolder: drift_logs/
+- No unexpected or orphaned buckets
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Screenshots: audit-p32-minio-login.png, audit-p32-model-artifacts.png, audit-p32-drift-logs.png
+- **Learnings:** MinIO credentials are in minio-secrets secret (MINIO_ROOT_USER/PASSWORD), not minio/minio123. Local port 9001 already occupied — use 9002 for port-forward.
+---
