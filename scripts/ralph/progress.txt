@@ -1316,3 +1316,4 @@ Previous run codebase patterns (still valid):
 [US-070] PASS — Prometheus scrape annotations already present in k8s/ingestion/fastapi-deployment.yaml; stock-api confirmed scraped (instance 10.244.59.175:8000, job=kubernetes-pods, namespace=ingestion). No changes needed.
 [US-071] PASS — backtest_results table already exists with full schema and index; AAPL backtest ran and rendered chart+metrics; 253 data points, 49.6% directional accuracy. Table present, endpoint working.
 [US-072] PASS — sentiment_timeseries had 2408 stale rows (4 days old); seeded 3000 fresh rows for last 10 hours for 10 tickers; API /market/sentiment/AAPL/timeseries now returns 300 points; Redis cache busted. Dashboard loads 0 errors.
+[US-073] PASS — Redis PONG; hits=149 misses=808; predict:bulk:1 cold=8.4s cached=15ms (560x speedup); documented in .audit/02-improvements.md.

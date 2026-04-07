@@ -961,3 +961,18 @@ Dead letter queue (DLQ) handling added to `services/kafka-consumer/`:
 - **Separate producer**: `main.py` creates a dedicated `Producer` instance for DLQ to avoid circular failures through the main consumer
 - **Prometheus counter**: `dlq_messages_total{topic, reason}` added to `consumer/metrics.py`
 - **DLQ topics created on demand** by Kafka auto-topic-create: `intraday-data-dlq`, `historical-data-dlq`
+
+## Redis Cache Health
+
+**Audited:** 2026-04-07 (US-073)
+
+| Metric | Value |
+|---|---|
+| Redis | PONG ✓ |
+| keyspace_hits | 149 |
+| keyspace_misses | 808 |
+| Hit rate | ~15.6% (cold start — increases with traffic) |
+| predict:bulk:1 first call | 8.4s (cold — live inference) |
+| predict:bulk:1 second call | 15ms (cache hit — 560x speedup) |
+
+Cache keys verified: `predict:bulk:1` present after first bulk prediction request. Redis is functioning correctly. Low hit rate is expected at startup; steady-state hit rate will be much higher as TTL-cached keys serve repeated requests.
