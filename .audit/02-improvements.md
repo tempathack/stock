@@ -37,3 +37,34 @@ Status: IN PROGRESS
 - audit-p02-price-cards.png — AAPL price cards + historical chart
 - audit-p02-treemap.png — market treemap + top movers
 
+---
+
+### US-003: Dashboard Macro Tab Audit (2026-04-07)
+
+**Status:** FULL PASS — all 19 cards show real values, MacroChart fully functional
+
+**Verified working:**
+- Macro tab toggle switches from Market to Macro view cleanly
+- **19 macro indicator cards** visible, ALL showing real numeric values (no dashes)
+  - VIX: 18.50, SPY RETURN: +0.12%, 10Y YIELD: 4.39%, 2-10 SPREAD: -0.67%
+  - HY SPREAD: 292.70%, WTI CRUDE: $70.66, USD INDEX: 110.5, INITIAL CLAIMS: 217,997
+  - CORE PCE: 122.883, SECTOR RETURN: +0.08%, 52W HIGH %: 0.85, 52W LOW %: 0.35
+  - 3M-10Y SPREAD: -0.49%, BAA YIELD: 5.45%, USD/JPY: 149.9, NFCI: -0.10
+  - CPI INDEX: 314.8, 2Y YIELD: 4.82%, 10Y BREAKEVEN: 2.25%
+  - Data timestamp: "As of 2026-04-04"
+- MacroChart "HISTORICAL TRENDS — 90 DAYS" shows **17 series chips**: 10Y Yield, 2-10 Spread, 2Y Yield, 3M-10Y Spread, HY Spread, BAA Yield, 10Y Breakeven, WTI Crude, Trade USD Index, USD/JPY, Jobless Claims, NFCI, CPI, Core PCE, Sector Return, 52W High %, 52W Low %
+- Clicking BAA Yield chip updates chart ✓
+- Default active chips on load: 10Y Yield, 2-10 Spread, WTI Crude
+
+**Console output:**
+- 0 errors
+- 2 pre-existing warnings: WS timing warning + ECharts dispose warning (both non-blocking)
+
+**Card count:** 19 (meets ≥17 requirement)
+
+**Screenshots:**
+- audit-p03-macro-tab.png — full Macro tab with all 19 cards
+- audit-p03-macro-chart-chips.png — MacroChart with all 17 series chips
+- audit-p03-macro-chart-baa.png — chart after clicking BAA Yield chip
+- audit-p03-macro-tab-full.png — full-page screenshot
+

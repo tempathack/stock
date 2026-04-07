@@ -640,3 +640,17 @@ Previous run codebase patterns (still valid):
   - Intraday candle data is known unavailable — document but not a blocker
   - 52W Range $9 low for AAPL is a data bug worth noting
 ---
+
+## 2026-04-07 - US-003: Playwright: Dashboard — Macro tab full feature audit
+- Navigated to http://localhost:5173/, clicked Macro toggle button
+- **19 macro indicator cards** all showing real values (VIX 18.50, SPY +0.12%, 10Y Yield 4.39%, etc.)
+- MacroChart has 17 series chips: 10Y Yield, 2-10 Spread, 2Y Yield, 3M-10Y Spread, HY Spread, BAA Yield, 10Y Breakeven, WTI Crude, Trade USD Index, USD/JPY, Jobless Claims, NFCI, CPI, Core PCE, Sector Return, 52W High %, 52W Low %
+- BAA Yield chip click verified — chart updated correctly
+- 0 console errors (2 pre-existing warnings: WS timing + ECharts dispose)
+- Documented findings in .audit/02-improvements.md
+- Screenshots: audit-p03-macro-tab.png, audit-p03-macro-chart-chips.png, audit-p03-macro-chart-baa.png, audit-p03-macro-tab-full.png
+- **Learnings for future iterations:**
+  - MacroPanel uses Market/Macro toggle buttons (not tabs) — need to click "Macro" button, not a tab
+  - 19 cards displayed (requirement was 17-19) — all populated from feast_yfinance_macro + macro_fred_daily
+  - Data timestamp shows "As of 2026-04-04" (4 days old) — FRED data not refreshing daily (low priority)
+---

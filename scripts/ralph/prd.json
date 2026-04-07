@@ -57,7 +57,7 @@
         "If any card shows '\u2014' for known-populated fields (vix, spy_return, dgs10, t10y2y, dcoilwtico), record as bug in .audit/02-improvements.md"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
