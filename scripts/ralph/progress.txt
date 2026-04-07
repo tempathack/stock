@@ -1228,3 +1228,15 @@ Previous run codebase patterns (still valid):
   - ML training jobs don't expose custom metrics (model_last_trained_timestamp etc. never registered)
   - model_inference_errors_total / feast_stale_features_total defined but appear only after first error event
 ---
+
+## 2026-04-07 - US-053: Elasticsearch/Kibana integration status
+- ES Running (6 restarts), Kibana Running (32 restarts — stability concern)
+- search.py uses elasticsearch_service.py — ES IS integrated with the API
+- ES index names match Debezium CDC topic names (debezium.public.predictions etc.)
+- CDC not running (Debezium Connect pod down) — indices likely empty, search returns no results
+- Documented in .audit/01-stale-code.md under '## Elasticsearch/Kibana Integration Status'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - ES integration exists but depends on Debezium CDC for data population
+  - Kibana has 32 restarts — may indicate memory/resource issues
+---

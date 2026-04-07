@@ -838,3 +838,31 @@ _Recorded: 2026-04-07_
 - Not orphaned in a harmful way
 
 **All other ConfigMaps and custom Secrets are actively used.**
+
+## Elasticsearch/Kibana Integration Status
+
+_Recorded: 2026-04-07_
+
+### Pod Status
+- `elasticsearch-0` — **Running** (1/1), 6 restarts in 3d15h
+- `kibana-5df4b8474c-8k9n5` — **Running** (1/1), 32 restarts in 3d15h (high restart count but currently up)
+
+### Integration Status
+**Elasticsearch IS integrated with the API** via `elasticsearch_service.py` and `routers/search.py`.
+
+- `search.py` imports `search_predictions`, `search_models`, `search_drift_events`, `search_stocks` from `elasticsearch_service.py`
+- ES client connects to `settings.ELASTICSEARCH_URL`
+- Indices used: `debezium.public.predictions`, `debezium.public.model_registry`, `debezium.public.drift_logs`, `stocks`
+
+### Known Issue: CDC Not Populating ES Indices
+
+The ES index names (`debezium.public.predictions` etc.) are expected to be populated by Debezium CDC connector streaming from PostgreSQL. However:
+- Debezium Connect pod is NOT running (KafkaMirrorMaker CRD schema mismatch — documented in US-033/US-049)
+- The ES indices likely have 0 documents
+- Search endpoints return empty results, not errors (ES client handles missing indices gracefully)
+
+### Assessment
+- **Not dead infrastructure** — ES is running and integrated
+- **Partially broken** — data flow from PostgreSQL → Kafka → ES via Debezium CDC is broken
+- The `stocks` index may need manual population (no CDC path for stocks table)
+- **High restart count on Kibana (32 restarts)** is a stability concern but it's currently running

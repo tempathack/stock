@@ -854,8 +854,8 @@
         "Document ES/Kibana integration status in .audit/01-stale-code.md under '## Elasticsearch/Kibana Integration Status'"
       ],
       "priority": 53,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "ES Running (6 restarts), Kibana Running (32 restarts). search.py uses elasticsearch_service.py which connects to ES. BUT Debezium CDC not running — indices likely empty. Not dead, but CDC pipeline broken. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-054",
