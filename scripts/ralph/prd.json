@@ -712,8 +712,8 @@
         "Document unused env vars in .audit/01-stale-code.md under '## Unused ConfigMap Environment Variables'"
       ],
       "priority": 44,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. 0 unused env vars. API_BASE_URL/MINIO_ENDPOINT/MINIO_BUCKET_MODELS bypass Pydantic config but consumed via os.environ.get(). All processing ConfigMap vars consumed by kafka-consumer config.py."
     },
     {
       "id": "US-045",

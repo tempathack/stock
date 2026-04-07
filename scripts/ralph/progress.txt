@@ -1123,3 +1123,11 @@ Previous run codebase patterns (still valid):
 - ML namespace: feast-feature-server + KServe predictors Running ✓
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-044: Stale Code: Unused environment variables in K8s ConfigMaps
+- 0 unused env vars — all ConfigMap entries consumed
+- API_BASE_URL, MINIO_ENDPOINT, MINIO_BUCKET_MODELS use os.environ.get() not Pydantic config
+- kafka-consumer configmap: all 7 vars consumed by consumer/config.py
+- Minor: 3 vars bypass central config.py — consistency gap, not a bug
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---

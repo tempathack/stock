@@ -430,3 +430,32 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **One orphaned resource group:** Debezium Kafka Connect pod missing — CDC pipeline broken. Connectors defined but unreachable.
 
+
+---
+
+## Unused ConfigMap Environment Variables
+
+### US-044: ConfigMap env var audit (2026-04-07)
+
+**k8s/ingestion/configmap.yaml → services/api/app/config.py:**
+
+Initially flagged as missing from config.py: `API_BASE_URL`, `MINIO_ENDPOINT`, `MINIO_BUCKET_MODELS`
+
+After deeper check — all three are consumed via `os.environ.get()` (not Pydantic config field):
+| Var | Consumer | Location |
+|---|---|---|
+| `API_BASE_URL` | `trigger_intraday.py`, `trigger_historical.py` | `os.environ.get("API_BASE_URL", ...)` |
+| `MINIO_ENDPOINT` | `model_metadata_cache.py:67` | `os.environ.get("MINIO_ENDPOINT")` |
+| `MINIO_BUCKET_MODELS` | `model_metadata_cache.py:80` | `os.environ.get("MINIO_BUCKET_MODELS", "model-artifacts")` |
+
+**All ingestion ConfigMap vars are consumed** ✓
+
+**k8s/processing/configmap.yaml → kafka-consumer/consumer/config.py:**
+All 7 vars consumed by kafka-consumer's own Pydantic settings:
+- `KAFKA_GROUP_ID`, `BATCH_SIZE`, `BATCH_TIMEOUT_MS` → `consumer/config.py`
+- `KAFKA_BOOTSTRAP_SERVERS`, `HISTORICAL_TOPIC`, `INTRADAY_TOPIC`, `LOG_LEVEL` → standard fields
+
+**Result: 0 unused env vars** — all ConfigMap entries are consumed by the application.
+
+**Note:** 3 vars bypass the central `app/config.py` Pydantic class in favour of direct `os.environ.get()` — minor consistency gap, not a bug.
+
