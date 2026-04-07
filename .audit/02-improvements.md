@@ -71,6 +71,45 @@ Status: IN PROGRESS
 
 ---
 
+### US-005: Dashboard — Technical Analysis Panel Audit (2026-04-07)
+
+**Status:** PASS — all 6 TA indicator charts render with real data, TimeframeSelector works
+
+**API findings:**
+- `curl http://localhost:8010/market/history/AAPL?period=1mo` → **404** (endpoint does not exist with this name)
+- Actual endpoint: `GET /market/indicators/{ticker}` — returns RSI, MACD, BB, SMA, EMA, Volume, VWAP series
+- `curl http://localhost:8010/market/indicators/AAPL` → full 250-point series with latest values
+- Latest AMD RSI: 49.4, MACD line: -0.98, MACD signal: 0.02, SMA 20: $257.13, SMA 50: $250.64, SMA 200: $240.39
+
+**Verified working:**
+- Stock selection via Top Gainers click (AMD) → TA panel expands below ✓
+- Key Metrics: Current Price, Daily Change, Volume (20D Avg), VWAP, 52W Range all populated ✓
+- TimeframeSelector (1D/1W/1M/3M/1Y) — clicking 1W updates historical chart to 1-week view ✓
+- **RSI (14)** chart: renders full time series, reference lines at 30/70, no NaN visible ✓
+- **MACD (12/26/9)** chart: MACD line (blue) and signal (orange dashed) render correctly ✓
+- **Bollinger Bands** chart: Upper/Lower bands with close price render correctly ✓
+- **Moving Averages** chart: Close, SMA 20, SMA 50, SMA 200, EMA 12, EMA 26 all render, tooltip shows exact values ✓
+- **Volume (20-day SMA)** bar chart: renders with proper M/K formatting ✓
+- **VWAP** chart: Close vs VWAP lines render correctly ✓
+- 0 console errors (3 warnings: WebSocket closed × 2, ECharts disposed × 1 — all pre-existing)
+
+**Data quality issues found:**
+1. **MACD histogram always null** — `macd_histogram` is null for all 250 data points in the series. MACD bars never render. Root cause: histogram not being computed in the indicators pipeline.
+2. **BB Middle band always null** — `bb_middle` is null for all 250 data points. Middle Bollinger Band line never renders.
+3. **Market Cap shows $0** — KeyMetrics card shows "MARKET CAP: $0" for AMD. Data not populated.
+4. **Sector shows "UNKNOWN"** — AMD company sector not resolved; displays as "UNKNOWN" instead of "Technology".
+5. **Intraday candle chart unavailable** — left panel shows placeholder; intraday data requires live Flink pipeline.
+6. **No toggle for individual indicators** — acceptance criteria mentioned toggling RSI/MACD/BB on/off; no such UI exists. All 6 charts always visible. Minor UX gap.
+
+**Screenshots:**
+- audit-p05-ta-panel.png — initial dashboard on load
+- audit-p05-ta-panel-loaded.png — after clicking AMD from Top Gainers
+- audit-p05-rsi-macd-bb.png — RSI, MACD, Bollinger Bands charts
+- audit-p05-ta-charts-bottom.png — Moving Averages, Volume, VWAP charts
+- audit-p05-timeframe-1w.png — 1W timeframe selected, Key Metrics, historical chart
+
+---
+
 ### US-004: Dashboard — Sentiment Tab Full Feature Audit (2026-04-07)
 
 **Status:** PASS — empty state renders correctly, appropriate messaging shown

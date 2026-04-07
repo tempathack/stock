@@ -89,8 +89,8 @@
         "curl 'http://localhost:8010/market/history/AAPL?period=1mo' \u2014 verify response includes OHLCV data"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "All 6 TA charts render with real data. TimeframeSelector works. 0 console errors. Issues documented: macd_histogram always null, bb_middle always null, Market Cap $0, Sector UNKNOWN. Screenshots: audit-p05-*.png"
     },
     {
       "id": "US-006",

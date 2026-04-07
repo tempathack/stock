@@ -669,3 +669,22 @@ Previous run codebase patterns (still valid):
   - 0 rows expected — Flink sentiment-writer not running, reddit-producer is running but not consumed
   - Empty state UI works correctly — no action needed for the UI itself
 ---
+
+## 2026-04-07 - US-005: Dashboard — Technical Analysis Panel audit
+
+- Navigated to Dashboard, clicked AMD from Top Gainers to trigger stock selection
+- Expanded TA panel accordion and scrolled through all 6 sub-charts: RSI (14), MACD (12/26/9), Bollinger Bands, Moving Averages, Volume (20-day SMA), VWAP
+- All charts render with real data from /market/indicators/{ticker} endpoint
+- TimeframeSelector (1D/1W/1M/3M/1Y) verified working — clicking 1W zoomed historical chart
+- Key Metrics panel shows Current Price, Daily Change, Volume, VWAP, 52W Range
+- 0 console errors (3 pre-existing warnings: WS closed, ECharts disposed)
+- No NaN values in indicator displays; null fields (macd_histogram, bb_middle) properly filtered
+- Documented issues in .audit/02-improvements.md: macd_histogram null (bars never render), bb_middle null (middle BB line never renders), Market Cap $0, Sector "UNKNOWN"
+- /market/history/AAPL?period=1mo returns 404 — actual endpoint is /market/indicators/{ticker}
+
+**Learnings for future iterations:**
+- DashboardTAPanel is inside an accordion in Dashboard.tsx — must expand the card first to see it
+- Main content area is a scrollable container (main element), not window scroll — use `main.scrollTop` to scroll
+- macd_histogram and bb_middle are consistently null across all 250 series data points — DB/pipeline never populates these two fields
+- Stock detail panel structure: header card (AMD) → stock search list → Price Charts (candle + historical) → Streaming Features → Technical Indicators → Reddit Sentiment
+---
