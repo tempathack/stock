@@ -1001,7 +1001,7 @@
         "Commit: 'feat: [US-062] add exponential backoff retry to frontend API client'"
       ],
       "priority": 62,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

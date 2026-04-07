@@ -921,3 +921,15 @@ SELECT * FROM predictions WHERE ticker='AAPL' ORDER BY prediction_date DESC LIMI
 ```
 
 Index Scan confirmed (not Seq Scan). `feast_yfinance_macro` already has composite PK on (ticker, timestamp) — no additional index needed.
+
+## API Client Resilience
+
+**Implemented:** 2026-04-07 (US-062)
+
+Axios interceptor in `services/frontend/src/api/client.ts` retries transient server errors:
+
+- **Retry conditions:** HTTP 502, 503, 504 or network error (no status code)
+- **No retry:** 400, 401, 403, 404, or any other non-transient status
+- **Strategy:** up to 3 retries with exponential backoff — 1s / 2s / 4s delays
+- **Dev logging:** `console.debug` logs each retry attempt (retryCount/maxRetries, delay, status) — only in development mode (`import.meta.env.DEV`)
+- **Implementation:** `_retryCount` tracked on the axios request config via `RetryConfig` extension interface
