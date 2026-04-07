@@ -756,3 +756,19 @@ Previous run codebase patterns (still valid):
   - ForecastTable has no onToggleCompare prop — comparison panel wiring is incomplete dead code
   - StockDetailChart and IndicatorOverlayCharts are fully working; opened by clicking any DataGrid row
 ---
+
+## 2026-04-07 - US-010: Playwright: Models page — ModelComparisonTable and FoldPerformanceChart audit
+- Navigated to http://localhost:5173/models — page loaded with real data
+- WinnerCard VERIFIED: stacking_ensemble with "Winner" badge, OOS RMSE 0.0234, OOS R² -0.0259 ✓
+- ModelComparisonTable VERIFIED: 9 models (stacking_ensemble, elastic_net, CatBoost_standard [Active], RandomForest_minmax, Ridge_quantile, bayesian_ridge, linear_regression, ridge, lasso) with all numeric OOS metrics columns ✓
+- FoldPerformanceChart VERIFIED: scrolled main container to bottom (scrollHeight 2282px), found "FOLD-BY-FOLD PERFORMANCE — STACKING_ENSEMBLE" chart with 5 folds, MAE/RMSE/R² bars ✓ (uses mock data from generateModelDetail utility)
+- ShapBarChart (FEATURE IMPORTANCE) and ShapBeeswarmPlot (SHAP VALUE DISTRIBUTION) both visible ✓
+- API: /models/comparison returns `models` key (9 entries) + `winner` — PRD said `model_metrics` but actual key is `models` (just naming inconsistency)
+- 0 console errors, 0 warnings
+- Files modified: .audit/02-improvements.md (US-010 section), scripts/ralph/prd.json (US-010 passes: true), scripts/ralph/progress.txt
+- Screenshots: audit-p10-models.png, audit-p10-winner.png, audit-p10-comparison-table.png, audit-p10-fold-chart.png
+- **Learnings for future iterations:**
+  - Models page main scroll container is `<main>` element, not window — must scroll `main.scrollTop` to reveal charts below the fold
+  - FoldPerformanceChart uses mock data from `utils/mockModelData.ts:generateModelDetail()` — no real fold API endpoint exists
+  - XGBoost and LightGBM were never trained/registered in this deployment — only 9 models present
+---

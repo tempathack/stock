@@ -170,8 +170,8 @@
         "curl 'http://localhost:8010/models/comparison' \u2014 verify response has model_metrics array"
       ],
       "priority": 10,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "VERIFIED 2026-04-07: WinnerCard (stacking_ensemble), ModelComparisonTable (9 models with numeric OOS metrics), FoldPerformanceChart (5 folds, mock data), ShapBarChart, ShapBeeswarmPlot \u2014 all render. 0 console errors. CatBoost_standard is Active model. XGBoost/LightGBM absent from registry."
     },
     {
       "id": "US-011",

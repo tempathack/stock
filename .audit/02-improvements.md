@@ -242,3 +242,31 @@ Status: IN PROGRESS
 - audit-p09-detail-chart.png — full-page view of StockDetailChart (TSLA) + IndicatorOverlayCharts
 - audit-p09-indicator-overlay.png — viewport: RSI + MACD + Bollinger Band overlays visible
 - audit-p09-comparison-placeholder.png — StockComparisonPanel shows placeholder (no trigger mechanism)
+
+---
+
+### US-010: Models Page — ModelComparisonTable and FoldPerformanceChart Audit (2026-04-07)
+
+**Status:** PASS
+
+**Verified working:**
+- Models page loads at http://localhost:5173/models with real data ✓
+- WinnerCard: stacking_ensemble displayed with "Winner" badge, OOS RMSE 0.023400, OOS R² -0.0259, Fold Stability 0.0000, Scaler Meta_ridge ✓
+- ModelComparisonTable: 9 models rendered with OOS RMSE/MAE/R²/MAPE/DIR.ACCURACY/FOLD STABILITY/STATUS columns — all numeric values populated ✓
+  - Models present: stacking_ensemble (Inactive), elastic_net (Inactive), CatBoost_standard (**Active**), RandomForest_minmax (Inactive), Ridge_quantile (Inactive), bayesian_ridge (Inactive), linear_regression (Inactive), ridge (Inactive), lasso (Inactive)
+  - Note: XGBoost and LightGBM are NOT in the registry — only 9 models trained
+- FoldPerformanceChart: renders 5 folds (Fold 1–5) with MAE/RMSE/R² bars for stacking_ensemble ✓ (uses mock fold data from generateModelDetail utility — no real /models/fold API)
+- ShapBarChart: FEATURE IMPORTANCE (SHAP) with feature bars ✓ (mock data)
+- ShapBeeswarmPlot: SHAP VALUE DISTRIBUTION scatter plot ✓ (mock data)
+- 0 console errors, 0 warnings
+
+**Issues found:**
+1. **API key name mismatch with PRD criteria**: PRD states `/models/comparison` should have `model_metrics` array, but the actual API returns `models` key. Frontend correctly reads `data.models` — no bug, just documentation inconsistency.
+2. **FoldPerformanceChart uses mock data**: `generateModelDetail()` in `utils/mockModelData.ts` generates synthetic fold metrics. No real cross-validation fold data is stored or served. The chart renders but shows fabricated values.
+3. **XGBoost and LightGBM absent**: Only 9 models in registry — no XGBoost or LightGBM trained models. These were mentioned in phase plan acceptance criteria.
+
+**Screenshots:**
+- audit-p10-models.png — full-page Models page initial load
+- audit-p10-winner.png — WinnerCard stacking_ensemble visible
+- audit-p10-comparison-table.png — ModelComparisonTable with 9 model rows
+- audit-p10-fold-chart.png — FoldPerformanceChart + SHAP charts (scrolled to bottom)
