@@ -347,8 +347,8 @@
         "If any route shows white screen or React crash: mark as CRITICAL in .audit/02-improvements.md"
       ],
       "priority": 21,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. Zero console errors across all 7 routes. Dashboard has 2 warnings (WS stale-close + ECharts disposed) — not errors. No white screens or React crashes."
     },
     {
       "id": "US-022",

@@ -921,3 +921,10 @@ Previous run codebase patterns (still valid):
   - Deep health check is /health/deep (not /health/detailed)
   - Model + predictions are stale — training pipeline hasn't run since 2026-03-22
 ---
+
+## 2026-04-07 - US-021: Full console error sweep — all 7 tabs
+- 0 console errors on all routes: /, /forecasts, /models, /drift, /analytics, /backtest, /search
+- Dashboard has 2 warnings (WS stale-close + ECharts disposed) — not errors
+- No white screens or React crashes
+- No screenshots needed (no errors)
+---

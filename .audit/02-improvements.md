@@ -563,3 +563,25 @@ Market closed:
 **Action items:**
 - Retrain models (stale 15d) — weekly-training CronJob should run automatically
 - Predictions stale 90h — new predictions needed after retraining
+
+---
+
+## Console Errors by Route
+
+### US-021: Full console error sweep — all 7 tabs (2026-04-07)
+
+**Status:** PASS — zero console errors across all routes
+
+| Route | Errors | Warnings | Notes |
+|---|---|---|---|
+| / (dashboard) | 0 | 2 | WS stale-close warning + ECharts disposed |
+| /forecasts | 0 | 0 | Clean |
+| /models | 0 | 0 | Clean |
+| /drift | 0 | 0 | Clean |
+| /analytics | 0 | 0 | Clean |
+| /backtest | 0 | 0 | Clean |
+| /search | 0 | 0 | Clean |
+
+**Total errors: 0. No white screens or React crashes.**
+
+No screenshots taken (no errors to document).
