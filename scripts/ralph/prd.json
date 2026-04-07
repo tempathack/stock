@@ -1118,7 +1118,7 @@
         "Commit: 'feat: [US-069] add structured JSON logging to ML training pipeline'"
       ],
       "priority": 69,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

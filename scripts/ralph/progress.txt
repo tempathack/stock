@@ -1312,3 +1312,4 @@ Previous run codebase patterns (still valid):
 [US-066] PASS — CORS already had restricted origins; changed allow_methods from ['*'] to explicit list. evil.com blocked, localhost:5173 allowed. 0 frontend console errors.
 [US-067] PASS — Added drift_score_current Gauge to metrics.py; instrumented drift/feature-distributions endpoint; gauge shows rsi_14=0.15, macd_line=0.12, bb_upper=0.09 in /metrics.
 [US-068] PASS — DLQ handling added to kafka-consumer: separate Producer for DLQ, deserialization try/except routes to <topic>-dlq, DB write errors increment dlq_messages_total counter. Image rebuilt and redeployed.
+[US-069] PASS — Added JSON logging formatter to basicConfig; structured log events: training_start, feature_engineering_complete, model_fit_complete, model_saved, training_error; replaced print() with logger.info(). Image built. Job pending (node OOM — not a code issue).
