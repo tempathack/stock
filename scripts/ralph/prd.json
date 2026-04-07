@@ -121,7 +121,7 @@
         "curl 'http://localhost:8010/predict/bulk?horizon=7' \u2014 verify response JSON includes predictions array"
       ],
       "priority": 7,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

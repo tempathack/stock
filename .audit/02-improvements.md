@@ -187,3 +187,34 @@ Status: IN PROGRESS
 - audit-p04-sentiment.png — full dashboard showing Market Sentiment section
 - audit-p04-sentiment-panel.png — zoomed view of Market Sentiment panel with empty state
 
+
+---
+
+### US-007: Forecasts Page Audit (2026-04-07)
+
+**Status:** FULL PASS — table loads with real data, model_name column present, horizon toggle functional
+
+**Verified working:**
+- ForecastTable renders with real tickers (TSLA, BWA, AWK, CTSH, APH, SCHW, CZR, AVB, CLX, etc.)
+- All 4 horizon groups visible simultaneously: 1-DAY FORECAST, 7-DAY FORECAST, 14-DAY FORECAST, 30-DAY FORECAST
+- **MODEL column IS present** (field: model_name, header: "Model") — shows "catboost_standard" for all rows — this was previously marked as missing in progress.txt but had already been implemented
+- Predicted prices and return % shown with green/red color coding
+- Clicking a stock row opens detail drawer with:
+  - 1D / 7D / 14D / 30D horizon toggle buttons at top (HorizonToggle component)
+  - Price history + forecast chart (CHD: 7-day chart shown)
+  - RSI (14), MACD (12/26/9), Bollinger Band Width charts
+  - SHAP Feature Importance bar chart (shows volume, obv, ema, close, sma, returns, bb_l, nacd, etc.)
+- Filter bar visible: Search, Sector dropdown, Min Return %, Max Return %, Min Confidence slider, Clear
+- Export buttons: CSV and PDF
+
+**API verification:**
+- `curl 'http://localhost:8010/predict/bulk?horizon=7'` returns predictions array with model_name field ("CatBoost_standard") ✅
+
+**Console output:**
+- 0 errors
+- 0 warnings
+
+**Screenshots:**
+- audit-p07-forecasts.png — full Forecasts page with table loaded
+- audit-p07-horizon-7d.png — detail drawer with 1D/7D/14D/30D horizon toggle + CHD charts + SHAP panel
+

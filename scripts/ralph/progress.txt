@@ -707,3 +707,19 @@ Previous run codebase patterns (still valid):
   - Intraday CronJobs complete once and stop — they are NOT continuous streaming; real-time tick data requires always-on ingest
   - The `available: false` response is proper graceful degradation — frontend renders empty state correctly
 ---
+
+## 2026-04-07 - US-007: Playwright: Forecasts page — table, horizon filter, model column audit
+- Navigated to http://localhost:5173/forecasts via Playwright MCP
+- Page loaded with real data after ~30s (Redis cache cold — 4 horizon API calls in parallel)
+- ForecastTable renders all 4 horizons simultaneously (not a single-horizon filtered table)
+- MODEL column IS present in ForecastTable.tsx (was previously misreported as missing) — shows "catboost_standard" for all rows
+- Clicked stock row (CHD) — detail drawer opened with 1D/7D/14D/30D horizon toggle buttons, price/indicator charts, and SHAP panel
+- curl `localhost:8010/predict/bulk?horizon=7` returns predictions array with model_name field ✅
+- 0 console errors, 0 warnings
+- Files created/modified: .audit/02-improvements.md (appended US-007 findings), scripts/ralph/prd.json (passes: true)
+- Screenshots: audit-p07-forecasts.png, audit-p07-horizon-7d.png
+- **Learnings for future iterations:**
+  - model_name column was already implemented in ForecastTable.tsx (line 106) — the progress.txt note about it being missing was stale from before it was implemented
+  - Forecasts page uses useAllHorizonsPredictions() which makes 4 parallel API calls (horizons 1/7/14/30) — takes ~30s cold start but table shows all columns simultaneously
+  - HorizonToggle (1D/7D/14D/30D) in detail drawer switches which horizon's chart displays — does NOT filter the main table
+---
