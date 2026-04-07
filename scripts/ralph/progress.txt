@@ -1214,3 +1214,17 @@ Previous run codebase patterns (still valid):
 - Documented in .audit/01-stale-code.md under '## Orphaned K8s ConfigMaps/Secrets'
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
 ---
+
+## 2026-04-07 - US-052: Dead Grafana dashboard panels audit
+- Checked all 4 dashboards (api-health, ml-perf, kafka, flink) against Prometheus metric existence
+- api-health: 7/13 panels live (core request/latency panels work)
+- ml-perf: only 4/12 panels live; model_last_trained_timestamp/drift_severity_score/drift_events_total never registered
+- kafka: 0/8 custom kafka panels live — kafka-consumer has no Prometheus endpoint
+- flink: 8/10 panels live — Flink native metrics all present
+- Documented in .audit/02-improvements.md under '## Dead Grafana Dashboard Panels'
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - kafka-consumer Python service has no prometheus-client instrumentation
+  - ML training jobs don't expose custom metrics (model_last_trained_timestamp etc. never registered)
+  - model_inference_errors_total / feast_stale_features_total defined but appear only after first error event
+---

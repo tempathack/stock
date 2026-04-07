@@ -838,8 +838,8 @@
         "Document panels with non-existent metric names in .audit/01-stale-code.md under '## Dead Grafana Dashboard Panels'"
       ],
       "priority": 52,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "api-health: 7/13 panels live. ml-perf: 4/12 live (model_last_trained_timestamp, drift_severity_score, drift_events_total never registered). kafka: 0/8 custom panels live (kafka-consumer has no Prometheus endpoint). flink: 8/10 live. Documented in .audit/02-improvements.md."
     },
     {
       "id": "US-053",

@@ -827,3 +827,60 @@ failed to list *v1.Pod: dial tcp 10.96.0.1:443: connect: no route to host
 - `argocd-repo-server` CrashLoopBackOff — GitOps pipeline broken, no automated syncs
 - `processing` app stuck Progressing — Debezium CDC not running
 
+
+## Dead Grafana Dashboard Panels
+
+_Recorded: 2026-04-07_
+
+### Metric Existence Check
+
+Metrics verified against Prometheus at `http://localhost:9090/api/v1/label/__name__/values`:
+
+| Metric | Used In Dashboard | Exists in Prometheus? |
+|--------|------------------|-----------------------|
+| `prediction_requests_total` | api-health, ml-perf | **YES** |
+| `prediction_latency_seconds_bucket` | api-health, ml-perf | **YES** |
+| `http_requests_total` | api-health | **YES** |
+| `http_request_duration_seconds_bucket` | api-health | **YES** |
+| `flink_jobmanager_job_uptime` | flink | **YES** |
+| `flink_taskmanager_job_task_numRecordsInPerSecond` | flink | **YES** |
+| `model_inference_errors_total` | api-health | **NO** — counter defined in code but never fired (no errors today) |
+| `feast_stale_features_total` | (not in dashboards) | **NO** — counter defined but never fired |
+| `model_last_trained_timestamp` | ml-perf | **NO** — gauge never exposed/registered |
+| `drift_severity_score` | ml-perf | **NO** — gauge never exposed/registered |
+| `drift_events_total` | ml-perf | **NO** — counter never registered |
+| `predictions_generated_total` | ml-perf | **NO** — counter never registered |
+| `kafka_consumer_records_consumed_total` | kafka | **NO** — kafka-consumer doesn't expose Prometheus metrics |
+| `messages_consumed_total` | kafka | **NO** — alias never registered |
+| `kafka_consumer_lag_sum` | kafka | **NO** — not exported by any scrape target |
+| `kafka_consumergroup_lag` | kafka | **NO** — not exported by any scrape target |
+| `consumer_lag` | kafka | **NO** — not exported by any scrape target |
+| `batch_write_duration_seconds_bucket` | kafka | **NO** — kafka-consumer doesn't expose metrics |
+
+---
+
+### Dead Panel Summary by Dashboard
+
+**`grafana-dashboard-api-health.yaml` (7/13 panels live)**
+- Working panels: Request Rate, Error Rate %, p50/p95/p99 Latency, Prediction Request Rate, Prediction Latency p95
+- Dead panels: Inference Errors (metric never fires in normal operation)
+
+**`grafana-dashboard-ml-perf.yaml` (4/12 panels live)**
+- Working panels: Predictions by Model, Prediction Latency by Model (p95), Success vs Error Ratio, Model Comparison
+- Dead panels: Last Training Time (`model_last_trained_timestamp`), Drift Severity (`drift_severity_score`), Drift Events (`drift_events_total`), Error Rate by Ticker, all `predictions_generated_total` variants
+
+**`grafana-dashboard-kafka.yaml` (0/8 custom panels live)**
+- ALL Kafka-specific panels dead: no Kafka JMX/consumer lag metrics exposed
+- The `up` scrape targets panel works (generic), Pod CPU/Memory panels may work via cAdvisor
+
+**`grafana-dashboard-flink.yaml` (8/10 panels live)**
+- Working: all `flink_jobmanager_*` and `flink_taskmanager_*` metrics present
+- Likely working: all Flink native metrics (Flink exposes Prometheus endpoint)
+
+---
+
+### Root Cause
+
+1. **ml-perf missing metrics**: The ML training CronJobs don't push custom metrics to Prometheus. `model_last_trained_timestamp`, `drift_severity_score`, `drift_events_total` were planned but never registered in `metrics.py`.
+2. **kafka-consumer missing metrics**: The `kafka-consumer` service (Python) doesn't include `prometheus-client`. No metrics server exposed.
+3. **`model_inference_errors_total` / `feast_stale_features_total`**: Defined in `metrics.py` and incremented in code but will only appear in Prometheus after the first error/stale event occurs.
