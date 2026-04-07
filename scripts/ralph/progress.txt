@@ -1203,3 +1203,14 @@ Previous run codebase patterns (still valid):
 - Documented in .audit/01-stale-code.md under '## Unused Prometheus Metrics'
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
 ---
+
+## 2026-04-07 - US-051: Orphaned K8s ConfigMaps/Secrets audit
+- Checked all non-system ConfigMaps across ingestion/processing/ml/monitoring/flink/storage namespaces
+- All app ConfigMaps are mounted by Deployments/CronJobs except:
+  - minio-config in storage namespace: not mounted by any deployment (possibly orphaned)
+  - kfp-install-reference in ml namespace: informational only (KFP version ref), not mounted
+- postgresql-init-sql mounted by postgresql Deployment at /docker-entrypoint-initdb.d
+- All custom Secrets actively used
+- Documented in .audit/01-stale-code.md under '## Orphaned K8s ConfigMaps/Secrets'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+---

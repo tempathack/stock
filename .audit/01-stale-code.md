@@ -782,3 +782,59 @@ _Recorded: 2026-04-07_
 **0 unused metrics.** All 4 custom Prometheus metrics defined in `metrics.py` are actively incremented in production code paths.
 
 The `prometheus_fastapi_instrumentator` package additionally auto-instruments all HTTP endpoint latency and status code counters — these are not defined in `metrics.py` but are registered at startup in `main.py`.
+
+## Orphaned K8s ConfigMaps/Secrets
+
+_Recorded: 2026-04-07_
+
+### ConfigMap Usage Audit
+
+| ConfigMap | Namespace | Used By | Status |
+|-----------|-----------|---------|--------|
+| `ingestion-config` | ingestion | `stock-api` Deployment (envFrom), `historical-ingestion`/`intraday-ingestion` CronJobs | ACTIVE |
+| `model-features-config` | ingestion | `stock-api` Deployment (volume mount) | ACTIVE |
+| `reddit-producer-config` | ingestion | `reddit-producer` Deployment (envFrom) | ACTIVE |
+| `processing-config` | processing | `kafka-consumer` Deployment (envFrom) | ACTIVE |
+| `ml-pipeline-config` | ml | `feast-feature-server`, `daily-drift`, `daily-feature-store`, `feast-materialize`, `weekly-training` | ACTIVE |
+| `minio-config` | ml | `daily-drift`, `feast-materialize`, `weekly-training` CronJobs (envFrom) | ACTIVE |
+| `feast-feature-store-config` | ml | `feast-feature-server` Deployment (volume mount) | ACTIVE |
+| `storage-config` | storage | `postgresql` Deployment (envFrom) | ACTIVE |
+| `postgresql-init-sql` | storage | `postgresql` Deployment (volume → `/docker-entrypoint-initdb.d`) | ACTIVE |
+| `minio-config` | storage | None found in Deployments | **POSSIBLY ORPHANED** |
+| `kfp-install-reference` | ml | None found — contains KFP version reference docs | **INFORMATIONAL** (not mounted) |
+| Grafana dashboard ConfigMaps (×4) | monitoring | Grafana Deployment (dashboards provider) | ACTIVE |
+| `prometheus-config`, `loki-config`, `promtail-config` | monitoring | Respective monitoring deployments | ACTIVE |
+| Flink `flink-config-*`, `pod-template-*`, `autoscaler-*` | flink | Flink FlinkDeployments | ACTIVE |
+
+---
+
+### Secret Usage Audit (custom secrets only)
+
+| Secret | Namespace | Used By | Status |
+|--------|-----------|---------|--------|
+| `minio-secrets` | ingestion | `stock-api` Deployment (secretRef envFrom) | ACTIVE |
+| `reddit-secrets` | ingestion | `reddit-producer` Deployment | ACTIVE |
+| `stock-platform-secrets` | ingestion | `stock-api` (likely DB credentials) | ACTIVE |
+| `minio-secrets` | ml | `feast-feature-server` / CronJobs | ACTIVE |
+| `kserve-s3-credentials` | ml | KServe InferenceServices | ACTIVE |
+| `stock-platform-secrets` | ml/processing/storage | ML CronJobs, kafka-consumer | ACTIVE |
+| `minio-secrets` | flink | Flink FlinkDeployments | ACTIVE |
+| `grafana-credentials` | monitoring | Grafana Deployment | ACTIVE |
+| Kafka CA certs (×6) | storage | Strimzi auto-managed | INFRA |
+
+---
+
+### Findings
+
+**`minio-config` in `storage` namespace — POSSIBLY ORPHANED**
+- Not referenced in any `storage` namespace Deployment/StatefulSet
+- The PostgreSQL Deployment uses `storage-config`, not `minio-config`
+- MinIO itself doesn't consume a ConfigMap (uses Deployment env vars directly)
+- **Action:** Verify if this ConfigMap has any purpose or can be deleted
+
+**`kfp-install-reference` in `ml` namespace — INFORMATIONAL**
+- Contains KFP version reference: `KFP_VERSION=2.3.0` and a doc URL
+- Not mounted anywhere — purely informational, not a problem
+- Not orphaned in a harmful way
+
+**All other ConfigMaps and custom Secrets are actively used.**

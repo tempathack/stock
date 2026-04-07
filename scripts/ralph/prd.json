@@ -822,8 +822,8 @@
         "Document orphaned ConfigMaps and Secrets in .audit/01-stale-code.md under '## Orphaned K8s ConfigMaps/Secrets'"
       ],
       "priority": 51,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "All app ConfigMaps actively mounted. minio-config in storage namespace possibly orphaned (not mounted by any deployment). kfp-install-reference is informational-only. All custom secrets actively used. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-052",
