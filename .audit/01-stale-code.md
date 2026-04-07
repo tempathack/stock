@@ -310,3 +310,33 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Summary:** Zero dead React components. TypeScript `noUnusedLocals: true` + tree-shaking would prevent accumulation of dead components.
 
+
+---
+
+## Dead TypeScript Types
+
+### US-040: types.ts unused interface scan (2026-04-07)
+
+**Method:** grep each exported interface/type against all `src/` files (excluding types.ts itself).
+
+**Macro fields (MacroLatest/MacroHistoryPoint):** All 13+ fields referenced in `MacroPanel.tsx` ✓
+
+**Genuinely unused types (defined but never imported):**
+| Type | Notes |
+|---|---|
+| `HorizonOption` | `type HorizonOption = 1 \| 7 \| 30` — unused, horizon values hardcoded elsewhere |
+| `RollingPerfEntry` | Sub-type for RollingPerformanceResponse — used internally in API but not in components |
+| `FeatureDistributionEntry` | Sub-type of FeatureDistributionResponse — parent type used, this sub-type not directly imported |
+| `DriftPageData` | Composite page data type — drift page uses individual sub-queries instead |
+| `FlinkJobEntry` | Sub-type of FlinkJobsResponse — parent imported, sub-type not directly used in components |
+| `FeastViewFreshness` | Sub-type of FeastFreshnessResponse — same pattern |
+| `SentimentDataPoint` | Sub-type of SentimentTimeseriesResponse — parent imported, not sub-type |
+| `PredictionSearchItem`, `ModelSearchItem`, `DriftEventSearchItem`, `StockSearchItem` | Sub-types of Search responses |
+| `SearchPaginatedResponse<T>` | Generic parent — used to derive named types like `PredictionSearchResponse = SearchPaginatedResponse<...>` |
+
+**Root pattern:** These are all sub-types (items within response arrays) — components destructure the parent response type, TypeScript infers the array item type automatically. Not true dead code — they provide documentation and type safety for future explicit use.
+
+**Verdict:** LOW severity — no action required. Types serve as documentation and type inference anchors.
+
+**MacroLatest fields all accounted for** in MacroPanel.tsx ✓
+

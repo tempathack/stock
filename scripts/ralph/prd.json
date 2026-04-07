@@ -650,8 +650,8 @@
         "Document dead type definitions in .audit/01-stale-code.md under '## Dead TypeScript Types'"
       ],
       "priority": 40,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. 12 types appear unused but are sub-types of response objects — TypeScript infers them from parent types. All MacroLatest fields used in MacroPanel.tsx. No true dead types."
     },
     {
       "id": "US-041",

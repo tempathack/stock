@@ -1086,3 +1086,13 @@ Previous run codebase patterns (still valid):
 - MobileMarketList(3) — active (mobile responsive)
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-040: Stale Code: Dead TypeScript interfaces and types in types.ts
+- 12 types not directly imported but are sub-types of parent response types
+- Pattern: components import FlinkJobsResponse but not FlinkJobEntry — TypeScript infers array item type
+- SearchPaginatedResponse<T> used as generic base for named search types
+- DriftPageData: composite type not used (drift page uses individual hook queries)
+- HorizonOption type: unused, values hardcoded
+- MacroLatest all 13+ fields referenced in MacroPanel.tsx ✓
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
