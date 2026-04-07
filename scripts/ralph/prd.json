@@ -1,20 +1,26 @@
 {
-  "project": "Stock Prediction Platform — All Training Macros in Dashboard",
-  "branchName": "ralph/all-training-macros-dashboard",
-  "description": "The training pipeline uses 19 macro features (5 yfinance + 14 FRED) but the dashboard only shows 9. Add all missing training macros to the dashboard Macro View so operators can see every feature the models use. Training macros: vix, spy_return, sector_return, high52w_pct, low52w_pct (yfinance) + dgs2, dgs10, t10y2y, t10y3m, bamlh0a0hym2, dbaa, t10yie, dcoilwtico, dtwexbgs, dexjpus, icsa, nfci, cpiaucsl, pcepilfe (FRED). All verified via Playwright MCP.",
+  "project": "Stock Prediction Platform \u2014 Full System Audit & Examination",
+  "branchName": "ralph/system-audit-2026-04-07",
+  "description": "Comprehensive 100-story audit loop. Tests every feature via Playwright MCP (frontend + Grafana), scans all code for stale/dead artifacts, implements improvements, and researches technology integrations. Final output: SYSTEM-EXAMINATION.md with 3 sections \u2014 (1) Stale Code & Fixes, (2) System Improvements, (3) Technology Integration Recommendations.",
+  "auditFiles": {
+    "staleCode": ".audit/01-stale-code.md",
+    "improvements": ".audit/02-improvements.md",
+    "techIntegration": ".audit/03-tech-integration.md",
+    "finalDoc": "SYSTEM-EXAMINATION.md"
+  },
   "userStories": [
     {
       "id": "US-001",
-      "title": "Extend /market/macro/latest to return all 19 training macro fields",
-      "description": "As a platform operator, I need the /market/macro/latest API to return all 19 macro features used in training so the dashboard can display them all.",
+      "title": "Initialize audit infrastructure and port-forward all services",
+      "description": "Set up .audit/ directory with section files, verify all port-forwards are live, record baseline K8s pod status.",
       "acceptanceCriteria": [
-        "Read services/api/app/models/schemas.py — find MacroLatestResponse",
-        "Add missing fields to MacroLatestResponse: sector_return (Optional[float]), high52w_pct (Optional[float]), low52w_pct (Optional[float]), t10y3m (Optional[float]), dbaa (Optional[float]), dexjpus (Optional[float]), nfci (Optional[float]), cpiaucsl (Optional[float])",
-        "Read services/api/app/services/market_service.py — find get_macro_latest()",
-        "Update get_macro_latest() to also SELECT sector_return, high52w_pct, low52w_pct from feast_yfinance_macro and t10y3m, dbaa, dexjpus, nfci, cpiaucsl from macro_fred_daily",
-        "Rebuild + redeploy stock-api: eval $(minikube docker-env) && docker build -t stock-api:latest stock-prediction-platform/services/api/ && kubectl rollout restart deployment/stock-api -n ingestion",
-        "curl http://localhost:8010/market/macro/latest — response must include sector_return, high52w_pct, low52w_pct, dbaa, dexjpus, nfci, cpiaucsl fields",
-        "Typecheck passes"
+        "Create .audit/ directory at repo root with files: 01-stale-code.md, 02-improvements.md, 03-tech-integration.md \u2014 each with a markdown header and 'Status: IN PROGRESS' line",
+        "Run: kubectl get pods -A --no-headers | awk '{print $1,$2,$4}' \u2014 record which pods are Running/CrashLoop/Pending in .audit/01-stale-code.md under '## K8s Pod Baseline'",
+        "Verify port-forwards: curl -s http://localhost:8010/health | head -5 (API), curl -s http://localhost:9090/-/ready (Prometheus), curl -s http://localhost:3000/api/health (Grafana) \u2014 document which are up",
+        "If Grafana port-forward missing: kubectl port-forward svc/grafana -n monitoring 3000:3000 &",
+        "If Prometheus port-forward missing: kubectl port-forward svc/prometheus -n monitoring 9090:9090 &",
+        "Record findings in .audit/01-stale-code.md under '## Service Connectivity Baseline'",
+        "Commit: 'audit: [US-001] initialize .audit infrastructure and verify service connectivity'"
       ],
       "priority": 1,
       "passes": true,
@@ -22,93 +28,1597 @@
     },
     {
       "id": "US-002",
-      "title": "Extend /market/macro/history to include all 19 training macro fields",
-      "description": "As a platform operator, I need the history endpoint to also return the missing macro fields so timeseries charts can plot all training features.",
+      "title": "Playwright: Dashboard \u2014 Market tab full feature audit",
+      "description": "Use Playwright MCP to exercise every feature on the Dashboard Market tab and record findings.",
       "acceptanceCriteria": [
-        "Read services/api/app/models/schemas.py — find MacroHistoryPoint",
-        "Add missing fields to MacroHistoryPoint: sector_return, high52w_pct, low52w_pct, dbaa, dexjpus, nfci, cpiaucsl — all Optional[float]",
-        "Update get_macro_history() in market_service.py to JOIN feast_yfinance_macro for sector_return, high52w_pct, low52w_pct alongside macro_fred_daily fields",
-        "Note: feast_yfinance_macro has ticker='SPY' as the macro row; macro_fred_daily has as_of_date as PK — join on date",
-        "Rebuild + redeploy stock-api (same docker build + rollout restart as US-001)",
-        "curl 'http://localhost:8010/market/macro/history?days=5' — each object must include sector_return and nfci fields",
-        "Typecheck passes"
+        "Navigate to http://localhost:5173/ via Playwright MCP \u2014 take screenshot audit-p02-dashboard-market.png",
+        "Verify ticker search: type 'AAPL' in search box, confirm dropdown appears with AAPL result \u2014 screenshot audit-p02-search-dropdown.png",
+        "Select AAPL \u2014 verify price cards (current price, change %, volume) render with real numbers, not dashes \u2014 screenshot audit-p02-price-cards.png",
+        "Verify Historical Chart renders OHLCV candlesticks \u2014 check console for errors via mcp__playwright__browser_console_messages",
+        "Verify Top Movers panel shows gainers/losers \u2014 screenshot audit-p02-top-movers.png",
+        "Verify Market Treemap renders sector blocks \u2014 screenshot audit-p02-treemap.png",
+        "Document any console errors, loading spinners stuck, or missing data in .audit/02-improvements.md under '## Frontend Issues Found'"
       ],
       "priority": 2,
-      "passes": true,
+      "passes": false,
       "notes": ""
     },
     {
       "id": "US-003",
-      "title": "Update MacroLatest TypeScript interface and fetchMacroLatest to include all 19 fields",
-      "description": "As a frontend developer, I need the TypeScript types and API client to expose all 19 training macro fields so components can use them.",
+      "title": "Playwright: Dashboard \u2014 Macro tab full feature audit",
+      "description": "Verify all 19 macro indicator cards render, MacroChart series picker works, all values non-null.",
       "acceptanceCriteria": [
-        "Read frontend/src/api/types.ts — find MacroLatest interface",
-        "Add to MacroLatest: sector_return, high52w_pct, low52w_pct, t10y3m, dbaa, dexjpus, nfci, cpiaucsl — all number | null",
-        "Read frontend/src/api/types.ts — find MacroHistoryPoint interface",
-        "Add same missing fields to MacroHistoryPoint",
-        "TypeScript 0 errors: cd stock-prediction-platform/services/frontend && npx tsc --noEmit",
-        "npm run build succeeds",
-        "Typecheck passes"
+        "Navigate to http://localhost:5173/ \u2014 click Macro toggle/tab \u2014 screenshot audit-p03-macro-tab.png",
+        "Count visible macro cards \u2014 must be 17-19 (not 9) \u2014 document count in .audit/02-improvements.md",
+        "Verify cards show real values (not all dashes): VIX, SPY Return, DGS10, T10Y2Y, Oil, CPI must show numbers",
+        "Scroll to MacroChart \u2014 verify series chip row shows all 14+ series options \u2014 screenshot audit-p03-macro-chart-chips.png",
+        "Click 'BAA Yield' chip \u2014 verify new line appears in chart \u2014 screenshot audit-p03-macro-chart-baa.png",
+        "Check console errors \u2014 document any in .audit/02-improvements.md",
+        "If any card shows '\u2014' for known-populated fields (vix, spy_return, dgs10, t10y2y, dcoilwtico), record as bug in .audit/02-improvements.md"
       ],
       "priority": 3,
-      "passes": true,
+      "passes": false,
       "notes": ""
     },
     {
       "id": "US-004",
-      "title": "Expand MacroPanel to show all 19 training macro indicators (not just 9)",
-      "description": "As a user, I want the Macro View cards to show every feature the models train on so I can see the full macro context driving predictions.",
+      "title": "Playwright: Dashboard \u2014 Sentiment tab full feature audit",
+      "description": "Verify sentiment chart and sentiment panel render with data or show appropriate empty state.",
       "acceptanceCriteria": [
-        "Read frontend/src/components/dashboard/MacroPanel.tsx — find MACRO_INDICATORS config array",
-        "Add 10 missing indicator configs to MACRO_INDICATORS: sector_return ('Sector ETF Return','+0.2%'), high52w_pct ('52W High %','0.2f'), low52w_pct ('52W Low %','0.2f'), t10y3m ('3M-10Y Spread','+0.2f','%'), dbaa ('Moody BAA Yield','0.2f','%'), dexjpus ('USD/JPY','0.1f'), nfci ('Natl Fin. Conditions','+0.2f'), cpiaucsl ('CPI Index','0.1f'), plus verify dgs2 and t10yie already present",
-        "Color logic for new indicators: sector_return > 0 green < 0 red; high52w_pct > 0.9 green; low52w_pct < 0.1 red; all others neutral gray",
-        "Grid layout updates automatically since it maps MACRO_INDICATORS — no layout changes needed",
-        "TypeScript 0 errors, npm run build succeeds",
-        "Navigate to http://localhost:5173/ via Playwright MCP, click Macro toggle",
-        "Take screenshot macro-all-19-cards.png — confirm more than 9 cards visible (17-19 cards)",
-        "Verify in browser using dev-browser skill",
-        "Typecheck passes"
+        "Navigate to http://localhost:5173/ \u2014 click Sentiment toggle/section \u2014 screenshot audit-p04-sentiment.png",
+        "Verify SentimentPanel renders: check for sentiment score, bull/bear indicator \u2014 screenshot audit-p04-sentiment-panel.png",
+        "Verify SentimentTimeseriesChart renders \u2014 check for chart with time axis",
+        "If 0 rows in sentiment_timeseries: document in .audit/02-improvements.md as 'Sentiment pipeline not writing data \u2014 Flink sentiment-writer may be in CREATED state'",
+        "Check console errors via mcp__playwright__browser_console_messages \u2014 record any in .audit/02-improvements.md",
+        "curl http://localhost:8010/market/sentiment/AAPL \u2014 document HTTP status and response shape"
       ],
       "priority": 4,
-      "passes": true,
+      "passes": false,
       "notes": ""
     },
     {
       "id": "US-005",
-      "title": "Add all missing macro series to MacroChart series picker",
-      "description": "As a user, I want to be able to plot any of the 14 FRED + 5 yfinance training macros on the timeseries chart so I can explore correlations.",
+      "title": "Playwright: Dashboard \u2014 Technical Analysis Panel audit",
+      "description": "Verify DashboardTAPanel renders with indicator overlays on the candlestick chart.",
       "acceptanceCriteria": [
-        "Read frontend/src/components/dashboard/MacroChart.tsx — find SERIES_CONFIG array",
-        "Add missing series to SERIES_CONFIG: sector_return ('Sector Return','#a5d6a7','+0.2%'), high52w_pct ('52W High %','#80deea','0.2f'), low52w_pct ('52W Low %','#ef9a9a','0.2f'), t10y3m ('3M-10Y Spread','#ffe082','+0.2f'), dbaa ('BAA Yield','#bcaaa4','%'), dexjpus ('USD/JPY','#b39ddb',''), nfci ('NFCI','#80cbc4','+0.3f'), cpiaucsl ('CPI','#ffcc80',''), pcepilfe ('Core PCE','#c5e1a5','')",
-        "Default selected series stays: dgs10, t10y2y, dcoilwtico — do not auto-select all",
-        "TypeScript 0 errors, npm run build succeeds",
-        "Navigate to http://localhost:5173/, click Macro toggle, scroll to chart",
-        "Take screenshot macro-chart-all-series.png — confirm chip row shows all series options",
-        "Click a new chip (e.g. BAA Yield) and take screenshot macro-chart-baa.png — confirm new line appears",
-        "Verify in browser using dev-browser skill",
-        "Typecheck passes"
+        "Navigate to http://localhost:5173/, select AAPL, look for TA panel or indicator toggle \u2014 screenshot audit-p05-ta-panel.png",
+        "Verify RSI, MACD, or Bollinger Band overlays can be toggled on/off",
+        "Verify TimeframeSelector (1D/1W/1M/3M) changes the historical chart data range",
+        "Check for any 'NaN' values in indicator displays \u2014 document in .audit/02-improvements.md if found",
+        "Check console errors \u2014 record in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/market/history/AAPL?period=1mo' \u2014 verify response includes OHLCV data"
       ],
       "priority": 5,
-      "passes": true,
+      "passes": false,
       "notes": ""
     },
     {
       "id": "US-006",
-      "title": "Populate feast_yfinance_macro with sector_return, high52w_pct, low52w_pct synthetic data and final production verification",
-      "description": "As a platform operator, I need sector_return, high52w_pct, and low52w_pct populated in feast_yfinance_macro and all 7 tabs verified working with the expanded macro dashboard.",
+      "title": "Playwright: Dashboard \u2014 Streaming Features panel audit",
+      "description": "Verify StreamingFeaturesPanel shows live or recent feature data from the Kafka/Flink pipeline.",
       "acceptanceCriteria": [
-        "Check if feast_yfinance_macro rows have non-null sector_return, high52w_pct, low52w_pct: kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c 'SELECT sector_return, high52w_pct, low52w_pct FROM feast_yfinance_macro LIMIT 3;'",
-        "If null: UPDATE feast_yfinance_macro SET sector_return=0.0008 + random()*0.002-0.001, high52w_pct=0.82+random()*0.1, low52w_pct=0.25+random()*0.15 via kubectl exec psql",
-        "Verify macro_fred_daily has non-null values for dbaa, dexjpus, nfci, cpiaucsl — if null, UPDATE with realistic values: dbaa=5.89+noise, dexjpus=149.8+noise, nfci=-0.18+noise, cpiaucsl=314.5+noise",
-        "Navigate to http://localhost:5173/ via Playwright MCP, click Macro tab",
-        "Take screenshot final-macro-all-cards.png — confirm 17+ cards showing real or synthetic values (not all dashes)",
-        "Final 7-tab pass: Dashboard (Market + Macro), Forecasts, Models, Drift, Analytics, Backtest, Search — 0 console errors",
-        "Take screenshots: final-market.png, final-macro.png, final-forecasts.png, final-models.png",
-        "Verify in browser using dev-browser skill",
-        "Typecheck passes"
+        "Navigate to http://localhost:5173/, look for Streaming Features section \u2014 screenshot audit-p06-streaming-features.png",
+        "Verify panel shows feature columns (RSI, MACD, volume_ratio etc.) \u2014 document which features appear",
+        "If panel shows empty/loading: curl 'http://localhost:8010/market/features/AAPL' \u2014 record HTTP status",
+        "Check kubectl get pods -n ingestion \u2014 verify reddit-producer is Running",
+        "Check kubectl get pods -n processing \u2014 verify kafka-consumer is Running",
+        "Document streaming pipeline health in .audit/02-improvements.md under '## Streaming Pipeline Status'"
       ],
       "priority": 6,
-      "passes": true,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "Playwright: Forecasts page \u2014 table, horizon filter, model column audit",
+      "description": "Verify ForecastTable loads real predictions, horizon filter works, model_name column visible.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/forecasts \u2014 screenshot audit-p07-forecasts.png",
+        "Verify table renders with real tickers, predicted prices, confidence scores (not loading spinner)",
+        "Click horizon buttons (1D, 7D, 30D) \u2014 verify table updates \u2014 screenshot audit-p07-horizon-7d.png",
+        "Check if model_name column exists in ForecastTable \u2014 document YES/NO in .audit/02-improvements.md (it was identified as missing in progress.txt)",
+        "Check console errors \u2014 record in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/predict/bulk?horizon=7' \u2014 verify response JSON includes predictions array"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Playwright: Forecasts page \u2014 SHAP panel audit (beeswarm + bar)",
+      "description": "Click a stock in ForecastTable and verify StockShapPanel renders both SHAP chart types.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/forecasts \u2014 click first row in table to select a stock",
+        "Verify StockShapPanel appears \u2014 screenshot audit-p08-shap-panel.png",
+        "Verify ShapBeeswarmPlot renders dots or bars \u2014 screenshot audit-p08-beeswarm.png",
+        "Verify ShapBarChart renders horizontal bars for top features \u2014 screenshot audit-p08-shap-bar.png",
+        "Check console errors \u2014 document any SHAP-related errors in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/predict/AAPL?horizon=7' \u2014 verify response includes shap_values or feature_importance"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "Playwright: Forecasts page \u2014 StockComparisonPanel and StockDetailChart audit",
+      "description": "Verify multi-stock comparison and detail chart features work on the Forecasts page.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/forecasts \u2014 look for comparison panel toggle or multi-select",
+        "If StockComparisonPanel visible: select 2-3 stocks and verify comparison chart renders \u2014 screenshot audit-p09-comparison.png",
+        "Verify StockDetailChart renders with predicted vs actual price lines \u2014 screenshot audit-p09-detail-chart.png",
+        "Verify IndicatorOverlayCharts shows RSI or volume overlays \u2014 screenshot audit-p09-indicator-overlay.png",
+        "Document any components that render empty/broken in .audit/02-improvements.md",
+        "Check console errors after all interactions"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-010",
+      "title": "Playwright: Models page \u2014 ModelComparisonTable and FoldPerformanceChart audit",
+      "description": "Verify the Models tab shows all registered models, comparison metrics, and cross-validation fold chart.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/models \u2014 screenshot audit-p10-models.png",
+        "Verify ModelComparisonTable renders with model rows (XGBoost, LightGBM, CatBoost, stacking_ensemble) \u2014 document which models appear",
+        "Verify accuracy/RMSE/MAE columns have numeric values \u2014 screenshot audit-p10-comparison-table.png",
+        "Verify FoldPerformanceChart renders cross-validation fold bars \u2014 screenshot audit-p10-fold-chart.png",
+        "Check WinnerCard shows a winning model badge \u2014 screenshot audit-p10-winner.png",
+        "Check console errors \u2014 document any in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/models/comparison' \u2014 verify response has model_metrics array"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-011",
+      "title": "Playwright: Models page \u2014 ModelDetailPanel audit",
+      "description": "Click a model in the comparison table and verify the detail panel shows training metadata.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/models \u2014 click first model row",
+        "Verify ModelDetailPanel appears with model training date, feature count, hyperparameters \u2014 screenshot audit-p11-model-detail.png",
+        "Verify SHAP feature importance chart renders inside detail panel",
+        "Check if model_name is correctly displayed (matches registry) \u2014 document in .audit/02-improvements.md",
+        "Check console errors \u2014 document any in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/models/list' \u2014 verify response includes model_id, trained_at, features_count"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-012",
+      "title": "Playwright: Drift page \u2014 ActiveModelCard, DriftTimeline, RollingPerformanceChart audit",
+      "description": "Verify the Drift tab shows current model health, drift events timeline, and rolling MAE chart.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/drift \u2014 screenshot audit-p12-drift.png",
+        "Verify ActiveModelCard shows current model name and version \u2014 screenshot audit-p12-active-model.png",
+        "Verify DriftTimeline shows events (even if empty with appropriate message) \u2014 screenshot audit-p12-drift-timeline.png",
+        "Verify RollingPerformanceChart renders rolling MAE/RMSE over time \u2014 screenshot audit-p12-rolling-perf.png",
+        "Verify RetrainStatusPanel shows last retrain date or 'No retrain yet' \u2014 screenshot audit-p12-retrain-status.png",
+        "Check console errors \u2014 document in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/models/drift' \u2014 verify response"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-013",
+      "title": "Playwright: Drift page \u2014 FeatureDistributionChart audit",
+      "description": "Verify the feature distribution chart compares training vs live feature distributions.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/drift \u2014 look for feature distribution section",
+        "Verify FeatureDistributionChart renders histogram or density curves \u2014 screenshot audit-p13-feature-dist.png",
+        "Verify dropdown to select different features works (e.g., RSI, volume_ratio) \u2014 screenshot audit-p13-feature-select.png",
+        "If chart shows 'No data': curl 'http://localhost:8010/models/rolling-performance' \u2014 document response",
+        "Check console errors \u2014 record in .audit/02-improvements.md",
+        "Document feature distribution data freshness (last updated date visible?)"
+      ],
+      "priority": 13,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-014",
+      "title": "Playwright: Analytics page \u2014 StreamHealthPanel, FeatureFreshnessPanel, SystemHealthSummary audit",
+      "description": "Verify all 3 main Analytics components render with real pipeline data.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/analytics \u2014 screenshot audit-p14-analytics.png",
+        "Verify StreamHealthPanel shows Kafka topic status and consumer group health \u2014 screenshot audit-p14-stream-health.png",
+        "Verify FeatureFreshnessPanel shows feature last-updated timestamps per ticker \u2014 screenshot audit-p14-freshness.png",
+        "Verify SystemHealthSummary shows pod counts or service status badges \u2014 screenshot audit-p14-system-health.png",
+        "Check console errors \u2014 document in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/analytics/stream-health' \u2014 verify response; curl 'http://localhost:8010/analytics/feature-freshness' \u2014 verify response"
+      ],
+      "priority": 14,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-015",
+      "title": "Playwright: Analytics page \u2014 OLAPCandleChart and StreamLagMonitor audit",
+      "description": "Verify the OLAP candle chart and stream lag monitor components function correctly.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/analytics \u2014 scroll to OLAPCandleChart \u2014 screenshot audit-p15-olap-candle.png",
+        "Verify OLAPCandleChart renders candlesticks with OHLCV data (not empty) \u2014 document data freshness",
+        "Verify StreamLagMonitor shows per-partition consumer lag values \u2014 screenshot audit-p15-stream-lag.png",
+        "If StreamLagMonitor shows all zeros: document in .audit/02-improvements.md (Kafka consumer may be idle)",
+        "Check console errors \u2014 record in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/analytics/kafka-lag' \u2014 document response"
+      ],
+      "priority": 15,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-016",
+      "title": "Playwright: Backtest page \u2014 run a full backtest and verify results",
+      "description": "Execute a backtest via the UI for AAPL and verify BacktestChart and BacktestMetricsSummary render.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/backtest \u2014 screenshot audit-p16-backtest-initial.png",
+        "Fill in ticker: AAPL, start date: 2024-01-01, end date: 2024-06-30, click Run Backtest",
+        "Wait up to 30s for results \u2014 verify BacktestChart renders equity curve \u2014 screenshot audit-p16-backtest-chart.png",
+        "Verify BacktestMetricsSummary shows Sharpe ratio, max drawdown, total return \u2014 screenshot audit-p16-backtest-metrics.png",
+        "Check console errors after run \u2014 record in .audit/02-improvements.md",
+        "curl -X POST 'http://localhost:8010/backtest/run' -H 'Content-Type: application/json' -d '{\"ticker\":\"AAPL\",\"start_date\":\"2024-01-01\",\"end_date\":\"2024-06-30\"}' \u2014 document response"
+      ],
+      "priority": 16,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-017",
+      "title": "Playwright: Search page \u2014 stock search, predictions, and SHAP results audit",
+      "description": "Verify the Search page returns stock results with predictions and SHAP explanations.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/search \u2014 screenshot audit-p17-search.png",
+        "Type 'AAPL' in search box \u2014 verify results appear with predicted return, confidence \u2014 screenshot audit-p17-search-aapl.png",
+        "Click AAPL result \u2014 verify prediction detail expands with SHAP values \u2014 screenshot audit-p17-aapl-detail.png",
+        "Search for 'MSFT' \u2014 verify works for multiple tickers \u2014 screenshot audit-p17-msft.png",
+        "Check console errors \u2014 record in .audit/02-improvements.md",
+        "curl 'http://localhost:8010/search?q=AAPL' \u2014 verify response includes predictions and confidence"
+      ],
+      "priority": 17,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-018",
+      "title": "Playwright: Mobile viewport responsive layout audit",
+      "description": "Resize browser to 390x844 (iPhone 14) and verify all 7 pages are usable on mobile.",
+      "acceptanceCriteria": [
+        "Use mcp__playwright__browser_resize to set viewport to 390x844",
+        "Navigate to http://localhost:5173/ \u2014 verify sidebar collapses to hamburger or bottom nav \u2014 screenshot audit-p18-mobile-dashboard.png",
+        "Verify MobileMarketList renders instead of desktop treemap on small viewport \u2014 screenshot audit-p18-mobile-market-list.png",
+        "Navigate to /forecasts on mobile \u2014 verify table is scrollable/responsive \u2014 screenshot audit-p18-mobile-forecasts.png",
+        "Navigate to /models and /drift \u2014 verify no horizontal overflow \u2014 screenshots audit-p18-mobile-models.png, audit-p18-mobile-drift.png",
+        "Document any overflow, cut-off, or unusable elements in .audit/02-improvements.md under '## Mobile Responsiveness Issues'"
+      ],
+      "priority": 18,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-019",
+      "title": "Playwright: WebSocket live price feed audit",
+      "description": "Verify the WebSocket endpoint at /ws/prices is reachable and streams live price updates.",
+      "acceptanceCriteria": [
+        "Use mcp__playwright__browser_evaluate to run: const ws = new WebSocket('ws://localhost:8010/ws/prices'); ws.onmessage = e => console.log('WS MSG:', e.data); ws.onerror = e => console.log('WS ERR:', e); \u2014 wait 5s",
+        "Check mcp__playwright__browser_console_messages for WS MSG or WS ERR entries",
+        "If WS ERR: check kubectl get pods -n ingestion \u2014 verify stock-api pod is Running; check kubectl logs deployment/stock-api -n ingestion --tail=20",
+        "If WS MSG received: document price message schema in .audit/02-improvements.md under '## WebSocket Health'",
+        "If WS endpoint returns 404: document as missing feature in .audit/02-improvements.md",
+        "Document WebSocket status (working/broken/missing) \u2014 screenshot audit-p19-ws-console.png"
+      ],
+      "priority": 19,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-020",
+      "title": "Playwright: Full API health spec run \u2014 verify all /health sub-checks",
+      "description": "Navigate to /health endpoint and verify all dependency health checks return status.",
+      "acceptanceCriteria": [
+        "curl -s http://localhost:8010/health | python3 -m json.tool \u2014 screenshot or capture full response",
+        "Verify response includes db, redis, kafka, kserve status fields \u2014 document any missing checks",
+        "Navigate to http://localhost:5173/ via Playwright \u2014 check if any 'API Offline' or 'Service Unavailable' banners appear \u2014 screenshot audit-p20-api-health-ui.png",
+        "Check mcp__playwright__browser_console_messages for any failed /health fetch calls",
+        "Document health check gaps in .audit/02-improvements.md under '## Health Endpoint Gaps'",
+        "curl 'http://localhost:8010/health/detailed' \u2014 if endpoint exists, document all sub-service statuses"
+      ],
+      "priority": 20,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-021",
+      "title": "Playwright: Full console error sweep \u2014 all 7 tabs with clean reload",
+      "description": "Hard-reload each of the 7 frontend tabs and collect all console errors/warnings for the audit.",
+      "acceptanceCriteria": [
+        "For each route [/, /forecasts, /models, /drift, /analytics, /backtest, /search]: navigate via Playwright, wait 5s, call mcp__playwright__browser_console_messages, collect errors",
+        "Document ALL console errors (not warnings) in .audit/02-improvements.md under '## Console Errors by Route'",
+        "Take screenshots for any tab with errors: audit-p21-errors-<tab>.png",
+        "Categorize errors: (a) network/fetch failures, (b) React render errors, (c) TypeScript runtime errors, (d) CORS errors",
+        "Count total error count per route \u2014 document in .audit/02-improvements.md",
+        "If any route shows white screen or React crash: mark as CRITICAL in .audit/02-improvements.md"
+      ],
+      "priority": 21,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-022",
+      "title": "Playwright: ExportButtons audit \u2014 CSV/JSON export works on Forecasts and Models",
+      "description": "Verify the ExportButtons component triggers file downloads for forecast and model data.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/forecasts \u2014 locate Export button/icon \u2014 screenshot audit-p22-export-btn.png",
+        "Click CSV export \u2014 verify browser download triggers (check console for download event or network request)",
+        "Navigate to http://localhost:5173/models \u2014 locate Export button \u2014 click and verify same",
+        "If export buttons not visible: document as missing in .audit/02-improvements.md",
+        "Check console errors during export \u2014 record in .audit/02-improvements.md",
+        "Document export file format and whether it contains expected fields"
+      ],
+      "priority": 22,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-023",
+      "title": "Playwright: PageHeader and Sidebar navigation audit",
+      "description": "Verify all navigation links, active states, icons, and Layout structure are correct.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/ \u2014 screenshot audit-p23-sidebar.png showing full sidebar",
+        "Verify all 7 nav links exist: Dashboard, Forecasts, Models, Drift, Analytics, Backtest, Search",
+        "Click each nav link \u2014 verify active highlight updates \u2014 screenshot audit-p23-nav-active.png",
+        "Verify PageHeader shows correct page title per route",
+        "Check Layout.tsx wraps all pages with no overflow issues \u2014 screenshot audit-p23-layout.png",
+        "Check console errors \u2014 document in .audit/02-improvements.md"
+      ],
+      "priority": 23,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-024",
+      "title": "Playwright: Grafana \u2014 login, home, datasource list audit",
+      "description": "Log into Grafana via Playwright MCP, verify home dashboard and both datasources configured.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:3000/login via Playwright \u2014 fill admin/admin \u2014 screenshot audit-p24-grafana-login.png",
+        "After login, verify home dashboard or welcome screen \u2014 screenshot audit-p24-grafana-home.png",
+        "Navigate to http://localhost:3000/connections/datasources \u2014 verify Prometheus AND Loki datasources listed \u2014 screenshot audit-p24-datasources.png",
+        "Click Prometheus datasource \u2014 click 'Test' button \u2014 verify 'Data source is working' message \u2014 screenshot audit-p24-prometheus-test.png",
+        "Click Loki datasource \u2014 click 'Test' button \u2014 verify status \u2014 screenshot audit-p24-loki-test.png",
+        "Document datasource health in .audit/02-improvements.md under '## Grafana Datasource Health'"
+      ],
+      "priority": 24,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-025",
+      "title": "Playwright: Grafana \u2014 API Health dashboard full panel audit",
+      "description": "Open API Health dashboard, screenshot every panel, check for 'No data' panels.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:3000/dashboards \u2014 click 'API Health' dashboard \u2014 screenshot audit-p25-grafana-api-health.png",
+        "Wait 10s for panels to load \u2014 count total panels and 'No data' panels \u2014 screenshot audit-p25-panels.png",
+        "Scroll down to see all panels \u2014 screenshot audit-p25-panels-bottom.png",
+        "Record panel names and data status in .audit/02-improvements.md under '## Grafana API Health Dashboard'",
+        "If Request Rate panel has data: record approximate RPS value",
+        "If Error Rate panel has data: record percentage",
+        "Document any panels stuck in loading state"
+      ],
+      "priority": 25,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-026",
+      "title": "Playwright: Grafana \u2014 ML Performance dashboard full panel audit",
+      "description": "Open ML Performance dashboard, audit all panels for data presence and correct visualization types.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:3000/dashboards \u2014 click 'ML Performance' \u2014 screenshot audit-p26-grafana-ml-perf.png",
+        "Wait 10s \u2014 screenshot all panels audit-p26-ml-panels.png",
+        "Verify 'Predictions by Model' panel shows model names in legend",
+        "Verify 'Inference Errors' panel exists \u2014 document if showing data or 'No data'",
+        "Verify 'Training Duration' panel exists \u2014 document value if shown",
+        "Record all 'No data' panels in .audit/02-improvements.md under '## Grafana ML Dashboard Gaps'",
+        "Document whether KServe inference metrics are appearing"
+      ],
+      "priority": 26,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-027",
+      "title": "Playwright: Grafana \u2014 Kafka & Infrastructure dashboard full panel audit",
+      "description": "Open Kafka dashboard, verify consumer lag, message rate, and broker metrics panels.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:3000/dashboards \u2014 click 'Kafka & Infrastructure' \u2014 screenshot audit-p27-grafana-kafka.png",
+        "Wait 10s \u2014 verify 'Consumer Lag' panel \u2014 screenshot audit-p27-consumer-lag.png",
+        "Verify 'Messages Consumed Rate' panel \u2014 document approximate rate if shown",
+        "Verify broker/partition panels \u2014 screenshot audit-p27-kafka-brokers.png",
+        "Record all 'No data' panels in .audit/02-improvements.md under '## Grafana Kafka Dashboard Gaps'",
+        "Document Kafka health conclusion: (a) metrics flowing, (b) partial, (c) no metrics"
+      ],
+      "priority": 27,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-028",
+      "title": "Playwright: Grafana \u2014 Flink dashboard audit",
+      "description": "Open Flink monitoring dashboard, verify Flink job status panels and throughput metrics.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:3000/dashboards \u2014 look for Flink dashboard \u2014 screenshot audit-p28-grafana-flink.png",
+        "If Flink dashboard exists: verify job status panels (ohlcv-normalizer, indicator-stream, sentiment-writer) \u2014 screenshot audit-p28-flink-jobs.png",
+        "Verify throughput and checkpoint panels \u2014 document which show data vs 'No data'",
+        "If Flink dashboard not found: record as missing in .audit/01-stale-code.md under '## Missing Grafana Dashboards'",
+        "Check if flinkdeployments are Running: kubectl get flinkdeployment -A -- document status",
+        "Document Flink health in .audit/02-improvements.md under '## Flink Pipeline Status'"
+      ],
+      "priority": 28,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-029",
+      "title": "Playwright: Grafana \u2014 Explore tab (Loki log search) audit",
+      "description": "Use Grafana Explore to query Loki logs from stock-api and kafka-consumer pods.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:3000/explore \u2014 select Loki datasource \u2014 screenshot audit-p29-explore-loki.png",
+        "Enter LogQL query: {namespace='ingestion'} | last 50 lines \u2014 run query \u2014 screenshot audit-p29-loki-ingestion.png",
+        "If logs appear: verify stock-api log lines are visible \u2014 record log freshness",
+        "If 'No logs found': check Promtail is Running: kubectl get pods -n monitoring | grep promtail \u2014 document findings",
+        "Query: {namespace='ml'} \u2014 verify training logs appear \u2014 screenshot audit-p29-loki-ml.png",
+        "Document Loki health in .audit/02-improvements.md under '## Loki Log Aggregation Health'"
+      ],
+      "priority": 29,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-030",
+      "title": "Playwright: Grafana \u2014 Prometheus Alertmanager rules and firing alerts audit",
+      "description": "Check Alertmanager for configured rules and any currently firing alerts.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:3000/alerting/list \u2014 screenshot audit-p30-alerting.png",
+        "Count configured alert rules \u2014 verify HighDriftSeverity, HighAPIErrorRate, HighConsumerLag rules exist \u2014 screenshot audit-p30-alert-rules.png",
+        "If any alerts FIRING: document alert name, condition, and value in .audit/02-improvements.md under '## FIRING ALERTS (CRITICAL)'",
+        "Navigate to http://localhost:9090/alerts (Prometheus) \u2014 verify same alert rules visible",
+        "curl http://localhost:9090/api/v1/alerts \u2014 document JSON response with alert states",
+        "Document alerting health in .audit/02-improvements.md under '## Alert Rules Health'"
+      ],
+      "priority": 30,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-031",
+      "title": "Playwright: Grafana \u2014 Prometheus Targets page audit",
+      "description": "Verify all expected scrape targets are UP in Prometheus.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:9090/targets via Playwright \u2014 screenshot audit-p31-prom-targets.png",
+        "Identify all DOWN targets \u2014 document in .audit/02-improvements.md under '## Prometheus DOWN Targets'",
+        "Identify which namespaces/pods are being scraped \u2014 verify stock-api appears as a target",
+        "Verify kubernetes-pods job has active targets \u2014 screenshot audit-p31-k8s-pods-targets.png",
+        "Count UP vs DOWN targets \u2014 record ratio in .audit/02-improvements.md",
+        "Document any targets with UNKNOWN state"
+      ],
+      "priority": 31,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-032",
+      "title": "Playwright: MinIO console audit \u2014 buckets and model artifacts",
+      "description": "Navigate to MinIO console, verify model-artifacts and drift-logs buckets exist with expected content.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:9001 (MinIO console) via Playwright \u2014 login with minio/minio123 \u2014 screenshot audit-p32-minio-login.png",
+        "If port not 9001: check kubectl get svc -n storage | grep minio \u2014 use correct port",
+        "Verify model-artifacts bucket exists \u2014 click it \u2014 verify .pkl or .joblib files present \u2014 screenshot audit-p32-model-artifacts.png",
+        "Verify drift-logs bucket exists \u2014 document content \u2014 screenshot audit-p32-drift-logs.png",
+        "Document bucket sizes and file counts in .audit/01-stale-code.md under '## MinIO Artifact Inventory'",
+        "List any unexpected or orphaned buckets"
+      ],
+      "priority": 32,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-033",
+      "title": "Playwright: ArgoCD \u2014 app sync status audit",
+      "description": "Navigate to ArgoCD UI, verify all apps are Synced and Healthy.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:8080 (ArgoCD) or minikube service argocd-server -n argocd --url \u2014 screenshot audit-p33-argocd.png",
+        "If ArgoCD port unknown: kubectl get svc -n argocd argocd-server \u2014 use correct port",
+        "Verify apps: app-ingestion, app-ml, app-frontend, app-processing, app-monitoring, app-kafka, app-storage, app-flink are all Synced + Healthy \u2014 screenshot audit-p33-apps.png",
+        "Document any OutOfSync or Degraded apps in .audit/02-improvements.md under '## ArgoCD App Health'",
+        "If ArgoCD not reachable: record as port-forward gap in .audit/02-improvements.md"
+      ],
+      "priority": 33,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-034",
+      "title": "Stale Code: Python unused imports scan \u2014 API routers",
+      "description": "Scan all files in services/api/app/routers/ for unused imports and dead code.",
+      "acceptanceCriteria": [
+        "Run: cd stock-prediction-platform && python3 -m py_compile services/api/app/routers/*.py 2>&1 \u2014 verify no syntax errors",
+        "Run: grep -rn '^import\\|^from' services/api/app/routers/ | sort > /tmp/router-imports.txt \u2014 then for each import, grep if symbol is used elsewhere in same file",
+        "Check predict.py: verify '/predict/bulk' is registered BEFORE '/{ticker}' (critical ordering bug from progress.txt)",
+        "Check market.py: verify all macro fields (sector_return, high52w_pct etc.) are used in responses",
+        "Check health.py: verify all imported health service methods are called",
+        "Document unused imports in .audit/01-stale-code.md under '## Python Unused Imports \u2014 Routers'"
+      ],
+      "priority": 34,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-035",
+      "title": "Stale Code: Python unused imports scan \u2014 API services",
+      "description": "Scan all files in services/api/app/services/ for unused imports, dead methods, and unreachable code.",
+      "acceptanceCriteria": [
+        "Run: grep -rn 'def ' services/api/app/services/ | awk -F: '{print $1, $3}' > /tmp/service-funcs.txt \u2014 list all function definitions",
+        "For each function in each service file: grep if it's called from routers/ or main.py \u2014 identify uncalled functions",
+        "Check elasticsearch_service.py: verify Elasticsearch service is used \u2014 if no ES K8s deployment, this may be dead code",
+        "Check feast_online_service.py vs feast_service.py: verify only one is actively used \u2014 check which is imported in routers",
+        "Check flink_service.py: verify its methods are called somewhere",
+        "Document dead service functions in .audit/01-stale-code.md under '## Dead Python Service Functions'"
+      ],
+      "priority": 35,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-036",
+      "title": "Stale Code: Dead Python code \u2014 jobs, middleware, utils",
+      "description": "Audit trigger_intraday.py, trigger_historical.py, middleware.py, rate_limit.py, utils/indicators.py for dead code.",
+      "acceptanceCriteria": [
+        "Read services/api/app/jobs/trigger_intraday.py and trigger_historical.py \u2014 verify they are imported/used in main.py or a router",
+        "Read services/api/app/middleware.py \u2014 verify middleware is registered in main.py via app.add_middleware()",
+        "Read services/api/app/rate_limit.py \u2014 verify rate limiting decorator is applied to at least one router",
+        "Read services/api/app/utils/indicators.py \u2014 verify all indicator functions (RSI, MACD, etc.) are called from a service",
+        "Read services/api/app/utils/logging.py \u2014 verify custom logger is imported and used (not shadowed by standard logging)",
+        "Document all dead/unused modules in .audit/01-stale-code.md under '## Dead Python Modules'"
+      ],
+      "priority": 36,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-037",
+      "title": "Stale Code: Dead Python code \u2014 ML pipeline scan",
+      "description": "Scan ml/ directory for unused pipeline stages, dead functions, and orphaned scripts.",
+      "acceptanceCriteria": [
+        "Run: find stock-prediction-platform/ml -name '*.py' | head -50 \u2014 list all ML Python files",
+        "For each pipeline stage file: verify it is referenced in the main training pipeline or KFP pipeline definition",
+        "Check if SHAP computation code is guarded by _shap_available flag everywhere it's used",
+        "Check for any commented-out pipeline stages or old feature engineering functions no longer in the 49-feature set",
+        "Look for any sklearn Pipeline stages that are defined but not included in the final pipeline",
+        "Document dead ML code in .audit/01-stale-code.md under '## Dead ML Pipeline Code'"
+      ],
+      "priority": 37,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-038",
+      "title": "Stale Code: TypeScript unused imports scan \u2014 pages",
+      "description": "Scan all files in frontend/src/pages/ for unused imports and dead component usage.",
+      "acceptanceCriteria": [
+        "Run: cd stock-prediction-platform/services/frontend && npx tsc --noEmit 2>&1 | grep 'is declared but' | head -30 \u2014 list unused variable warnings",
+        "Read each page file: Dashboard.tsx, Forecasts.tsx, Models.tsx, Drift.tsx, Analytics.tsx, Backtest.tsx, Search.tsx",
+        "For each: identify any imported components that are not used in JSX",
+        "Check if ErrorFallback, PlaceholderCard, LoadingSpinner are used consistently across all pages",
+        "Document unused imports per page in .audit/01-stale-code.md under '## TypeScript Unused Imports \u2014 Pages'"
+      ],
+      "priority": 38,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-039",
+      "title": "Stale Code: Dead React components \u2014 not referenced by any page",
+      "description": "Find React components in src/components/ that are never imported by any page or parent component.",
+      "acceptanceCriteria": [
+        "List all component files: find stock-prediction-platform/services/frontend/src/components -name '*.tsx' > /tmp/components.txt",
+        "For each component file: grep -r 'import.*<ComponentName>' src/ to check if it's imported anywhere",
+        "Pay special attention to: ErrorFallback.tsx, PlaceholderCard.tsx, LoadingSpinner.tsx \u2014 verify they are used",
+        "Check if ShapBeeswarmPlot.tsx and ShapBarChart.tsx are both used (or if one is dead)",
+        "Check if MobileMarketList.tsx is conditionally rendered vs always imported",
+        "Document unreferenced components in .audit/01-stale-code.md under '## Dead React Components'"
+      ],
+      "priority": 39,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-040",
+      "title": "Stale Code: Dead TypeScript interfaces and types in types.ts",
+      "description": "Audit frontend/src/api/types.ts for interfaces that are defined but never referenced in components.",
+      "acceptanceCriteria": [
+        "Read stock-prediction-platform/services/frontend/src/api/types.ts fully",
+        "For each exported interface/type: grep -r '<TypeName>' src/ to verify it's imported somewhere",
+        "Identify any interfaces that were added for future features but never used in components",
+        "Check that all 19 macro field types in MacroLatest and MacroHistoryPoint are referenced in MacroPanel.tsx or MacroChart.tsx",
+        "Document dead type definitions in .audit/01-stale-code.md under '## Dead TypeScript Types'"
+      ],
+      "priority": 40,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-041",
+      "title": "Stale Code: Unused Python pytest tests and 100%-skip test files",
+      "description": "Find test files where all tests are skipped or tests that test non-existent endpoints.",
+      "acceptanceCriteria": [
+        "Run: cd stock-prediction-platform && python -m pytest services/api/tests/ --collect-only -q -p no:logfire 2>&1 | head -50 \u2014 list all collected tests",
+        "Identify tests decorated with @pytest.mark.skip or that call pytest.skip() unconditionally",
+        "Check if any test files test endpoints that have been removed or renamed",
+        "Check if backtest_results table tests exist but table doesn't exist in DB (noted in progress.txt)",
+        "Document skip-only tests in .audit/01-stale-code.md under '## Dead/Skipped Test Files'"
+      ],
+      "priority": 41,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-042",
+      "title": "Stale Code: Playwright spec files that always fixme \u2014 dead e2e tests",
+      "description": "Identify Playwright spec files where all tests are fixme or always skip due to missing infrastructure.",
+      "acceptanceCriteria": [
+        "Run: cd stock-prediction-platform/services/frontend && npx playwright test --config=playwright.config.ts --list 2>&1 | head -50",
+        "Read each infra spec: grafana.spec.ts, prometheus.spec.ts, minio.spec.ts, kubeflow.spec.ts, k8s-dashboard.spec.ts, argocd.spec.ts, flink-web-ui.spec.ts",
+        "Count how many tests use test.fixme() vs test.skip() unconditionally \u2014 these are effectively dead",
+        "Verify drift-data-sanity.spec.ts and backtest-data-sanity.spec.ts still test valid endpoints",
+        "Document dead E2E specs in .audit/01-stale-code.md under '## Dead Playwright Spec Files'"
+      ],
+      "priority": 42,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-043",
+      "title": "Stale Code: Orphaned Kubernetes manifests \u2014 resources not running",
+      "description": "Find K8s manifests in k8s/ that reference Deployments/Services that are not in the cluster.",
+      "acceptanceCriteria": [
+        "Run: kubectl get all -A --no-headers | awk '{print $1}' | sort > /tmp/k8s-running.txt",
+        "Check k8s/flink/ manifests: verify flinkdeployment-sentiment-writer.yaml, flinkdeployment-feast-writer.yaml are actually Running",
+        "Check k8s/processing/kafka-connect-*.yaml: verify Kafka Connect is deployed and running",
+        "Check k8s/storage/kibana-deployment.yaml: verify Kibana is deployed (Elasticsearch is there per k8s yaml)",
+        "Check k8s/storage/elasticsearch-statefulset.yaml: verify ElasticSearch pod is running",
+        "Document manifests with no corresponding running resource in .audit/01-stale-code.md under '## Orphaned K8s Manifests'"
+      ],
+      "priority": 43,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-044",
+      "title": "Stale Code: Unused environment variables in K8s ConfigMaps",
+      "description": "Audit ConfigMaps to find env vars defined but never read by the application.",
+      "acceptanceCriteria": [
+        "Read k8s/ingestion/configmap.yaml \u2014 list all env vars defined",
+        "For each env var: grep if it's read via os.getenv() or Config class in services/api/app/config.py",
+        "Read services/api/app/config.py fully \u2014 list all config fields and their env var sources",
+        "Identify env vars in configmap not consumed by config.py \u2014 document as unused",
+        "Read k8s/processing/configmap.yaml \u2014 same analysis for kafka-consumer",
+        "Document unused env vars in .audit/01-stale-code.md under '## Unused ConfigMap Environment Variables'"
+      ],
+      "priority": 44,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-045",
+      "title": "Stale Code: TODO/FIXME/HACK/XXX comment inventory",
+      "description": "Collect all technical debt markers across the entire codebase.",
+      "acceptanceCriteria": [
+        "Run: grep -rn 'TODO\\|FIXME\\|HACK\\|XXX\\|NOQA\\|type: ignore' stock-prediction-platform/ --include='*.py' --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v node_modules | grep -v '.git' > /tmp/todos.txt && wc -l /tmp/todos.txt",
+        "Categorize findings: (a) security-related TODOs, (b) performance TODOs, (c) correctness TODOs, (d) style ignores",
+        "Flag any 'type: ignore' in Python that hides a real type error vs. a false positive",
+        "Flag any 'TODO: remove' or 'FIXME: broken' markers as CRITICAL",
+        "Document top 20 highest-priority TODOs in .audit/01-stale-code.md under '## Technical Debt Markers'",
+        "Record total count by category"
+      ],
+      "priority": 45,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-046",
+      "title": "Stale Code: Deprecated Python package audit",
+      "description": "Check requirements.txt for outdated or deprecated packages with known security issues.",
+      "acceptanceCriteria": [
+        "Read stock-prediction-platform/services/api/requirements.txt fully",
+        "Run: pip index versions <package> for the top 10 packages to check for major version lag",
+        "Check yfinance version: yfinance >= 1.0 is required per progress.txt \u2014 verify",
+        "Check if psycopg2-binary is used (deprecated in favor of psycopg3/psycopg) \u2014 document",
+        "Check if any package has known CVEs: look for packages flagged at python.snyk.io",
+        "Document deprecated/outdated packages in .audit/01-stale-code.md under '## Deprecated Python Packages'"
+      ],
+      "priority": 46,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-047",
+      "title": "Stale Code: Deprecated npm package audit",
+      "description": "Check frontend package.json for outdated, deprecated, or vulnerable npm packages.",
+      "acceptanceCriteria": [
+        "Read stock-prediction-platform/services/frontend/package.json fully",
+        "Run: cd stock-prediction-platform/services/frontend && npm outdated 2>&1 | head -30 \u2014 list outdated packages",
+        "Run: npm audit --audit-level=moderate 2>&1 | head -30 \u2014 list security vulnerabilities",
+        "Verify @mui/x-data-grid and @mui/x-charts are current with MUI v5 \u2014 check for v6/v7 if available",
+        "Check recharts vs lightweight-charts: verify only one charting lib is primary \u2014 document any duplicated charting libraries",
+        "Document findings in .audit/01-stale-code.md under '## Deprecated npm Packages'"
+      ],
+      "priority": 47,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-048",
+      "title": "Stale Code: Orphaned PostgreSQL tables \u2014 tables with no API reader",
+      "description": "List all tables in stockdb and verify each has at least one API endpoint or ML pipeline reading it.",
+      "acceptanceCriteria": [
+        "Run: kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c '\\dt' \u2014 list all tables",
+        "For each table: grep -r 'table_name\\|FROM <table>' services/api/ to verify at least one query reads it",
+        "Check backtest_results: progress.txt says it doesn't exist \u2014 verify and document",
+        "Check sentiment_timeseries: progress.txt says 0 rows \u2014 verify table exists and document row count",
+        "Check feast_yfinance_macro and macro_fred_daily: verify both have recent rows",
+        "Document orphaned or empty tables in .audit/01-stale-code.md under '## Orphaned PostgreSQL Tables'"
+      ],
+      "priority": 48,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-049",
+      "title": "Stale Code: Unused Kafka topics \u2014 defined but no active consumer",
+      "description": "List all Kafka topics and verify each has an active consumer group.",
+      "acceptanceCriteria": [
+        "Run: kubectl exec -n kafka -it kafka-cluster-kafka-0 -- bin/kafka-topics.sh --list --bootstrap-server localhost:9092 2>/dev/null | head -20 \u2014 list topics",
+        "Run: kubectl exec -n kafka -it kafka-cluster-kafka-0 -- bin/kafka-consumer-groups.sh --list --bootstrap-server localhost:9092 2>/dev/null \u2014 list consumer groups",
+        "Check k8s/kafka/kafka-topics.yaml and kafka-topic-*.yaml \u2014 list defined topics vs active",
+        "Identify topics with no consumer group consuming them \u2014 document as unused",
+        "Check reddit topic: verify reddit-producer is producing AND kafka-consumer is consuming",
+        "Document unused topics in .audit/01-stale-code.md under '## Unused Kafka Topics'"
+      ],
+      "priority": 49,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-050",
+      "title": "Stale Code: Unused Prometheus metrics \u2014 defined but never incremented",
+      "description": "Audit metrics.py for custom Prometheus counters/histograms that are never called.",
+      "acceptanceCriteria": [
+        "Read stock-prediction-platform/services/api/app/metrics.py fully \u2014 list all metric definitions",
+        "For each metric: grep if metric.inc(), metric.observe(), metric.set(), or metric.labels() is called anywhere in services/api/",
+        "Verify prediction_requests_total counter is incremented in predict router",
+        "Verify drift_score_current gauge is set in drift-related code",
+        "Document unused metrics in .audit/01-stale-code.md under '## Unused Prometheus Metrics'"
+      ],
+      "priority": 50,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-051",
+      "title": "Stale Code: Orphaned K8s ConfigMaps and Secrets not mounted by any Deployment",
+      "description": "Find ConfigMaps and Secrets that are created in K8s but not mounted or referenced by any Deployment/Pod.",
+      "acceptanceCriteria": [
+        "Run: kubectl get configmaps -A --no-headers | awk '{print $1,$2}' > /tmp/cms.txt \u2014 list all ConfigMaps by namespace/name",
+        "For each ConfigMap: check if it appears in any Deployment's envFrom, volumes, or env valueFrom",
+        "Check k8s/ingestion/model-features-configmap.yaml: verify stock-api deployment mounts it",
+        "Run: kubectl get secrets -A --no-headers | grep -v 'default-token\\|service-account' | awk '{print $1,$2}' \u2014 list custom Secrets",
+        "Document orphaned ConfigMaps and Secrets in .audit/01-stale-code.md under '## Orphaned K8s ConfigMaps/Secrets'"
+      ],
+      "priority": 51,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-052",
+      "title": "Stale Code: Dead Grafana dashboard panels \u2014 panels with hardcoded 'No data' queries",
+      "description": "Audit grafana-dashboard-*.yaml ConfigMaps for panels whose PromQL/LogQL queries return nothing.",
+      "acceptanceCriteria": [
+        "Read k8s/monitoring/grafana-dashboard-api-health.yaml \u2014 list all panel titles and their PromQL expressions",
+        "Read k8s/monitoring/grafana-dashboard-ml-perf.yaml \u2014 same",
+        "Read k8s/monitoring/grafana-dashboard-kafka.yaml \u2014 same",
+        "Read k8s/monitoring/grafana-dashboard-flink.yaml \u2014 same",
+        "For each panel PromQL: check if the metric name exists in Prometheus \u2014 curl 'http://localhost:9090/api/v1/label/__name__/values' | python3 -c \"import json,sys; names=json.load(sys.stdin)['data']; print([n for n in names if 'http_requests' in n or 'prediction' in n])\"",
+        "Document panels with non-existent metric names in .audit/01-stale-code.md under '## Dead Grafana Dashboard Panels'"
+      ],
+      "priority": 52,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-053",
+      "title": "Stale Code: Elasticsearch/Kibana \u2014 deployed but not integrated with API",
+      "description": "Verify whether Elasticsearch and Kibana are running and if the API's elasticsearch_service.py actually calls them.",
+      "acceptanceCriteria": [
+        "Run: kubectl get pods -n storage | grep -E 'elastic|kibana' \u2014 document pod status",
+        "Read services/api/app/services/elasticsearch_service.py \u2014 verify which methods exist and which are called from routers",
+        "Read services/api/app/routers/search.py \u2014 check if it uses elasticsearch_service or a different search backend",
+        "If ES pods are CrashLoop or not Running: document as dead infrastructure in .audit/01-stale-code.md",
+        "If search.py uses ES but ES is down: document as broken integration in .audit/02-improvements.md",
+        "Document ES/Kibana integration status in .audit/01-stale-code.md under '## Elasticsearch/Kibana Integration Status'"
+      ],
+      "priority": 53,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-054",
+      "title": "Stale Code: Stale model artifacts in MinIO not referenced by model registry",
+      "description": "List MinIO model artifacts and compare against model_registry DB table to find orphaned files.",
+      "acceptanceCriteria": [
+        "kubectl exec -n storage deployment/minio -- ls /data/model-artifacts/ 2>/dev/null || use mc command: kubectl exec -n storage deployment/minio -- mc ls local/model-artifacts/ 2>/dev/null | head -20",
+        "kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c 'SELECT model_id, model_type, created_at FROM model_registry ORDER BY created_at DESC LIMIT 10;' \u2014 get registered model IDs",
+        "Compare MinIO file names with model_registry IDs \u2014 identify MinIO files with no registry entry",
+        "Document stale model files in .audit/01-stale-code.md under '## Stale MinIO Model Artifacts'"
+      ],
+      "priority": 54,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-055",
+      "title": "Stale Code: KServe and Kubeflow \u2014 verify active vs stale InferenceService definitions",
+      "description": "Check if KServe InferenceService is active and if both kserve-inference-service.yaml and kserve-inference-service-canary.yaml are both deployed.",
+      "acceptanceCriteria": [
+        "Run: kubectl get inferenceservices -n ml \u2014 document which InferenceServices exist and their READY status",
+        "Check if both kserve-inference-service.yaml (main) and kserve-inference-service-canary.yaml (canary) are deployed \u2014 document if canary is active",
+        "Run: kubectl get pods -n kubeflow | head -20 \u2014 verify Kubeflow pipelines are Running",
+        "Check if sklearn-serving-runtime.yaml ClusterServingRuntime is registered: kubectl get clusterservingruntimes \u2014 document",
+        "If InferenceService not Ready: document KSERVE_ENABLED=false implications in .audit/01-stale-code.md",
+        "Document KServe/Kubeflow status in .audit/01-stale-code.md under '## KServe & Kubeflow Status'"
+      ],
+      "priority": 55,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-056",
+      "title": "Stale Code: Compile Part A \u2014 write complete stale code findings to .audit/01-stale-code.md",
+      "description": "Consolidate all stale code findings from US-034 through US-055 into a structured report section.",
+      "acceptanceCriteria": [
+        "Read current .audit/01-stale-code.md \u2014 append a '## SUMMARY' section with prioritized findings",
+        "List TOP 10 most impactful stale code issues with: Issue, Location, Impact (High/Medium/Low), Recommended Action",
+        "Categorize totals: (a) Dead Python functions count, (b) Unused imports count, (c) Dead React components count, (d) Orphaned K8s resources count, (e) Dead Grafana panels count",
+        "Add a '## Quick Wins' section listing issues fixable in < 30 minutes",
+        "Add a '## Requires Migration' section for stale code needing careful removal (e.g., Elasticsearch if search.py depends on it)",
+        "Commit: 'audit: [US-056] compile stale code report section'"
+      ],
+      "priority": 56,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-057",
+      "title": "Improvement: Fix model_name column missing from ForecastTable.tsx",
+      "description": "The model_name field exists on API types but is not displayed in ForecastTable \u2014 add the column.",
+      "acceptanceCriteria": [
+        "Read services/frontend/src/components/forecasts/ForecastTable.tsx \u2014 find column definitions array",
+        "Add 'Model' column showing forecast.model_name (or model_id fallback) with appropriate width",
+        "Verify ForecastRow/MultiHorizonForecastRow in types.ts has model_name field \u2014 if not, add it as string | null",
+        "Run: npx tsc --noEmit from frontend dir \u2014 0 errors required",
+        "Run: npm run build \u2014 must succeed",
+        "Navigate to http://localhost:5173/forecasts via Playwright \u2014 verify Model column visible \u2014 screenshot audit-fix-57-model-col.png",
+        "Commit: 'feat: [US-057] add model_name column to ForecastTable'"
+      ],
+      "priority": 57,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-058",
+      "title": "Improvement: Add comprehensive /health/detailed endpoint with all dependency checks",
+      "description": "Extend /health to include explicit checks for DB, Redis, Kafka, KServe, MinIO with status + latency.",
+      "acceptanceCriteria": [
+        "Read services/api/app/routers/health.py and services/api/app/services/health_service.py",
+        "Add or enhance /health/detailed endpoint returning: {db: {status, latency_ms}, redis: {status, latency_ms}, kafka: {status, topic_count}, kserve: {status, model_ready}, overall: 'healthy'|'degraded'}",
+        "Ensure each check has a timeout (max 3s) so the endpoint never hangs",
+        "Rebuild + redeploy stock-api: eval $(minikube docker-env) && docker build -t stock-api:latest stock-prediction-platform/services/api/ && kubectl rollout restart deployment/stock-api -n ingestion",
+        "curl -s http://localhost:8010/health/detailed | python3 -m json.tool \u2014 verify all fields present",
+        "Run backend pytest \u2014 no new failures",
+        "Commit: 'feat: [US-058] add /health/detailed endpoint with per-dependency status'"
+      ],
+      "priority": 58,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-059",
+      "title": "Improvement: Add request ID middleware for distributed tracing correlation",
+      "description": "Add X-Request-ID header propagation middleware to FastAPI so logs can be correlated across services.",
+      "acceptanceCriteria": [
+        "Read services/api/app/middleware.py \u2014 check if request ID middleware already exists",
+        "If missing: add middleware that reads X-Request-ID from incoming headers (or generates UUID4), attaches to request.state, and returns it in response headers",
+        "Update services/api/app/utils/logging.py to include request_id in log output when available via contextvars",
+        "Register middleware in main.py via app.add_middleware()",
+        "Rebuild + redeploy stock-api",
+        "curl -H 'X-Request-ID: test-123' http://localhost:8010/health \u2014 verify response has X-Request-ID: test-123 header",
+        "Commit: 'feat: [US-059] add X-Request-ID middleware for log correlation'"
+      ],
+      "priority": 59,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-060",
+      "title": "Improvement: Add missing PostgreSQL indexes for performance",
+      "description": "Add indexes on hot query paths identified during audit: predictions table, feast tables.",
+      "acceptanceCriteria": [
+        "kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c '\\d predictions' \u2014 verify indexes on (ticker, prediction_date, horizon_days) or equivalent",
+        "kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c '\\d feast_yfinance_macro' \u2014 verify index on (ticker, timestamp)",
+        "If missing: create indexes via kubectl exec psql: CREATE INDEX IF NOT EXISTS idx_predictions_ticker_date ON predictions(ticker, prediction_date); CREATE INDEX IF NOT EXISTS idx_feast_yfinance_ticker_ts ON feast_yfinance_macro(ticker, event_timestamp);",
+        "Run EXPLAIN ANALYZE on: SELECT * FROM predictions WHERE ticker='AAPL' ORDER BY prediction_date DESC LIMIT 10 \u2014 verify Index Scan (not Seq Scan)",
+        "Document all created indexes in .audit/02-improvements.md under '## Database Performance Improvements'",
+        "Commit: 'perf: [US-060] add missing indexes on predictions and feast tables'"
+      ],
+      "priority": 60,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-061",
+      "title": "Improvement: Add frontend error boundary to all page-level components",
+      "description": "Wrap each page with ErrorBoundary so individual page crashes don't take down the whole app.",
+      "acceptanceCriteria": [
+        "Read services/frontend/src/components/ui/ErrorFallback.tsx \u2014 verify it exists and renders a recovery UI",
+        "Read services/frontend/src/App.tsx \u2014 check if pages are wrapped in ErrorBoundary",
+        "If not: wrap each <Route> component in App.tsx with <ErrorBoundary FallbackComponent={ErrorFallback}>",
+        "Verify react-error-boundary is in package.json \u2014 if not: npm install react-error-boundary",
+        "Run: npx tsc --noEmit \u2014 0 errors; npm run build \u2014 succeeds",
+        "Navigate to http://localhost:5173/ via Playwright \u2014 confirm app loads normally \u2014 screenshot audit-fix-61-error-boundary.png",
+        "Commit: 'feat: [US-061] wrap all pages in ErrorBoundary for resilient crash recovery'"
+      ],
+      "priority": 61,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-062",
+      "title": "Improvement: Add retry logic to frontend API client",
+      "description": "Add exponential backoff retry (max 3 attempts) to the frontend API client for transient network failures.",
+      "acceptanceCriteria": [
+        "Read services/frontend/src/api/ \u2014 find the main API client file (likely index.ts or client.ts)",
+        "Add retry logic: on 502/503/504 response or network error, retry up to 3 times with 1s/2s/4s backoff",
+        "Do NOT retry on 400/401/403/404 \u2014 only transient server errors",
+        "Add retry count to request logging (console.debug in dev mode only)",
+        "Run: npx tsc --noEmit \u2014 0 errors; npm run build \u2014 succeeds",
+        "Document retry strategy in .audit/02-improvements.md under '## API Client Resilience'",
+        "Commit: 'feat: [US-062] add exponential backoff retry to frontend API client'"
+      ],
+      "priority": 62,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-063",
+      "title": "Improvement: Fix Flink sentiment-writer \u2014 verify RUNNING or document fix path",
+      "description": "The progress.txt notes Flink sentiment-writer is in CREATED/STABLE state, not RUNNING. Investigate and fix or document.",
+      "acceptanceCriteria": [
+        "Run: kubectl get flinkdeployment -n flink \u2014 document status of flinkdeployment-sentiment-writer",
+        "If CREATED/not RUNNING: kubectl describe flinkdeployment flinkdeployment-sentiment-writer -n flink \u2014 get error reason",
+        "Check kubectl logs -n flink -l app=sentiment-writer --tail=30 \u2014 document error",
+        "If fixable (image pull error, config error): fix the FlinkDeployment manifest and commit to k8s/flink/ \u2014 ArgoCD will sync",
+        "If requires Flink operator: kubectl get pods -n flink | grep flink-kubernetes-operator \u2014 verify operator running",
+        "Document fix or root cause in .audit/02-improvements.md under '## Flink Sentiment Writer Fix'"
+      ],
+      "priority": 63,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-064",
+      "title": "Improvement: Fix any console errors found during US-021 frontend sweep",
+      "description": "Address the top-priority console errors identified in the full 7-tab console error sweep.",
+      "acceptanceCriteria": [
+        "Read .audit/02-improvements.md section '## Console Errors by Route' from US-021",
+        "Fix CRITICAL errors first: React render crashes, missing required props, null reference errors",
+        "Fix HIGH priority: failed API fetch calls that result in empty panels (404s, CORS errors)",
+        "For network 404s: verify the API endpoint exists \u2014 curl the URL \u2014 if truly missing, add stub or remove dead fetch",
+        "Run: npx tsc --noEmit \u2014 0 errors; npm run build \u2014 succeeds",
+        "Navigate to all 7 tabs via Playwright \u2014 verify console error count decreased \u2014 screenshot audit-fix-64-console-clean.png",
+        "Commit: 'fix: [US-064] resolve console errors found in full-tab audit'"
+      ],
+      "priority": 64,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-065",
+      "title": "Improvement: Add OpenAPI descriptions and tags to all FastAPI endpoints",
+      "description": "Add summary, description, and response_model_exclude_unset to all router endpoints for better API docs.",
+      "acceptanceCriteria": [
+        "Read services/api/app/routers/predict.py \u2014 add summary='Get predictions for ticker' and tags=['predictions'] to each route decorator",
+        "Read services/api/app/routers/market.py \u2014 add summary and tags=['market'] to each route",
+        "Read services/api/app/routers/models.py \u2014 add tags=['models']",
+        "Read services/api/app/routers/backtest.py \u2014 add tags=['backtest']",
+        "Rebuild + redeploy stock-api",
+        "Navigate to http://localhost:8010/docs via Playwright \u2014 verify grouped tags sidebar appears \u2014 screenshot audit-fix-65-api-docs.png",
+        "Commit: 'docs: [US-065] add OpenAPI tags and descriptions to all FastAPI routes'"
+      ],
+      "priority": 65,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-066",
+      "title": "Improvement: Improve CORS configuration \u2014 restrict allowed origins",
+      "description": "Current CORS likely allows all origins (*). Restrict to frontend origin for production hardening.",
+      "acceptanceCriteria": [
+        "Read services/api/app/main.py \u2014 find CORSMiddleware configuration",
+        "If allow_origins=['*']: change to allow_origins=['http://localhost:5173', 'http://localhost:3000'] with allow for VITE_API_URL env var",
+        "Add allow_methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] \u2014 explicit rather than wildcard",
+        "Rebuild + redeploy stock-api",
+        "Navigate to http://localhost:5173/ via Playwright \u2014 verify no CORS errors in console",
+        "curl -H 'Origin: http://evil.com' -I http://localhost:8010/health \u2014 verify Access-Control-Allow-Origin does NOT include evil.com",
+        "Commit: 'security: [US-066] restrict CORS allowed origins to known frontend URLs'"
+      ],
+      "priority": 66,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-067",
+      "title": "Improvement: Add prediction drift score to Prometheus metrics",
+      "description": "The drift detection service should expose a gauge metric for current PSI/KS drift score so Grafana can alert on it.",
+      "acceptanceCriteria": [
+        "Read services/api/app/routers/models.py \u2014 find drift detection code or /models/drift endpoint",
+        "Read services/api/app/metrics.py \u2014 check if drift_score_current gauge exists",
+        "If missing: add Gauge metric drift_score_current with labels=['ticker', 'feature', 'model_id'] to metrics.py",
+        "Update the drift calculation code to call drift_score_current.labels(...).set(score) after each calculation",
+        "Rebuild + redeploy stock-api",
+        "curl http://localhost:8010/metrics | grep drift_score \u2014 verify metric appears in Prometheus exposition",
+        "Commit: 'feat: [US-067] expose drift score as Prometheus gauge metric'"
+      ],
+      "priority": 67,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-068",
+      "title": "Improvement: Add Kafka consumer DLQ (dead letter queue) handling",
+      "description": "Kafka consumer silently drops malformed messages. Add DLQ pattern to route failed messages for inspection.",
+      "acceptanceCriteria": [
+        "Read stock-prediction-platform/services/kafka-consumer/ \u2014 find main consumer loop and error handling",
+        "Add try/except around message processing \u2014 on deserialization error or DB write failure, produce message to a '<topic>-dlq' topic",
+        "Ensure DLQ producer uses a separate Kafka producer instance to avoid circular failures",
+        "Add dlq_messages_total counter to Prometheus metrics (if API has metrics, else add logging)",
+        "Rebuild kafka-consumer image: eval $(minikube docker-env) && docker build -t kafka-consumer:latest stock-prediction-platform/services/kafka-consumer/ && kubectl rollout restart deployment/kafka-consumer -n processing",
+        "Document DLQ implementation in .audit/02-improvements.md under '## Kafka DLQ'",
+        "Commit: 'feat: [US-068] add DLQ handling to Kafka consumer for malformed messages'"
+      ],
+      "priority": 68,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-069",
+      "title": "Improvement: Add structured JSON logging to ML training pipeline",
+      "description": "ML training logs are plain text \u2014 add structured JSON logs with model_id, ticker, metrics for Loki queryability.",
+      "acceptanceCriteria": [
+        "Find main ML training script: stock-prediction-platform/ml/pipelines/training_pipeline.py (or equivalent)",
+        "Replace print() statements with python logging calls using json format: import json, logging; logging.info(json.dumps({'event': 'training_complete', 'ticker': ticker, 'model_id': model_id, 'rmse': rmse}))",
+        "Add log entries for: training_start, feature_engineering_complete, model_fit_complete (with RMSE/MAE), model_saved, training_error",
+        "Rebuild ML training image: eval $(minikube docker-env) && docker build -t ml-training:latest stock-prediction-platform/ml/",
+        "kubectl create job test-train-structured --from=cronjob/weekly-training -n ml \u2014 monitor logs for JSON output: kubectl logs -n ml -l job-name=test-train-structured --tail=20",
+        "Commit: 'feat: [US-069] add structured JSON logging to ML training pipeline'"
+      ],
+      "priority": 69,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-070",
+      "title": "Improvement: Fix any Prometheus scraping gaps \u2014 verify stock-api pod annotations",
+      "description": "Verify stock-api Deployment has correct Prometheus scrape annotations and /metrics endpoint is reachable from cluster.",
+      "acceptanceCriteria": [
+        "Read k8s/ingestion/fastapi-deployment.yaml \u2014 verify pod template has annotations: prometheus.io/scrape: 'true', prometheus.io/port: '8000', prometheus.io/path: '/metrics'",
+        "If missing: add annotations and commit to git (ArgoCD will sync)",
+        "Verify Prometheus is scraping stock-api: curl http://localhost:9090/api/v1/query?query=up{job='kubernetes-pods'} | python3 -c \"import json,sys; d=json.load(sys.stdin); print([r['metric'] for r in d['data']['result'] if 'stock-api' in str(r)])\"",
+        "curl http://localhost:8010/metrics | head -30 \u2014 verify FastAPI metrics are being exposed",
+        "If Request Rate panel was 'No data' in Grafana: verify fix resolves it by checking Grafana after 2 min",
+        "Commit if changes made: 'fix: [US-070] add prometheus scrape annotations to stock-api deployment'"
+      ],
+      "priority": 70,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-071",
+      "title": "Improvement: Add backtest_results table migration and API endpoint",
+      "description": "progress.txt notes backtest_results table does not exist. Create migration and verify backtest API works.",
+      "acceptanceCriteria": [
+        "kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c '\\dt backtest_results' \u2014 verify missing",
+        "Create table: kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c 'CREATE TABLE IF NOT EXISTS backtest_results (id SERIAL PRIMARY KEY, ticker VARCHAR(10), start_date DATE, end_date DATE, strategy VARCHAR(50), sharpe_ratio FLOAT, max_drawdown FLOAT, total_return FLOAT, created_at TIMESTAMPTZ DEFAULT NOW());'",
+        "Read services/api/app/routers/backtest.py \u2014 verify it references backtest_results table",
+        "Rebuild + redeploy stock-api",
+        "Navigate to http://localhost:5173/backtest \u2014 run a backtest for AAPL \u2014 verify results now persist and render",
+        "Commit: 'feat: [US-071] create backtest_results table and verify backtest persistence'"
+      ],
+      "priority": 71,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-072",
+      "title": "Improvement: Fix sentiment pipeline \u2014 populate sentiment_timeseries table",
+      "description": "sentiment_timeseries has 0 rows \u2014 diagnose whether Flink/reddit pipeline is broken and fix or add synthetic data.",
+      "acceptanceCriteria": [
+        "kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c 'SELECT COUNT(*) FROM sentiment_timeseries;' \u2014 verify 0 rows",
+        "Check Flink sentiment-writer logs: kubectl logs -n flink -l app=sentiment-writer --tail=30 \u2014 look for errors",
+        "Check reddit-producer: kubectl logs -n ingestion -l app=reddit-producer --tail=20 \u2014 verify it's producing messages",
+        "If pipeline broken and not fixable in one story: INSERT synthetic sentiment rows for top 10 tickers for past 30 days: kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c \"INSERT INTO sentiment_timeseries (ticker, timestamp, sentiment_score, source) SELECT ticker, NOW() - (n * INTERVAL '1 hour'), (random()-0.5)*2, 'synthetic' FROM (SELECT unnest(ARRAY['AAPL','MSFT','TSLA','AMZN','GOOG','META','NVDA','AMD','NFLX','JPM']) AS ticker) t CROSS JOIN generate_series(1,720) n;\"",
+        "Navigate to http://localhost:5173/ \u2014 click Sentiment tab \u2014 verify chart renders with data \u2014 screenshot audit-fix-72-sentiment.png",
+        "Commit: 'feat: [US-072] populate sentiment_timeseries \u2014 fix pipeline or seed synthetic data'"
+      ],
+      "priority": 72,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-073",
+      "title": "Improvement: Verify Redis caching is working and cache hit rate is reasonable",
+      "description": "Check Redis cache health, verify /predict/bulk caching works as documented in progress.txt.",
+      "acceptanceCriteria": [
+        "kubectl exec -n storage deployment/redis -- redis-cli ping \u2014 verify PONG",
+        "kubectl exec -n storage deployment/redis -- redis-cli INFO stats | grep -E 'keyspace_hits|keyspace_misses|instantaneous_ops' \u2014 document hit rate",
+        "curl http://localhost:8010/predict/bulk?horizon=1 \u2014 time first call; curl again \u2014 verify second call is significantly faster",
+        "kubectl exec -n storage deployment/redis -- redis-cli KEYS 'predict:*' | head -10 \u2014 verify prediction cache keys exist after request",
+        "If hit rate is 0% after 2 requests: read services/api/app/cache.py \u2014 check cache key construction logic",
+        "Document Redis cache health in .audit/02-improvements.md under '## Redis Cache Health'"
+      ],
+      "priority": 73,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-074",
+      "title": "Improvement: Improve TypeScript strict null checks compliance",
+      "description": "Enable strict mode or strictNullChecks in tsconfig.json if not already on, fix any resulting errors.",
+      "acceptanceCriteria": [
+        "Read stock-prediction-platform/services/frontend/tsconfig.json \u2014 check strict, strictNullChecks, noUncheckedIndexedAccess",
+        "If strict is not true: set strict: true and run npx tsc --noEmit 2>&1 | head -50 \u2014 count errors",
+        "Fix the top 10 most common null-safety errors (typically: obj.field where obj may be undefined)",
+        "Focus on: MacroPanel.tsx, MacroChart.tsx, ForecastTable.tsx \u2014 these have the most dynamic data",
+        "Run: npx tsc --noEmit \u2014 0 errors required; npm run build \u2014 succeeds",
+        "Navigate to http://localhost:5173/ via Playwright \u2014 verify no runtime null errors \u2014 screenshot audit-fix-74-ts-strict.png",
+        "Commit: 'fix: [US-074] enable TypeScript strict mode and fix null-safety errors'"
+      ],
+      "priority": 74,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-075",
+      "title": "Improvement: Compile Part B \u2014 write complete system improvements to .audit/02-improvements.md",
+      "description": "Consolidate all improvement findings and implementations from US-057 through US-074 into a structured report.",
+      "acceptanceCriteria": [
+        "Read current .audit/02-improvements.md \u2014 append '## IMPROVEMENTS SUMMARY' section",
+        "List all improvements implemented (US-057 to US-074) with: What was fixed, File(s) changed, Impact",
+        "List remaining unimplemented improvements with: Issue, Root cause, Recommended fix, Effort estimate (S/M/L)",
+        "Add '## Critical Bugs Found' subsection for any CRITICAL issues from US-021 console sweep",
+        "Add '## Performance Bottlenecks' subsection from US-060 and US-073 findings",
+        "Commit: 'audit: [US-075] compile system improvements report section'"
+      ],
+      "priority": 75,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-076",
+      "title": "Tech Integration: MLflow for experiment tracking \u2014 research and recommendation",
+      "description": "Research MLflow as an experiment tracking layer over the current MinIO-only model storage.",
+      "acceptanceCriteria": [
+        "Read stock-prediction-platform/ml/ training pipeline \u2014 document current model storage approach (MinIO + model_registry DB table)",
+        "Research MLflow Tracking Server: document how it would integrate with existing training pipeline (mlflow.sklearn.log_model, mlflow.log_metrics)",
+        "Research MLflow Model Registry as replacement or complement to current model_registry table",
+        "Identify deployment option: mlflow server --backend-store-uri postgresql://... --default-artifact-root s3://model-artifacts/ (using existing Postgres + MinIO)",
+        "Estimate Kubernetes resource requirements: 1 Deployment, 1 Service, ~256Mi RAM",
+        "Document in .audit/03-tech-integration.md under '## 1. MLflow Experiment Tracking' with: Problem Solved, Integration Points, Effort (S/M/L), Recommendation (Strong/Moderate/Weak)"
+      ],
+      "priority": 76,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-077",
+      "title": "Tech Integration: OpenTelemetry distributed tracing \u2014 research and recommendation",
+      "description": "Research OpenTelemetry as a distributed tracing layer to correlate requests from frontend through API to ML inference.",
+      "acceptanceCriteria": [
+        "Research opentelemetry-sdk for Python FastAPI: identify opentelemetry-instrumentation-fastapi, opentelemetry-exporter-otlp packages",
+        "Research Grafana Tempo as OTLP backend \u2014 it integrates with existing Grafana stack (no new UI tool needed)",
+        "Identify trace propagation path: React fetch \u2192 FastAPI \u2192 prediction_service \u2192 KServe",
+        "Research W3C TraceContext headers for frontend-to-backend propagation",
+        "Estimate setup: 1 Tempo deployment + FastAPI auto-instrumentation + Grafana datasource config",
+        "Document in .audit/03-tech-integration.md under '## 2. OpenTelemetry + Grafana Tempo' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 77,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-078",
+      "title": "Tech Integration: Evidently AI for automated ML model monitoring \u2014 research and recommendation",
+      "description": "Research Evidently AI as a data drift and model quality monitoring tool over current manual PSI calculation.",
+      "acceptanceCriteria": [
+        "Research evidently library: identify ColumnDriftMetric, DataDriftPreset, ModelPerformancePreset",
+        "Identify integration points: run evidently reports as part of the ml/cronjob-drift.yaml CronJob",
+        "Research Evidently UI (evidently cloud or self-hosted) for drift report visualization",
+        "Compare with current approach: manual PSI calculation in drift service vs. evidently automated reports",
+        "Identify how drift reports could be stored in MinIO and linked from frontend Drift page",
+        "Document in .audit/03-tech-integration.md under '## 3. Evidently AI Model Monitoring' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 78,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-079",
+      "title": "Tech Integration: Great Expectations for data quality gates \u2014 research and recommendation",
+      "description": "Research Great Expectations to add data validation before features enter the training pipeline.",
+      "acceptanceCriteria": [
+        "Research Great Expectations (GX): identify Expectation Suites, Checkpoints, DataDocs",
+        "Identify integration point: run GX checkpoint on feast_yfinance_macro after each ingest \u2014 fail fast on missing/NaN values",
+        "Research GX integration with existing PostgreSQL: SQLAlchemyDataset on stockdb",
+        "Research GX Cloud vs self-hosted DataDocs storage (MinIO)",
+        "Identify which tables need expectations: feast_yfinance_macro, macro_fred_daily, predictions",
+        "Document in .audit/03-tech-integration.md under '## 4. Great Expectations Data Quality' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 79,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-080",
+      "title": "Tech Integration: Claude API (LLM) for automated market commentary \u2014 research and recommendation",
+      "description": "Research using Claude API to generate natural language market commentary from prediction data and macro indicators.",
+      "acceptanceCriteria": [
+        "Research Anthropic Claude API (claude-sonnet-4-6 or claude-haiku-4-5) for text generation",
+        "Design prompt template: given {ticker}, {predicted_return}, {confidence}, {top_shap_features}, {macro_context} \u2192 generate 2-sentence market outlook",
+        "Identify API endpoint: new FastAPI route /market/commentary/{ticker} that calls Claude API with structured data",
+        "Identify where to display in frontend: add Commentary card to ForecastTable row expansion or StockDetailChart",
+        "Estimate token cost: ~500 tokens/request at $0.003/1K tokens (haiku) = very low cost at <100 req/day",
+        "Document in .audit/03-tech-integration.md under '## 5. LLM Market Commentary (Claude API)' with Problem Solved, Integration Points, Effort, Recommendation (STRONG RECOMMEND)"
+      ],
+      "priority": 80,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-081",
+      "title": "Tech Integration: Qdrant vector database for semantic stock search \u2014 research and recommendation",
+      "description": "Research replacing or augmenting Elasticsearch-based search with Qdrant for semantic similarity search.",
+      "acceptanceCriteria": [
+        "Research Qdrant: vector similarity search for stock ticker embeddings and news embeddings",
+        "Identify embedding model: sentence-transformers/all-MiniLM-L6-v2 for encoding company descriptions, news titles",
+        "Identify current search.py implementation \u2014 check if it uses Elasticsearch or simple DB search",
+        "Design integration: encode 500 tickers as vectors + news embeddings \u2192 semantic search returns similar companies or related news",
+        "Research Qdrant Kubernetes operator or Helm chart for local deployment",
+        "Document in .audit/03-tech-integration.md under '## 6. Qdrant Vector Search' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 81,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-082",
+      "title": "Tech Integration: KEDA for Kafka consumer autoscaling \u2014 research and recommendation",
+      "description": "Research KEDA to autoscale kafka-consumer deployment based on Kafka consumer lag.",
+      "acceptanceCriteria": [
+        "Research KEDA (Kubernetes Event-driven Autoscaling): identify KafkaTopic ScaledObject trigger",
+        "Design KEDA ScaledObject: scale kafka-consumer from 1 to 5 replicas when consumer lag > 1000 messages",
+        "Research KEDA Kafka trigger: requires KEDA controller + kafka scaler pointing to strimzi kafka cluster",
+        "Identify Helm chart: helm install keda kedacore/keda -n keda --create-namespace",
+        "Estimate impact: reduces message processing latency during market hours (high-volume periods)",
+        "Document in .audit/03-tech-integration.md under '## 7. KEDA Kafka Consumer Autoscaling' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 82,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-083",
+      "title": "Tech Integration: dbt for SQL data transformation layer \u2014 research and recommendation",
+      "description": "Research dbt (data build tool) as a managed SQL transformation layer for macro and feature data.",
+      "acceptanceCriteria": [
+        "Research dbt-core with dbt-postgres adapter for PostgreSQL transformations",
+        "Identify transformation candidates: macro_fred_daily + feast_yfinance_macro \u2192 unified view, predictions aggregation views",
+        "Research dbt models as replacements for inline SQL in market_service.py get_macro_history()",
+        "Research dbt CronJob in Kubernetes: run dbt run on schedule to materialize transformation views",
+        "Research dbt docs serve for data lineage visibility",
+        "Document in .audit/03-tech-integration.md under '## 8. dbt SQL Transformation Layer' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 83,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-084",
+      "title": "Tech Integration: TimescaleDB continuous aggregates for macro history queries \u2014 research and recommendation",
+      "description": "Research TimescaleDB continuous aggregates to pre-compute macro history rollups for faster dashboard queries.",
+      "acceptanceCriteria": [
+        "Verify TimescaleDB is active: kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c 'SELECT extversion FROM pg_extension WHERE extname=''timescaledb'';'",
+        "Research CREATE MATERIALIZED VIEW with timescaledb.continuous_aggregate on macro_fred_daily",
+        "Design aggregate: daily \u2192 weekly rollup with avg(dgs10), avg(t10y2y), avg(dcoilwtico) etc.",
+        "Research refresh_continuous_aggregate() scheduling with timescaledb.add_continuous_aggregate_policy()",
+        "Estimate query speedup: history endpoint for 90-day range would hit pre-computed weekly aggregate instead of scanning 90 daily rows",
+        "Document in .audit/03-tech-integration.md under '## 9. TimescaleDB Continuous Aggregates' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 84,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-085",
+      "title": "Tech Integration: OpenFeature for feature flagging \u2014 research and recommendation",
+      "description": "Research OpenFeature SDK for feature flagging to control ML model rollouts and A/B testing.",
+      "acceptanceCriteria": [
+        "Research OpenFeature SDK for Python: openfeature-sdk with environment variable provider",
+        "Identify use cases: (a) enable/disable KServe live inference vs DB fallback, (b) A/B test model versions, (c) enable/disable macro indicators per user",
+        "Research integration: replace KSERVE_ENABLED env var with OpenFeature flag \u2014 allows dynamic toggle without redeploy",
+        "Research OpenFeature providers: file-based provider (simplest), Flagd for Kubernetes-native feature flags",
+        "Research frontend OpenFeature JS SDK for React feature flags (show/hide UI features)",
+        "Document in .audit/03-tech-integration.md under '## 10. OpenFeature Feature Flagging' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 85,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-086",
+      "title": "Tech Integration: PgBouncer for PostgreSQL connection pooling \u2014 research and recommendation",
+      "description": "Research PgBouncer to pool database connections and reduce connection overhead from multiple API replicas.",
+      "acceptanceCriteria": [
+        "kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c 'SELECT count(*) FROM pg_stat_activity;' \u2014 check current connection count",
+        "Research PgBouncer: transaction pooling mode for FastAPI + psycopg2 workloads",
+        "Identify deployment: PgBouncer sidecar in stock-api pod OR separate Deployment in storage namespace",
+        "Research PgBouncer pgbouncer.ini config: pool_mode=transaction, max_client_conn=100, default_pool_size=10",
+        "Identify connection string change: stock-api configmap DB_HOST changes from postgresql \u2192 pgbouncer service",
+        "Document in .audit/03-tech-integration.md under '## 11. PgBouncer Connection Pooling' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 86,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-087",
+      "title": "Tech Integration: Argo Workflows for ML pipeline orchestration \u2014 research and recommendation",
+      "description": "Research Argo Workflows as a replacement for KFP (Kubeflow Pipelines) for ML training orchestration.",
+      "acceptanceCriteria": [
+        "kubectl get pods -n kubeflow | wc -l \u2014 count Kubeflow pod overhead; note if KFP is underutilized",
+        "Research Argo Workflows: DAG-based workflow engine, lighter weight than KFP, native Kubernetes",
+        "Identify migration path: convert existing KFP pipeline.py to Argo Workflow YAML templates",
+        "Research Argo Events + Argo Workflows: event-driven training triggered by Kafka message (new data ingested \u2192 retrain)",
+        "Research Argo CD already in stack \u2014 ArgoCD + Argo Workflows integration (same ecosystem)",
+        "Document in .audit/03-tech-integration.md under '## 12. Argo Workflows ML Orchestration' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 87,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-088",
+      "title": "Tech Integration: Vault (HashiCorp) for secrets management \u2014 research and recommendation",
+      "description": "Research Vault for managing DB passwords, MinIO credentials, and API keys instead of plain K8s Secrets.",
+      "acceptanceCriteria": [
+        "Identify current secrets: k8s/storage/secrets.yaml, k8s/storage/minio-secrets.yaml, k8s/monitoring/grafana-secret.yaml \u2014 these are base64-encoded in Git which is a security risk",
+        "Research Vault Agent Injector for Kubernetes: inject secrets as env vars or files into pods",
+        "Research External Secrets Operator as a lighter alternative: syncs Vault secrets to K8s Secrets automatically",
+        "Research Sealed Secrets (Bitnami) as simpler alternative: encrypt secrets in Git using asymmetric crypto",
+        "Recommend which approach fits the team size and maturity: Sealed Secrets for small team, Vault for enterprise",
+        "Document in .audit/03-tech-integration.md under '## 13. Secrets Management (Vault / Sealed Secrets)' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 88,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-089",
+      "title": "Tech Integration: Feast on Redis for real-time feature serving \u2014 research and recommendation",
+      "description": "Research moving Feast feature serving from PostgreSQL to Redis online store for sub-millisecond feature lookup.",
+      "acceptanceCriteria": [
+        "Read k8s/ml/deployment-feast-feature-server.yaml \u2014 identify current Feast online store backend",
+        "Research Feast Redis online store: feast apply with online_store: Redis config vs current postgres",
+        "Identify impact: KServe inference uses features from Feast \u2014 sub-ms Redis lookup vs 10-50ms Postgres lookup",
+        "Research feast materialize cron: current k8s/ml/cronjob-feast-materialize.yaml \u2014 verify it materializes to correct store",
+        "Note: Redis already deployed in storage namespace \u2014 Feast could reuse it",
+        "Document in .audit/03-tech-integration.md under '## 14. Feast Redis Online Store' with Problem Solved, Integration Points, Effort, Recommendation"
+      ],
+      "priority": 89,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-090",
+      "title": "Tech Integration: sktime statistical forecasting models \u2014 research Phase 96 readiness",
+      "description": "Phase 96 (sktime statistical + regression models) has 5 plans but 0 summaries. Research what's needed to execute it.",
+      "acceptanceCriteria": [
+        "Read .planning/phases/96-sktime-statistical-forecasting-models/ \u2014 list all plan files and their content",
+        "Read each plan: identify what models are planned (ARIMA, ExponentialSmoothing, Prophet, etc.)",
+        "Check: is sktime installed in ML requirements.txt? pip show sktime or grep sktime ml/requirements.txt",
+        "Identify integration point: sktime models would be additional entries in model_registry and appear in ModelComparisonTable",
+        "Research sktime installation size and dependency conflicts with existing scikit-learn version",
+        "Document Phase 96 readiness assessment in .audit/03-tech-integration.md under '## 15. Phase 96 sktime Statistical Models \u2014 Readiness Assessment'"
+      ],
+      "priority": 90,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-091",
+      "title": "Tech Integration: Compile Part C \u2014 write complete tech integration report to .audit/03-tech-integration.md",
+      "description": "Finalize and consolidate all 15 technology integration recommendations into a structured, prioritized report.",
+      "acceptanceCriteria": [
+        "Read .audit/03-tech-integration.md \u2014 verify all 15 technology sections are present",
+        "Add '## PRIORITY RANKING' section at top: rank all 15 technologies by (Impact \u00d7 Feasibility) score",
+        "TOP TIER (implement in next 3 months): Claude API commentary, Evidently AI, OpenTelemetry+Tempo, MLflow",
+        "MEDIUM TIER (next 6 months): PgBouncer, KEDA, Feast Redis, TimescaleDB aggregates, Argo Workflows",
+        "LONG TERM (next year): Vault, dbt, OpenFeature, Qdrant, Great Expectations, sktime",
+        "Add '## Implementation Roadmap' with phase-by-phase integration sequence",
+        "Commit: 'audit: [US-091] compile technology integration report with priority ranking'"
+      ],
+      "priority": 91,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-092",
+      "title": "Final: Run all Playwright E2E specs and record pass/fail/fixme matrix",
+      "description": "Run full Playwright test suite (main + infra configs) and document results matrix for SYSTEM-EXAMINATION.md.",
+      "acceptanceCriteria": [
+        "cd stock-prediction-platform/services/frontend && npx playwright test --config=playwright.config.ts 2>&1 | tail -30 \u2014 capture pass/fail/skip counts",
+        "npx playwright test --config=playwright.infra.config.ts 2>&1 | tail -30 \u2014 capture infra results",
+        "Document results matrix: Spec File | Tests | Passed | Failed | Fixme | Skipped",
+        "For any FAILED (not fixme) test: diagnose root cause \u2014 fix if possible in this story",
+        "Take final verification screenshots for each working spec: audit-e2e-<spec>.png",
+        "Document E2E test matrix in .audit/02-improvements.md under '## E2E Test Results Matrix'"
+      ],
+      "priority": 92,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-093",
+      "title": "Final: Final Playwright verification pass \u2014 all 7 tabs + Grafana dashboards clean",
+      "description": "After all improvements, do a complete final verification of frontend + Grafana to confirm production-readiness.",
+      "acceptanceCriteria": [
+        "Navigate to each of the 7 frontend tabs via Playwright \u2014 take final screenshots: final-verify-dashboard.png, final-verify-forecasts.png, final-verify-models.png, final-verify-drift.png, final-verify-analytics.png, final-verify-backtest.png, final-verify-search.png",
+        "Check mcp__playwright__browser_console_messages on each tab \u2014 document remaining error count (target: 0 critical errors)",
+        "Navigate to Grafana http://localhost:3000 \u2014 open each dashboard \u2014 take screenshots: final-verify-grafana-api.png, final-verify-grafana-ml.png, final-verify-grafana-kafka.png",
+        "Document final frontend health status: PASS/PARTIAL/FAIL per tab",
+        "Document final Grafana health: PASS/PARTIAL/FAIL per dashboard",
+        "All findings go into final SYSTEM-EXAMINATION.md executive summary"
+      ],
+      "priority": 93,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-094",
+      "title": "Final: Generate SYSTEM-EXAMINATION.md \u2014 Section 1: Stale Code & Technical Debt",
+      "description": "Write Part 1 of SYSTEM-EXAMINATION.md from .audit/01-stale-code.md compiled findings.",
+      "acceptanceCriteria": [
+        "Create SYSTEM-EXAMINATION.md at repo root with header: '# Stock Prediction Platform \u2014 System Examination Report\\n**Date:** 2026-04-07\\n**Auditor:** Ralph Autonomous Agent (100-story loop)'",
+        "Add '## Section 1: Stale Code & Technical Debt' \u2014 copy and format key findings from .audit/01-stale-code.md",
+        "Include subsections: Dead Python Code (with file:line references), Dead TypeScript/React (with file references), Orphaned Infrastructure (K8s, Kafka, Grafana panels), Database Issues (missing tables, indexes), Technical Debt Markers (TODO/FIXME count)",
+        "For each finding: provide Issue, Location, Severity (CRITICAL/HIGH/MEDIUM/LOW), Recommended Action",
+        "Sort findings by severity \u2014 CRITICAL first",
+        "End section with: '**Total stale code items found:** N'"
+      ],
+      "priority": 94,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-095",
+      "title": "Final: Generate SYSTEM-EXAMINATION.md \u2014 Section 2: System Changes & Improvements",
+      "description": "Write Part 2 of SYSTEM-EXAMINATION.md from .audit/02-improvements.md compiled findings.",
+      "acceptanceCriteria": [
+        "Append '## Section 2: System Changes & Improvements Implemented' to SYSTEM-EXAMINATION.md",
+        "List all improvements implemented during this audit loop (US-057 to US-074): Feature Added, Files Modified, Verification Screenshot",
+        "Add '### 2.1 Remaining Improvement Backlog' \u2014 list unimplemented improvements with effort estimate",
+        "Add '### 2.2 E2E Test Results' \u2014 copy test matrix from US-092",
+        "Add '### 2.3 Frontend Console Error Status' \u2014 before/after error count per tab from US-021 vs US-093",
+        "Add '### 2.4 Grafana Dashboard Data Coverage' \u2014 percentage of panels with real data vs No data"
+      ],
+      "priority": 95,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-096",
+      "title": "Final: Generate SYSTEM-EXAMINATION.md \u2014 Section 3: Technology Integration Recommendations",
+      "description": "Write Part 3 of SYSTEM-EXAMINATION.md from .audit/03-tech-integration.md compiled findings.",
+      "acceptanceCriteria": [
+        "Append '## Section 3: Technology Integration Recommendations' to SYSTEM-EXAMINATION.md",
+        "Add priority-ranked table: | # | Technology | Problem Solved | Effort | Recommendation |",
+        "Add implementation roadmap timeline: Q2 2026 (Top Tier), Q3-Q4 2026 (Medium Tier), 2027 (Long Term)",
+        "Add '### 3.1 Quick-Start: Claude API Commentary' \u2014 detailed implementation guide (most impactful, lowest effort)",
+        "Add '### 3.2 Observability Stack: OpenTelemetry + Grafana Tempo' \u2014 detailed guide",
+        "Add '### 3.3 ML Operations: MLflow + Evidently AI' \u2014 detailed guide"
+      ],
+      "priority": 96,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-097",
+      "title": "Final: Add executive summary, K8s status appendix, and API endpoint map to SYSTEM-EXAMINATION.md",
+      "description": "Prepend executive summary and add appendices to complete the examination document.",
+      "acceptanceCriteria": [
+        "Prepend '## Executive Summary' after the title in SYSTEM-EXAMINATION.md with: Platform Health Score (X/10), Top 3 Critical Issues, Top 3 Wins from this audit, Recommended Next Action",
+        "Append '## Appendix A: Kubernetes Pod Status' \u2014 current kubectl get pods -A output formatted as table",
+        "Append '## Appendix B: API Endpoint Inventory' \u2014 list all FastAPI routes with: Method, Path, Status (working/broken/untested), Response time",
+        "Append '## Appendix C: Screenshot Inventory' \u2014 list all audit screenshots taken during this loop with description",
+        "Append '## Appendix D: Port Forward Reference' \u2014 complete list of services and their port-forward commands",
+        "Ensure SYSTEM-EXAMINATION.md is well-formatted and readable \u2014 add table of contents after Executive Summary"
+      ],
+      "priority": 97,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-098",
+      "title": "Final: Verify SYSTEM-EXAMINATION.md is complete, readable, and commit all audit artifacts",
+      "description": "Final review of SYSTEM-EXAMINATION.md and commit all .audit/ files and report.",
+      "acceptanceCriteria": [
+        "Read SYSTEM-EXAMINATION.md fully \u2014 verify all 3 sections present, executive summary present, all 4 appendices present",
+        "Verify document has: Table of Contents, consistent heading hierarchy, no placeholder [TODO] markers",
+        "Verify .audit/01-stale-code.md, .audit/02-improvements.md, .audit/03-tech-integration.md all exist and are non-empty",
+        "Run: wc -l SYSTEM-EXAMINATION.md \u2014 document total line count (should be 400+ lines for comprehensive audit)",
+        "git add SYSTEM-EXAMINATION.md .audit/ && git commit -m 'audit: [US-098] complete SYSTEM-EXAMINATION.md \u2014 full 100-story platform audit'",
+        "Document final commit hash and branch name in progress.txt"
+      ],
+      "priority": 98,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-099",
+      "title": "Final: Tag audit branch and create summary in progress.txt",
+      "description": "Tag the audit completion, update progress.txt with final run summary and key learnings.",
+      "acceptanceCriteria": [
+        "git tag audit-2026-04-07 \u2014 tag current commit",
+        "Append to scripts/ralph/progress.txt: '## [2026-04-07] AUDIT COMPLETE \u2014 Full 100-story system audit' with: Total stories executed, Total improvements implemented, Total stale code items found, Total tech recommendations, SYSTEM-EXAMINATION.md location",
+        "Append '## Codebase Patterns (Updated by Audit)' section with any new patterns discovered",
+        "Verify final K8s state: kubectl get pods -A --no-headers | grep -v Running | grep -v Completed \u2014 document any non-Running pods",
+        "Navigate to http://localhost:5173/ via Playwright \u2014 take final system screenshot: audit-COMPLETE.png",
+        "This story completes the 100-story audit loop \u2014 respond with <promise>COMPLETE</promise>"
+      ],
+      "priority": 99,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-100",
+      "title": "Final: Playwright verification of SYSTEM-EXAMINATION.md accessibility via frontend or docs server",
+      "description": "Make SYSTEM-EXAMINATION.md accessible via a simple HTTP server for stakeholder viewing and verify via Playwright.",
+      "acceptanceCriteria": [
+        "Check if there's a way to serve markdown in the frontend: look for a /docs route or docs page in App.tsx",
+        "If no docs route: serve SYSTEM-EXAMINATION.md via python3 -m http.server 8099 in background \u2014 navigate to http://localhost:8099/SYSTEM-EXAMINATION.md via Playwright",
+        "Take screenshot: audit-SYSTEM-EXAMINATION-view.png showing the document rendered",
+        "Alternatively: cat SYSTEM-EXAMINATION.md | wc -l \u2014 verify > 400 lines; head -50 SYSTEM-EXAMINATION.md \u2014 verify executive summary visible",
+        "Verify all 3 section headers are present: 'Section 1: Stale Code', 'Section 2: System Changes', 'Section 3: Technology Integration'",
+        "Append final line to SYSTEM-EXAMINATION.md: '\\n---\\n*Audit completed by Ralph autonomous agent on 2026-04-07. 100 stories executed.*'",
+        "Commit: 'audit: [US-100] final SYSTEM-EXAMINATION verification and audit closure'",
+        "Reply with <promise>COMPLETE</promise>"
+      ],
+      "priority": 100,
+      "passes": false,
       "notes": ""
     }
   ]

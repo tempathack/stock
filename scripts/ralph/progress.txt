@@ -1,6 +1,36 @@
 # Ralph Progress Log
-Started: 2026-04-04 (ralph/macro-ingestion-dashboard-toggle)
-Previous run archived: scripts/ralph/archive/2026-04-04-phases-93-96-full-integration/
+Started: 2026-04-07 (ralph/system-audit-2026-04-07)
+Previous run archived: scripts/ralph/archive/2026-04-07-all-training-macros-dashboard-COMPLETE.json
+
+---
+
+## NEW RUN CONTEXT (2026-04-07) — Full System Audit Loop
+
+**Goal:** 100-story comprehensive audit. Tests all features via Playwright MCP (frontend + Grafana), scans for stale code, implements improvements, and produces SYSTEM-EXAMINATION.md with 3 sections.
+
+**Output files:**
+- `.audit/01-stale-code.md` — stale code findings
+- `.audit/02-improvements.md` — system improvement findings + implemented fixes
+- `.audit/03-tech-integration.md` — technology integration recommendations
+- `SYSTEM-EXAMINATION.md` — final compiled report
+
+**Branch:** ralph/system-audit-2026-04-07
+
+**Previous run summary (all-training-macros-dashboard):**
+- US-001 to US-006: ALL COMPLETE — all 19 macro indicators in dashboard, all 6 stories passes: true
+- feast_yfinance_macro has synthetic sector_return, high52w_pct, low52w_pct values
+- macro_fred_daily has dbaa, dexjpus, nfci, cpiaucsl populated
+- Final 7-tab verification passed (ea5d4b1)
+
+**Known issues to investigate this run:**
+- model_name field NOT displayed in ForecastTable.tsx (US-057 will fix)
+- sentiment_timeseries: 0 rows — Flink sentiment-writer in CREATED/STABLE state (US-072)
+- backtest_results table: does NOT exist (US-071 will create)
+- Phase 96 (sktime): 5 plans, 0 summaries — NOT executed
+- stacking_ensemble trained but may NOT be in model_registry
+- KServe KSERVE_INFERENCE_URL was wrong (fixed to stock-model-serving-predictor.ml.svc.cluster.local:80)
+
+
 
 ---
 
@@ -577,4 +607,16 @@ Previous run codebase patterns (still valid):
   - feast_yfinance_macro and macro_fred_daily were already populated from earlier phases (93, 94) — always check before running UPDATEs
   - Redis cache for /predict/bulk expires — always warm with curl on all 4 horizons before doing Playwright verification of Forecasts page
   - All 19 macro cards render with real DB data; no synthetic data injection was needed
+---
+
+## 2026-04-07 - US-001: Initialize audit infrastructure and port-forward all services
+- Created .audit/ directory with 3 section files (01-stale-code.md, 02-improvements.md, 03-tech-integration.md)
+- Started minikube (was stopped), established all 3 port-forwards
+- Recorded K8s pod baseline (75+ pods) and service connectivity baseline
+- Files created: .audit/01-stale-code.md, .audit/02-improvements.md, .audit/03-tech-integration.md
+- API: UP (localhost:8010), Prometheus: UP (localhost:9090), Grafana: UP (localhost:3000)
+- **Learnings for future iterations:**
+  - API port-forward must use pod-level (not svc-level) after minikube restarts: `kubectl port-forward pod/<pod-name> -n ingestion 8010:8000`
+  - Minikube was stopped — must start before any K8s operations: `minikube start --driver=docker`
+  - Notable non-critical issues: argocd-dex-server in Error, kubeflow smoke pods stuck on ImagePullBackOff
 ---
