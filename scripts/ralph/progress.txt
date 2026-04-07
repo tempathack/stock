@@ -1169,3 +1169,17 @@ Previous run codebase patterns (still valid):
   - vite has HIGH path traversal CVE — fix: npm audit fix
   - MUI is v7 not v5 as stated in CLAUDE.md scripts/ralph section — update expectations accordingly
 ---
+
+## 2026-04-07 - US-048: Orphaned PostgreSQL tables audit
+- Listed all 26 public tables with real COUNT(*) (not pg_stat n_live_tup which shows 0 before ANALYZE)
+- 12 tables ACTIVE with data, 1 EMPTY (backtest_results), 9 Feast-internal, 2 ORPHANED (permissions, managed_infra)
+- backtest_results=0 rows: INSERT path in backtest_service.py never triggered despite table existing
+- feast_yfinance_macro=90 rows, macro_fred_daily=90 rows (both confirmed working)
+- sentiment_timeseries=2408 rows (confirmed NOT empty contrary to earlier assumption)
+- Documented in .audit/01-stale-code.md under '## Orphaned PostgreSQL Tables'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - pg_stat_user_tables n_live_tup shows 0 before ANALYZE — always use COUNT(*) for real row counts
+  - backtest_results table has 0 rows — the INSERT path was never executed
+  - permissions and managed_infra are orphaned tables with no API access
+---

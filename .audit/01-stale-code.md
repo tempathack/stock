@@ -645,3 +645,69 @@ No duplication issue. Two charting libs serve distinct use cases (recharts = tim
 ### MUI Version Note
 
 Package.json uses **MUI v7** (`@mui/material ^7.3.9`). MUI v9 is available but is a major version with breaking changes to styling engine and component APIs. The codebase was designed for MUI v5 (per CLAUDE.md) but has been upgraded to v7. Upgrade to v9 is non-trivial.
+
+## Orphaned PostgreSQL Tables
+
+_Recorded: 2026-04-07_
+
+### Table Inventory (26 public tables)
+
+| Table | Row Count | API Reader | Status |
+|-------|-----------|------------|--------|
+| `feature_store` | 7,264,734 | `prediction_service.py`, `drift/feature-distributions` | ACTIVE |
+| `ohlcv_daily` | 200,156 | `market.py` `/market/candles`, `prediction_service.py` | ACTIVE |
+| `ohlcv_intraday` | 7,800 | `market.py` streaming features | ACTIVE |
+| `predictions` | 640 | `predict.py` GET + search | ACTIVE |
+| `model_registry` | 15 | `models.py` `/models/comparison` | ACTIVE |
+| `drift_logs` | 15 | `models.py` `/models/drift` | ACTIVE |
+| `macro_fred_daily` | 90 | `market.py` `/market/macro/latest` | ACTIVE |
+| `feast_yfinance_macro` | 90 | `feast_service.py` feast freshness | ACTIVE |
+| `feast_fred_macro` | 90 | `feast_service.py` feast freshness | ACTIVE |
+| `feast_metadata` | 2 | `feast_service.py` feast freshness | ACTIVE |
+| `sentiment_timeseries` | 2,408 | `market.py` `/market/sentiment` | ACTIVE |
+| `stocks` | 160 | `market.py` `/market/overview` | ACTIVE |
+| `backtest_results` | **0** | `backtest_service.py` (writes) | **EMPTY** |
+| `projects` | 1 | Feast SDK only (not exposed via API) | FEAST-INTERNAL |
+| `alembic_version` | 1 | Alembic migration state only | INFRA |
+| `data_sources` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `entities` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `feature_services` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `feature_views` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `on_demand_feature_views` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `stream_feature_views` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `saved_datasets` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `validation_references` | 0 | Feast SDK only | FEAST-INTERNAL |
+| `permissions` | 0 | None found | **ORPHANED** |
+| `managed_infra` | 0 | None found | **ORPHANED** |
+| `ohlcv_daily_agg` | 0 | TimescaleDB materialized agg | TIMESCALE-INTERNAL |
+
+---
+
+### Findings
+
+**`backtest_results` — EMPTY (0 rows)**
+- Table exists and was created by Alembic migration
+- `backtest_service.py` writes results to this table after backtesting
+- The backtest endpoint works but results are not persisted across API restarts (in-memory only path)
+- The table schema was created but the INSERT path in `backtest_service.py` is never triggered
+- **Action:** Verify INSERT code in backtest_service.py; may need to trigger a backtest run
+
+**`permissions` — ORPHANED (0 rows, no reader)**
+- No API endpoint reads or writes to this table
+- Likely created in an early auth/RBAC planning phase that was never implemented
+- Low priority — not blocking anything
+
+**`managed_infra` — ORPHANED (0 rows, no reader)**  
+- No API endpoint reads or writes to this table
+- Possibly intended for tracking deployed K8s resources; never used
+- Low priority
+
+**Feast internal tables (9 tables) — EXPECTED empty**
+- `entities`, `feature_views`, `projects`, `data_sources`, etc. are managed by the Feast registry
+- They appear empty in pg_stat because Feast uses its own session to populate them
+- `projects` has 1 row confirming Feast is initialised
+- Not orphaned — Feast SDK reads/writes directly
+
+**`ohlcv_daily_agg` — TimescaleDB continuous aggregate**
+- Created by TimescaleDB for `/market/candles` 1d interval query
+- 0 rows reported by pg_stat but populated via materialization

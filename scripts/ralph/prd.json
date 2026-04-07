@@ -776,8 +776,8 @@
         "Document orphaned or empty tables in .audit/01-stale-code.md under '## Orphaned PostgreSQL Tables'"
       ],
       "priority": 48,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "backtest_results=0 rows (INSERT path not triggered), permissions and managed_infra orphaned (0 rows, no API reader), 9 Feast-internal tables expected empty, all other 12 tables ACTIVE with data. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-049",
