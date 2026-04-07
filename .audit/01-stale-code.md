@@ -261,3 +261,27 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Minor note:** `shap_analysis.py` imports `shap` at module level (line 8) without guard — should be inside try/except. But this is only imported by `explainer.py` which has the guard, so practically safe.
 
+
+---
+
+## TypeScript Unused Imports — Pages
+
+### US-038: Frontend pages TS unused imports scan (2026-04-07)
+
+**TypeScript config:** `noUnusedLocals: true`, `noUnusedParameters: true` — TS compiler enforces no unused variables.
+
+**`npx tsc --noEmit` result:** Exit 0, 0 errors, 0 warnings
+
+**All page files clean:**
+| Page | Unused Imports | Status |
+|---|---|---|
+| Analytics.tsx | 0 | ✓ Clean |
+| Backtest.tsx | 0 | ✓ Clean |
+| Dashboard.tsx | 0 | ✓ Clean |
+| Drift.tsx | 0 | ✓ Clean |
+| Forecasts.tsx | 0 | ✓ Clean |
+| Models.tsx | 0 | ✓ Clean |
+| Search.tsx | 0 | ✓ Clean |
+
+**Summary:** Zero unused imports in any page file. TypeScript strict mode (`noUnusedLocals: true`) would have caught any real unused imports at compile time.
+

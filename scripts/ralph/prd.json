@@ -619,8 +619,8 @@
         "Document unused imports per page in .audit/01-stale-code.md under '## TypeScript Unused Imports — Pages'"
       ],
       "priority": 38,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. tsc --noEmit exit 0, 0 errors/warnings with noUnusedLocals:true. All 7 page files clean."
     },
     {
       "id": "US-039",

@@ -1071,3 +1071,10 @@ Previous run codebase patterns (still valid):
 - No dead pipeline stages, no commented-out code found
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-038: Stale Code: TypeScript unused imports scan — pages
+- tsc --noEmit exit 0 with noUnusedLocals:true + noUnusedParameters:true enforced
+- All 7 pages clean: Analytics, Backtest, Dashboard, Drift, Forecasts, Models, Search
+- Initial grep-based false positives: Dashboard SentimentTimeseriesChart/useWebSocket/icons all used in JSX
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
