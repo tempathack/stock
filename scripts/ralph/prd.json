@@ -1102,7 +1102,7 @@
         "Commit: 'feat: [US-068] add DLQ handling to Kafka consumer for malformed messages'"
       ],
       "priority": 68,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

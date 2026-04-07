@@ -949,3 +949,15 @@ Axios interceptor in `services/frontend/src/api/client.ts` retries transient ser
 | sentiment-writer | RUNNING | STABLE |
 
 All pods healthy, Flink Kubernetes Operator running (`flink-kubernetes-operator-7848cffc97-z9ffc` 1/1). No fix required — sentiment writer is operational.
+
+## Kafka DLQ
+
+**Implemented:** 2026-04-07 (US-068)
+
+Dead letter queue (DLQ) handling added to `services/kafka-consumer/`:
+
+- **Deserialization errors**: `MessageProcessor.add_message()` wraps `json.loads()` in try/except; on failure produces raw bytes to `<topic>-dlq` topic via separate Producer instance
+- **DB write errors**: `flush()` wraps each `upsert_*_batch()` call; on failure increments `dlq_messages_total` counter with `reason=db_write_error`
+- **Separate producer**: `main.py` creates a dedicated `Producer` instance for DLQ to avoid circular failures through the main consumer
+- **Prometheus counter**: `dlq_messages_total{topic, reason}` added to `consumer/metrics.py`
+- **DLQ topics created on demand** by Kafka auto-topic-create: `intraday-data-dlq`, `historical-data-dlq`

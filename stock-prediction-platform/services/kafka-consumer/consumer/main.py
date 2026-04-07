@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import signal
 
-from confluent_kafka import Consumer, KafkaError
+from confluent_kafka import Consumer, KafkaError, Producer
 
 from consumer.config import settings
 from consumer.db_writer import BatchWriter
@@ -52,11 +52,14 @@ def run_consumer(consumer=None, writer=None, processor=None) -> None:
     if writer is None:
         writer = BatchWriter()
 
+    dlq_producer = Producer({"bootstrap.servers": settings.KAFKA_BOOTSTRAP_SERVERS})
+
     if processor is None:
         processor = MessageProcessor(
             batch_size=settings.BATCH_SIZE,
             batch_timeout_ms=settings.BATCH_TIMEOUT_MS,
             writer=writer,
+            dlq_producer=dlq_producer,
         )
 
     topics = [settings.INTRADAY_TOPIC, settings.HISTORICAL_TOPIC]
