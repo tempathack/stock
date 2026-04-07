@@ -882,3 +882,17 @@ Previous run codebase patterns (still valid):
   - Search router uses /search/stocks, /search/predictions, /search/models, /search/drift-events (NOT /search?q=)
   - SHAP row-expand not implemented in Search page — predictions table is read-only
 ---
+
+## 2026-04-07 - US-018: Mobile viewport responsive layout audit (390x844)
+- Screenshots: audit-p18-mobile-dashboard/market-list/forecasts/models/drift.png
+- CRITICAL: Top nav has no responsive breakpoints — header=1081px at 390px viewport, only 2/7 links visible
+- No hamburger/drawer/bottom-nav implemented anywhere in codebase
+- Forecasts DataGrid: 1440px virtual scroller — horizontal overflow, columns cut off
+- Models DataGrid: 1030px virtual scroller — OOS columns cut off
+- Dashboard content, Drift page, Forecasts filter panel: all render well in single column
+- 0 console errors across all pages
+- **Learnings:**
+  - Sidebar.tsx uses Stack direction="row" with no MUI breakpoint handling — needs useMediaQuery + Drawer
+  - MobileMarketList component does not exist — AC referenced a non-existent component
+  - Drift is the most mobile-friendly page as-is
+---

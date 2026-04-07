@@ -465,3 +465,33 @@ Status: IN PROGRESS
 - 0 console errors
 
 **Gap:** Clicking a prediction row does NOT expand a detail panel with SHAP values. Click has no effect — no drawer, modal, or expanded row. SHAP feature importance per prediction is not implemented in the Search UI.
+
+---
+
+## Mobile Responsiveness Issues
+
+### US-018: Mobile viewport audit — iPhone 14 (390x844) (2026-04-07)
+
+**Status:** AUDIT COMPLETE — critical layout issues found
+
+**Critical: Top nav does not collapse**
+- Navigation bar (`Sidebar.tsx`) uses `<Stack direction="row">` with no responsive breakpoints
+- At 390px: header scrollWidth=1081px, nav scrollWidth=643px — only "Dashboard" and "Models" visible
+- No hamburger menu, no drawer, no bottom navigation bar exists in the codebase
+- All 7 pages affected: 5 of 7 nav links invisible/inaccessible on mobile
+
+**High: DataGrid tables overflow horizontally**
+- Forecasts page: MuiDataGrid virtual scroller is 1440px wide — columns beyond SECTOR are cut off
+- Models page: MuiDataGrid virtual scroller is 1030px wide — OOS metric columns cut off
+
+**Medium: No MobileMarketList component**
+- Dashboard uses a vertically-stacked sector/stock list (works adequately but no dedicated mobile optimisation)
+- No treemap or MobileMarketList component found — AC was checking for a component that does not exist
+
+**What works on mobile (no overflow):**
+- Dashboard content area: single-column sector/stock cards — readable
+- Drift page: fully responsive, single-column layout — readable
+- Forecasts filter panel: Search, Sector dropdown, Return range, Confidence slider — all usable
+- Models winner card — readable
+
+**Console errors:** 0 across all 5 pages

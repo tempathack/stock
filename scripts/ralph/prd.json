@@ -299,8 +299,8 @@
         "Document any overflow, cut-off, or unusable elements in .audit/02-improvements.md under '## Mobile Responsiveness Issues'"
       ],
       "priority": 18,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "AUDIT COMPLETE. Critical: nav does not collapse at 390px (header=1081px wide, only 2/7 links visible, no hamburger/bottom-nav). High: Forecasts DataGrid 1440px wide, Models DataGrid 1030px wide — columns cut off. Medium: no MobileMarketList component. What works: Dashboard content area, Drift page, Forecasts filter panel all render fine in single column. 0 console errors."
     },
     {
       "id": "US-019",
