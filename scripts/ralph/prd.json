@@ -588,8 +588,8 @@
         "Document all dead/unused modules in .audit/01-stale-code.md under '## Dead Python Modules'"
       ],
       "priority": 36,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. Jobs are K8s CronJob invoked (not dead). middleware.py+rate_limit.py+utils/logging.py all active. utils/indicators.py is empty stub (3 lines) — dead file. Real indicators in ml/features/indicators.py."
     },
     {
       "id": "US-037",

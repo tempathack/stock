@@ -200,3 +200,37 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Summary:** No dead service files. Only 2 low-severity unused imports.
 
+
+---
+
+## Dead Python Modules
+
+### US-036: Jobs, middleware, utils dead code audit (2026-04-07)
+
+**Jobs (trigger_intraday.py, trigger_historical.py):**
+- Both are **NOT imported** by main.py or any router — intentional design
+- Invoked directly by K8s CronJobs via `python -m app.jobs.trigger_intraday`
+- Status: ACTIVE via K8s CronJob manifest (not dead code)
+
+**middleware.py (RequestContextMiddleware):**
+- Registered in `main.py:102` via `app.add_middleware(RequestContextMiddleware)` ✓
+- Status: ACTIVE
+
+**rate_limit.py (RateLimitMiddleware):**
+- Imported and registered in `main.py:103` via `app.add_middleware(RateLimitMiddleware, ...)` ✓
+- Status: ACTIVE
+
+**utils/logging.py (get_logger, configure_uvicorn_logging):**
+- Used by `main.py`, `middleware.py`, `kafka_producer.py`, `yahoo_finance.py`, `health_service.py`, `ingest.py`, `rate_limit.py`, `trigger_intraday.py`, `trigger_historical.py` ✓
+- Status: ACTIVE — widely used
+
+**utils/indicators.py:**
+- File contains only 3 lines (module docstring + `from __future__ import annotations`)
+- **EMPTY MODULE** — no function definitions
+- Real indicator logic lives in `ml/features/indicators.py` (imported via lazy imports in services)
+- Status: DEAD EMPTY FILE — can be deleted
+
+**Summary:**
+- 0 dead jobs/middleware/rate_limit/logging modules — all active
+- `utils/indicators.py` is empty stub (3 lines) — safe to delete
+

@@ -1053,3 +1053,11 @@ Previous run codebase patterns (still valid):
 - kserve_client.py: lazy-imported in prediction_service.py for KServe inference
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-036: Stale Code: Dead Python code — jobs, middleware, utils
+- trigger_intraday/historical: K8s CronJob invoked, not imported — intentional, ACTIVE
+- middleware.py, rate_limit.py: both registered in main.py — ACTIVE
+- utils/logging.py: used by 9+ files — ACTIVE
+- utils/indicators.py: EMPTY STUB (3 lines) — dead file, real logic in ml/features/indicators.py
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
