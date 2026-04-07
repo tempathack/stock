@@ -1319,3 +1319,19 @@ Previous run codebase patterns (still valid):
 [US-073] PASS — Redis PONG; hits=149 misses=808; predict:bulk:1 cold=8.4s cached=15ms (560x speedup); documented in .audit/02-improvements.md.
 [US-074] PASS — tsconfig.json already has strict:true, noUncheckedIndexedAccess:true; npx tsc --noEmit = 0 errors; dashboard loads with 0 runtime null errors.
 [US-075] PASS — Appended IMPROVEMENTS SUMMARY, Remaining Unimplemented, Critical Bugs Found, and Performance Bottlenecks sections to .audit/02-improvements.md.
+[US-076] PASS — MLflow integration design: log_params/metrics/model, MinIO artifact store, K8s deployment. Effort M.
+[US-077] PASS — OpenTelemetry: FastAPIInstrumentor + Grafana Tempo. Critical quick win. Effort S.
+[US-078] PASS — Evidently AI: replace custom KS/PSI with DataDriftPreset, HTML reports to MinIO. Effort M.
+[US-079] PASS — Great Expectations: GX checkpoint on feast_yfinance_macro, DataDocs to MinIO. Effort M.
+[US-080] PASS — Claude API commentary: claude-haiku-4-5 endpoint, prompt template designed, Redis cache 30m. Effort S.
+[US-081] PASS — Qdrant: all-MiniLM-L6-v2 embeddings, semantic similar-tickers endpoint. Effort L.
+[US-082] PASS — KEDA ScaledObject designed: lag>1000 → scale 1-5 replicas. Critical, Effort S.
+[US-083] PASS — dbt models designed: macro_unified, predictions_with_accuracy. Effort M.
+[US-084] PASS — TimescaleDB 2.25.2 active; continuous aggregate SQL designed. Effort S.
+[US-085] PASS — OpenFeature: EnvVarProvider replacing ad-hoc env toggles. Effort S.
+[US-086] PASS — PgBouncer: transaction mode, max_client_conn=200. Critical for production. Effort S.
+[US-087] PASS — Argo Workflows DAG designed; already installed in kubeflow namespace (17 pods). Effort M.
+[US-088] PASS — Vault Agent Injector approach; LOW urgency for dev cluster. Effort L.
+[US-089] PASS — Feast→Redis: feature_store.yaml change only, 10x latency improvement, no new infra. Effort S.
+[US-090] PASS — sktime Phase 96: 5 plan files, infrastructure ready, blocked by minikube OOM.
+[US-091] PASS — 03-tech-integration.md complete: 15 sections + priority ranking + quick-wins summary.
