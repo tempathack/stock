@@ -1078,3 +1078,11 @@ Previous run codebase patterns (still valid):
 - Initial grep-based false positives: Dashboard SentimentTimeseriesChart/useWebSocket/icons all used in JSX
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-039: Stale Code: Dead React components — not referenced by any page
+- 0 dead components found — all .tsx files imported by at least 1 other file
+- ErrorFallback(7), PlaceholderCard(7), LoadingSpinner(3) — all active
+- ShapBeeswarmPlot(3) + ShapBarChart(4) — both active, distinct visuals
+- MobileMarketList(3) — active (mobile responsive)
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---

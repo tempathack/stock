@@ -285,3 +285,28 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Summary:** Zero unused imports in any page file. TypeScript strict mode (`noUnusedLocals: true`) would have caught any real unused imports at compile time.
 
+
+---
+
+## Dead React Components
+
+### US-039: Dead React component scan (2026-04-07)
+
+**Method:** grep-based import scan for each `.tsx` component against all `src/` files.
+
+**Result: 0 dead components found** — every component file is imported by at least one other file.
+
+**Key component usage:**
+| Component | Files Importing | Status |
+|---|---|---|
+| ErrorFallback | 7 | Active |
+| PlaceholderCard | 7 | Active |
+| LoadingSpinner | 3 | Active |
+| ShapBeeswarmPlot | 3 | Active (SHAP page) |
+| ShapBarChart | 4 | Active (SHAP + Models page) |
+| MobileMarketList | 3 | Active (mobile responsive) |
+
+**Both SHAP components are active** — `ShapBeeswarmPlot` and `ShapBarChart` serve different visualization purposes.
+
+**Summary:** Zero dead React components. TypeScript `noUnusedLocals: true` + tree-shaking would prevent accumulation of dead components.
+
