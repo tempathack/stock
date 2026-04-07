@@ -857,3 +857,15 @@ Previous run codebase patterns (still valid):
   - OLAPCandleChart is broken due to ts/date mismatch AND bodyRange tuple issue — needs a dedicated fix story
   - Kafka lag endpoint is /analytics/kafka/lag (not /analytics/kafka-lag)
 ---
+
+## 2026-04-07 - US-016: Backtest page — run AAPL backtest and verify results
+- Screenshots: audit-p16-backtest-initial.png, audit-p16-backtest-chart.png, audit-p16-backtest-metrics.png
+- Backtest runs in <5s via GET /backtest/AAPL?start=2024-01-01&end=2024-06-30 (NOT POST /backtest/run)
+- Returns 124 data points, model: naive_sma7, horizon: 7d, RMSE=8.86, MAE=7.09, MAPE=3.80%
+- BacktestChart renders Actual vs Predicted lines with error band
+- BacktestMetricsSummary: 6 metric cards (no Sharpe/drawdown/total-return — those are not implemented)
+- 0 console errors
+- **Learnings:**
+  - Backtest endpoint is GET /backtest/{ticker}?start=&end= not POST /backtest/run
+  - Current impl is prediction-accuracy metrics, not portfolio strategy metrics
+---

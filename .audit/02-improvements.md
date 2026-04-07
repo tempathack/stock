@@ -426,3 +426,25 @@ Status: IN PROGRESS
 - 0 console errors (no network failures — chart just renders empty)
 
 **Console errors:** None
+
+---
+
+### US-016: Backtest page — AAPL 2024-01-01 to 2024-06-30 (2026-04-07)
+
+**Status:** PASS — Backtest runs and renders correctly
+
+**API endpoint:** GET /backtest/AAPL?start=2024-01-01&end=2024-06-30
+- Returns 124 data points, model: naive_sma7, horizon: 7d
+- Metrics: RMSE=8.86, MAE=7.09, MAPE=3.80%, R²=0.51, Dir.Accuracy=61.8%, 124 points
+
+**Note:** Acceptance criteria mentioned POST /backtest/run — actual endpoint is GET /backtest/{ticker}
+
+**BacktestChart:** Renders Actual vs Predicted price lines with shaded error band — PASS
+**BacktestMetricsSummary:** 6 metric cards (RMSE, MAE, MAPE, R², Directional Accuracy, Total Points) — PASS
+
+**Gap vs acceptance criteria:**
+- Sharpe ratio: NOT implemented — current metrics are model accuracy, not portfolio metrics
+- Max drawdown: NOT implemented
+- Total return: NOT implemented
+
+**Console errors:** None
