@@ -164,3 +164,39 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Summary:** 5 unused imports across 3 files — all LOW severity cosmetic issues. No logic errors or dead code in routing logic.
 
+
+---
+
+## Dead Python Service Functions
+
+### US-035: Service files dead code scan (2026-04-07)
+
+**Unused imports (flake8 F401):**
+| File | Import | Notes |
+|---|---|---|
+| `flink_service.py:115` | `datetime` (inside function) | LOW — local import not used |
+| `kafka_lag_service.py:7` | `confluent_kafka.KafkaException` | LOW — imported but not raised |
+
+**Service file usage:**
+| Service | Used By | Active |
+|---|---|---|
+| `elasticsearch_service.py` | `search.py` router + `main.py` (close) | YES — ES pod Running |
+| `feast_service.py` | `analytics.py` router (freshness) | YES |
+| `feast_online_service.py` | `market.py` router (streaming features) | YES — separate from feast_service |
+| `flink_service.py` | `analytics.py` router (jobs + summary) | YES |
+| `kserve_client.py` | `prediction_service.py` + `main.py` | YES — lazy import for KServe inference |
+| `model_metadata_cache.py` | `main.py` + `prediction_service.py` | YES |
+| `ab_service.py` | `models.py` router (A/B results) | YES |
+| `backtest_service.py` | via `predict.py` or `backtest.py` | YES |
+| `health_service.py` | `health.py` router | YES |
+| `kafka_producer.py` | `ingest.py` router | YES |
+| `market_service.py` | `market.py` router | YES |
+| `price_feed.py` | `ws.py` router | YES |
+| `yahoo_finance.py` | `market_service.py` + `ingest.py` | YES |
+| `kafka_lag_service.py` | `analytics.py` router | YES |
+| `prediction_service.py` | multiple routers | YES |
+
+**Note:** `feast_service.py` and `feast_online_service.py` serve different purposes — not duplicates. feast_service queries feast_metadata table; feast_online_service queries Redis online store.
+
+**Summary:** No dead service files. Only 2 low-severity unused imports.
+

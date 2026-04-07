@@ -1044,3 +1044,12 @@ Previous run codebase patterns (still valid):
 - market.py macro fields all used via service functions
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-035: Stale Code: Python unused imports scan — API services
+- No dead service files — all 15 service modules actively imported
+- 2 unused imports: flink_service.py:datetime (local), kafka_lag_service.py:KafkaException
+- elasticsearch_service.py: ACTIVE (ES pod Running in storage namespace)
+- feast_service.py vs feast_online_service.py: distinct uses (metadata vs Redis online store)
+- kserve_client.py: lazy-imported in prediction_service.py for KServe inference
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
