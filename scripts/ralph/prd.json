@@ -792,8 +792,8 @@
         "Document unused topics in .audit/01-stale-code.md under '## Unused Kafka Topics'"
       ],
       "priority": 49,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "historical-data/intraday-data ACTIVE (stock-consumer-group, 2 members). processed-features/reddit-raw/sentiment-aggregated have registered groups but no active members (Flink down). debezium.public.predictions ORPHANED — auto-created by CDC, no manifest, no consumer. Documented in .audit/01-stale-code.md."
     },
     {
       "id": "US-050",

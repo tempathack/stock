@@ -1183,3 +1183,16 @@ Previous run codebase patterns (still valid):
   - backtest_results table has 0 rows — the INSERT path was never executed
   - permissions and managed_infra are orphaned tables with no API access
 ---
+
+## 2026-04-07 - US-049: Unused Kafka topics audit
+- Listed 6 topics: historical-data, intraday-data, processed-features, reddit-raw, sentiment-aggregated, debezium.public.predictions
+- historical-data and intraday-data have ACTIVE consumers (stock-consumer-group)
+- processed-features/reddit-raw/sentiment-aggregated have Flink consumer groups with no active members (Flink down)
+- debezium.public.predictions is ORPHANED — auto-created by CDC but no manifest and no consumer
+- Documented in .audit/01-stale-code.md under '## Unused Kafka Topics'
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - Kafka namespace is "storage" not "kafka" — use kubectl -n storage for Kafka pods
+  - Flink consumer groups exist (flink-feast-writer etc) but no active members — Flink jobs not processing
+  - debezium.public.predictions topic auto-created by Debezium CDC (not in manifests)
+---

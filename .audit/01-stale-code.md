@@ -711,3 +711,55 @@ _Recorded: 2026-04-07_
 **`ohlcv_daily_agg` — TimescaleDB continuous aggregate**
 - Created by TimescaleDB for `/market/candles` 1d interval query
 - 0 rows reported by pg_stat but populated via materialization
+
+## Unused Kafka Topics
+
+_Recorded: 2026-04-07_
+
+### Topic Inventory
+
+| Topic | Defined In | Consumer Group | Active Members | Log-End-Offset | Status |
+|-------|-----------|----------------|----------------|----------------|--------|
+| `historical-data` | `kafka-topics.yaml` | `stock-consumer-group` | **ACTIVE** (2 rdkafka) | 53922–72526/partition | ACTIVE |
+| `intraday-data` | `kafka-topics.yaml` | `stock-consumer-group` | **ACTIVE** (2 rdkafka) | 0 (no intraday data yet) | ACTIVE |
+| `processed-features` | `kafka-topic-processed-features.yaml` | `flink-feast-writer` | none | 0 | INACTIVE CONSUMER |
+| `reddit-raw` | `kafka-topic-reddit.yaml` | `flink-sentiment-stream` | none | 0 | INACTIVE CONSUMER |
+| `sentiment-aggregated` | `kafka-topic-reddit.yaml` | `flink-sentiment-writer` | none | 0 | INACTIVE CONSUMER |
+| `debezium.public.predictions` | Not in manifests | None | 0 | 0 | **ORPHANED** |
+
+---
+
+### Findings
+
+**`historical-data` — ACTIVE**
+- `stock-consumer-group` has 2 active rdkafka members (kafka-consumer service)
+- LAG=0 on all partitions (fully caught up)
+- Offsets 53922–72526 confirm substantial message history
+
+**`intraday-data` — ACTIVE (no data yet)**
+- Same `stock-consumer-group` consuming
+- Log-end-offset=0: intraday producer not generating messages (market hours only, or CronJob not running)
+
+**`processed-features` — INACTIVE consumer (Flink down)**
+- `flink-feast-writer` group has no active members
+- All Flink consumer groups are idle — Flink jobs exist but consume 0 messages
+- This is consistent with the FlinkDeployments running but jobs not processing
+
+**`reddit-raw` / `sentiment-aggregated` — INACTIVE consumer (Flink down)**
+- `flink-sentiment-stream` / `flink-sentiment-writer` groups have no active members
+- Reddit producer not running OR Flink sentiment pipeline not active
+
+**`debezium.public.predictions` — ORPHANED**
+- Not defined in any K8s manifest (no KafkaTopic CRD)
+- No consumer group consuming it
+- Auto-created by Debezium CDC connector attempting to stream `predictions` table
+- But Debezium Connect pod is not running (KafkaMirrorMaker CRD has schema mismatch — documented in US-033)
+- Can be deleted if Debezium CDC is not planned
+
+---
+
+### Summary
+
+- 2/6 topics with ACTIVE consumers (`historical-data`, `intraday-data`)
+- 3/6 topics with registered but INACTIVE consumer groups (Flink down)
+- 1/6 topic ORPHANED (`debezium.public.predictions` — no manifest, no consumer)
