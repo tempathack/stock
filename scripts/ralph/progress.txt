@@ -723,3 +723,22 @@ Previous run codebase patterns (still valid):
   - Forecasts page uses useAllHorizonsPredictions() which makes 4 parallel API calls (horizons 1/7/14/30) — takes ~30s cold start but table shows all columns simultaneously
   - HorizonToggle (1D/7D/14D/30D) in detail drawer switches which horizon's chart displays — does NOT filter the main table
 ---
+
+## 2026-04-07 - US-008: Playwright: Forecasts page — SHAP panel audit (beeswarm + bar)
+- Navigated to http://localhost:5173/forecasts — table loaded with 160 stocks, real data (CatBoost_standard)
+- Clicked TSLA row via JS evaluate (aria-ref click timed out due to DataGrid overlay) — Detail View dialog opened
+- Verified StockShapPanel renders with "Feature Contribution — TSLA" and "SHAP Feature Importance for TSLA"
+- ShapBarChart renders horizontal bars for top ~14 features (obv, nacd, close, ema, bb_l, etc.)
+- ShapBeeswarmPlot component EXISTS (src/components/charts/ShapBeeswarmPlot.tsx) but NOT used in StockShapPanel
+- StockShapPanel uses generateMockShapImportance() — no live API data fetch
+- API /predict/AAPL?horizon=7 does NOT return shap_values or feature_importance fields
+- 0 console errors, 0 warnings
+- Findings documented in stock-prediction-platform/.audit/02-improvements.md
+- Screenshots: audit-p08-shap-panel.png, audit-p08-shap-bar.png, audit-p08-beeswarm.png (note: beeswarm not rendered)
+- Files created/modified: stock-prediction-platform/.audit/02-improvements.md, scripts/ralph/prd.json
+- **Learnings for future iterations:**
+  - DataGrid rows cannot be clicked via aria-ref — use `document.querySelector('[data-id="TICKER"]').click()` via browser_evaluate
+  - Screenshots timeout on font loading on heavy pages — use fullPage: false or retry after navigate
+  - StockShapPanel uses only ShapBarChart with mock data; ShapBeeswarmPlot is a standalone component not yet wired up
+  - /predict/{ticker} endpoint returns no SHAP data — improvement tracked in .audit/02-improvements.md
+---

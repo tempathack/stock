@@ -137,8 +137,8 @@
         "curl 'http://localhost:8010/predict/AAPL?horizon=7' \u2014 verify response includes shap_values or feature_importance"
       ],
       "priority": 8,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "2026-04-07: ShapBarChart renders with mock data (CatBoost_standard features). ShapBeeswarmPlot component exists but not used in StockShapPanel. API /predict/{ticker} does not return shap_values. 0 console errors. Findings documented in .audit/02-improvements.md."
     },
     {
       "id": "US-009",
