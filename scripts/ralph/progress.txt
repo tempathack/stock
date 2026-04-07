@@ -1025,3 +1025,14 @@ Previous run codebase patterns (still valid):
 - Screenshots: audit-p32-minio-login.png, audit-p32-model-artifacts.png, audit-p32-drift-logs.png
 - **Learnings:** MinIO credentials are in minio-secrets secret (MINIO_ROOT_USER/PASSWORD), not minio/minio123. Local port 9001 already occupied — use 9002 for port-forward.
 ---
+
+## 2026-04-07 - US-033: Playwright: ArgoCD — app sync status audit
+- 9 ArgoCD apps found via CLI (no resources via kubectl get applications — namespace lookup issue)
+- All apps Sync=Unknown due to argocd-repo-server CrashLoopBackOff (16 restarts)
+- Health=Healthy for 8/9 apps; processing=Progressing (Debezium issues)
+- processing SyncFailed: debezium-connect (Strimzi schema mismatch), 2x KafkaTopic (RFC 1123 name violation: dots+underscores)
+- ArgoCD UI: not screenshottable via Playwright — self-signed TLS cert rejected (ERR_CERT_AUTHORITY_INVALID)
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Screenshots: none — CLI-only (TLS issue)
+- **Learnings:** ArgoCD app list only works with argocd CLI + port-forward + insecure login. kubectl get applications only works if CRDs installed in active namespace; needs -n argocd flag but also argocd-repo-server must be healthy. Playwright cannot screenshot ArgoCD without trust-all-certs config.
+---

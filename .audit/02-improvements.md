@@ -794,3 +794,36 @@ failed to list *v1.Pod: dial tcp 10.96.0.1:443: connect: no route to host
 
 **Status: HEALTHY** — 100% scrape success rate.
 
+
+---
+
+## ArgoCD App Health
+
+### US-033: ArgoCD app sync status audit (2026-04-07)
+
+**ArgoCD UI:** Not accessible via Playwright — self-signed TLS cert rejected by browser (`ERR_CERT_AUTHORITY_INVALID`). Data collected via `argocd` CLI.
+
+**Root issue: `argocd-repo-server` is down** (pod `Completed` + 16 restarts, CrashLoopBackOff). ArgoCD cannot generate manifests from git → all apps show `ComparisonError` / `Sync Status: Unknown`. Deploy-to-cluster is broken.
+
+**App health summary (9 apps):**
+| App | Sync | Health | Key Issues |
+|---|---|---|---|
+| ingestion | Unknown | Healthy | ComparisonError (repo-server down) |
+| frontend | Unknown | Healthy | ComparisonError |
+| flink | Unknown | Healthy | ComparisonError |
+| kafka | Unknown | Healthy | ComparisonError |
+| ml | Unknown | Healthy | ComparisonError |
+| monitoring | Unknown | Healthy | ComparisonError |
+| storage | Unknown | Healthy | ComparisonError |
+| root-app | Unknown | Healthy | ComparisonError |
+| processing | Unknown | Progressing | ComparisonError + SyncFailed (3 resources) |
+
+**processing app SyncFailed details:**
+1. `debezium-connect` KafkaConnect: `.spec.template.pod.spec: field not declared in schema` — Strimzi CRD schema mismatch
+2. `debezium.public.model_registry` KafkaTopic: Invalid name (RFC 1123 violation — dots with underscores not allowed)
+3. `debezium.public.drift_logs` KafkaTopic: Same RFC 1123 violation
+
+**Critical issues (HIGH):**
+- `argocd-repo-server` CrashLoopBackOff — GitOps pipeline broken, no automated syncs
+- `processing` app stuck Progressing — Debezium CDC not running
+
