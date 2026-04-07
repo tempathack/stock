@@ -529,3 +529,37 @@ Market closed:
 ```
 
 **Warning observed:** `WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established` — this is a stale `useWebSocket` hook reconnect attempt on initial page load (harmless race condition).
+
+---
+
+## Health Endpoint Gaps
+
+### US-020: Full API health spec run (2026-04-07)
+
+**Status:** PASS — health endpoints functional, two warnings in deep check
+
+**`GET /health` response:**
+- status: ok
+- db_pool: pool_size=10, checked_in=5, checked_out=0
+- redis_status: connected
+- Missing: kafka, kserve status fields (not in /health — only in /health/deep)
+
+**`GET /health/deep` response (status: degraded):**
+- database: ok
+- kafka: ok (1 broker)
+- model_freshness: **WARNING** — model stale 15 days (threshold: 7d, trained 2026-03-22)
+- prediction_staleness: **WARNING** — predictions stale 90h (threshold: 24h, last: 2026-04-03)
+- redis_status: connected
+
+**`GET /health/k8s` response:**
+- available: false, running_pods: null — KServe health check not reachable from API pod
+
+**Missing endpoints:**
+- /health/detailed → 404 (does not exist)
+- /health/ready → 404 (does not exist)
+
+**UI status bar (Playwright):** API ● (green), KAFKA ● (green), DB ● (green), WS CONNECTED — no banners or error overlays. 0 console errors.
+
+**Action items:**
+- Retrain models (stale 15d) — weekly-training CronJob should run automatically
+- Predictions stale 90h — new predictions needed after retraining

@@ -331,8 +331,8 @@
         "curl 'http://localhost:8010/health/detailed' — if endpoint exists, document all sub-service statuses"
       ],
       "priority": 20,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. /health: ok, db_pool=10/5/0, redis=connected. /health/deep: degraded — model stale 15d (trained 2026-03-22), predictions stale 90h (last 2026-04-03). kafka=ok(1 broker), db=ok. /health/k8s: available=false. /health/detailed+ready: 404. UI: API/KAFKA/DB all green, WS CONNECTED, 0 console errors."
     },
     {
       "id": "US-021",

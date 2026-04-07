@@ -909,3 +909,15 @@ Previous run codebase patterns (still valid):
   - WS broadcasts one market_closed message per 60s check when market is closed
   - useWebSocket hook has a harmless race on initial load (stale close before connect)
 ---
+
+## 2026-04-07 - US-020: Full API health spec run
+- Screenshot: audit-p20-api-health-ui.png (UI: API/KAFKA/DB green, WS CONNECTED)
+- /health: ok — db_pool(10/5/0), redis=connected
+- /health/deep: degraded — model_freshness=WARNING(15d stale), prediction_staleness=WARNING(90h)
+- /health/k8s: available=false (KServe unreachable from pod)
+- /health/detailed and /health/ready: 404 (not implemented)
+- 0 console errors in UI
+- **Learnings:**
+  - Deep health check is /health/deep (not /health/detailed)
+  - Model + predictions are stale — training pipeline hasn't run since 2026-03-22
+---
