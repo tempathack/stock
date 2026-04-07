@@ -73,7 +73,7 @@
         "curl http://localhost:8010/market/sentiment/AAPL \u2014 document HTTP status and response shape"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

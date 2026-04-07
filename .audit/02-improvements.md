@@ -68,3 +68,39 @@ Status: IN PROGRESS
 - audit-p03-macro-chart-baa.png — chart after clicking BAA Yield chip
 - audit-p03-macro-tab-full.png — full-page screenshot
 
+
+---
+
+### US-004: Dashboard — Sentiment Tab Full Feature Audit (2026-04-07)
+
+**Status:** PASS — empty state renders correctly, appropriate messaging shown
+
+**API findings:**
+- `curl http://localhost:8010/market/sentiment/AAPL` → **404 Not Found** (endpoint does not exist at this path)
+- Actual endpoint: `GET /market/sentiment/{ticker}/timeseries`
+- `curl http://localhost:8010/market/sentiment/AAPL/timeseries` → `{"ticker":"AAPL","points":[],"count":0,"window_hours":10}`
+- **0 rows in sentiment_timeseries** — Flink sentiment-writer is in CREATED/STABLE state, not producing data
+
+**Verified working:**
+- Market Sentiment section renders below Top Gainers/Losers on the Market tab
+- Header: "MARKET SENTIMENT" with lightning bolt icon ✓
+- Ticker quick-select row: AAPL (selected/pink), TSLA, MSFT, NVDA, AMZN chips ✓
+- Sentiment indicator (top-right): blue dot with "—" label (correct for no data) ✓
+- Empty state message: "No sentiment data available" ✓
+- Sub-text: "Reddit pipeline may be starting up" ✓
+- No console errors (2 pre-existing warnings unrelated to sentiment)
+
+**Sentiment pipeline status:**
+- **Sentiment pipeline not writing data — Flink sentiment-writer may be in CREATED state**
+- sentiment_timeseries table has 0 rows
+- reddit-producer is running in ingestion namespace (pod age 3d)
+- Flink job in CREATED/STABLE state — not actively consuming Reddit posts and writing sentiment scores
+
+**Console output:**
+- 0 errors
+- 2 pre-existing warnings: WS timing warning + ECharts dispose warning (both non-blocking, unrelated to sentiment)
+
+**Screenshots:**
+- audit-p04-sentiment.png — full dashboard showing Market Sentiment section
+- audit-p04-sentiment-panel.png — zoomed view of Market Sentiment panel with empty state
+

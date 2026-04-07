@@ -654,3 +654,18 @@ Previous run codebase patterns (still valid):
   - 19 cards displayed (requirement was 17-19) — all populated from feast_yfinance_macro + macro_fred_daily
   - Data timestamp shows "As of 2026-04-04" (4 days old) — FRED data not refreshing daily (low priority)
 ---
+
+## 2026-04-07 - US-004: Dashboard — Sentiment tab full feature audit
+- Navigated to http://localhost:5173/dashboard and scrolled to Market Sentiment section
+- Verified SentimentPanel renders with ticker chips (AAPL, TSLA, MSFT, NVDA, AMZN)
+- Verified appropriate empty state: "No sentiment data available / Reddit pipeline may be starting up"
+- Confirmed 0 console errors; 2 pre-existing warnings (WS timing + ECharts dispose) unrelated to sentiment
+- curl /market/sentiment/AAPL → 404 (wrong path); actual endpoint: /market/sentiment/AAPL/timeseries → {"points":[],"count":0}
+- Documented Flink sentiment-writer CREATED/STABLE state issue in .audit/02-improvements.md
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json
+- Screenshots: audit-p04-sentiment.png, audit-p04-sentiment-panel.png
+- **Learnings for future iterations:**
+  - Sentiment API correct path: /market/sentiment/{ticker}/timeseries (not /market/sentiment/{ticker})
+  - 0 rows expected — Flink sentiment-writer not running, reddit-producer is running but not consumed
+  - Empty state UI works correctly — no action needed for the UI itself
+---
