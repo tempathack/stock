@@ -110,6 +110,50 @@ Status: IN PROGRESS
 
 ---
 
+### US-006: Dashboard — Streaming Features Panel Audit (2026-04-07)
+
+**Status:** PASS — panel renders correctly; empty state shown as expected (Flink pipeline lacks live intraday data)
+
+**API findings:**
+- `curl http://localhost:8010/market/streaming-features/AAPL` → HTTP 200
+- Response: `{"ticker":"AAPL","ema_20":null,"rsi_14":null,"macd_signal":null,"available":false,"source":"flink-indicator-stream","sampled_at":"2026-04-07T10:44:23Z","fred_macro":null}`
+- `available: false` — Flink indicator_stream job running but no live intraday data flowing in
+
+**Verified working:**
+- "⚡ STREAMING FEATURES" section header visible after selecting AAPL stock ✓
+- Panel renders empty state: "No live Flink data yet — intraday data ingestion must be active and the indicator_stream Flink job must be running." ✓
+- `data-testid="streaming-features-empty"` present in DOM — correct fallback state ✓
+- Panel uses correct API endpoint: `/market/streaming-features/{ticker}` ✓
+- Panel would show EMA-20, RSI-14, MACD Signal columns with "LIVE — Flink" chip when data available ✓
+- 0 console errors (3 pre-existing warnings: WS timing × 2, ECharts dispose × 1)
+
+## Streaming Pipeline Status
+
+**Infrastructure pods — all Running:**
+- `ingestion` namespace: `reddit-producer-75dcc9fdb6-7jj6m` — Running (3d10h age) ✓
+- `processing` namespace: `kafka-consumer-78875d9b96-t8m62`, `kafka-consumer-78875d9b96-tbr7z` — Running (both 3d10h) ✓
+- `flink` namespace:
+  - `indicator-stream-*` — Running (17 restarts — job recovering) ✓
+  - `indicator-stream-taskmanager-10-1` — Running ✓
+  - `feast-writer-*` — Running (13 restarts) ✓
+  - `ohlcv-normalizer-*` — Running (17 restarts) ✓
+  - `sentiment-stream-*` — Running ✓
+  - `sentiment-writer-*` — Running ✓
+  - `flink-kubernetes-operator-*` — Running ✓
+
+**Root cause of empty Streaming Features:**
+- Flink `indicator_stream` job processes intraday OHLCV ticks from Kafka
+- Intraday ingestion CronJobs show `Completed` status (no live streaming), only ran batch jobs
+- No real-time tick data in Kafka topic → Flink job has nothing to compute → Feast Redis store stays empty
+- This is expected outside market hours or when intraday tick pipeline is not streaming live
+
+**Screenshots:**
+- audit-p06-streaming-features-initial.png — dashboard before stock selection
+- audit-p06-streaming-features.png — after AAPL selected, STREAMING FEATURES section visible
+- audit-p06-streaming-features-panel.png — zoomed view of Streaming Features empty state
+
+---
+
 ### US-004: Dashboard — Sentiment Tab Full Feature Audit (2026-04-07)
 
 **Status:** PASS — empty state renders correctly, appropriate messaging shown

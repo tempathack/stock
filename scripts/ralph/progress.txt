@@ -688,3 +688,22 @@ Previous run codebase patterns (still valid):
 - macd_histogram and bb_middle are consistently null across all 250 series data points — DB/pipeline never populates these two fields
 - Stock detail panel structure: header card (AMD) → stock search list → Price Charts (candle + historical) → Streaming Features → Technical Indicators → Reddit Sentiment
 ---
+
+## 2026-04-07 - US-006: Dashboard — Streaming Features Panel Audit
+- Navigated to dashboard, selected AAPL stock to expand full analysis panel
+- Found "⚡ STREAMING FEATURES" section between Price Charts and Technical Indicators sections
+- Panel renders correctly: shows empty state "No live Flink data yet — intraday data ingestion must be active and the indicator_stream Flink job must be running."
+- API endpoint `/market/streaming-features/AAPL` returns HTTP 200, `available: false`, ema_20/rsi_14/macd_signal all null
+- Flink pods ALL Running in flink namespace: indicator-stream, feast-writer, ohlcv-normalizer, sentiment-stream, sentiment-writer
+- reddit-producer Running in ingestion namespace; kafka-consumer Running in processing namespace (2 pods)
+- Root cause: intraday ingestion CronJobs are Completed (batch) not streaming live ticks → no data for Flink to compute
+- 0 console errors; 3 pre-existing warnings (WS timing × 2, ECharts dispose × 1)
+- Documented Streaming Pipeline Status in .audit/02-improvements.md
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Screenshots: audit-p06-streaming-features-initial.png, audit-p06-streaming-features.png, audit-p06-streaming-features-panel.png
+- **Learnings for future iterations:**
+  - Streaming Features panel is at `/market/streaming-features/{ticker}` (NOT `/market/features/{ticker}`)
+  - Panel only shows live data when Flink indicator_stream job is actively processing intraday ticks from Kafka
+  - Intraday CronJobs complete once and stop — they are NOT continuous streaming; real-time tick data requires always-on ingest
+  - The `available: false` response is proper graceful degradation — frontend renders empty state correctly
+---

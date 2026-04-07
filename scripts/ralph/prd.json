@@ -105,7 +105,7 @@
         "Document streaming pipeline health in .audit/02-improvements.md under '## Streaming Pipeline Status'"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
