@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import asyncio
 import datetime
+import time
 from typing import Any
 
 from sqlalchemy import func, select, text
@@ -141,3 +143,93 @@ async def run_deep_checks() -> dict[str, Any]:
         overall = "ok"
 
     return {"status": overall, "components": components}
+
+
+# ── /health/detailed helpers ─────────────────────────────────────────────────
+
+async def check_db_detailed() -> dict[str, Any]:
+    """Check DB connectivity with latency measurement, max 3s timeout."""
+    if get_engine() is None:
+        return {"status": "error", "message": "Engine not initialised", "latency_ms": None}
+    try:
+        t0 = time.monotonic()
+        async with asyncio.timeout(3.0):
+            async with get_async_session() as session:
+                await session.execute(text("SELECT 1"))
+        latency_ms = round((time.monotonic() - t0) * 1000, 1)
+        return {"status": "ok", "latency_ms": latency_ms}
+    except Exception as exc:
+        return {"status": "error", "message": str(exc), "latency_ms": None}
+
+
+async def check_redis_detailed() -> dict[str, Any]:
+    """Check Redis connectivity with latency measurement, max 3s timeout."""
+    from app.cache import get_redis  # lazy to avoid circular import
+    client = get_redis()
+    if client is None:
+        return {"status": "disabled", "latency_ms": None}
+    try:
+        t0 = time.monotonic()
+        async with asyncio.timeout(3.0):
+            await client.ping()
+        latency_ms = round((time.monotonic() - t0) * 1000, 1)
+        return {"status": "ok", "latency_ms": latency_ms}
+    except Exception as exc:
+        return {"status": "error", "message": str(exc), "latency_ms": None}
+
+
+async def check_kafka_detailed() -> dict[str, Any]:
+    """Check Kafka with topic count, max 3s timeout."""
+    try:
+        async with asyncio.timeout(3.0):
+            from confluent_kafka.admin import AdminClient  # noqa: PLC0415
+            admin = AdminClient({"bootstrap.servers": settings.KAFKA_BOOTSTRAP_SERVERS})
+            metadata = admin.list_topics(timeout=2)
+        topic_count = len([t for t in metadata.topics if not t.startswith("__")])
+        return {"status": "ok", "topic_count": topic_count}
+    except Exception as exc:
+        return {"status": "error", "message": str(exc), "topic_count": None}
+
+
+async def check_kserve_detailed() -> dict[str, Any]:
+    """Check KServe InferenceService readiness, max 3s timeout."""
+    if not settings.KSERVE_ENABLED or not settings.KSERVE_INFERENCE_URL:
+        return {"status": "disabled", "model_ready": False}
+    try:
+        import httpx  # noqa: PLC0415
+        async with asyncio.timeout(3.0):
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    f"{settings.KSERVE_INFERENCE_URL.rstrip('/')}/v2/health/ready",
+                    timeout=2.5,
+                )
+        model_ready = resp.status_code == 200
+        return {"status": "ok" if model_ready else "degraded", "model_ready": model_ready}
+    except Exception as exc:
+        return {"status": "error", "message": str(exc), "model_ready": False}
+
+
+async def run_detailed_checks() -> dict[str, Any]:
+    """Run all /health/detailed checks concurrently."""
+    db, redis, kafka, kserve = await asyncio.gather(
+        check_db_detailed(),
+        check_redis_detailed(),
+        check_kafka_detailed(),
+        check_kserve_detailed(),
+    )
+
+    statuses = [db["status"], redis["status"], kafka["status"], kserve["status"]]
+    if any(s == "error" for s in statuses):
+        overall = "degraded"
+    elif any(s == "warning" for s in statuses):
+        overall = "degraded"
+    else:
+        overall = "healthy"
+
+    return {
+        "overall": overall,
+        "db": db,
+        "redis": redis,
+        "kafka": kafka,
+        "kserve": kserve,
+    }

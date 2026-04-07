@@ -1,0 +1,33 @@
+[      93ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e93d3680:21608
+[     165ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     165ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[     166ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     166ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[     166ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     166ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[     244ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     244ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=1:0
+[     244ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     244ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=7:0
+[     244ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     244ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=14:0
+[     244ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     245ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=30:0
+[     245ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     245ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[     245ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[     245ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/horizons:0
+[    1169ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[    1169ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[    1245ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[    1245ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=1:0
+[    1247ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[    1247ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=7:0
+[    1247ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[    1247ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=14:0
+[    1247ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[    1248ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/bulk?horizon=30:0
+[    1248ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[    1248ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/market/overview:0
+[    1248ms] [ERROR] [API] undefined Network Error @ http://localhost:3000/src/api/client.ts:9
+[    1248ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/predict/horizons:0

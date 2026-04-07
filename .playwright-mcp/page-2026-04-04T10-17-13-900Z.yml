@@ -1,0 +1,377 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Prices" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32455
+        - text: ">"
+        - link "Consumer Price Indexes (CPI and PCE)" [ref=e66] [cursor=pointer]:
+          - /url: /categories/9
+        - text: ">"
+        - link "Special Indexes" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32424
+    - generic [ref=e68]:
+      - generic "CPILFESL"
+      - generic [ref=e69]:
+        - 'heading "Add to favorites Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average (CPILFESL)" [level=1] [ref=e73]':
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: "Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average (CPILFESL)"
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "Feb 2026: 333.512"
+              - generic "Mar 11, 2026 8:05 AM CDT" [ref=e85]: "Updated: Mar 11, 2026 8:05 AM CDT"
+              - 'link "Next Release Date: Apr 10, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=10&y=2026
+                - generic "Apr 10, 2026" [ref=e88]: "Next Release Date: Apr 10, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Index 1982-1984=100,
+              - generic [ref=e93]: Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Monthly
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - button "Share Graph " [ref=e135] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e136]: 
+              - text:   
+            - generic [ref=e137]:
+              - button "Account Tools " [ref=e138] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e139]: 
+              - text:     
+          - generic [ref=e141]:
+            - link "Share on X" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Share on Reddit" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Post to Linkedin" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+        - generic [ref=e150]:
+          - generic [ref=e152]:
+            - heading "Notes" [level=2] [ref=e153]
+            - generic [ref=e154]:
+              - paragraph [ref=e155]:
+                - strong [ref=e156]: "Source:"
+                - link "U.S. Bureau of Labor Statistics" [ref=e157] [cursor=pointer]:
+                  - /url: https://www.bls.gov/
+                  - text: U.S. Bureau of Labor Statistics
+                  - generic [ref=e158]: 
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "Release:"
+                - link "Consumer Price Index" [ref=e161] [cursor=pointer]:
+                  - /url: http://www.bls.gov/cpi/
+                  - text: Consumer Price Index
+                  - generic [ref=e162]: 
+              - paragraph [ref=e164]:
+                - strong [ref=e165]: "Units:"
+                - generic [ref=e166]: Index 1982-1984=100, Seasonally Adjusted
+              - paragraph [ref=e167]:
+                - strong [ref=e168]: "Frequency:"
+                - generic [ref=e169]: Monthly
+              - heading "Notes:" [level=4] [ref=e171]
+              - paragraph [ref=e172]:
+                - text: "The \"Consumer Price Index for All Urban Consumers: All Items Less Food & Energy\" is an aggregate of prices paid by urban consumers for a typical basket of goods, excluding food and energy. This measurement, known as \"Core CPI,\" is widely used by economists because food and energy have very volatile prices. The Bureau of Labor Statistics defines and measures the official CPI, and more information can be found in the"
+                - link "FAQ" [ref=e173] [cursor=pointer]:
+                  - /url: https://www.bls.gov/cpi/questions-and-answers.htm
+                - text: or in this
+                - link "article" [ref=e174] [cursor=pointer]:
+                  - /url: https://www.bls.gov/opub/hom/pdf/cpihom.pdf
+                - text: .
+              - generic [ref=e175]:
+                - heading "Suggested Citation:" [level=4] [ref=e176]
+                - paragraph [ref=e178]: "U.S. Bureau of Labor Statistics, Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average [CPILFESL], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/CPILFESL, April 4, 2026."
+          - generic [ref=e180]:
+            - heading "Release Tables" [level=2] [ref=e181]
+            - generic [ref=e182]:
+              - generic [ref=e183]: Consumer Price Index
+              - list [ref=e184]:
+                - listitem [ref=e185]:
+                  - 'link "Link to release table: Consumer Price Index, CPI for U.S. City Average: Monthly, Seasonally Adjusted" [ref=e186] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=10&eid=36714#snid=36718
+                    - generic [ref=e187]: 
+                    - text: "CPI for U.S. City Average: Monthly, Seasonally Adjusted"
+          - generic [ref=e189]:
+            - heading "Related Data and Content" [level=2] [ref=e190]
+            - generic [ref=e191]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e192]
+              - generic [ref=e193]:
+                - generic [ref=e194]:
+                  - link "Sticky Price Consumer Price Index less Food and Energy" [ref=e195] [cursor=pointer]:
+                    - /url: /series/CORESTICKM159SFRBATL
+                    - img [ref=e196]
+                  - generic [ref=e197]:
+                    - text: ...
+                    - link "Sticky Price Consumer Price Index less Food and Energy" [ref=e198] [cursor=pointer]:
+                      - /url: /series/CORESTICKM159SFRBATL
+                      - strong [ref=e199]: Sticky Price Consumer Price Index less Food and Energy
+                - generic [ref=e200]:
+                  - link "Inflation, consumer prices for the United States" [ref=e201] [cursor=pointer]:
+                    - /url: /series/FPCPITOTLZGUSA
+                    - img [ref=e202]
+                  - generic [ref=e203]:
+                    - text: ...
+                    - link "Inflation, consumer prices for the United States" [ref=e204] [cursor=pointer]:
+                      - /url: /series/FPCPITOTLZGUSA
+                      - strong [ref=e205]: Inflation, consumer prices for the United States
+                - generic [ref=e206]:
+                  - 'link "Consumer Price Index for All Urban Consumers: All Items in U.S. City Average" [ref=e207] [cursor=pointer]':
+                    - /url: /series/CPIAUCSL
+                    - img [ref=e208]
+                  - generic [ref=e209]:
+                    - text: ...
+                    - 'link "Consumer Price Index for All Urban Consumers: All Items in U.S. City Average" [ref=e210] [cursor=pointer]':
+                      - /url: /series/CPIAUCSL
+                      - strong [ref=e211]: "Consumer Price Index for All Urban Consumers: All Items in U.S. City Average"
+                - generic [ref=e212]:
+                  - 'link "Consumer Price Index: All Items: Total for United States" [ref=e213] [cursor=pointer]':
+                    - /url: /series/CPALTT01USM657N
+                    - img [ref=e214]
+                  - generic [ref=e215]:
+                    - text: ...
+                    - 'link "Consumer Price Index: All Items: Total for United States" [ref=e216] [cursor=pointer]':
+                      - /url: /series/CPALTT01USM657N
+                      - strong [ref=e217]: "Consumer Price Index: All Items: Total for United States"
+                - text: ... ... ... ...
+                - generic [ref=e218]:
+                  - button "click to see more" [ref=e219] [cursor=pointer]: See More...
+                  - separator [ref=e220]
+              - heading "Content Suggestions" [level=3] [ref=e221]
+              - generic [ref=e222]:
+                - generic [ref=e223]:
+                  - link "How food and fuel prices fluctuate" [ref=e224] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2019/09/how-food-and-fuel-prices-fluctuate/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e225]
+                  - generic [ref=e226]: FRED Blog
+                  - generic [ref=e227]:
+                    - text: ...
+                    - link "How food and fuel prices fluctuate" [ref=e228] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2019/09/how-food-and-fuel-prices-fluctuate/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e229]: How food and fuel prices fluctuate
+                - generic [ref=e230]:
+                  - link "Inflation and the cost of tighter monetary policy" [ref=e231] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2023/07/inflation-and-the-cost-of-tighter-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e232]
+                  - generic [ref=e233]: FRED Blog
+                  - generic [ref=e234]:
+                    - text: ...
+                    - link "Inflation and the cost of tighter monetary policy" [ref=e235] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2023/07/inflation-and-the-cost-of-tighter-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e236]: Inflation and the cost of tighter monetary policy
+                - generic [ref=e237]:
+                  - link "The sticky price consumer price index" [ref=e238] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2023/03/the-sticky-price-consumer-price-index/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e239]
+                  - generic [ref=e240]: FRED Blog
+                  - generic [ref=e241]:
+                    - text: ...
+                    - link "The sticky price consumer price index" [ref=e242] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2023/03/the-sticky-price-consumer-price-index/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e243]: The sticky price consumer price index
+                - generic [ref=e244]:
+                  - 'link "Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average" [ref=e245] [cursor=pointer]':
+                    - /url: https://alfred.stlouisfed.org/series?seid=CPILFESL&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e246]
+                  - generic [ref=e247]: ALFRED Vintage Series
+                  - generic [ref=e248]:
+                    - text: ...
+                    - 'link "Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average" [ref=e249] [cursor=pointer]':
+                      - /url: https://alfred.stlouisfed.org/series?seid=CPILFESL&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e250]: "Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average"
+                - text: ... ... ...
+                - generic [ref=e251]:
+                  - button "click to see more" [ref=e252] [cursor=pointer]: See More...
+                  - separator [ref=e253]
+              - heading "Other Formats" [level=3] [ref=e254]
+              - generic [ref=e255]:
+                - link "Monthly, Not Seasonally Adjusted" [ref=e256] [cursor=pointer]:
+                  - /url: /series/CPILFENS
+                - link "Semiannual, Not Seasonally Adjusted" [ref=e257] [cursor=pointer]:
+                  - /url: /series/CUUS0000SA0L1E
+              - heading "Related Categories" [level=3] [ref=e259]
+              - generic [ref=e260]:
+                - link "Special Indexes" [ref=e261] [cursor=pointer]:
+                  - /url: /categories/32424
+                - link "Consumer Price Indexes (CPI and PCE)" [ref=e262] [cursor=pointer]:
+                  - /url: /categories/9
+                - link "Prices" [ref=e263] [cursor=pointer]:
+                  - /url: /categories/32455
+              - heading "Releases" [level=3] [ref=e265]
+              - link "More Series from Consumer Price Index" [ref=e267] [cursor=pointer]:
+                - /url: /release?rid=10
+              - heading "Tags" [level=3] [ref=e269]
+              - generic:
+                - link "Core Inflation" [ref=e270] [cursor=pointer]:
+                  - /url: /tags/series?t=core
+                - link "Headline Figure" [ref=e271] [cursor=pointer]:
+                  - /url: /tags/series?t=headline%20figure
+                - link "All Items" [ref=e272] [cursor=pointer]:
+                  - /url: /tags/series?t=all%20items
+                - link "Urban" [ref=e273] [cursor=pointer]:
+                  - /url: /tags/series?t=urban
+                - link "Consumer" [ref=e274] [cursor=pointer]:
+                  - /url: /tags/series?t=consumer
+                - link "Consumer Price Index" [ref=e275] [cursor=pointer]:
+                  - /url: /tags/series?t=cpi
+                - link "Inflation" [ref=e276] [cursor=pointer]:
+                  - /url: /tags/series?t=inflation
+                - link "Price Index" [ref=e277] [cursor=pointer]:
+                  - /url: /tags/series?t=price%20index
+                - link "Indexes" [ref=e278] [cursor=pointer]:
+                  - /url: /tags/series?t=indexes
+                - link "Seasonally Adjusted" [ref=e279] [cursor=pointer]:
+                  - /url: /tags/series?t=sa
+                - link "Price" [ref=e280] [cursor=pointer]:
+                  - /url: /tags/series?t=price
+                - link "Bureau of Labor Statistics" [ref=e281] [cursor=pointer]:
+                  - /url: /tags/series?t=bls
+                - link "Monthly" [ref=e282] [cursor=pointer]:
+                  - /url: /tags/series?t=monthly
+                - link "Nation" [ref=e283] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e284] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e285] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+        - text:    
+  - text:  
+  - generic [ref=e288]:
+    - generic [ref=e289]:
+      - generic [ref=e290]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e291]
+        - generic [ref=e294]:
+          - textbox "email" [ref=e295]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e296] [cursor=pointer]
+      - generic [ref=e297]:
+        - heading "Follow us" [level=3] [ref=e298]
+        - generic [ref=e299]:
+          - link "Saint Louis Fed linkedin page" [ref=e301] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e302]: 
+            - generic [ref=e303]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e305] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e306]: 
+            - generic [ref=e307]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e309] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e310]: 
+            - generic [ref=e311]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e313] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e314]: 
+            - generic [ref=e315]: Saint Louis Fed YouTube page
+    - generic [ref=e317]:
+      - heading "Need Help?" [level=3] [ref=e318]
+      - generic [ref=e319]:
+        - link "Questions or Comments" [ref=e321] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e323] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e324]
+      - generic [ref=e325]:
+        - link "Legal" [ref=e327] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e329] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

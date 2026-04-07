@@ -1,0 +1,18 @@
+[     162ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=e8f14ee4:21608
+[     355ms] [WARNING] MUI: The LoadingButton component functionality is now part of the Button component from Material UI.
+
+You should use `import Button from '@mui/material/Button'`
+or `import { Button } from '@mui/material'` @ http://localhost:5173/node_modules/.vite/deps/@mui_lab_LoadingButton.js?v=d9526e87:33
+[   23706ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/backtest/AAPL?start=2030-01-01&end=2030-12-31:0
+[   23706ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   24717ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/backtest/AAPL?start=2030-01-01&end=2030-12-31:0
+[   24717ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[ 1405397ms] [ERROR] [vite] ReferenceError: AccountTreeIcon is not defined
+    at http://localhost:5173/src/components/layout/Sidebar.tsx?t=1775173028778:28:43 @ http://localhost:5173/@vite/client:881
+[ 1405398ms] [ERROR] [vite] Failed to reload /src/components/layout/Sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:5173/@vite/client:881
+[ 1410471ms] [WARNING] You are loading @emotion/react when it is already loaded. Running multiple instances may cause problems. This can happen if multiple versions are used, or if multiple builds of the same version are used. @ http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=0ceafac2:3049
+[ 1410659ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=0ceafac2:21608
+[ 1410804ms] [WARNING] MUI: The LoadingButton component functionality is now part of the Button component from Material UI.
+
+You should use `import Button from '@mui/material/Button'`
+or `import { Button } from '@mui/material'` @ http://localhost:5173/node_modules/.vite/deps/@mui_lab_LoadingButton.js?v=0ceafac2:33

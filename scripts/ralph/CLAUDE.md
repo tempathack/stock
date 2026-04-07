@@ -4,6 +4,24 @@ You are an autonomous coding agent. You work on the **stock-prediction-platform*
 
 ---
 
+## NON-NEGOTIABLE: Production System Standard
+
+**The goal is a fully working production system.** Every story must leave the system in a better state than it found it. This means:
+
+1. **Playwright MCP verification is MANDATORY for every story that touches or depends on the frontend.** Do not mark a story `passes: true` unless you have navigated to the relevant page via `mcp__playwright__browser_navigate`, taken a screenshot via `mcp__playwright__browser_take_screenshot`, and confirmed with your own eyes that the feature works.
+
+2. **Screenshots are proof.** Name them descriptively (e.g. `dashboard-macro-verify.png`, `forecasts-model-col.png`). A story without a screenshot is not done.
+
+3. **Check browser console errors.** After every Playwright navigation, call `mcp__playwright__browser_console_messages` and fix any errors or warnings that relate to the story. A tab that loads but throws console errors is not production-ready.
+
+4. **Real data, not loading spinners.** If a tab is stuck in a skeleton/loading state, the story is NOT done. Diagnose the API, fix the root cause, and verify real data renders.
+
+5. **No regressions.** Before committing, verify tabs you did not intentionally change still work. If you break something, fix it in the same story commit.
+
+---
+
+---
+
 ## Project Stack
 
 | Layer | Technology |

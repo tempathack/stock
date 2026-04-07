@@ -1,0 +1,335 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+        - text: ">"
+        - link "Corporate Bonds" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32348
+    - generic [ref=e68]:
+      - generic "DAAA"
+      - generic [ref=e69]:
+        - heading "Add to favorites Moody's Seasoned Aaa Corporate Bond Yield (DAAA)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: Moody's Seasoned Aaa Corporate Bond Yield (DAAA)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-01: 5.48"
+              - generic "Apr 2, 2026 10:17 AM CDT" [ref=e85]: "Updated: Apr 2, 2026 10:17 AM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=427&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e131]:
+          - paragraph [ref=e134]:
+            - strong [ref=e135]:
+              - text: Data in this graph are copyrighted. Please review the copyright information in the
+              - link "series notes" [ref=e136] [cursor=pointer]:
+                - /url: "#notes"
+              - text: before sharing.
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - button "Share Graph " [ref=e140] [cursor=pointer]:
+                  - text: Share Graph
+                  - generic [ref=e141]: 
+                - text:   
+              - generic [ref=e142]:
+                - button "Account Tools " [ref=e143] [cursor=pointer]:
+                  - text: Account Tools
+                  - generic [ref=e144]: 
+                - text:     
+            - generic [ref=e146]:
+              - link "Share on X" [ref=e147] [cursor=pointer]:
+                - /url: /graph/share.php
+              - link "Post on Facebook" [ref=e148] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e149]: 
+              - link "Share on Reddit" [ref=e150] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e151]: 
+              - link "Post to Linkedin" [ref=e152] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e153]: 
+        - generic [ref=e155]:
+          - generic [ref=e157]:
+            - heading "Notes" [level=2] [ref=e158]
+            - generic [ref=e159]:
+              - paragraph [ref=e160]:
+                - strong [ref=e161]: "Source:"
+                - link "Moody’s" [ref=e162] [cursor=pointer]:
+                  - /url: https://www.moodys.com/
+                  - text: Moody’s
+                  - generic [ref=e163]: 
+              - paragraph [ref=e164]:
+                - strong [ref=e165]: "Release:"
+                - text: Moody's Daily Corporate Bond Yield Averages
+              - paragraph [ref=e167]:
+                - strong [ref=e168]: "Units:"
+                - generic [ref=e169]: Percent, Not Seasonally Adjusted
+              - paragraph [ref=e170]:
+                - strong [ref=e171]: "Frequency:"
+                - generic [ref=e172]: Daily
+              - heading "Notes:" [level=4] [ref=e174]
+              - paragraph [ref=e175]:
+                - text: These instruments are based on bonds with maturities 20 years and above.
+                - text: © 2017, Moody’s Corporation, Moody’s Investors Service, Inc., Moody’s Analytics, Inc. and/or their licensors and affiliates (collectively, “Moody’s”). All rights reserved. Moody’s ratings and other information (“Moody’s Information”) are proprietary to Moody’s and/or its licensors and are protected by copyright and other intellectual property laws. Moody’s Information is licensed to Client by Moody’s. MOODY’S INFORMATION MAY NOT BE COPIED OR OTHERWISE REPRODUCED, REPACKAGED, FURTHER TRANSMITTED, TRANSFERRED, DISSEMINATED, REDISTRIBUTED OR RESOLD, OR STORED FOR SUBSEQUENT USE FOR ANY SUCH PURPOSE, IN WHOLE OR IN PART, IN ANY FORM OR MANNER OR BY ANY MEANS WHATSOEVER, BY ANY PERSON WITHOUT MOODY’S PRIOR WRITTEN CONSENT.
+              - generic [ref=e176]:
+                - heading "Suggested Citation:" [level=4] [ref=e177]
+                - paragraph [ref=e179]: Moody’s, Moody's Seasoned Aaa Corporate Bond Yield [DAAA], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DAAA, April 4, 2026.
+          - generic [ref=e181]:
+            - heading "Related Data and Content" [level=2] [ref=e182]
+            - generic [ref=e183]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e184]
+              - generic [ref=e185]:
+                - generic [ref=e186]:
+                  - link "Moody's Seasoned Baa Corporate Bond Yield" [ref=e187] [cursor=pointer]:
+                    - /url: /series/DBAA
+                    - img [ref=e188]
+                  - generic [ref=e189]:
+                    - text: ...
+                    - link "Moody's Seasoned Baa Corporate Bond Yield" [ref=e190] [cursor=pointer]:
+                      - /url: /series/DBAA
+                      - strong [ref=e191]: Moody's Seasoned Baa Corporate Bond Yield
+                - generic [ref=e192]:
+                  - link "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity" [ref=e193] [cursor=pointer]:
+                    - /url: /series/AAA10Y
+                    - img [ref=e194]
+                  - generic [ref=e195]:
+                    - text: ...
+                    - link "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity" [ref=e196] [cursor=pointer]:
+                      - /url: /series/AAA10Y
+                      - strong [ref=e197]: Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity
+                - generic [ref=e198]:
+                  - link "ICE BofA AAA US Corporate Index Effective Yield" [ref=e199] [cursor=pointer]:
+                    - /url: /series/BAMLC0A1CAAAEY
+                    - img [ref=e200]
+                  - generic [ref=e201]:
+                    - text: ...
+                    - link "ICE BofA AAA US Corporate Index Effective Yield" [ref=e202] [cursor=pointer]:
+                      - /url: /series/BAMLC0A1CAAAEY
+                      - strong [ref=e203]: ICE BofA AAA US Corporate Index Effective Yield
+                - generic [ref=e204]:
+                  - link "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity" [ref=e205] [cursor=pointer]:
+                    - /url: /series/BAA10Y
+                    - img [ref=e206]
+                  - generic [ref=e207]:
+                    - text: ...
+                    - link "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity" [ref=e208] [cursor=pointer]:
+                      - /url: /series/BAA10Y
+                      - strong [ref=e209]: Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity
+                - text: ... ... ... ...
+                - generic [ref=e210]:
+                  - button "click to see more" [ref=e211] [cursor=pointer]: See More...
+                  - separator [ref=e212]
+              - heading "Content Suggestions" [level=3] [ref=e213]
+              - generic [ref=e214]:
+                - generic [ref=e215]:
+                  - link "Moody's Seasoned Aaa Corporate Bond Yield" [ref=e216] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=DAAA&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e217]
+                  - generic [ref=e218]: ALFRED Vintage Series
+                  - generic [ref=e219]:
+                    - text: ...
+                    - link "Moody's Seasoned Aaa Corporate Bond Yield" [ref=e220] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=DAAA&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e221]: Moody's Seasoned Aaa Corporate Bond Yield
+                - generic [ref=e222]:
+                  - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e223] [cursor=pointer]:
+                    - /url: /series/BAMLH0A0HYM2
+                    - img [ref=e224]
+                  - generic [ref=e225]:
+                    - text: ...
+                    - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e226] [cursor=pointer]:
+                      - /url: /series/BAMLH0A0HYM2
+                      - strong [ref=e227]: ICE BofA US High Yield Index Option-Adjusted Spread
+              - heading "Other Formats" [level=3] [ref=e228]
+              - generic [ref=e229]:
+                - link "Monthly, Not Seasonally Adjusted" [ref=e230] [cursor=pointer]:
+                  - /url: /series/AAA
+                - link "Weekly, Not Seasonally Adjusted" [ref=e231] [cursor=pointer]:
+                  - /url: /series/WAAA
+              - heading "Related Categories" [level=3] [ref=e233]
+              - generic [ref=e234]:
+                - link "Corporate Bonds" [ref=e235] [cursor=pointer]:
+                  - /url: /categories/32348
+                - link "Interest Rates" [ref=e236] [cursor=pointer]:
+                  - /url: /categories/22
+                - link "Money, Banking, & Finance" [ref=e237] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e239]
+              - link "More Series from Moody's Daily Corporate Bond Yield Averages" [ref=e241] [cursor=pointer]:
+                - /url: /release?rid=427
+              - heading "Tags" [level=3] [ref=e243]
+              - generic:
+                - link "Moody's Investors Service" [ref=e244] [cursor=pointer]:
+                  - /url: /tags/series?t=moody%27s
+                - link "AAA Bond Rating" [ref=e245] [cursor=pointer]:
+                  - /url: /tags/series?t=aaa
+                - link "Bonds" [ref=e246] [cursor=pointer]:
+                  - /url: /tags/series?t=bonds
+                - link "Yield" [ref=e247] [cursor=pointer]:
+                  - /url: /tags/series?t=yield
+                - link "Corporate" [ref=e248] [cursor=pointer]:
+                  - /url: /tags/series?t=corporate
+                - link "Interest Rate" [ref=e249] [cursor=pointer]:
+                  - /url: /tags/series?t=interest%20rate
+                - link "Interest" [ref=e250] [cursor=pointer]:
+                  - /url: /tags/series?t=interest
+                - link "Daily" [ref=e251] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "Rate" [ref=e252] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - 'link "Copyrighted: Citation Required" [ref=e253] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Nation" [ref=e254] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e255] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e256] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e259]:
+    - generic [ref=e260]:
+      - generic [ref=e261]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e262]
+        - generic [ref=e265]:
+          - textbox "email" [ref=e266]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e267] [cursor=pointer]
+      - generic [ref=e268]:
+        - heading "Follow us" [level=3] [ref=e269]
+        - generic [ref=e270]:
+          - link "Saint Louis Fed linkedin page" [ref=e272] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e273]: 
+            - generic [ref=e274]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e276] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e277]: 
+            - generic [ref=e278]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e280] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e281]: 
+            - generic [ref=e282]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e284] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e285]: 
+            - generic [ref=e286]: Saint Louis Fed YouTube page
+    - generic [ref=e288]:
+      - heading "Need Help?" [level=3] [ref=e289]
+      - generic [ref=e290]:
+        - link "Questions or Comments" [ref=e292] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e294] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e295]
+      - generic [ref=e296]:
+        - link "Legal" [ref=e298] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e300] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

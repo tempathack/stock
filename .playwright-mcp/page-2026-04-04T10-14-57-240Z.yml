@@ -1,0 +1,458 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Exchange Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/15
+        - text: ">"
+        - link "Daily Rates" [ref=e67] [cursor=pointer]:
+          - /url: /categories/94
+    - generic [ref=e68]:
+      - generic "DEXUSEU"
+      - generic [ref=e69]:
+        - heading "Add to favorites U.S. Dollars to Euro Spot Exchange Rate (DEXUSEU)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: U.S. Dollars to Euro Spot Exchange Rate (DEXUSEU)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-03-27: 1.1520"
+              - generic "Mar 30, 2026 3:16 PM CDT" [ref=e85]: "Updated: Mar 30, 2026 3:16 PM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=17&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: U.S. Dollars to One Euro,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]: 2021-03-27
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]: 2026-03-27
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic [ref=e127]:
+          - generic [ref=e134]:
+            - region "FRED Graph" [ref=e136]:
+              - generic [ref=e137]:
+                - paragraph [ref=e138]: Chart
+                - generic [ref=e139]: Line chart with 1306 data points.
+                - button "View as data table, Chart" [ref=e141] [cursor=pointer]
+                - generic [ref=e142]: The chart has 1 X axis displaying xAxis. Data ranges from 1999-01-04 1:00:00 to 2026-03-27 1:00:00.
+                - generic [ref=e143]: The chart has 2 Y axes displaying U.S. Dollars to One Euro and yAxisRight.
+              - generic [ref=e147]:
+                - generic:
+                  - region "Toggle series visibility, Chart":
+                    - list:
+                      - listitem:
+                        - button "Show U.S. Dollars to Euro Spot Exchange Rate" [pressed] [ref=e148] [cursor=pointer]
+                - img "Interactive FRED Graph" [ref=e149]:
+                  - region "U.S. Dollars to Euro Spot Exchange Rate series with 1306 points" [ref=e159]
+                  - generic [ref=e163]:
+                    - generic [ref=e164]: "0.95"
+                    - generic [ref=e165]: "1.00"
+                    - generic [ref=e166]: "1.05"
+                    - generic [ref=e167]: "1.10"
+                    - generic [ref=e168]: "1.15"
+                    - generic [ref=e169]: "1.20"
+                    - generic [ref=e170]: "1.25"
+                  - generic [ref=e171]:
+                    - generic [ref=e172]: 2021-07
+                    - generic [ref=e173]: 2022-01
+                    - generic [ref=e174]: 2022-07
+                    - generic [ref=e175]: 2023-01
+                    - generic [ref=e176]: 2023-07
+                    - generic [ref=e177]: 2024-01
+                    - generic [ref=e178]: 2024-07
+                    - generic [ref=e179]: 2025-01
+                    - generic [ref=e180]: 2025-07
+                    - generic [ref=e181]: 2026-01
+                - generic [ref=e182] [cursor=pointer]: U.S. Dollars to Euro Spot Exchange Rate
+                - generic [ref=e183]: U.S. Dollars to One Euro
+              - generic [ref=e185]: End of interactive chart.
+              - generic [ref=e186]:
+                - generic [ref=e187]:
+                  - generic [ref=e188]:
+                    - text: "Source: Board of Governors of the Federal Reserve System (US)"
+                    - generic [ref=e189]: via FRED®
+                  - link [ref=e192] [cursor=pointer]:
+                    - /url: https://fredhelp.stlouisfed.org/fred/data/understanding-the-data/recession-bars/
+                    - emphasis [ref=e193]: Shaded areas indicate U.S. recessions.
+                - generic [ref=e194]: fred.stlouisfed.org
+            - option "U.S. Dollars to One Euro" [selected]
+            - option "Change, U.S. Dollars to One Euro"
+            - option "Change from Year Ago, U.S. Dollars to One Euro"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Index (Scale value to 100 for chosen date)"
+            - option "Daily" [selected]
+            - option "Weekly, Ending Friday"
+            - option "Weekly, Ending Thursday"
+            - option "Weekly, Ending Wednesday"
+            - option "Weekly, Ending Tuesday"
+            - option "Weekly, Ending Monday"
+            - option "Weekly, Ending Sunday"
+            - option "Weekly, Ending Saturday"
+            - option "Biweekly, Ending Wednesday"
+            - option "Biweekly, Ending Monday"
+            - option "Monthly"
+            - option "Quarterly"
+            - option "Semiannual"
+            - option "Annual"
+            - combobox "customize your graph data by combining other series with your existing series." [ref=e196]
+            - option "Select" [selected]
+            - option "Change"
+            - option "Change from Year Ago"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Natural Log"
+            - option "Index (Scale value to 100 for chosen date)"
+          - generic "Full screen" [ref=e197] [cursor=pointer]:
+            - text: Fullscreen
+            - generic [ref=e198]: 
+        - generic [ref=e200]:
+          - generic [ref=e201]:
+            - generic [ref=e202]:
+              - button "Share Graph " [ref=e203] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e204]: 
+              - text:   
+            - generic [ref=e205]:
+              - button "Account Tools " [ref=e206] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e207]: 
+              - text:     
+          - generic [ref=e209]:
+            - link "Share on X" [ref=e210] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e211] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e212]: 
+            - link "Share on Reddit" [ref=e213] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e214]: 
+            - link "Post to Linkedin" [ref=e215] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e216]: 
+        - generic [ref=e218]:
+          - generic [ref=e220]:
+            - heading "Notes" [level=2] [ref=e221]
+            - generic [ref=e222]:
+              - paragraph [ref=e223]:
+                - strong [ref=e224]: "Source:"
+                - link "Board of Governors of the Federal Reserve System (US)" [ref=e225] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov
+                  - text: Board of Governors of the Federal Reserve System (US)
+                  - generic [ref=e226]: 
+              - paragraph [ref=e227]:
+                - strong [ref=e228]: "Release:"
+                - link "H.10 Foreign Exchange Rates" [ref=e229] [cursor=pointer]:
+                  - /url: http://www.federalreserve.gov/releases/h10/
+                  - text: H.10 Foreign Exchange Rates
+                  - generic [ref=e230]: 
+              - paragraph [ref=e232]:
+                - strong [ref=e233]: "Units:"
+                - generic [ref=e234]: U.S. Dollars to One Euro, Not Seasonally Adjusted
+              - paragraph [ref=e235]:
+                - strong [ref=e236]: "Frequency:"
+                - generic [ref=e237]: Daily
+              - heading "Notes:" [level=4] [ref=e239]
+              - paragraph
+              - paragraph [ref=e240]:
+                - text: Noon buying rates in New York City for cable transfers payable in foreign currencies.
+                - text: For questions on the data, please contact the
+                - link "data source" [ref=e241] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/apps/ContactUs/feedback.aspx?refurl=/releases/h10/%
+                - text: . For questions on FRED functionality, please contact us
+                - link "here" [ref=e242] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/contactus/
+                - text: .
+              - paragraph
+              - generic [ref=e243]:
+                - heading "Suggested Citation:" [level=4] [ref=e244]
+                - paragraph [ref=e246]: Board of Governors of the Federal Reserve System (US), U.S. Dollars to Euro Spot Exchange Rate [DEXUSEU], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DEXUSEU, April 4, 2026.
+          - generic [ref=e248]:
+            - heading "Release Tables" [level=2] [ref=e249]
+            - generic [ref=e250]:
+              - generic [ref=e251]: H.10 Foreign Exchange Rates
+              - list [ref=e252]:
+                - listitem [ref=e253]:
+                  - 'link "Link to release table: H.10 Foreign Exchange Rates, Foreign Exchange Rates" [ref=e254] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=17&eid=23340#snid=23347
+                    - generic [ref=e255]: 
+                    - text: Foreign Exchange Rates
+          - generic [ref=e257]:
+            - heading "Related Data and Content" [level=2] [ref=e258]
+            - generic [ref=e259]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e260]
+              - generic [ref=e261]:
+                - generic [ref=e262]:
+                  - link "Japanese Yen to U.S. Dollar Spot Exchange Rate" [ref=e263] [cursor=pointer]:
+                    - /url: /series/DEXJPUS
+                    - img [ref=e264]
+                  - generic [ref=e265]:
+                    - text: ...
+                    - link "Japanese Yen to U.S. Dollar Spot Exchange Rate" [ref=e266] [cursor=pointer]:
+                      - /url: /series/DEXJPUS
+                      - strong [ref=e267]: Japanese Yen to U.S. Dollar Spot Exchange Rate
+                - generic [ref=e268]:
+                  - link "U.S. Dollars to U.K. Pound Sterling Spot Exchange Rate" [ref=e269] [cursor=pointer]:
+                    - /url: /series/DEXUSUK
+                    - img [ref=e270]
+                  - generic [ref=e271]:
+                    - text: ...
+                    - link "U.S. Dollars to U.K. Pound Sterling Spot Exchange Rate" [ref=e272] [cursor=pointer]:
+                      - /url: /series/DEXUSUK
+                      - strong [ref=e273]: U.S. Dollars to U.K. Pound Sterling Spot Exchange Rate
+                - generic [ref=e274]:
+                  - link "Chinese Yuan Renminbi to U.S. Dollar Spot Exchange Rate" [ref=e275] [cursor=pointer]:
+                    - /url: /series/DEXCHUS
+                    - img [ref=e276]
+                  - generic [ref=e277]:
+                    - text: ...
+                    - link "Chinese Yuan Renminbi to U.S. Dollar Spot Exchange Rate" [ref=e278] [cursor=pointer]:
+                      - /url: /series/DEXCHUS
+                      - strong [ref=e279]: Chinese Yuan Renminbi to U.S. Dollar Spot Exchange Rate
+                - generic [ref=e280]:
+                  - link "Canadian Dollars to U.S. Dollar Spot Exchange Rate" [ref=e281] [cursor=pointer]:
+                    - /url: /series/DEXCAUS
+                    - img [ref=e282]
+                  - generic [ref=e283]:
+                    - text: ...
+                    - link "Canadian Dollars to U.S. Dollar Spot Exchange Rate" [ref=e284] [cursor=pointer]:
+                      - /url: /series/DEXCAUS
+                      - strong [ref=e285]: Canadian Dollars to U.S. Dollar Spot Exchange Rate
+                - text: ... ... ... ...
+                - generic [ref=e286]:
+                  - button "click to see more" [ref=e287] [cursor=pointer]: See More...
+                  - separator [ref=e288]
+              - heading "Content Suggestions" [level=3] [ref=e289]
+              - generic [ref=e290]:
+                - generic [ref=e291]:
+                  - link "The link between interest rates and exchange rates" [ref=e292] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2026/02/the-link-between-interest-rates-and-exchange-rates/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e293]
+                  - generic [ref=e294]: FRED Blog
+                  - generic [ref=e295]:
+                    - text: ...
+                    - link "The link between interest rates and exchange rates" [ref=e296] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2026/02/the-link-between-interest-rates-and-exchange-rates/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e297]: The link between interest rates and exchange rates
+                - generic [ref=e298]:
+                  - link "Strong and weak currencies" [ref=e299] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2023/09/strong-and-weak-currencies/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e300]
+                  - generic [ref=e301]: FRED Blog
+                  - generic [ref=e302]:
+                    - text: ...
+                    - link "Strong and weak currencies" [ref=e303] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2023/09/strong-and-weak-currencies/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e304]: Strong and weak currencies
+                - generic [ref=e305]:
+                  - link "The dollar and euro exchange rates break even" [ref=e306] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2022/08/the-dollar-and-euro-exchange-rates-break-even/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e307]
+                  - generic [ref=e308]: FRED Blog
+                  - generic [ref=e309]:
+                    - text: ...
+                    - link "The dollar and euro exchange rates break even" [ref=e310] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2022/08/the-dollar-and-euro-exchange-rates-break-even/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e311]: The dollar and euro exchange rates break even
+                - generic [ref=e312]:
+                  - link "U.S. Dollars to Euro Spot Exchange Rate" [ref=e313] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=DEXUSEU&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e314]
+                  - generic [ref=e315]: ALFRED Vintage Series
+                  - generic [ref=e316]:
+                    - text: ...
+                    - link "U.S. Dollars to Euro Spot Exchange Rate" [ref=e317] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=DEXUSEU&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e318]: U.S. Dollars to Euro Spot Exchange Rate
+                - text: ... ... ... ...
+                - generic [ref=e319]:
+                  - button "click to see more" [ref=e320] [cursor=pointer]: See More...
+                  - separator [ref=e321]
+              - heading "Other Formats" [level=3] [ref=e322]
+              - generic [ref=e323]:
+                - link "Annual, Not Seasonally Adjusted" [ref=e324] [cursor=pointer]:
+                  - /url: /series/AEXUSEU
+                - link "Monthly, Not Seasonally Adjusted" [ref=e325] [cursor=pointer]:
+                  - /url: /series/EXUSEU
+              - heading "Related Categories" [level=3] [ref=e327]
+              - generic [ref=e328]:
+                - link "Euro" [ref=e329] [cursor=pointer]:
+                  - /url: /categories/280
+                - link "By Country" [ref=e330] [cursor=pointer]:
+                  - /url: /categories/158
+                - link "Daily Rates" [ref=e331] [cursor=pointer]:
+                  - /url: /categories/94
+                - link "Exchange Rates" [ref=e332] [cursor=pointer]:
+                  - /url: /categories/15
+                - link "Money, Banking, & Finance" [ref=e333] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e335]
+              - link "More Series from H.10 Foreign Exchange Rates" [ref=e337] [cursor=pointer]:
+                - /url: /release?rid=17
+              - heading "Tags" [level=3] [ref=e339]
+              - generic:
+                - link "H.10 Foreign Exchange Rates" [ref=e340] [cursor=pointer]:
+                  - /url: /tags/series?t=h10
+                - link "Euro Area" [ref=e341] [cursor=pointer]:
+                  - /url: /tags/series?t=euro%20area
+                - link "Europe" [ref=e342] [cursor=pointer]:
+                  - /url: /tags/series?t=europe
+                - link "Exchange Rate" [ref=e343] [cursor=pointer]:
+                  - /url: /tags/series?t=exchange%20rate
+                - link "Currency" [ref=e344] [cursor=pointer]:
+                  - /url: /tags/series?t=currency
+                - link "Transnational" [ref=e345] [cursor=pointer]:
+                  - /url: /tags/series?t=transnational
+                - link "Daily" [ref=e346] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "Board of Governors" [ref=e347] [cursor=pointer]:
+                  - /url: /tags/series?t=frb
+                - link "Rate" [ref=e348] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - 'link "Public Domain: Citation Requested" [ref=e349] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e350] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e351] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e354]:
+    - generic [ref=e355]:
+      - generic [ref=e356]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e357]
+        - generic [ref=e360]:
+          - textbox "email" [ref=e361]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e362] [cursor=pointer]
+      - generic [ref=e363]:
+        - heading "Follow us" [level=3] [ref=e364]
+        - generic [ref=e365]:
+          - link "Saint Louis Fed linkedin page" [ref=e367] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e368]: 
+            - generic [ref=e369]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e371] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e372]: 
+            - generic [ref=e373]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e375] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e376]: 
+            - generic [ref=e377]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e379] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e380]: 
+            - generic [ref=e381]: Saint Louis Fed YouTube page
+    - generic [ref=e383]:
+      - heading "Need Help?" [level=3] [ref=e384]
+      - generic [ref=e385]:
+        - link "Questions or Comments" [ref=e387] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e389] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e390]
+      - generic [ref=e391]:
+        - link "Legal" [ref=e393] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e395] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

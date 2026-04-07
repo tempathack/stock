@@ -1,0 +1,4 @@
+[     106ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[  132364ms] [WARNING] WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useWebSocket.ts:76
+[  132506ms] [WARNING] [ECharts] Instance ec_1775326174787 has been disposed @ http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:7472
+[  173443ms] [WARNING] [ECharts] Instance ec_1775326174789 has been disposed @ http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:7472

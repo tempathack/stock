@@ -1,0 +1,11 @@
+Total messages: 11 (Errors: 8, Warnings: 0)
+Returning 8 messages for level "error"
+
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=14:0
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=30:0
+[ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=1:0
+[ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/predict/bulk?horizon=7:0
+[ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9

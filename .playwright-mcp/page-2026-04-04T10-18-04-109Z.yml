@@ -1,0 +1,331 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Production & Business Activity" [ref=e65] [cursor=pointer]:
+          - /url: /categories/1
+        - text: ">"
+        - link "Business Cycle Expansions & Contractions" [ref=e66] [cursor=pointer]:
+          - /url: /categories/32262
+    - generic [ref=e67]:
+      - generic "USSLIND"
+      - generic [ref=e68]:
+        - heading "Add to favorites Leading Index for the United States (USSLIND)" [level=1] [ref=e72]:
+          - generic "Add to favorites" [ref=e74] [cursor=pointer]: 
+          - text: Leading Index for the United States (USSLIND)
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - text: 
+            - generic [ref=e78]:
+              - button "Observations" [ref=e80] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e81]: 
+              - generic [ref=e82]: "Feb 2020: 1.72"
+              - generic "Apr 14, 2020 9:16 AM CDT" [ref=e84]: "Updated: Apr 14, 2020 9:16 AM CDT"
+              - generic "Not Available" [ref=e86]: "Next Release Date: Not Available"
+            - generic [ref=e87]:
+              - paragraph [ref=e88]: "Units:"
+              - generic [ref=e90]: Percent,
+              - generic [ref=e91]: Seasonally Adjusted
+            - generic [ref=e92]:
+              - paragraph [ref=e93]: "Frequency:"
+              - generic [ref=e95]: Monthly
+          - generic [ref=e98]:
+            - generic [ref=e100]:
+              - generic "1 year date range" [ref=e101] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e102] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e103] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e104] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e106]:
+              - generic [ref=e107]:
+                - generic [ref=e108]: From
+                - textbox "Change start date" [ref=e109]
+              - generic [ref=e111]: to
+              - textbox "Change end date" [ref=e113]
+          - generic [ref=e114]:
+            - generic [ref=e115]:
+              - button "Edit Graph " [ref=e116] [cursor=pointer]:
+                - generic [ref=e117]:
+                  - text: Edit Graph
+                  - generic [ref=e118]: 
+              - text: 
+            - generic [ref=e120]:
+              - button "Download" [ref=e121] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e122]: 
+              - text: 
+        - generic "Full screen" [ref=e127] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e128]: 
+        - generic [ref=e130]:
+          - generic [ref=e131]:
+            - generic [ref=e132]:
+              - button "Share Graph " [ref=e133] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e134]: 
+              - text:   
+            - generic [ref=e135]:
+              - button "Account Tools " [ref=e136] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e137]: 
+              - text:     
+          - generic [ref=e139]:
+            - link "Share on X" [ref=e140] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e141] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e142]: 
+            - link "Share on Reddit" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Post to Linkedin" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+        - generic [ref=e148]:
+          - generic [ref=e150]:
+            - heading "Notes" [level=2] [ref=e151]
+            - generic [ref=e152]:
+              - paragraph [ref=e153]:
+                - strong [ref=e154]: "Source:"
+                - link "Federal Reserve Bank of Philadelphia" [ref=e155] [cursor=pointer]:
+                  - /url: https://www.philadelphiafed.org/
+                  - text: Federal Reserve Bank of Philadelphia
+                  - generic [ref=e156]: 
+              - paragraph [ref=e157]:
+                - strong [ref=e158]: "Release:"
+                - link "State Leading Indexes" [ref=e159] [cursor=pointer]:
+                  - /url: https://www.philadelphiafed.org/research-and-data/regional-economy/indexes/leading/
+                  - text: State Leading Indexes
+                  - generic [ref=e160]: 
+              - paragraph [ref=e162]:
+                - strong [ref=e163]: "Units:"
+                - generic [ref=e164]: Percent, Seasonally Adjusted
+              - paragraph [ref=e165]:
+                - strong [ref=e166]: "Frequency:"
+                - generic [ref=e167]: Monthly
+              - heading "Notes:" [level=4] [ref=e169]
+              - paragraph [ref=e170]: "The leading index for each state predicts the six-month growth rate of the state's coincident index. In addition to the coincident index, the models include other variables that lead the economy: state-level housing permits (1 to 4 units), state initial unemployment insurance claims, delivery times from the Institute for Supply Management (ISM) manufacturing survey, and the interest rate spread between the 10-year Treasury bond and the 3-month Treasury bill."
+              - generic [ref=e171]:
+                - heading "Suggested Citation:" [level=4] [ref=e172]
+                - paragraph [ref=e174]: Federal Reserve Bank of Philadelphia, Leading Index for the United States [USSLIND], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/USSLIND, April 4, 2026.
+          - generic [ref=e176]:
+            - heading "Release Tables" [level=2] [ref=e177]
+            - generic [ref=e178]:
+              - generic [ref=e179]: State Leading Indexes
+              - list [ref=e180]:
+                - listitem [ref=e181]:
+                  - 'link "Link to release table: State Leading Indexes, Leading Indicators by State, Monthly, Seasonally Adjusted" [ref=e182] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=208&eid=259669#snid=259670
+                    - generic [ref=e183]: 
+                    - text: Leading Indicators by State, Monthly, Seasonally Adjusted
+          - generic [ref=e185]:
+            - heading "Related Data and Content" [level=2] [ref=e186]
+            - generic [ref=e187]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e188]
+              - generic [ref=e189]:
+                - generic [ref=e190]:
+                  - 'link "Composite Leading Indicators: Composite Leading Indicator (CLI) Normalized for United States" [ref=e191] [cursor=pointer]':
+                    - /url: /series/USALOLITONOSTSAM
+                    - img [ref=e192]
+                  - generic [ref=e193]:
+                    - text: ...
+                    - 'link "Composite Leading Indicators: Composite Leading Indicator (CLI) Normalized for United States" [ref=e194] [cursor=pointer]':
+                      - /url: /series/USALOLITONOSTSAM
+                      - strong [ref=e195]: "Composite Leading Indicators: Composite Leading Indicator (CLI) Normalized for United States"
+                - generic [ref=e196]:
+                  - link "Coincident Economic Activity Index for the United States" [ref=e197] [cursor=pointer]:
+                    - /url: /series/USPHCI
+                    - img [ref=e198]
+                  - generic [ref=e199]:
+                    - text: ...
+                    - link "Coincident Economic Activity Index for the United States" [ref=e200] [cursor=pointer]:
+                      - /url: /series/USPHCI
+                      - strong [ref=e201]: Coincident Economic Activity Index for the United States
+                - generic [ref=e202]:
+                  - link "NBER based Recession Indicators for the United States from the Period following the Peak through the Trough" [ref=e203] [cursor=pointer]:
+                    - /url: /series/USREC
+                    - img [ref=e204]
+                  - generic [ref=e205]:
+                    - text: ...
+                    - link "NBER based Recession Indicators for the United States from the Period following the Peak through the Trough" [ref=e206] [cursor=pointer]:
+                      - /url: /series/USREC
+                      - strong [ref=e207]: NBER based Recession Indicators for the United States from the Period following the Peak through the Trough
+                - generic [ref=e208]:
+                  - link "GDP-Based Recession Indicator Index" [ref=e209] [cursor=pointer]:
+                    - /url: /series/JHGDPBRINDX
+                    - img [ref=e210]
+                  - generic [ref=e211]:
+                    - text: ...
+                    - link "GDP-Based Recession Indicator Index" [ref=e212] [cursor=pointer]:
+                      - /url: /series/JHGDPBRINDX
+                      - strong [ref=e213]: GDP-Based Recession Indicator Index
+                - text: ... ... ... ...
+                - generic [ref=e214]:
+                  - button "click to see more" [ref=e215] [cursor=pointer]: See More...
+                  - separator [ref=e216]
+              - heading "Content Suggestions" [level=3] [ref=e217]
+              - generic [ref=e218]:
+                - generic [ref=e219]:
+                  - link "Leading Index for the United States" [ref=e220] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=USSLIND&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e221]
+                  - generic [ref=e222]: ALFRED Vintage Series
+                  - generic [ref=e223]:
+                    - text: ...
+                    - link "Leading Index for the United States" [ref=e224] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=USSLIND&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e225]: Leading Index for the United States
+                - generic [ref=e226]:
+                  - 'link "University of Michigan: Consumer Sentiment" [ref=e227] [cursor=pointer]':
+                    - /url: /series/UMCSENT
+                    - img [ref=e228]
+                  - generic [ref=e229]:
+                    - text: ...
+                    - 'link "University of Michigan: Consumer Sentiment" [ref=e230] [cursor=pointer]':
+                      - /url: /series/UMCSENT
+                      - strong [ref=e231]: "University of Michigan: Consumer Sentiment"
+                - generic [ref=e232]:
+                  - link "NBER based Recession Indicators for the United States from the Period following the Peak through the Trough" [ref=e233] [cursor=pointer]:
+                    - /url: /series/USREC
+                    - img [ref=e234]
+                  - generic [ref=e235]:
+                    - text: ...
+                    - link "NBER based Recession Indicators for the United States from the Period following the Peak through the Trough" [ref=e236] [cursor=pointer]:
+                      - /url: /series/USREC
+                      - strong [ref=e237]: NBER based Recession Indicators for the United States from the Period following the Peak through the Trough
+              - heading "Related Categories" [level=3] [ref=e238]
+              - generic [ref=e239]:
+                - link "Business Cycle Expansions & Contractions" [ref=e240] [cursor=pointer]:
+                  - /url: /categories/32262
+                - link "Production & Business Activity" [ref=e241] [cursor=pointer]:
+                  - /url: /categories/1
+                - link "Financial Activity Measures" [ref=e242] [cursor=pointer]:
+                  - /url: /categories/32457
+                - link "Financial Indicators" [ref=e243] [cursor=pointer]:
+                  - /url: /categories/46
+                - link "Money, Banking, & Finance" [ref=e244] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e246]
+              - link "More Series from State Leading Indexes" [ref=e248] [cursor=pointer]:
+                - /url: /release?rid=208
+              - heading "Tags" [level=3] [ref=e250]
+              - generic:
+                - link "Leading Index" [ref=e251] [cursor=pointer]:
+                  - /url: /tags/series?t=leading%20index
+                - link "Philadelphia Fed" [ref=e252] [cursor=pointer]:
+                  - /url: /tags/series?t=frb%20phi
+                - link "Headline Figure" [ref=e253] [cursor=pointer]:
+                  - /url: /tags/series?t=headline%20figure
+                - link "Seasonally Adjusted" [ref=e254] [cursor=pointer]:
+                  - /url: /tags/series?t=sa
+                - 'link "Copyrighted: Citation Required" [ref=e255] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Monthly" [ref=e256] [cursor=pointer]:
+                  - /url: /tags/series?t=monthly
+                - link "Nation" [ref=e257] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e258] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+        - text:    
+  - text:  
+  - generic [ref=e261]:
+    - generic [ref=e262]:
+      - generic [ref=e263]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e264]
+        - generic [ref=e267]:
+          - textbox "email" [ref=e268]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e269] [cursor=pointer]
+      - generic [ref=e270]:
+        - heading "Follow us" [level=3] [ref=e271]
+        - generic [ref=e272]:
+          - link "Saint Louis Fed linkedin page" [ref=e274] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e275]: 
+            - generic [ref=e276]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e278] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e279]: 
+            - generic [ref=e280]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e282] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e283]: 
+            - generic [ref=e284]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e286] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e287]: 
+            - generic [ref=e288]: Saint Louis Fed YouTube page
+    - generic [ref=e290]:
+      - heading "Need Help?" [level=3] [ref=e291]
+      - generic [ref=e292]:
+        - link "Questions or Comments" [ref=e294] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e296] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e297]
+      - generic [ref=e298]:
+        - link "Legal" [ref=e300] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e302] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

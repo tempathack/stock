@@ -15,12 +15,16 @@ from app.cache import (
     invalidate_models,
     invalidate_predictions,
 )
+from app.metrics import drift_score_current
 from app.config import settings
 from app.models.schemas import (
     ABResultsModelEntry,
     ABResultsResponse,
     DriftEventEntry,
     DriftStatusResponse,
+    FeatureDistributionEntry,
+    FeatureDistributionResponse,
+    HistogramBin,
     ModelComparisonEntry,
     ModelComparisonResponse,
     RetrainStatusResponse,
@@ -42,7 +46,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/models", tags=["models"])
 
 
-@router.get("/comparison", response_model=ModelComparisonResponse)
+@router.get("/comparison", response_model=ModelComparisonResponse, summary="Compare all registered models by metrics")
 async def models_comparison() -> ModelComparisonResponse:
     """Return model metrics comparison sorted by OOS RMSE.
 
@@ -87,7 +91,7 @@ async def models_comparison() -> ModelComparisonResponse:
     return response
 
 
-@router.get("/drift/rolling-performance", response_model=RollingPerformanceResponse)
+@router.get("/drift/rolling-performance", response_model=RollingPerformanceResponse, summary="Get rolling model performance metrics")
 async def drift_rolling_performance(days: int = 30) -> RollingPerformanceResponse:
     """Return rolling prediction error metrics for the active model."""
     key = build_key("models", "rolling-perf", str(days))
@@ -110,7 +114,7 @@ async def drift_rolling_performance(days: int = 30) -> RollingPerformanceRespons
     return response
 
 
-@router.get("/retrain-status", response_model=RetrainStatusResponse)
+@router.get("/retrain-status", response_model=RetrainStatusResponse, summary="Get most recent model training status")
 async def retrain_status() -> RetrainStatusResponse:
     """Return metadata about the most recent model training event."""
     key = build_key("models", "retrain-status")
@@ -126,7 +130,7 @@ async def retrain_status() -> RetrainStatusResponse:
     return response
 
 
-@router.get("/drift", response_model=DriftStatusResponse)
+@router.get("/drift", response_model=DriftStatusResponse, summary="Get recent drift detection events")
 async def models_drift() -> DriftStatusResponse:
     """Return recent drift detection events.
 
@@ -169,7 +173,132 @@ async def models_drift() -> DriftStatusResponse:
     return response
 
 
-@router.post("/cache/invalidate")
+@router.get("/drift/feature-distributions", response_model=FeatureDistributionResponse, summary="Get feature distribution comparison for drift monitoring")
+async def drift_feature_distributions(n_features: int = 12, bins: int = 10) -> FeatureDistributionResponse:
+    """Return training vs recent feature distributions for drift monitoring.
+
+    Queries feature_store for training period (> 1 year ago) and recent period
+    (last 60 days), computes histogram bins, and overlays KS/PSI stats from
+    the most recent drift events.
+    """
+    from datetime import datetime, timedelta, timezone
+
+    key = build_key("models", "feature-distributions", str(n_features), str(bins))
+    cached = await cache_get(key)
+    if cached is not None:
+        return FeatureDistributionResponse(**cached)
+
+    from app.models.database import get_async_session, get_engine  # lazy import
+
+    if get_engine() is None:
+        return FeatureDistributionResponse()
+
+    try:
+        import sqlalchemy as sa
+
+        now = datetime.now(tz=timezone.utc)
+        recent_cutoff = (now - timedelta(days=60)).date()
+        training_cutoff = (now - timedelta(days=365)).date()
+
+        # 1. Get drifted features from recent drift_logs (data_drift only)
+        feature_stats: dict[str, dict] = {}
+        async with get_async_session() as session:
+            drift_rows = (await session.execute(sa.text("""
+                SELECT details_json->'per_feature' AS per_feature
+                FROM drift_logs
+                WHERE drift_type = 'data_drift'
+                ORDER BY detected_at DESC
+                LIMIT 5
+            """))).fetchall()
+
+            for row in drift_rows:
+                pf = row[0] or {}
+                for feat, stats in pf.items():
+                    if feat not in feature_stats:
+                        feature_stats[feat] = stats
+
+            # 2. Select features: drifted first, then fill from feature_store
+            drifted = [f for f, s in feature_stats.items() if s.get("drifted")]
+            stable: list[str] = []
+            if len(drifted) < n_features:
+                fill_rows = (await session.execute(sa.text("""
+                    SELECT feature_name FROM feature_store
+                    GROUP BY feature_name ORDER BY COUNT(*) DESC LIMIT :limit
+                """), {"limit": n_features * 2})).fetchall()
+                stable = [r[0] for r in fill_rows if r[0] not in drifted]
+
+            selected = (drifted + stable)[:n_features]
+
+            # 3. Compute histograms for each feature
+            result_entries: list[FeatureDistributionEntry] = []
+            for feature in selected:
+                train_rows = (await session.execute(sa.text("""
+                    SELECT feature_value FROM feature_store
+                    WHERE feature_name = :fname AND date <= :cutoff
+                      AND feature_value IS NOT NULL
+                    ORDER BY RANDOM() LIMIT 2000
+                """), {"fname": feature, "cutoff": training_cutoff})).fetchall()
+                train_vals = [float(r[0]) for r in train_rows]
+
+                recent_rows = (await session.execute(sa.text("""
+                    SELECT feature_value FROM feature_store
+                    WHERE feature_name = :fname AND date >= :cutoff
+                      AND feature_value IS NOT NULL
+                    ORDER BY date DESC LIMIT 2000
+                """), {"fname": feature, "cutoff": recent_cutoff})).fetchall()
+                recent_vals = [float(r[0]) for r in recent_rows]
+
+                if not train_vals and not recent_vals:
+                    continue
+
+                all_vals = train_vals + recent_vals
+                min_v, max_v = min(all_vals), max(all_vals)
+                if min_v == max_v:
+                    max_v = min_v + 1.0
+                bin_width = (max_v - min_v) / bins
+                edges = [min_v + i * bin_width for i in range(bins + 1)]
+
+                def to_bins(vals: list[float], bw: float = bin_width, mn: float = min_v) -> list[HistogramBin]:
+                    counts = [0] * bins
+                    for v in vals:
+                        idx = min(int((v - mn) / bw), bins - 1)
+                        counts[idx] += 1
+                    total = len(vals) or 1
+                    return [
+                        HistogramBin(
+                            bin=f"{edges[i]:.2g}–{edges[i+1]:.2g}",
+                            count=round(counts[i] / total * 100),
+                        )
+                        for i in range(bins)
+                    ]
+
+                fs = feature_stats.get(feature, {})
+                ks = fs.get("ks_statistic")
+                result_entries.append(FeatureDistributionEntry(
+                    feature=feature,
+                    training_bins=to_bins(train_vals),
+                    recent_bins=to_bins(recent_vals),
+                    ks_stat=ks,
+                    psi_value=fs.get("psi"),
+                    is_drifted=bool(fs.get("drifted", False)),
+                ))
+                if ks is not None:
+                    drift_score_current.labels(feature=feature, model_id="active").set(ks)
+
+        response = FeatureDistributionResponse(
+            features=result_entries,
+            training_period=f"≤ {training_cutoff.isoformat()}",
+            recent_period=f"≥ {recent_cutoff.isoformat()}",
+            count=len(result_entries),
+        )
+        await cache_set(key, response.model_dump(), DRIFT_STATUS_TTL)
+        return response
+    except Exception as exc:
+        logger.warning("feature-distributions query failed: %s", exc)
+        raise HTTPException(status_code=502, detail="Feature distribution query failed") from exc
+
+
+@router.post("/cache/invalidate", summary="Invalidate prediction and model caches")
 async def invalidate_cache() -> dict:
     """Invalidate prediction and model caches after retrain."""
     pred_count = await invalidate_predictions()
@@ -179,7 +308,7 @@ async def invalidate_cache() -> dict:
     return {"invalidated_keys": total, "status": "ok"}
 
 
-@router.get("/ab-results", response_model=ABResultsResponse)
+@router.get("/ab-results", response_model=ABResultsResponse, summary="Get A/B model testing accuracy comparison")
 async def ab_results(request: Request, days: int = 30) -> ABResultsResponse:
     """Return A/B model testing accuracy comparison."""
     if not settings.AB_TESTING_ENABLED:

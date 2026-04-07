@@ -1,0 +1,370 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+        - text: ">"
+        - link "FRB Rates - discount, fed funds, primary credit" [ref=e67] [cursor=pointer]:
+          - /url: /categories/118
+    - generic [ref=e68]:
+      - generic "IORB"
+      - generic [ref=e69]:
+        - heading "Add to favorites Interest Rate on Reserve Balances (IORB Rate) (IORB)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: Interest Rate on Reserve Balances (IORB Rate) (IORB)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-06: 3.65"
+              - generic "Apr 3, 2026 5:17 PM CDT" [ref=e85]: "Updated: Apr 3, 2026 5:17 PM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=185&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily,
+              - generic [ref=e98]: 7-Day
+          - generic [ref=e101]:
+            - generic [ref=e103]:
+              - generic "1 year date range" [ref=e104] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e105] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e106] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e107] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: From
+                - textbox "Change start date" [ref=e112]
+              - generic [ref=e114]: to
+              - textbox "Change end date" [ref=e116]
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - button "Edit Graph " [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]:
+                  - text: Edit Graph
+                  - generic [ref=e121]: 
+              - text: 
+            - generic [ref=e123]:
+              - button "Download" [ref=e124] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e125]: 
+              - text: 
+        - generic "Full screen" [ref=e130] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e131]: 
+        - generic [ref=e133]:
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - button "Share Graph " [ref=e136] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e137]: 
+              - text:   
+            - generic [ref=e138]:
+              - button "Account Tools " [ref=e139] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e140]: 
+              - text:     
+          - generic [ref=e142]:
+            - link "Share on X" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e144] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e145]: 
+            - link "Share on Reddit" [ref=e146] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e147]: 
+            - link "Post to Linkedin" [ref=e148] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e149]: 
+        - generic [ref=e151]:
+          - generic [ref=e153]:
+            - heading "Notes" [level=2] [ref=e154]
+            - generic [ref=e155]:
+              - paragraph [ref=e156]:
+                - strong [ref=e157]: "Source:"
+                - link "Board of Governors of the Federal Reserve System (US)" [ref=e158] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov
+                  - text: Board of Governors of the Federal Reserve System (US)
+                  - generic [ref=e159]: 
+              - paragraph [ref=e160]:
+                - strong [ref=e161]: "Release:"
+                - link "Interest Rate on Reserve Balances" [ref=e162] [cursor=pointer]:
+                  - /url: http://www.federalreserve.gov/monetarypolicy/reqresbalances.htm
+                  - text: Interest Rate on Reserve Balances
+                  - generic [ref=e163]: 
+              - paragraph [ref=e165]:
+                - strong [ref=e166]: "Units:"
+                - generic [ref=e167]: Percent, Not Seasonally Adjusted
+              - paragraph [ref=e168]:
+                - strong [ref=e169]: "Frequency:"
+                - generic [ref=e170]: Daily, 7-Day
+              - heading "Notes:" [level=4] [ref=e172]
+              - paragraph
+              - paragraph [ref=e173]:
+                - text: Starting July 29, 2021, the interest rate on excess reserves (
+                - link "IOER" [ref=e174] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/IOER
+                - text: ) and the interest rate on required reserves (
+                - link "IORR" [ref=e175] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/IORR
+                - text: ) were replaced with a single rate, the interest rate on reserve balances (
+                - link "IORB" [ref=e176] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/IORB
+                - text: ). See the source's
+                - link "announcement" [ref=e177] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/newsevents/pressreleases/bcreg20210602a.htm
+                - text: for more details.
+                - text: The interest rate on reserve balances (IORB rate) is the rate of interest that the Federal Reserve pays on balances maintained by or on behalf of eligible institutions in master accounts at Federal Reserve Banks. The interest rate is set by the Board of Governors, and it is an important tool of monetary policy.
+                - text: See
+                - link "Policy Tools" [ref=e178] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/monetarypolicy/reqresbalances.htm
+                - text: and the
+                - link "IORB FAQs" [ref=e179] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/monetarypolicy/iorb-faqs.htm
+                - text: for more information.
+                - text: For questions on FRED functionality, please contact us
+                - link "here" [ref=e180] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/contactus/
+                - text: .
+              - paragraph
+              - generic [ref=e181]:
+                - heading "Suggested Citation:" [level=4] [ref=e182]
+                - paragraph [ref=e184]: Board of Governors of the Federal Reserve System (US), Interest Rate on Reserve Balances (IORB Rate) [IORB], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/IORB, April 4, 2026.
+          - generic [ref=e186]:
+            - heading "Related Data and Content" [level=2] [ref=e187]
+            - generic [ref=e188]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e189]
+              - generic [ref=e190]:
+                - generic [ref=e191]:
+                  - link "Interest Rate on Excess Reserves (IOER Rate) (DISCONTINUED)" [ref=e192] [cursor=pointer]:
+                    - /url: /series/IOER
+                    - img [ref=e193]
+                  - generic [ref=e194]:
+                    - text: ...
+                    - link "Interest Rate on Excess Reserves (IOER Rate) (DISCONTINUED)" [ref=e195] [cursor=pointer]:
+                      - /url: /series/IOER
+                      - strong [ref=e196]: Interest Rate on Excess Reserves (IOER Rate) (DISCONTINUED)
+                - generic [ref=e197]:
+                  - link "Overnight Reverse Repurchase Agreements Award Rate" [ref=e198] [cursor=pointer]:
+                    - /url: /series/RRPONTSYAWARD
+                    - img [ref=e199]
+                  - generic [ref=e200]:
+                    - text: ...
+                    - link "Overnight Reverse Repurchase Agreements Award Rate" [ref=e201] [cursor=pointer]:
+                      - /url: /series/RRPONTSYAWARD
+                      - strong [ref=e202]: Overnight Reverse Repurchase Agreements Award Rate
+                - generic [ref=e203]:
+                  - link "Effective Federal Funds Rate" [ref=e204] [cursor=pointer]:
+                    - /url: /series/EFFR
+                    - img [ref=e205]
+                  - generic [ref=e206]:
+                    - text: ...
+                    - link "Effective Federal Funds Rate" [ref=e207] [cursor=pointer]:
+                      - /url: /series/EFFR
+                      - strong [ref=e208]: Effective Federal Funds Rate
+                - generic [ref=e209]:
+                  - link "Interest Rate on Required Reserves (IORR Rate) (DISCONTINUED)" [ref=e210] [cursor=pointer]:
+                    - /url: /series/IORR
+                    - img [ref=e211]
+                  - generic [ref=e212]:
+                    - text: ...
+                    - link "Interest Rate on Required Reserves (IORR Rate) (DISCONTINUED)" [ref=e213] [cursor=pointer]:
+                      - /url: /series/IORR
+                      - strong [ref=e214]: Interest Rate on Required Reserves (IORR Rate) (DISCONTINUED)
+                - text: ... ... ... ...
+                - generic [ref=e215]:
+                  - button "click to see more" [ref=e216] [cursor=pointer]: See More...
+                  - separator [ref=e217]
+              - heading "Content Suggestions" [level=3] [ref=e218]
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - link "Rates related to monetary policy" [ref=e221] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/04/rates-related-to-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e222]
+                  - generic [ref=e223]: FRED Blog
+                  - generic [ref=e224]:
+                    - text: ...
+                    - link "Rates related to monetary policy" [ref=e225] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/04/rates-related-to-monetary-policy/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e226]: Rates related to monetary policy
+                - generic [ref=e227]:
+                  - link "Referring to the interest paid on reserves" [ref=e228] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2022/05/referring-to-the-interest-paid-on-reserves/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e229]
+                  - generic [ref=e230]: FRED Blog
+                  - generic [ref=e231]:
+                    - text: ...
+                    - link "Referring to the interest paid on reserves" [ref=e232] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2022/05/referring-to-the-interest-paid-on-reserves/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e233]: Referring to the interest paid on reserves
+                - generic [ref=e234]:
+                  - link "Workday and weekday data in FRED" [ref=e235] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/06/workday-and-weekday-data-in-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e236]
+                  - generic [ref=e237]: FRED Blog
+                  - generic [ref=e238]:
+                    - text: ...
+                    - link "Workday and weekday data in FRED" [ref=e239] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/06/workday-and-weekday-data-in-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e240]: Workday and weekday data in FRED
+                - generic [ref=e241]:
+                  - link "Interest Rate on Reserve Balances (IORB Rate)" [ref=e242] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=IORB&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e243]
+                  - generic [ref=e244]: ALFRED Vintage Series
+                  - generic [ref=e245]:
+                    - text: ...
+                    - link "Interest Rate on Reserve Balances (IORB Rate)" [ref=e246] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=IORB&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e247]: Interest Rate on Reserve Balances (IORB Rate)
+                - text: ...
+                - generic [ref=e248]:
+                  - button "click to see more" [ref=e249] [cursor=pointer]: See More...
+                  - separator [ref=e250]
+              - heading "Related Categories" [level=3] [ref=e251]
+              - generic [ref=e252]:
+                - link "FRB Rates - discount, fed funds, primary credit" [ref=e253] [cursor=pointer]:
+                  - /url: /categories/118
+                - link "Interest Rates" [ref=e254] [cursor=pointer]:
+                  - /url: /categories/22
+                - link "Money, Banking, & Finance" [ref=e255] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e257]
+              - link "More Series from Interest Rate on Reserve Balances" [ref=e259] [cursor=pointer]:
+                - /url: /release?rid=185
+              - heading "Tags" [level=3] [ref=e261]
+              - generic:
+                - link "Reserves" [ref=e262] [cursor=pointer]:
+                  - /url: /tags/series?t=reserves
+                - link "Interest Rate" [ref=e263] [cursor=pointer]:
+                  - /url: /tags/series?t=interest%20rate
+                - link "Interest" [ref=e264] [cursor=pointer]:
+                  - /url: /tags/series?t=interest
+                - link "Daily" [ref=e265] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "Board of Governors" [ref=e266] [cursor=pointer]:
+                  - /url: /tags/series?t=frb
+                - link "Rate" [ref=e267] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - link "Nation" [ref=e268] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e269] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e270] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e271] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e274]:
+    - generic [ref=e275]:
+      - generic [ref=e276]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e277]
+        - generic [ref=e280]:
+          - textbox "email" [ref=e281]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e282] [cursor=pointer]
+      - generic [ref=e283]:
+        - heading "Follow us" [level=3] [ref=e284]
+        - generic [ref=e285]:
+          - link "Saint Louis Fed linkedin page" [ref=e287] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e288]: 
+            - generic [ref=e289]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e291] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e292]: 
+            - generic [ref=e293]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e295] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e296]: 
+            - generic [ref=e297]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e299] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e300]: 
+            - generic [ref=e301]: Saint Louis Fed YouTube page
+    - generic [ref=e303]:
+      - heading "Need Help?" [level=3] [ref=e304]
+      - generic [ref=e305]:
+        - link "Questions or Comments" [ref=e307] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e309] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e310]
+      - generic [ref=e311]:
+        - link "Legal" [ref=e313] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e315] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

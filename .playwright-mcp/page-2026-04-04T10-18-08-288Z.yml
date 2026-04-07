@@ -1,0 +1,348 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Financial Indicators" [ref=e66] [cursor=pointer]:
+          - /url: /categories/46
+        - text: ">"
+        - link "Financial Activity Measures" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32457
+    - generic [ref=e68]:
+      - generic "UMCSENT"
+      - generic [ref=e69]:
+        - 'heading "Add to favorites University of Michigan: Consumer Sentiment (UMCSENT)" [level=1] [ref=e73]':
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: "University of Michigan: Consumer Sentiment (UMCSENT)"
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "Feb 2026: 56.6"
+              - generic "Mar 27, 2026 10:02 AM CDT" [ref=e85]: "Updated: Mar 27, 2026 10:02 AM CDT"
+              - 'link "Next Release Date: Apr 24, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=91&y=2026
+                - generic "Apr 24, 2026" [ref=e88]: "Next Release Date: Apr 24, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Index 1966:Q1=100,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Monthly
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e131]:
+          - paragraph [ref=e134]:
+            - strong [ref=e135]:
+              - text: Data in this graph are copyrighted. Please review the copyright information in the
+              - link "series notes" [ref=e136] [cursor=pointer]:
+                - /url: "#notes"
+              - text: before sharing.
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - generic [ref=e139]:
+                - button "Share Graph " [ref=e140] [cursor=pointer]:
+                  - text: Share Graph
+                  - generic [ref=e141]: 
+                - text:   
+              - generic [ref=e142]:
+                - button "Account Tools " [ref=e143] [cursor=pointer]:
+                  - text: Account Tools
+                  - generic [ref=e144]: 
+                - text:     
+            - generic [ref=e146]:
+              - link "Share on X" [ref=e147] [cursor=pointer]:
+                - /url: /graph/share.php
+              - link "Post on Facebook" [ref=e148] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e149]: 
+              - link "Share on Reddit" [ref=e150] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e151]: 
+              - link "Post to Linkedin" [ref=e152] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e153]: 
+        - generic [ref=e155]:
+          - generic [ref=e157]:
+            - heading "Notes" [level=2] [ref=e158]
+            - generic [ref=e159]:
+              - paragraph [ref=e160]:
+                - strong [ref=e161]: "Source:"
+                - link "University of Michigan" [ref=e162] [cursor=pointer]:
+                  - /url: https://www.umich.edu/
+                  - text: University of Michigan
+                  - generic [ref=e163]: 
+              - paragraph [ref=e164]:
+                - strong [ref=e165]: "Release:"
+                - link "Surveys of Consumers" [ref=e166] [cursor=pointer]:
+                  - /url: http://www.sca.isr.umich.edu/
+                  - text: Surveys of Consumers
+                  - generic [ref=e167]: 
+              - paragraph [ref=e169]:
+                - strong [ref=e170]: "Units:"
+                - generic [ref=e171]: Index 1966:Q1=100, Not Seasonally Adjusted
+              - paragraph [ref=e172]:
+                - strong [ref=e173]: "Frequency:"
+                - generic [ref=e174]: Monthly
+              - heading "Notes:" [level=4] [ref=e176]
+              - paragraph [ref=e177]:
+                - text: At the request of the source, the data is delayed by 1 month. To obtain historical data prior to January 1978, please see FRED data series UMCSENT1.
+                - text: "This data should be cited as follows: \"Surveys of Consumers, University of Michigan, University of Michigan: Consumer Sentiment © [UMCSENT], retrieved from"
+                - link "FRED, Federal Reserve Bank of St. Louis" [ref=e178] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/UMCSENT/
+                - text: ", (Accessed on date)\""
+                - text: Copyright, 2016, Surveys of Consumers, University of Michigan. Reprinted with permission.
+              - generic [ref=e179]:
+                - heading "Suggested Citation:" [level=4] [ref=e180]
+                - paragraph [ref=e182]: "University of Michigan, University of Michigan: Consumer Sentiment [UMCSENT], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/UMCSENT, April 4, 2026."
+          - generic [ref=e184]:
+            - heading "Related Data and Content" [level=2] [ref=e185]
+            - generic [ref=e186]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e187]
+              - generic [ref=e188]:
+                - generic [ref=e189]:
+                  - 'link "University of Michigan: Inflation Expectation" [ref=e190] [cursor=pointer]':
+                    - /url: /series/MICH
+                    - img [ref=e191]
+                  - generic [ref=e192]:
+                    - text: ...
+                    - 'link "University of Michigan: Inflation Expectation" [ref=e193] [cursor=pointer]':
+                      - /url: /series/MICH
+                      - strong [ref=e194]: "University of Michigan: Inflation Expectation"
+                - generic [ref=e195]:
+                  - 'link "New Privately-Owned Housing Units Authorized in Permit-Issuing Places: Total Units" [ref=e196] [cursor=pointer]':
+                    - /url: /series/PERMIT
+                    - img [ref=e197]
+                  - generic [ref=e198]:
+                    - text: ...
+                    - 'link "New Privately-Owned Housing Units Authorized in Permit-Issuing Places: Total Units" [ref=e199] [cursor=pointer]':
+                      - /url: /series/PERMIT
+                      - strong [ref=e200]: "New Privately-Owned Housing Units Authorized in Permit-Issuing Places: Total Units"
+                - generic [ref=e201]:
+                  - link "Personal Consumption Expenditures" [ref=e202] [cursor=pointer]:
+                    - /url: /series/PCE
+                    - img [ref=e203]
+                  - generic [ref=e204]:
+                    - text: ...
+                    - link "Personal Consumption Expenditures" [ref=e205] [cursor=pointer]:
+                      - /url: /series/PCE
+                      - strong [ref=e206]: Personal Consumption Expenditures
+                - generic [ref=e207]:
+                  - link "Initial Claims" [ref=e208] [cursor=pointer]:
+                    - /url: /series/ICSA
+                    - img [ref=e209]
+                  - generic [ref=e210]:
+                    - text: ...
+                    - link "Initial Claims" [ref=e211] [cursor=pointer]:
+                      - /url: /series/ICSA
+                      - strong [ref=e212]: Initial Claims
+                - text: ... ... ... ...
+                - generic [ref=e213]:
+                  - button "click to see more" [ref=e214] [cursor=pointer]: See More...
+                  - separator [ref=e215]
+              - heading "Content Suggestions" [level=3] [ref=e216]
+              - generic [ref=e217]:
+                - generic [ref=e218]:
+                  - link "Diverging forecasts" [ref=e219] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2017/04/diverging-forecasts/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e220]
+                  - generic [ref=e221]: FRED Blog
+                  - generic [ref=e222]:
+                    - text: ...
+                    - link "Diverging forecasts" [ref=e223] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2017/04/diverging-forecasts/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e224]: Diverging forecasts
+                - generic [ref=e225]:
+                  - link "The home purchase sentiment index" [ref=e226] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/05/the-home-purchase-sentiment-index/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e227]
+                  - generic [ref=e228]: FRED Blog
+                  - generic [ref=e229]:
+                    - text: ...
+                    - link "The home purchase sentiment index" [ref=e230] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/05/the-home-purchase-sentiment-index/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e231]: The home purchase sentiment index
+                - generic [ref=e232]:
+                  - 'link "University of Michigan: Consumer Sentiment" [ref=e233] [cursor=pointer]':
+                    - /url: https://alfred.stlouisfed.org/series?seid=UMCSENT&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e234]
+                  - generic [ref=e235]: ALFRED Vintage Series
+                  - generic [ref=e236]:
+                    - text: ...
+                    - 'link "University of Michigan: Consumer Sentiment" [ref=e237] [cursor=pointer]':
+                      - /url: https://alfred.stlouisfed.org/series?seid=UMCSENT&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e238]: "University of Michigan: Consumer Sentiment"
+                - generic [ref=e239]:
+                  - link "St. Louis Fed Financial Stress Index" [ref=e240] [cursor=pointer]:
+                    - /url: /series/STLFSI4
+                    - img [ref=e241]
+                  - generic [ref=e242]:
+                    - text: ...
+                    - link "St. Louis Fed Financial Stress Index" [ref=e243] [cursor=pointer]:
+                      - /url: /series/STLFSI4
+                      - strong [ref=e244]: St. Louis Fed Financial Stress Index
+              - heading "Related Categories" [level=3] [ref=e245]
+              - generic [ref=e246]:
+                - link "Financial Activity Measures" [ref=e247] [cursor=pointer]:
+                  - /url: /categories/32457
+                - link "Financial Indicators" [ref=e248] [cursor=pointer]:
+                  - /url: /categories/46
+                - link "Money, Banking, & Finance" [ref=e249] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e251]
+              - link "More Series from Surveys of Consumers" [ref=e253] [cursor=pointer]:
+                - /url: /release?rid=91
+              - heading "Tags" [level=3] [ref=e255]
+              - generic:
+                - link "Univ. of Michigan" [ref=e256] [cursor=pointer]:
+                  - /url: /tags/series?t=umich
+                - link "Consumer Sentiment" [ref=e257] [cursor=pointer]:
+                  - /url: /tags/series?t=consumer%20sentiment
+                - link "Headline Figure" [ref=e258] [cursor=pointer]:
+                  - /url: /tags/series?t=headline%20figure
+                - link "Consumer" [ref=e259] [cursor=pointer]:
+                  - /url: /tags/series?t=consumer
+                - 'link "Copyrighted: Citation Required" [ref=e260] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Monthly" [ref=e261] [cursor=pointer]:
+                  - /url: /tags/series?t=monthly
+                - link "Nation" [ref=e262] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e263] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e264] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e267]:
+    - generic [ref=e268]:
+      - generic [ref=e269]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e270]
+        - generic [ref=e273]:
+          - textbox "email" [ref=e274]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e275] [cursor=pointer]
+      - generic [ref=e276]:
+        - heading "Follow us" [level=3] [ref=e277]
+        - generic [ref=e278]:
+          - link "Saint Louis Fed linkedin page" [ref=e280] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e281]: 
+            - generic [ref=e282]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e284] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e285]: 
+            - generic [ref=e286]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e288] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e289]: 
+            - generic [ref=e290]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e292] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e293]: 
+            - generic [ref=e294]: Saint Louis Fed YouTube page
+    - generic [ref=e296]:
+      - heading "Need Help?" [level=3] [ref=e297]
+      - generic [ref=e298]:
+        - link "Questions or Comments" [ref=e300] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e302] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e303]
+      - generic [ref=e304]:
+        - link "Legal" [ref=e306] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e308] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

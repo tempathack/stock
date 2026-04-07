@@ -1,0 +1,362 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Population, Employment, & Labor Markets" [ref=e65] [cursor=pointer]:
+          - /url: /categories/10
+        - text: ">"
+        - link "Current Employment Statistics (Establishment Survey)" [ref=e66] [cursor=pointer]:
+          - /url: /categories/11
+        - text: ">"
+        - link "Total Nonfarm" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32305
+    - generic [ref=e68]:
+      - generic "PAYEMS"
+      - generic [ref=e69]:
+        - heading "Add to favorites All Employees, Total Nonfarm (PAYEMS)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: All Employees, Total Nonfarm (PAYEMS)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "Mar 2026: 158,637"
+              - generic "Apr 3, 2026 8:19 AM CDT" [ref=e85]: "Updated: Apr 3, 2026 8:19 AM CDT"
+              - 'link "Next Release Date: May 8, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=50&y=2026
+                - generic "May 8, 2026" [ref=e88]: "Next Release Date: May 8, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Thousands of Persons,
+              - generic [ref=e93]: Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Monthly
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - button "Share Graph " [ref=e135] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e136]: 
+              - text:   
+            - generic [ref=e137]:
+              - button "Account Tools " [ref=e138] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e139]: 
+              - text:     
+          - generic [ref=e141]:
+            - link "Share on X" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Share on Reddit" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Post to Linkedin" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+        - generic [ref=e150]:
+          - generic [ref=e152]:
+            - heading "Notes" [level=2] [ref=e153]
+            - generic [ref=e154]:
+              - paragraph [ref=e155]:
+                - strong [ref=e156]: "Source:"
+                - link "U.S. Bureau of Labor Statistics" [ref=e157] [cursor=pointer]:
+                  - /url: https://www.bls.gov/
+                  - text: U.S. Bureau of Labor Statistics
+                  - generic [ref=e158]: 
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "Release:"
+                - link "Employment Situation" [ref=e161] [cursor=pointer]:
+                  - /url: http://www.bls.gov/ces/
+                  - text: Employment Situation
+                  - generic [ref=e162]: 
+              - paragraph [ref=e164]:
+                - strong [ref=e165]: "Units:"
+                - generic [ref=e166]: Thousands of Persons, Seasonally Adjusted
+              - paragraph [ref=e167]:
+                - strong [ref=e168]: "Frequency:"
+                - generic [ref=e169]: Monthly
+              - heading "Notes:" [level=4] [ref=e171]
+              - paragraph [ref=e172]:
+                - text: "All Employees: Total Nonfarm, commonly known as Total Nonfarm Payroll, is a measure of the number of U.S. workers in the economy that excludes proprietors, private household employees, unpaid volunteers, farm employees, and the unincorporated self-employed. This measure accounts for approximately 80 percent of the workers who contribute to Gross Domestic Product (GDP)."
+                - text: This measure provides useful insights into the current economic situation because it can represent the number of jobs added or lost in an economy. Increases in employment might indicate that businesses are hiring which might also suggest that businesses are growing. Additionally, those who are newly employed have increased their personal incomes, which means (all else constant) their disposable incomes have also increased, thus fostering further economic expansion.
+                - text: "Generally, the U.S. labor force and levels of employment and unemployment are subject to fluctuations due to seasonal changes in weather, major holidays, and the opening and closing of schools. The Bureau of Labor Statistics (BLS) adjusts the data to offset the seasonal effects to show non-seasonal changes: for example, women's participation in the labor force; or a general decline in the number of employees, a possible indication of a downturn in the economy. To closely examine seasonal and non-seasonal changes, the BLS releases two monthly statistical measures: the seasonally adjusted All Employees: Total Nonfarm (PAYEMS) and All Employees: Total Nonfarm (PAYNSA), which is not seasonally adjusted."
+                - text: The series comes from the 'Current Employment Statistics (Establishment Survey).'
+                - text: "The source code is: CES0000000001"
+              - generic [ref=e173]:
+                - heading "Suggested Citation:" [level=4] [ref=e174]
+                - paragraph [ref=e176]: U.S. Bureau of Labor Statistics, All Employees, Total Nonfarm [PAYEMS], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/PAYEMS, April 4, 2026.
+          - generic [ref=e178]:
+            - heading "Release Tables" [level=2] [ref=e179]
+            - generic [ref=e180]:
+              - generic [ref=e181]: Employment Situation
+              - list [ref=e182]:
+                - listitem [ref=e183]:
+                  - 'link "Link to release table: Employment Situation, Table B-1. Employees on nonfarm payrolls by industry sector and selected industry detail, Seasonally adjusted" [ref=e184] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=50&eid=4881#snid=4882
+                    - generic [ref=e185]: 
+                    - text: Table B-1. Employees on nonfarm payrolls by industry sector and selected industry detail, Seasonally adjusted
+          - generic [ref=e187]:
+            - heading "Related Data and Content" [level=2] [ref=e188]
+            - generic [ref=e189]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e190]
+              - generic [ref=e191]:
+                - generic [ref=e192]:
+                  - link "Unemployment Rate" [ref=e193] [cursor=pointer]:
+                    - /url: /series/UNRATE
+                    - img [ref=e194]
+                  - generic [ref=e195]:
+                    - text: ...
+                    - link "Unemployment Rate" [ref=e196] [cursor=pointer]:
+                      - /url: /series/UNRATE
+                      - strong [ref=e197]: Unemployment Rate
+                - generic [ref=e198]:
+                  - link "Initial Claims" [ref=e199] [cursor=pointer]:
+                    - /url: /series/ICSA
+                    - img [ref=e200]
+                  - generic [ref=e201]:
+                    - text: ...
+                    - link "Initial Claims" [ref=e202] [cursor=pointer]:
+                      - /url: /series/ICSA
+                      - strong [ref=e203]: Initial Claims
+                - generic [ref=e204]:
+                  - link "Average Hourly Earnings of All Employees, Total Private" [ref=e205] [cursor=pointer]:
+                    - /url: /series/CES0500000003
+                    - img [ref=e206]
+                  - generic [ref=e207]:
+                    - text: ...
+                    - link "Average Hourly Earnings of All Employees, Total Private" [ref=e208] [cursor=pointer]:
+                      - /url: /series/CES0500000003
+                      - strong [ref=e209]: Average Hourly Earnings of All Employees, Total Private
+                - generic [ref=e210]:
+                  - link "Labor Force Participation Rate" [ref=e211] [cursor=pointer]:
+                    - /url: /series/CIVPART
+                    - img [ref=e212]
+                  - generic [ref=e213]:
+                    - text: ...
+                    - link "Labor Force Participation Rate" [ref=e214] [cursor=pointer]:
+                      - /url: /series/CIVPART
+                      - strong [ref=e215]: Labor Force Participation Rate
+                - text: ... ... ... ...
+                - generic [ref=e216]:
+                  - button "click to see more" [ref=e217] [cursor=pointer]: See More...
+                  - separator [ref=e218]
+              - heading "Content Suggestions" [level=3] [ref=e219]
+              - generic [ref=e220]:
+                - generic [ref=e221]:
+                  - link "Manufacturing employment and productivity" [ref=e222] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/12/manufacturing-employment-and-productivity/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e223]
+                  - generic [ref=e224]: FRED Blog
+                  - generic [ref=e225]:
+                    - text: ...
+                    - link "Manufacturing employment and productivity" [ref=e226] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/12/manufacturing-employment-and-productivity/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e227]: Manufacturing employment and productivity
+                - generic [ref=e228]:
+                  - link "The health care job market" [ref=e229] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2026/03/the-health-care-job-market/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e230]
+                  - generic [ref=e231]: FRED Blog
+                  - generic [ref=e232]:
+                    - text: ...
+                    - link "The health care job market" [ref=e233] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2026/03/the-health-care-job-market/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e234]: The health care job market
+                - generic [ref=e235]:
+                  - link "Total employment changes by thousands, while millions change jobs every month" [ref=e236] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2026/03/total-employment-changes-by-thousands-while-millions-change-jobs-every-month/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e237]
+                  - generic [ref=e238]: FRED Blog
+                  - generic [ref=e239]:
+                    - text: ...
+                    - link "Total employment changes by thousands, while millions change jobs every month" [ref=e240] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2026/03/total-employment-changes-by-thousands-while-millions-change-jobs-every-month/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e241]: Total employment changes by thousands, while millions change jobs every month
+                - generic [ref=e242]:
+                  - link "All Employees, Total Nonfarm" [ref=e243] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=PAYEMS&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e244]
+                  - generic [ref=e245]: ALFRED Vintage Series
+                  - generic [ref=e246]:
+                    - text: ...
+                    - link "All Employees, Total Nonfarm" [ref=e247] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=PAYEMS&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e248]: All Employees, Total Nonfarm
+                - text: ... ... ... ... ... ...
+                - generic [ref=e249]:
+                  - button "click to see more" [ref=e250] [cursor=pointer]: See More...
+                  - separator [ref=e251]
+              - heading "Other Formats" [level=3] [ref=e252]
+              - link "Monthly, Not Seasonally Adjusted" [ref=e254] [cursor=pointer]:
+                - /url: /series/PAYNSA
+              - heading "Related Categories" [level=3] [ref=e256]
+              - generic [ref=e257]:
+                - link "Total Nonfarm" [ref=e258] [cursor=pointer]:
+                  - /url: /categories/32305
+                - link "Current Employment Statistics (Establishment Survey)" [ref=e259] [cursor=pointer]:
+                  - /url: /categories/11
+                - link "Population, Employment, & Labor Markets" [ref=e260] [cursor=pointer]:
+                  - /url: /categories/10
+              - heading "Releases" [level=3] [ref=e262]
+              - link "More Series from Employment Situation" [ref=e264] [cursor=pointer]:
+                - /url: /release?rid=50
+              - heading "Tags" [level=3] [ref=e266]
+              - generic:
+                - link "Headline Figure" [ref=e267] [cursor=pointer]:
+                  - /url: /tags/series?t=headline%20figure
+                - link "Payrolls" [ref=e268] [cursor=pointer]:
+                  - /url: /tags/series?t=payrolls
+                - link "Current Employment Statistics Survey (Establishment Survey)" [ref=e269] [cursor=pointer]:
+                  - /url: /tags/series?t=establishment%20survey
+                - link "Nonfarm" [ref=e270] [cursor=pointer]:
+                  - /url: /tags/series?t=nonfarm
+                - link "Employment" [ref=e271] [cursor=pointer]:
+                  - /url: /tags/series?t=employment
+                - link "Seasonally Adjusted" [ref=e272] [cursor=pointer]:
+                  - /url: /tags/series?t=sa
+                - link "Bureau of Labor Statistics" [ref=e273] [cursor=pointer]:
+                  - /url: /tags/series?t=bls
+                - link "Monthly" [ref=e274] [cursor=pointer]:
+                  - /url: /tags/series?t=monthly
+                - link "Nation" [ref=e275] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e276] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e277] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+        - text:    
+  - text:  
+  - generic [ref=e280]:
+    - generic [ref=e281]:
+      - generic [ref=e282]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e283]
+        - generic [ref=e286]:
+          - textbox "email" [ref=e287]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e288] [cursor=pointer]
+      - generic [ref=e289]:
+        - heading "Follow us" [level=3] [ref=e290]
+        - generic [ref=e291]:
+          - link "Saint Louis Fed linkedin page" [ref=e293] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e294]: 
+            - generic [ref=e295]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e297] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e298]: 
+            - generic [ref=e299]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e301] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e302]: 
+            - generic [ref=e303]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e305] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e306]: 
+            - generic [ref=e307]: Saint Louis Fed YouTube page
+    - generic [ref=e309]:
+      - heading "Need Help?" [level=3] [ref=e310]
+      - generic [ref=e311]:
+        - link "Questions or Comments" [ref=e313] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e315] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e316]
+      - generic [ref=e317]:
+        - link "Legal" [ref=e319] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e321] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

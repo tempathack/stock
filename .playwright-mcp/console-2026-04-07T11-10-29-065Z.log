@@ -1,0 +1,6 @@
+[    6051ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'. @ :0
+[    6364ms] [ERROR] ErrorUtils caught an error:
+
+[storage] storage bucket persistence denied (aquire-persistent-storage-denied)
+
+Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs. {column: 17870, clientTime: 1775560235, extra: Object, guardList: Array(0), hash: mcmfrr} @ https://static.whatsapp.net/rsrc.php/v4/ya/r/R1pEz0OuWy4.js:78

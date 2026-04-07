@@ -1,0 +1,115 @@
+{
+  "project": "Stock Prediction Platform — All Training Macros in Dashboard",
+  "branchName": "ralph/all-training-macros-dashboard",
+  "description": "The training pipeline uses 19 macro features (5 yfinance + 14 FRED) but the dashboard only shows 9. Add all missing training macros to the dashboard Macro View so operators can see every feature the models use. Training macros: vix, spy_return, sector_return, high52w_pct, low52w_pct (yfinance) + dgs2, dgs10, t10y2y, t10y3m, bamlh0a0hym2, dbaa, t10yie, dcoilwtico, dtwexbgs, dexjpus, icsa, nfci, cpiaucsl, pcepilfe (FRED). All verified via Playwright MCP.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Extend /market/macro/latest to return all 19 training macro fields",
+      "description": "As a platform operator, I need the /market/macro/latest API to return all 19 macro features used in training so the dashboard can display them all.",
+      "acceptanceCriteria": [
+        "Read services/api/app/models/schemas.py — find MacroLatestResponse",
+        "Add missing fields to MacroLatestResponse: sector_return (Optional[float]), high52w_pct (Optional[float]), low52w_pct (Optional[float]), t10y3m (Optional[float]), dbaa (Optional[float]), dexjpus (Optional[float]), nfci (Optional[float]), cpiaucsl (Optional[float])",
+        "Read services/api/app/services/market_service.py — find get_macro_latest()",
+        "Update get_macro_latest() to also SELECT sector_return, high52w_pct, low52w_pct from feast_yfinance_macro and t10y3m, dbaa, dexjpus, nfci, cpiaucsl from macro_fred_daily",
+        "Rebuild + redeploy stock-api: eval $(minikube docker-env) && docker build -t stock-api:latest stock-prediction-platform/services/api/ && kubectl rollout restart deployment/stock-api -n ingestion",
+        "curl http://localhost:8010/market/macro/latest — response must include sector_return, high52w_pct, low52w_pct, dbaa, dexjpus, nfci, cpiaucsl fields",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Extend /market/macro/history to include all 19 training macro fields",
+      "description": "As a platform operator, I need the history endpoint to also return the missing macro fields so timeseries charts can plot all training features.",
+      "acceptanceCriteria": [
+        "Read services/api/app/models/schemas.py — find MacroHistoryPoint",
+        "Add missing fields to MacroHistoryPoint: sector_return, high52w_pct, low52w_pct, dbaa, dexjpus, nfci, cpiaucsl — all Optional[float]",
+        "Update get_macro_history() in market_service.py to JOIN feast_yfinance_macro for sector_return, high52w_pct, low52w_pct alongside macro_fred_daily fields",
+        "Note: feast_yfinance_macro has ticker='SPY' as the macro row; macro_fred_daily has as_of_date as PK — join on date",
+        "Rebuild + redeploy stock-api (same docker build + rollout restart as US-001)",
+        "curl 'http://localhost:8010/market/macro/history?days=5' — each object must include sector_return and nfci fields",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Update MacroLatest TypeScript interface and fetchMacroLatest to include all 19 fields",
+      "description": "As a frontend developer, I need the TypeScript types and API client to expose all 19 training macro fields so components can use them.",
+      "acceptanceCriteria": [
+        "Read frontend/src/api/types.ts — find MacroLatest interface",
+        "Add to MacroLatest: sector_return, high52w_pct, low52w_pct, t10y3m, dbaa, dexjpus, nfci, cpiaucsl — all number | null",
+        "Read frontend/src/api/types.ts — find MacroHistoryPoint interface",
+        "Add same missing fields to MacroHistoryPoint",
+        "TypeScript 0 errors: cd stock-prediction-platform/services/frontend && npx tsc --noEmit",
+        "npm run build succeeds",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Expand MacroPanel to show all 19 training macro indicators (not just 9)",
+      "description": "As a user, I want the Macro View cards to show every feature the models train on so I can see the full macro context driving predictions.",
+      "acceptanceCriteria": [
+        "Read frontend/src/components/dashboard/MacroPanel.tsx — find MACRO_INDICATORS config array",
+        "Add 10 missing indicator configs to MACRO_INDICATORS: sector_return ('Sector ETF Return','+0.2%'), high52w_pct ('52W High %','0.2f'), low52w_pct ('52W Low %','0.2f'), t10y3m ('3M-10Y Spread','+0.2f','%'), dbaa ('Moody BAA Yield','0.2f','%'), dexjpus ('USD/JPY','0.1f'), nfci ('Natl Fin. Conditions','+0.2f'), cpiaucsl ('CPI Index','0.1f'), plus verify dgs2 and t10yie already present",
+        "Color logic for new indicators: sector_return > 0 green < 0 red; high52w_pct > 0.9 green; low52w_pct < 0.1 red; all others neutral gray",
+        "Grid layout updates automatically since it maps MACRO_INDICATORS — no layout changes needed",
+        "TypeScript 0 errors, npm run build succeeds",
+        "Navigate to http://localhost:5173/ via Playwright MCP, click Macro toggle",
+        "Take screenshot macro-all-19-cards.png — confirm more than 9 cards visible (17-19 cards)",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Add all missing macro series to MacroChart series picker",
+      "description": "As a user, I want to be able to plot any of the 14 FRED + 5 yfinance training macros on the timeseries chart so I can explore correlations.",
+      "acceptanceCriteria": [
+        "Read frontend/src/components/dashboard/MacroChart.tsx — find SERIES_CONFIG array",
+        "Add missing series to SERIES_CONFIG: sector_return ('Sector Return','#a5d6a7','+0.2%'), high52w_pct ('52W High %','#80deea','0.2f'), low52w_pct ('52W Low %','#ef9a9a','0.2f'), t10y3m ('3M-10Y Spread','#ffe082','+0.2f'), dbaa ('BAA Yield','#bcaaa4','%'), dexjpus ('USD/JPY','#b39ddb',''), nfci ('NFCI','#80cbc4','+0.3f'), cpiaucsl ('CPI','#ffcc80',''), pcepilfe ('Core PCE','#c5e1a5','')",
+        "Default selected series stays: dgs10, t10y2y, dcoilwtico — do not auto-select all",
+        "TypeScript 0 errors, npm run build succeeds",
+        "Navigate to http://localhost:5173/, click Macro toggle, scroll to chart",
+        "Take screenshot macro-chart-all-series.png — confirm chip row shows all series options",
+        "Click a new chip (e.g. BAA Yield) and take screenshot macro-chart-baa.png — confirm new line appears",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 5,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "Populate feast_yfinance_macro with sector_return, high52w_pct, low52w_pct synthetic data and final production verification",
+      "description": "As a platform operator, I need sector_return, high52w_pct, and low52w_pct populated in feast_yfinance_macro and all 7 tabs verified working with the expanded macro dashboard.",
+      "acceptanceCriteria": [
+        "Check if feast_yfinance_macro rows have non-null sector_return, high52w_pct, low52w_pct: kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c 'SELECT sector_return, high52w_pct, low52w_pct FROM feast_yfinance_macro LIMIT 3;'",
+        "If null: UPDATE feast_yfinance_macro SET sector_return=0.0008 + random()*0.002-0.001, high52w_pct=0.82+random()*0.1, low52w_pct=0.25+random()*0.15 via kubectl exec psql",
+        "Verify macro_fred_daily has non-null values for dbaa, dexjpus, nfci, cpiaucsl — if null, UPDATE with realistic values: dbaa=5.89+noise, dexjpus=149.8+noise, nfci=-0.18+noise, cpiaucsl=314.5+noise",
+        "Navigate to http://localhost:5173/ via Playwright MCP, click Macro tab",
+        "Take screenshot final-macro-all-cards.png — confirm 17+ cards showing real or synthetic values (not all dashes)",
+        "Final 7-tab pass: Dashboard (Market + Macro), Forecasts, Models, Drift, Analytics, Backtest, Search — 0 console errors",
+        "Take screenshots: final-market.png, final-macro.png, final-forecasts.png, final-models.png",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 6,
+      "passes": true,
+      "notes": ""
+    }
+  ]
+}

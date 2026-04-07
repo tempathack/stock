@@ -1,0 +1,3 @@
+[      96ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[   37012ms] [ERROR] MUI X: Usage of the `rowCount` prop with client side pagination (`paginationMode="client"`) has no effect.
+`rowCount` is only meant to be used with `paginationMode="server"`. @ http://localhost:5173/node_modules/.vite/deps/chunk-BU4KNBOI.js?v=c58695fe:61

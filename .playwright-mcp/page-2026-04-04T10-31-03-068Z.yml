@@ -1,0 +1,429 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Financial Indicators" [ref=e66] [cursor=pointer]:
+          - /url: /categories/46
+        - text: ">"
+        - link "Volatility Indexes" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32425
+    - generic [ref=e68]:
+      - generic "VIXCLS"
+      - generic [ref=e69]:
+        - 'heading "Add to favorites CBOE Volatility Index: VIX (VIXCLS)" [level=1] [ref=e73]':
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: "CBOE Volatility Index: VIX (VIXCLS)"
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-01: 24.54"
+              - generic "Apr 2, 2026 8:37 AM CDT" [ref=e85]: "Updated: Apr 2, 2026 8:37 AM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=200&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Index,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily,
+              - generic [ref=e98]: Close
+          - generic [ref=e101]:
+            - generic [ref=e103]:
+              - generic "1 year date range" [ref=e104] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e105] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e106] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e107] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: From
+                - textbox "Change start date" [ref=e112]: 2021-04-01
+              - generic [ref=e114]: to
+              - textbox "Change end date" [ref=e116]: 2026-04-01
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - button "Edit Graph " [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]:
+                  - text: Edit Graph
+                  - generic [ref=e121]: 
+              - text: 
+            - generic [ref=e123]:
+              - button "Download" [ref=e124] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e125]: 
+              - text: 
+        - generic [ref=e128]:
+          - generic [ref=e135]:
+            - region "FRED Graph" [ref=e137]:
+              - generic [ref=e138]:
+                - paragraph [ref=e139]: Chart
+                - generic [ref=e140]: Line chart with 1306 data points.
+                - button "View as data table, Chart" [ref=e142] [cursor=pointer]
+                - generic [ref=e143]: The chart has 1 X axis displaying xAxis. Data ranges from 1990-01-02 1:00:00 to 2026-04-01 1:00:00.
+                - generic [ref=e144]: The chart has 2 Y axes displaying Index and yAxisRight.
+              - generic [ref=e148]:
+                - generic:
+                  - region "Toggle series visibility, Chart":
+                    - list:
+                      - listitem:
+                        - 'button "Show CBOE Volatility Index: VIX" [pressed] [ref=e149] [cursor=pointer]'
+                - img "Interactive FRED Graph" [ref=e150]:
+                  - 'region "CBOE Volatility Index: VIX series with 1306 points" [ref=e160]'
+                  - generic [ref=e164]:
+                    - generic [ref=e165]: "10"
+                    - generic [ref=e166]: "20"
+                    - generic [ref=e167]: "30"
+                    - generic [ref=e168]: "40"
+                    - generic [ref=e169]: "50"
+                    - generic [ref=e170]: "60"
+                  - generic [ref=e171]:
+                    - generic [ref=e172]: 2021-07
+                    - generic [ref=e173]: 2022-01
+                    - generic [ref=e174]: 2022-07
+                    - generic [ref=e175]: 2023-01
+                    - generic [ref=e176]: 2023-07
+                    - generic [ref=e177]: 2024-01
+                    - generic [ref=e178]: 2024-07
+                    - generic [ref=e179]: 2025-01
+                    - generic [ref=e180]: 2025-07
+                    - generic [ref=e181]: 2026-01
+                - generic [ref=e182] [cursor=pointer]: "CBOE Volatility Index: VIX"
+                - generic [ref=e183]: Index
+              - generic [ref=e185]: End of interactive chart.
+              - generic [ref=e186]:
+                - generic [ref=e187]:
+                  - generic [ref=e188]:
+                    - text: "Source: Chicago Board Options Exchange"
+                    - generic [ref=e189]: via FRED®
+                  - link [ref=e192] [cursor=pointer]:
+                    - /url: https://fredhelp.stlouisfed.org/fred/data/understanding-the-data/recession-bars/
+                    - emphasis [ref=e193]: Shaded areas indicate U.S. recessions.
+                - generic [ref=e194]: fred.stlouisfed.org
+            - option "Index" [selected]
+            - option "Change, Index"
+            - option "Change from Year Ago, Index"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Index (Scale value to 100 for chosen date)"
+            - option "Daily, Close" [selected]
+            - option "Weekly, Ending Friday"
+            - option "Weekly, Ending Thursday"
+            - option "Weekly, Ending Wednesday"
+            - option "Weekly, Ending Tuesday"
+            - option "Weekly, Ending Monday"
+            - option "Weekly, Ending Sunday"
+            - option "Weekly, Ending Saturday"
+            - option "Biweekly, Ending Wednesday"
+            - option "Biweekly, Ending Monday"
+            - option "Monthly"
+            - option "Quarterly"
+            - option "Semiannual"
+            - option "Annual"
+            - combobox "customize your graph data by combining other series with your existing series." [ref=e196]
+            - option "Select" [selected]
+            - option "Change"
+            - option "Change from Year Ago"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Natural Log"
+            - option "Index (Scale value to 100 for chosen date)"
+          - generic "Full screen" [ref=e197] [cursor=pointer]:
+            - text: Fullscreen
+            - generic [ref=e198]: 
+        - generic [ref=e199]:
+          - paragraph [ref=e202]:
+            - strong [ref=e203]:
+              - text: Data in this graph are copyrighted. Please review the copyright information in the
+              - link "series notes" [ref=e204] [cursor=pointer]:
+                - /url: "#notes"
+              - text: before sharing.
+          - generic [ref=e205]:
+            - generic [ref=e206]:
+              - generic [ref=e207]:
+                - button "Share Graph " [ref=e208] [cursor=pointer]:
+                  - text: Share Graph
+                  - generic [ref=e209]: 
+                - text:   
+              - generic [ref=e210]:
+                - button "Account Tools " [ref=e211] [cursor=pointer]:
+                  - text: Account Tools
+                  - generic [ref=e212]: 
+                - text:     
+            - generic [ref=e214]:
+              - link "Share on X" [ref=e215] [cursor=pointer]:
+                - /url: /graph/share.php
+              - link "Post on Facebook" [ref=e216] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e217]: 
+              - link "Share on Reddit" [ref=e218] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e219]: 
+              - link "Post to Linkedin" [ref=e220] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e221]: 
+        - generic [ref=e223]:
+          - generic [ref=e225]:
+            - heading "Notes" [level=2] [ref=e226]
+            - generic [ref=e227]:
+              - paragraph [ref=e228]:
+                - strong [ref=e229]: "Source:"
+                - link "Chicago Board Options Exchange" [ref=e230] [cursor=pointer]:
+                  - /url: http://www.cboe.com/
+                  - text: Chicago Board Options Exchange
+                  - generic [ref=e231]: 
+              - paragraph [ref=e232]:
+                - strong [ref=e233]: "Release:"
+                - link "CBOE Market Statistics" [ref=e234] [cursor=pointer]:
+                  - /url: http://www.cboe.com/data/mktstat.aspx
+                  - text: CBOE Market Statistics
+                  - generic [ref=e235]: 
+              - paragraph [ref=e237]:
+                - strong [ref=e238]: "Units:"
+                - generic [ref=e239]: Index, Not Seasonally Adjusted
+              - paragraph [ref=e240]:
+                - strong [ref=e241]: "Frequency:"
+                - generic [ref=e242]: Daily, Close
+              - heading "Notes:" [level=4] [ref=e244]
+              - paragraph [ref=e245]: VIX measures market expectation of near term volatility conveyed by stock index option prices. Copyright, 2016, Chicago Board Options Exchange, Inc. Reprinted with permission.
+              - generic [ref=e246]:
+                - heading "Suggested Citation:" [level=4] [ref=e247]
+                - paragraph [ref=e249]: "Chicago Board Options Exchange, CBOE Volatility Index: VIX [VIXCLS], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/VIXCLS, April 4, 2026."
+          - generic [ref=e251]:
+            - heading "Related Data and Content" [level=2] [ref=e252]
+            - generic [ref=e253]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e254]
+              - generic [ref=e255]:
+                - generic [ref=e256]:
+                  - link "CBOE S&P 500 3-Month Volatility Index" [ref=e257] [cursor=pointer]:
+                    - /url: /series/VXVCLS
+                    - img [ref=e258]
+                  - generic [ref=e259]:
+                    - text: ...
+                    - link "CBOE S&P 500 3-Month Volatility Index" [ref=e260] [cursor=pointer]:
+                      - /url: /series/VXVCLS
+                      - strong [ref=e261]: CBOE S&P 500 3-Month Volatility Index
+                - generic [ref=e262]:
+                  - link "S&P 500" [ref=e263] [cursor=pointer]:
+                    - /url: /series/SP500
+                    - img [ref=e264]
+                  - generic [ref=e265]:
+                    - text: ...
+                    - link "S&P 500" [ref=e266] [cursor=pointer]:
+                      - /url: /series/SP500
+                      - strong [ref=e267]: S&P 500
+                - generic [ref=e268]:
+                  - link "TED Spread (DISCONTINUED)" [ref=e269] [cursor=pointer]:
+                    - /url: /series/TEDRATE
+                    - img [ref=e270]
+                  - generic [ref=e271]:
+                    - text: ...
+                    - link "TED Spread (DISCONTINUED)" [ref=e272] [cursor=pointer]:
+                      - /url: /series/TEDRATE
+                      - strong [ref=e273]: TED Spread (DISCONTINUED)
+                - generic [ref=e274]:
+                  - link "CBOE Crude Oil ETF Volatility Index" [ref=e275] [cursor=pointer]:
+                    - /url: /series/OVXCLS
+                    - img [ref=e276]
+                  - generic [ref=e277]:
+                    - text: ...
+                    - link "CBOE Crude Oil ETF Volatility Index" [ref=e278] [cursor=pointer]:
+                      - /url: /series/OVXCLS
+                      - strong [ref=e279]: CBOE Crude Oil ETF Volatility Index
+                - text: ... ... ... ...
+                - generic [ref=e280]:
+                  - button "click to see more" [ref=e281] [cursor=pointer]: See More...
+                  - separator [ref=e282]
+              - heading "Content Suggestions" [level=3] [ref=e283]
+              - generic [ref=e284]:
+                - generic [ref=e285]:
+                  - link "Comparing measures of implied stock price volatility" [ref=e286] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/06/comparing-measures-of-implied-stock-price-volatility/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e287]
+                  - generic [ref=e288]: FRED Blog
+                  - generic [ref=e289]:
+                    - text: ...
+                    - link "Comparing measures of implied stock price volatility" [ref=e290] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/06/comparing-measures-of-implied-stock-price-volatility/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e291]: Comparing measures of implied stock price volatility
+                - generic [ref=e292]:
+                  - 'link "Measuring fear: What the VIX reveals about market uncertainty" [ref=e293] [cursor=pointer]':
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/02/measuring-fear-what-the-vix-reveals-about-market-uncertainty/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e294]
+                  - generic [ref=e295]: FRED Blog
+                  - generic [ref=e296]:
+                    - text: ...
+                    - 'link "Measuring fear: What the VIX reveals about market uncertainty" [ref=e297] [cursor=pointer]':
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/02/measuring-fear-what-the-vix-reveals-about-market-uncertainty/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e298]: "Measuring fear: What the VIX reveals about market uncertainty"
+                - generic [ref=e299]:
+                  - link "Measuring uncertainty" [ref=e300] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/04/measuring-uncertainty/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e301]
+                  - generic [ref=e302]: FRED Blog
+                  - generic [ref=e303]:
+                    - text: ...
+                    - link "Measuring uncertainty" [ref=e304] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/04/measuring-uncertainty/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e305]: Measuring uncertainty
+                - generic [ref=e306]:
+                  - 'link "CBOE Volatility Index: VIX" [ref=e307] [cursor=pointer]':
+                    - /url: https://alfred.stlouisfed.org/series?seid=VIXCLS&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e308]
+                  - generic [ref=e309]: ALFRED Vintage Series
+                  - generic [ref=e310]:
+                    - text: ...
+                    - 'link "CBOE Volatility Index: VIX" [ref=e311] [cursor=pointer]':
+                      - /url: https://alfred.stlouisfed.org/series?seid=VIXCLS&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e312]: "CBOE Volatility Index: VIX"
+                - text: ...
+                - generic [ref=e313]:
+                  - button "click to see more" [ref=e314] [cursor=pointer]: See More...
+                  - separator [ref=e315]
+              - heading "Related Categories" [level=3] [ref=e316]
+              - generic [ref=e317]:
+                - link "Volatility Indexes" [ref=e318] [cursor=pointer]:
+                  - /url: /categories/32425
+                - link "Financial Indicators" [ref=e319] [cursor=pointer]:
+                  - /url: /categories/46
+                - link "Money, Banking, & Finance" [ref=e320] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e322]
+              - link "More Series from CBOE Market Statistics" [ref=e324] [cursor=pointer]:
+                - /url: /release?rid=200
+              - heading "Tags" [level=3] [ref=e326]
+              - generic:
+                - link "Volatility Index" [ref=e327] [cursor=pointer]:
+                  - /url: /tags/series?t=vix
+                - link "Chicago Board Options Exchange" [ref=e328] [cursor=pointer]:
+                  - /url: /tags/series?t=cboe
+                - link "Volatility" [ref=e329] [cursor=pointer]:
+                  - /url: /tags/series?t=volatility
+                - link "Stock Market" [ref=e330] [cursor=pointer]:
+                  - /url: /tags/series?t=stock%20market
+                - link "Daily" [ref=e331] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - 'link "Copyrighted: Citation Required" [ref=e332] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Nation" [ref=e333] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e334] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e335] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e338]:
+    - generic [ref=e339]:
+      - generic [ref=e340]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e341]
+        - generic [ref=e344]:
+          - textbox "email" [ref=e345]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e346] [cursor=pointer]
+      - generic [ref=e347]:
+        - heading "Follow us" [level=3] [ref=e348]
+        - generic [ref=e349]:
+          - link "Saint Louis Fed linkedin page" [ref=e351] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e352]: 
+            - generic [ref=e353]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e355] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e356]: 
+            - generic [ref=e357]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e359] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e360]: 
+            - generic [ref=e361]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e363] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e364]: 
+            - generic [ref=e365]: Saint Louis Fed YouTube page
+    - generic [ref=e367]:
+      - heading "Need Help?" [level=3] [ref=e368]
+      - generic [ref=e369]:
+        - link "Questions or Comments" [ref=e371] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e373] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e374]
+      - generic [ref=e375]:
+        - link "Legal" [ref=e377] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e379] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

@@ -1,0 +1,23 @@
+[     139ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[     222ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     222ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health/k8s:0
+[     223ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0
+[     223ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     223ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[     303ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     303ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/comparison:0
+[     303ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     303ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift/rolling-performance?days=30:0
+[     303ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[     303ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/retrain-status:0
+[    1224ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1224ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift:0
+[    1305ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1305ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/comparison:0
+[    1305ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1305ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/drift/rolling-performance?days=30:0
+[    1306ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[    1306ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/models/retrain-status:0
+[   30227ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[   30227ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8000/health:0

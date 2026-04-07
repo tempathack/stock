@@ -1,0 +1,18 @@
+[  241420ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/CPT' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[  241421ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-LuKpwYkS.js:105
+[  241421ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/CPT:0
+[  242606ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/CPT' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[  242606ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-LuKpwYkS.js:105
+[  242606ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/CPT:0
+[  247622ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/CPT' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[  247623ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-LuKpwYkS.js:105
+[  247623ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/CPT:0
+[  248636ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/CPT' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[  248636ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-LuKpwYkS.js:105
+[  248636ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/CPT:0
+[  253660ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/CPT' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[  253661ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-LuKpwYkS.js:105
+[  253661ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/CPT:0
+[  254673ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/streaming-features/CPT' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[  254673ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-LuKpwYkS.js:105
+[  254673ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/streaming-features/CPT:0

@@ -1,0 +1,365 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Financial Indicators" [ref=e66] [cursor=pointer]:
+          - /url: /categories/46
+        - text: ">"
+        - link "Financial Activity Measures" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32457
+    - generic [ref=e68]:
+      - generic "NFCI"
+      - generic [ref=e69]:
+        - heading "Add to favorites Chicago Fed National Financial Conditions Index (NFCI)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: Chicago Fed National Financial Conditions Index (NFCI)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-03-27: -0.43366"
+              - generic "Apr 1, 2026 7:45 AM CDT" [ref=e85]: "Updated: Apr 1, 2026 7:45 AM CDT"
+              - 'link "Next Release Date: Apr 8, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=221&y=2026
+                - generic "Apr 8, 2026" [ref=e88]: "Next Release Date: Apr 8, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Index,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Weekly,
+              - generic [ref=e98]: Ending Friday
+          - generic [ref=e101]:
+            - generic [ref=e103]:
+              - generic "1 year date range" [ref=e104] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e105] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e106] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e107] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: From
+                - textbox "Change start date" [ref=e112]: 1971-01-08
+              - generic [ref=e114]: to
+              - textbox "Change end date" [ref=e116]: 2026-03-27
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - button "Edit Graph " [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]:
+                  - text: Edit Graph
+                  - generic [ref=e121]: 
+              - text: 
+            - generic [ref=e123]:
+              - button "Download" [ref=e124] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e125]: 
+              - text: 
+        - generic [ref=e128]:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - option "Index" [selected]
+                      - option "Change, Index"
+                      - option "Change from Year Ago, Index"
+                      - option "Percent Change"
+                      - option "Percent Change from Year Ago"
+                      - option "Compounded Annual Rate of Change"
+                      - option "Continuously Compounded Rate of Change"
+                      - option "Continuously Compounded Annual Rate of Change"
+                      - option "Index (Scale value to 100 for chosen date)"
+                      - option "Weekly, Ending Friday" [selected]
+                      - option "Biweekly, Ending Wednesday"
+                      - option "Biweekly, Ending Monday"
+                      - option "Monthly"
+                      - option "Quarterly"
+                      - option "Semiannual"
+                      - option "Annual"
+                      - combobox "customize your graph data by combining other series with your existing series." [ref=e131]
+                      - option "Select" [selected]
+                      - option "Change"
+                      - option "Change from Year Ago"
+                      - option "Percent Change"
+                      - option "Percent Change from Year Ago"
+                      - option "Compounded Annual Rate of Change"
+                      - option "Continuously Compounded Rate of Change"
+                      - option "Continuously Compounded Annual Rate of Change"
+                      - option "Natural Log"
+                      - option "Index (Scale value to 100 for chosen date)"
+          - generic "Full screen" [ref=e132] [cursor=pointer]:
+            - text: Fullscreen
+            - generic [ref=e133]: 
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]:
+              - button "Share Graph " [ref=e138] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e139]: 
+              - text:   
+            - generic [ref=e140]:
+              - button "Account Tools " [ref=e141] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e142]: 
+              - text:     
+          - generic [ref=e144]:
+            - link "Share on X" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e146] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e147]: 
+            - link "Share on Reddit" [ref=e148] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e149]: 
+            - link "Post to Linkedin" [ref=e150] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e151]: 
+        - generic [ref=e153]:
+          - generic [ref=e155]:
+            - heading "Notes" [level=2] [ref=e156]
+            - generic [ref=e157]:
+              - paragraph [ref=e158]:
+                - strong [ref=e159]: "Source:"
+                - link "Federal Reserve Bank of Chicago" [ref=e160] [cursor=pointer]:
+                  - /url: http://www.chicagofed.org
+                  - text: Federal Reserve Bank of Chicago
+                  - generic [ref=e161]: 
+              - paragraph [ref=e162]:
+                - strong [ref=e163]: "Release:"
+                - link "Chicago Fed National Financial Conditions Index" [ref=e164] [cursor=pointer]:
+                  - /url: https://www.chicagofed.org/publications/nfci/index
+                  - text: Chicago Fed National Financial Conditions Index
+                  - generic [ref=e165]: 
+              - paragraph [ref=e167]:
+                - strong [ref=e168]: "Units:"
+                - generic [ref=e169]: Index, Not Seasonally Adjusted
+              - paragraph [ref=e170]:
+                - strong [ref=e171]: "Frequency:"
+                - generic [ref=e172]: Weekly, Ending Friday
+              - heading "Notes:" [level=4] [ref=e174]
+              - paragraph [ref=e175]:
+                - text: The Chicago Fed's National Financial Conditions Index (NFCI) provides a comprehensive weekly update on U.S. financial conditions in money markets, debt and equity markets and the traditional and "shadow" banking systems. Positive values of the NFCI indicate financial conditions that are tighter than average, while negative values indicate financial conditions that are looser than average.
+                - text: For further information, please visit the
+                - link "Federal Reserve Bank of Chicago" [ref=e176] [cursor=pointer]:
+                  - /url: http://www.chicagofed.org/webpages/publications/nfci/index.cfm
+                - text: .
+              - generic [ref=e177]:
+                - heading "Suggested Citation:" [level=4] [ref=e178]
+                - paragraph [ref=e180]: Federal Reserve Bank of Chicago, Chicago Fed National Financial Conditions Index [NFCI], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/NFCI, April 4, 2026.
+          - generic [ref=e182]:
+            - heading "Related Data and Content" [level=2] [ref=e183]
+            - generic [ref=e184]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e185]
+              - generic [ref=e186]:
+                - generic [ref=e187]:
+                  - link "S&P Cotality Case-Shiller IL-Chicago Home Price Index" [ref=e188] [cursor=pointer]:
+                    - /url: /series/CHXRSA
+                    - img [ref=e189]
+                  - generic [ref=e190]:
+                    - text: ...
+                    - link "S&P Cotality Case-Shiller IL-Chicago Home Price Index" [ref=e191] [cursor=pointer]:
+                      - /url: /series/CHXRSA
+                      - strong [ref=e192]: S&P Cotality Case-Shiller IL-Chicago Home Price Index
+                - generic [ref=e193]:
+                  - link "Chicago Fed Adjusted National Financial Conditions Index" [ref=e194] [cursor=pointer]:
+                    - /url: /series/ANFCI
+                    - img [ref=e195]
+                  - generic [ref=e196]:
+                    - text: ...
+                    - link "Chicago Fed Adjusted National Financial Conditions Index" [ref=e197] [cursor=pointer]:
+                      - /url: /series/ANFCI
+                      - strong [ref=e198]: Chicago Fed Adjusted National Financial Conditions Index
+                - generic [ref=e199]:
+                  - link "St. Louis Fed Financial Stress Index" [ref=e200] [cursor=pointer]:
+                    - /url: /series/STLFSI4
+                    - img [ref=e201]
+                  - generic [ref=e202]:
+                    - text: ...
+                    - link "St. Louis Fed Financial Stress Index" [ref=e203] [cursor=pointer]:
+                      - /url: /series/STLFSI4
+                      - strong [ref=e204]: St. Louis Fed Financial Stress Index
+                - generic [ref=e205]:
+                  - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e206] [cursor=pointer]:
+                    - /url: /series/BAMLH0A0HYM2
+                    - img [ref=e207]
+                  - generic [ref=e208]:
+                    - text: ...
+                    - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e209] [cursor=pointer]:
+                      - /url: /series/BAMLH0A0HYM2
+                      - strong [ref=e210]: ICE BofA US High Yield Index Option-Adjusted Spread
+                - text: ... ... ... ...
+                - generic [ref=e211]:
+                  - button "click to see more" [ref=e212] [cursor=pointer]: See More...
+                  - separator [ref=e213]
+              - heading "Content Suggestions" [level=3] [ref=e214]
+              - generic [ref=e215]:
+                - generic [ref=e216]:
+                  - link "Move along. Nothing to see here. (Seriously.)" [ref=e217] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2019/12/move-along-nothing-to-see-here-seriously/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e218]
+                  - generic [ref=e219]: FRED Blog
+                  - generic [ref=e220]:
+                    - text: ...
+                    - link "Move along. Nothing to see here. (Seriously.)" [ref=e221] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2019/12/move-along-nothing-to-see-here-seriously/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e222]: Move along. Nothing to see here. (Seriously.)
+                - generic [ref=e223]:
+                  - link "Chicago Fed National Financial Conditions Index" [ref=e224] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=NFCI&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e225]
+                  - generic [ref=e226]: ALFRED Vintage Series
+                  - generic [ref=e227]:
+                    - text: ...
+                    - link "Chicago Fed National Financial Conditions Index" [ref=e228] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=NFCI&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e229]: Chicago Fed National Financial Conditions Index
+                - generic [ref=e230]:
+                  - 'link "University of Michigan: Consumer Sentiment" [ref=e231] [cursor=pointer]':
+                    - /url: /series/UMCSENT
+                    - img [ref=e232]
+                  - generic [ref=e233]:
+                    - text: ...
+                    - 'link "University of Michigan: Consumer Sentiment" [ref=e234] [cursor=pointer]':
+                      - /url: /series/UMCSENT
+                      - strong [ref=e235]: "University of Michigan: Consumer Sentiment"
+              - heading "Related Categories" [level=3] [ref=e236]
+              - generic [ref=e237]:
+                - link "Financial Activity Measures" [ref=e238] [cursor=pointer]:
+                  - /url: /categories/32457
+                - link "Financial Indicators" [ref=e239] [cursor=pointer]:
+                  - /url: /categories/46
+                - link "Money, Banking, & Finance" [ref=e240] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e242]
+              - link "More Series from Chicago Fed National Financial Conditions Index" [ref=e244] [cursor=pointer]:
+                - /url: /release?rid=221
+              - heading "Tags" [level=3] [ref=e246]
+              - generic:
+                - link "Chicago Fed National Financial Conditions Index" [ref=e247] [cursor=pointer]:
+                  - /url: /tags/series?t=nfci
+                - link "Chicago Fed" [ref=e248] [cursor=pointer]:
+                  - /url: /tags/series?t=frb%20chi
+                - link "Financial" [ref=e249] [cursor=pointer]:
+                  - /url: /tags/series?t=financial
+                - link "Weekly" [ref=e250] [cursor=pointer]:
+                  - /url: /tags/series?t=weekly
+                - link "Indexes" [ref=e251] [cursor=pointer]:
+                  - /url: /tags/series?t=indexes
+                - 'link "Copyrighted: Citation Required" [ref=e252] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Nation" [ref=e253] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e254] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e255] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e258]:
+    - generic [ref=e259]:
+      - generic [ref=e260]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e261]
+        - generic [ref=e264]:
+          - textbox "email" [ref=e265]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e266] [cursor=pointer]
+      - generic [ref=e267]:
+        - heading "Follow us" [level=3] [ref=e268]
+        - generic [ref=e269]:
+          - link "Saint Louis Fed linkedin page" [ref=e271] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e272]: 
+            - generic [ref=e273]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e275] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e276]: 
+            - generic [ref=e277]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e279] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e280]: 
+            - generic [ref=e281]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e283] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e284]: 
+            - generic [ref=e285]: Saint Louis Fed YouTube page
+    - generic [ref=e287]:
+      - heading "Need Help?" [level=3] [ref=e288]
+      - generic [ref=e289]:
+        - link "Questions or Comments" [ref=e291] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e293] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e294]
+      - generic [ref=e295]:
+        - link "Legal" [ref=e297] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e299] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

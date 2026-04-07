@@ -1,0 +1,52 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - main [ref=e5]:
+        - generic [ref=e7]:
+          - generic [ref=e8]:
+            - generic [ref=e11]:
+              - generic [ref=e13]:
+                - button "21st logo Magic Chat" [ref=e15] [cursor=pointer]:
+                  - img "21st logo" [ref=e17]
+                  - generic [ref=e19]: Magic Chat
+                  - img [ref=e20]
+                - button "Close sidebar" [ref=e23] [cursor=pointer]:
+                  - img
+              - generic [ref=e25]:
+                - textbox "Search chats..." [ref=e26]
+                - button "New Chat" [ref=e27] [cursor=pointer]:
+                  - generic [ref=e28]: New Chat
+              - button "Magic MCP" [ref=e30] [cursor=pointer]:
+                - img [ref=e31]
+                - generic [ref=e34]: Magic MCP
+            - generic [ref=e36]:
+              - heading "Last 30 Days" [level=3] [ref=e38]
+              - generic [ref=e41] [cursor=pointer]:
+                - generic [ref=e42]: Risk portal dashboard
+                - generic [ref=e43]: 21 days ago
+            - generic [ref=e45]:
+              - button "Help" [ref=e46] [cursor=pointer]:
+                - img [ref=e47]
+              - button "Free plan Upgrade" [ref=e52] [cursor=pointer]:
+                - generic [ref=e53]:
+                  - generic [ref=e54]:
+                    - img
+                    - generic [ref=e55]: Free plan
+                  - generic [ref=e56]:
+                    - img
+                    - generic [ref=e57]: Upgrade
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - heading "Welcome to Magic" [level=1] [ref=e65]
+              - paragraph [ref=e66]: Generate diverse variants of components and features in one go. Iterate, compare, and ship faster.
+            - generic [ref=e67]:
+              - checkbox "I agree to the Terms of Use" [active] [ref=e68] [cursor=pointer]
+              - generic [ref=e69]:
+                - text: I agree to the
+                - button "Terms of Use" [ref=e70] [cursor=pointer]
+            - button "Continue" [disabled]:
+              - text: Continue
+              - generic:
+                - img
+    - region "Notifications alt+T"
+  - alert [ref=e71]

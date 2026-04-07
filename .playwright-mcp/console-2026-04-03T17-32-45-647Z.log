@@ -1,0 +1,21 @@
+[      79ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[   47186ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/backtest/AAPL?start=2025-04-03&end=2026-04-03:0
+[   47187ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[   48198ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8010/backtest/AAPL?start=2025-04-03&end=2026-04-03:0
+[   48198ms] [ERROR] [API] 404 Request failed with status code 404 @ http://localhost:5173/src/api/client.ts:9
+[ 3807339ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts:9
+[ 3807340ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts:9
+[ 3807340ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts:9
+[ 3807341ms] [ERROR] [API] undefined timeout of 30000ms exceeded @ http://localhost:5173/src/api/client.ts:9
+[ 6651255ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[ 6651257ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health:0
+[ 6681197ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[ 6681197ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health/k8s:0
+[ 6681258ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[ 6681258ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health:0
+[ 6711260ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[ 6711260ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health:0
+[ 6741200ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[ 6741201ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health/k8s:0
+[ 6741261ms] [ERROR] [API] undefined Network Error @ http://localhost:5173/src/api/client.ts:9
+[ 6741261ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8010/health:0

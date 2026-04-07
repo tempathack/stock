@@ -1,0 +1,5 @@
+[      79ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=729f0356:21608
+[     240ms] [WARNING] MUI: The LoadingButton component functionality is now part of the Button component from Material UI.
+
+You should use `import Button from '@mui/material/Button'`
+or `import { Button } from '@mui/material'` @ http://localhost:5173/node_modules/.vite/deps/@mui_lab_LoadingButton.js?v=729f0356:34

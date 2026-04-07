@@ -1,0 +1,44 @@
+[     572ms] [WARNING] Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key. @ https://21st.dev/_next/static/chunks/39645-c444f5370daa6b28.js:5
+[     867ms] [WARNING] Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key. @ https://21st.dev/_next/static/chunks/39645-c444f5370daa6b28.js:5
+[    1533ms] [LOG] [Featurebase SDK] Initializing SDK! @ https://do.featurebase.app/js/sdk.js:240
+[   17900ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:240
+[   17900ms] [LOG] [Featurebase SDK] Data changed, canceling previous request @ https://do.featurebase.app/js/sdk.js:240
+[   17900ms] [LOG] [Featurebase SDK] Previous request canceled due to new request @ https://do.featurebase.app/js/sdk.js:240
+[   17975ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:240
+[   17975ms] [LOG] [Featurebase SDK] Same data as previous request, waiting for completion @ https://do.featurebase.app/js/sdk.js:240
+[   17990ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:240
+[   17991ms] [LOG] [Featurebase SDK] Data changed, canceling previous request @ https://do.featurebase.app/js/sdk.js:240
+[   17991ms] [LOG] [Featurebase SDK] Previous request canceled due to new request @ https://do.featurebase.app/js/sdk.js:240
+[   18272ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://do.featurebase.app/js/sdk.js:234
+[  311438ms] [ERROR] %c << query #11 %cusers.getCurrentUserProfile%c %O 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+   
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: bold; 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: normal; {input: undefined, result: TRPCClientError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Timed out fetching a new connect…, elapsedMs: 10209, context: Object} @ https://21st.dev/_next/static/chunks/62146-272dcd108e05cda7.js:4
+[  312734ms] [LOG] [Featurebase SDK] Config and input data are the same, no refetch needed. @ https://do.featurebase.app/js/sdk.js:240
+[  317143ms] [ERROR] %c << query #12 %caiSdk.getProject%c %O 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+   
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: bold; 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: normal; {input: Object, result: TRPCClientError: Failed to get project
+    at a.from (https://21st.dev/_next/static/chunks/62146-27…, elapsedMs: 10229, context: Object} @ https://21st.dev/_next/static/chunks/62146-272dcd108e05cda7.js:4

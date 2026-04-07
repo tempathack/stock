@@ -1,0 +1,374 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Monetary Data" [ref=e66] [cursor=pointer]:
+          - /url: /categories/24
+        - text: ">"
+        - link "M2 and Components" [ref=e67] [cursor=pointer]:
+          - /url: /categories/29
+    - generic [ref=e68]:
+      - generic "M2SL"
+      - generic [ref=e69]:
+        - heading "Add to favorites M2 (M2SL)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: M2 (M2SL)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "Feb 2026: 22,667.3"
+              - generic "Mar 24, 2026 12:01 PM CDT" [ref=e85]: "Updated: Mar 24, 2026 12:01 PM CDT"
+              - 'link "Next Release Date: Apr 28, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=21&y=2026
+                - generic "Apr 28, 2026" [ref=e88]: "Next Release Date: Apr 28, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Billions of Dollars,
+              - generic [ref=e93]: Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Monthly
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic "Full screen" [ref=e129] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e130]: 
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - button "Share Graph " [ref=e135] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e136]: 
+              - text:   
+            - generic [ref=e137]:
+              - button "Account Tools " [ref=e138] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e139]: 
+              - text:     
+          - generic [ref=e141]:
+            - link "Share on X" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Share on Reddit" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Post to Linkedin" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+        - generic [ref=e150]:
+          - generic [ref=e152]:
+            - heading "Notes" [level=2] [ref=e153]
+            - generic [ref=e154]:
+              - paragraph [ref=e155]:
+                - strong [ref=e156]: "Source:"
+                - link "Board of Governors of the Federal Reserve System (US)" [ref=e157] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov
+                  - text: Board of Governors of the Federal Reserve System (US)
+                  - generic [ref=e158]: 
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "Release:"
+                - link "H.6 Money Stock Measures" [ref=e161] [cursor=pointer]:
+                  - /url: http://www.federalreserve.gov/releases/h6/
+                  - text: H.6 Money Stock Measures
+                  - generic [ref=e162]: 
+              - paragraph [ref=e164]:
+                - strong [ref=e165]: "Units:"
+                - generic [ref=e166]: Billions of Dollars, Seasonally Adjusted
+              - paragraph [ref=e167]:
+                - strong [ref=e168]: "Frequency:"
+                - generic [ref=e169]: Monthly
+              - heading "Notes:" [level=4] [ref=e171]
+              - paragraph
+              - paragraph [ref=e172]:
+                - text: Before May 2020, M2 consists of M1 plus (1) savings deposits (including money market deposit accounts); (2) small-denomination time deposits (time deposits in amounts of less than $100,000) less individual retirement account (IRA) and Keogh balances at depository institutions; and (3) balances in retail money market funds (MMFs) less IRA and Keogh balances at MMFs.
+                - text: Beginning May 2020, M2 consists of M1 plus (1) small-denomination time deposits (time deposits in amounts of less than $100,000) less IRA and Keogh balances at depository institutions; and (2) balances in retail MMFs less IRA and Keogh balances at MMFs. Seasonally adjusted M2 is constructed by summing savings deposits (before May 2020), small-denomination time deposits, and retail MMFs, each seasonally adjusted separately, and adding this result to seasonally adjusted M1.
+                - text: For more information on the H.6 release changes and the regulatory amendment that led to the creation of the other liquid deposits component and its inclusion in the M1 monetary aggregate, see the H.6
+                - link "announcements" [ref=e173] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/feeds/h6.html
+                - text: and
+                - link "Technical Q&As" [ref=e174] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/releases/h6/h6_technical_qa.htm
+                - text: posted on December 17, 2020.
+                - text: For questions on the data, please contact the
+                - link "data source" [ref=e175] [cursor=pointer]:
+                  - /url: https://www.federalreserve.gov/apps/ContactUs/feedback.aspx?refurl=/releases/h6/%
+                - text: . For questions on FRED functionality, please contact us
+                - link "here" [ref=e176] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/contactus/
+                - text: .
+              - paragraph
+              - generic [ref=e177]:
+                - heading "Suggested Citation:" [level=4] [ref=e178]
+                - paragraph [ref=e180]: Board of Governors of the Federal Reserve System (US), M2 [M2SL], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/M2SL, April 4, 2026.
+          - generic [ref=e182]:
+            - heading "Release Tables" [level=2] [ref=e183]
+            - generic [ref=e184]:
+              - generic [ref=e185]: H.6 Money Stock Measures
+              - list [ref=e186]:
+                - listitem [ref=e187]:
+                  - 'link "Link to release table: H.6 Money Stock Measures, Table 1: Money Stock Measures" [ref=e188] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=21&eid=1217588#snid=1217591
+                    - generic [ref=e189]: 
+                    - text: "Table 1: Money Stock Measures"
+          - generic [ref=e191]:
+            - heading "Related Data and Content" [level=2] [ref=e192]
+            - generic [ref=e193]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e194]
+              - generic [ref=e195]:
+                - generic [ref=e196]:
+                  - link "M1" [ref=e197] [cursor=pointer]:
+                    - /url: /series/M1SL
+                    - img [ref=e198]
+                  - generic [ref=e199]:
+                    - text: ...
+                    - link "M1" [ref=e200] [cursor=pointer]:
+                      - /url: /series/M1SL
+                      - strong [ref=e201]: M1
+                - generic [ref=e202]:
+                  - link "Velocity of M2 Money Stock" [ref=e203] [cursor=pointer]:
+                    - /url: /series/M2V
+                    - img [ref=e204]
+                  - generic [ref=e205]:
+                    - text: ...
+                    - link "Velocity of M2 Money Stock" [ref=e206] [cursor=pointer]:
+                      - /url: /series/M2V
+                      - strong [ref=e207]: Velocity of M2 Money Stock
+                - generic [ref=e208]:
+                  - link "M2 (DISCONTINUED)" [ref=e209] [cursor=pointer]:
+                    - /url: /series/M2
+                    - img [ref=e210]
+                  - generic [ref=e211]:
+                    - text: ...
+                    - link "M2 (DISCONTINUED)" [ref=e212] [cursor=pointer]:
+                      - /url: /series/M2
+                      - strong [ref=e213]: M2 (DISCONTINUED)
+                - generic [ref=e214]:
+                  - 'link "Assets: Total Assets: Total Assets (Less Eliminations from Consolidation): Wednesday Level" [ref=e215] [cursor=pointer]':
+                    - /url: /series/WALCL
+                    - img [ref=e216]
+                  - generic [ref=e217]:
+                    - text: ...
+                    - 'link "Assets: Total Assets: Total Assets (Less Eliminations from Consolidation): Wednesday Level" [ref=e218] [cursor=pointer]':
+                      - /url: /series/WALCL
+                      - strong [ref=e219]: "Assets: Total Assets: Total Assets (Less Eliminations from Consolidation): Wednesday Level"
+                - text: ... ... ... ...
+                - generic [ref=e220]:
+                  - button "click to see more" [ref=e221] [cursor=pointer]: See More...
+                  - separator [ref=e222]
+              - heading "Content Suggestions" [level=3] [ref=e223]
+              - generic [ref=e224]:
+                - generic [ref=e225]:
+                  - link "<I>M</I> stands for money" [ref=e226] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/08/m-stands-for-money/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e227]
+                  - generic [ref=e228]: FRED Blog
+                  - generic [ref=e229]:
+                    - text: ...
+                    - link "M stands for money" [ref=e230] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/08/m-stands-for-money/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e231]: M stands for money
+                - generic [ref=e232]:
+                  - link "Savings are now more liquid and part of “M1 money”" [ref=e233] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2021/05/savings-are-now-more-liquid-and-part-of-m1-money/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e234]
+                  - generic [ref=e235]: FRED Blog
+                  - generic [ref=e236]:
+                    - text: ...
+                    - link "Savings are now more liquid and part of “M1 money”" [ref=e237] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2021/05/savings-are-now-more-liquid-and-part-of-m1-money/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e238]: Savings are now more liquid and part of “M1 money”
+                - generic [ref=e239]:
+                  - link "The monetary multiplier and bank reserves" [ref=e240] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2023/07/the-monetary-multiplier-and-bank-reserves/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e241]
+                  - generic [ref=e242]: FRED Blog
+                  - generic [ref=e243]:
+                    - text: ...
+                    - link "The monetary multiplier and bank reserves" [ref=e244] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2023/07/the-monetary-multiplier-and-bank-reserves/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e245]: The monetary multiplier and bank reserves
+                - generic [ref=e246]:
+                  - link "M2" [ref=e247] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=M2SL&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e248]
+                  - generic [ref=e249]: ALFRED Vintage Series
+                  - generic [ref=e250]:
+                    - text: ...
+                    - link "M2" [ref=e251] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=M2SL&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e252]: M2
+                - text: ...
+                - generic [ref=e253]:
+                  - button "click to see more" [ref=e254] [cursor=pointer]: See More...
+                  - separator [ref=e255]
+              - heading "Other Formats" [level=3] [ref=e256]
+              - generic [ref=e257]:
+                - link "Monthly, Not Seasonally Adjusted" [ref=e258] [cursor=pointer]:
+                  - /url: /series/M2NS
+                - link "Weekly, Not Seasonally Adjusted" [ref=e259] [cursor=pointer]:
+                  - /url: /series/WM2NS
+              - heading "Related Categories" [level=3] [ref=e261]
+              - generic [ref=e262]:
+                - link "M2 and Components" [ref=e263] [cursor=pointer]:
+                  - /url: /categories/29
+                - link "Monetary Data" [ref=e264] [cursor=pointer]:
+                  - /url: /categories/24
+                - link "Money, Banking, & Finance" [ref=e265] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e267]
+              - link "More Series from H.6 Money Stock Measures" [ref=e269] [cursor=pointer]:
+                - /url: /release?rid=21
+              - heading "Tags" [level=3] [ref=e271]
+              - generic:
+                - link "M2 Money Stock" [ref=e272] [cursor=pointer]:
+                  - /url: /tags/series?t=m2
+                - link "H.6 Money Stock Measures" [ref=e273] [cursor=pointer]:
+                  - /url: /tags/series?t=h6
+                - link "Monetary Aggregates" [ref=e274] [cursor=pointer]:
+                  - /url: /tags/series?t=monetary%20aggregates
+                - link "Board of Governors" [ref=e275] [cursor=pointer]:
+                  - /url: /tags/series?t=frb
+                - link "Seasonally Adjusted" [ref=e276] [cursor=pointer]:
+                  - /url: /tags/series?t=sa
+                - link "Monthly" [ref=e277] [cursor=pointer]:
+                  - /url: /tags/series?t=monthly
+                - link "Nation" [ref=e278] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e279] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e280] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+        - text:    
+  - text:  
+  - generic [ref=e283]:
+    - generic [ref=e284]:
+      - generic [ref=e285]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e286]
+        - generic [ref=e289]:
+          - textbox "email" [ref=e290]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e291] [cursor=pointer]
+      - generic [ref=e292]:
+        - heading "Follow us" [level=3] [ref=e293]
+        - generic [ref=e294]:
+          - link "Saint Louis Fed linkedin page" [ref=e296] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e297]: 
+            - generic [ref=e298]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e300] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e301]: 
+            - generic [ref=e302]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e304] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e305]: 
+            - generic [ref=e306]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e308] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e309]: 
+            - generic [ref=e310]: Saint Louis Fed YouTube page
+    - generic [ref=e312]:
+      - heading "Need Help?" [level=3] [ref=e313]
+      - generic [ref=e314]:
+        - link "Questions or Comments" [ref=e316] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e318] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e319]
+      - generic [ref=e320]:
+        - link "Legal" [ref=e322] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e324] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

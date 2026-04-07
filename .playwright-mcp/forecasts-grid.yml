@@ -1,0 +1,30 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SP
+      - generic [ref=e7]
+    - navigation [ref=e10]:
+      - link "Dashboard" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard
+      - link "Models" [ref=e15] [cursor=pointer]:
+        - /url: /models
+      - link "Forecasts" [ref=e20] [cursor=pointer]:
+        - /url: /forecasts
+      - link "Drift" [ref=e24] [cursor=pointer]:
+        - /url: /drift
+      - link "Backtest" [ref=e28] [cursor=pointer]:
+        - /url: /backtest
+      - link "Analytics" [ref=e32] [cursor=pointer]:
+        - /url: /analytics
+      - link "Search" [ref=e37] [cursor=pointer]:
+        - /url: /search
+    - generic [ref=e41]:
+      - generic [ref=e42]
+      - generic [ref=e52]: 12:56:49 PM
+  - main [ref=e53]:
+    - generic [ref=e83]:
+      - generic [ref=e84]
+      - group [ref=e92]
+      - generic [ref=e103]
+      - generic [ref=e131]
+      - paragraph [ref=e886]: Select 2+ stocks in the table to compare side by side.

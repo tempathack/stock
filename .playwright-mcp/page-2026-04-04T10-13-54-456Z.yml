@@ -1,0 +1,347 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Prices" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32455
+        - text: ">"
+        - link "Commodities" [ref=e66] [cursor=pointer]:
+          - /url: /categories/32217
+    - generic [ref=e67]:
+      - generic "DCOILBRENTEU"
+      - generic [ref=e68]:
+        - 'heading "Add to favorites Crude Oil Prices: Brent - Europe (DCOILBRENTEU)" [level=1] [ref=e72]':
+          - generic "Add to favorites" [ref=e74] [cursor=pointer]: 
+          - text: "Crude Oil Prices: Brent - Europe (DCOILBRENTEU)"
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - text: 
+            - generic [ref=e78]:
+              - button "Observations" [ref=e80] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e81]: 
+              - generic [ref=e82]: "2026-03-30: 121.88"
+              - generic "Apr 1, 2026 12:10 PM CDT" [ref=e84]: "Updated: Apr 1, 2026 12:10 PM CDT"
+              - 'link "Next Release Date: Apr 8, 2026" [ref=e86] [cursor=pointer]':
+                - /url: /releases/calendar?rid=212&y=2026
+                - generic "Apr 8, 2026" [ref=e87]: "Next Release Date: Apr 8, 2026"
+            - generic [ref=e88]:
+              - paragraph [ref=e89]: "Units:"
+              - generic [ref=e91]: Dollars per Barrel,
+              - generic [ref=e92]: Not Seasonally Adjusted
+            - generic [ref=e93]:
+              - paragraph [ref=e94]: "Frequency:"
+              - generic [ref=e96]: Daily
+          - generic [ref=e99]:
+            - generic [ref=e101]:
+              - generic "1 year date range" [ref=e102] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e103] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e104] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e105] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e107]:
+              - generic [ref=e108]:
+                - generic [ref=e109]: From
+                - textbox "Change start date" [ref=e110]
+              - generic [ref=e112]: to
+              - textbox "Change end date" [ref=e114]
+          - generic [ref=e115]:
+            - generic [ref=e116]:
+              - button "Edit Graph " [ref=e117] [cursor=pointer]:
+                - generic [ref=e118]:
+                  - text: Edit Graph
+                  - generic [ref=e119]: 
+              - text: 
+            - generic [ref=e121]:
+              - button "Download" [ref=e122] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e123]: 
+              - text: 
+        - generic "Full screen" [ref=e128] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e129]: 
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - button "Share Graph " [ref=e134] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e135]: 
+              - text:   
+            - generic [ref=e136]:
+              - button "Account Tools " [ref=e137] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e138]: 
+              - text:     
+          - generic [ref=e140]:
+            - link "Share on X" [ref=e141] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e143]: 
+            - link "Share on Reddit" [ref=e144] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e145]: 
+            - link "Post to Linkedin" [ref=e146] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e147]: 
+        - generic [ref=e149]:
+          - generic [ref=e151]:
+            - heading "Notes" [level=2] [ref=e152]
+            - generic [ref=e153]:
+              - paragraph [ref=e154]:
+                - strong [ref=e155]: "Source:"
+                - link "U.S. Energy Information Administration" [ref=e156] [cursor=pointer]:
+                  - /url: http://www.eia.gov/
+                  - text: U.S. Energy Information Administration
+                  - generic [ref=e157]: 
+              - paragraph [ref=e158]:
+                - strong [ref=e159]: "Release:"
+                - link "Spot Prices" [ref=e160] [cursor=pointer]:
+                  - /url: https://www.eia.gov/dnav/pet/pet_pri_spt_s1_d.htm
+                  - text: Spot Prices
+                  - generic [ref=e161]: 
+              - paragraph [ref=e163]:
+                - strong [ref=e164]: "Units:"
+                - generic [ref=e165]: Dollars per Barrel, Not Seasonally Adjusted
+              - paragraph [ref=e166]:
+                - strong [ref=e167]: "Frequency:"
+                - generic [ref=e168]: Daily
+              - heading "Notes:" [level=4] [ref=e170]
+              - paragraph [ref=e171]:
+                - link "Definitions, Sources and Explanatory Notes" [ref=e172] [cursor=pointer]:
+                  - /url: http://www.eia.doe.gov/dnav/pet/TblDefs/pet_pri_spt_tbldef2.asp
+              - generic [ref=e173]:
+                - heading "Suggested Citation:" [level=4] [ref=e174]
+                - paragraph [ref=e176]: "U.S. Energy Information Administration, Crude Oil Prices: Brent - Europe [DCOILBRENTEU], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DCOILBRENTEU, April 4, 2026."
+          - generic [ref=e178]:
+            - heading "Related Data and Content" [level=2] [ref=e179]
+            - generic [ref=e180]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e181]
+              - generic [ref=e182]:
+                - generic [ref=e183]:
+                  - link "Global price of Brent Crude" [ref=e184] [cursor=pointer]:
+                    - /url: /series/POILBREUSDM
+                    - img [ref=e185]
+                  - generic [ref=e186]:
+                    - text: ...
+                    - link "Global price of Brent Crude" [ref=e187] [cursor=pointer]:
+                      - /url: /series/POILBREUSDM
+                      - strong [ref=e188]: Global price of Brent Crude
+                - generic [ref=e189]:
+                  - 'link "Crude Oil Prices: West Texas Intermediate (WTI) - Cushing, Oklahoma" [ref=e190] [cursor=pointer]':
+                    - /url: /series/DCOILWTICO
+                    - img [ref=e191]
+                  - generic [ref=e192]:
+                    - text: ...
+                    - 'link "Crude Oil Prices: West Texas Intermediate (WTI) - Cushing, Oklahoma" [ref=e193] [cursor=pointer]':
+                      - /url: /series/DCOILWTICO
+                      - strong [ref=e194]: "Crude Oil Prices: West Texas Intermediate (WTI) - Cushing, Oklahoma"
+                - generic [ref=e195]:
+                  - 'link "Spot Crude Oil Price: West Texas Intermediate (WTI)" [ref=e196] [cursor=pointer]':
+                    - /url: /series/WTISPLC
+                    - img [ref=e197]
+                  - generic [ref=e198]:
+                    - text: ...
+                    - 'link "Spot Crude Oil Price: West Texas Intermediate (WTI)" [ref=e199] [cursor=pointer]':
+                      - /url: /series/WTISPLC
+                      - strong [ref=e200]: "Spot Crude Oil Price: West Texas Intermediate (WTI)"
+                - generic [ref=e201]:
+                  - link "Global price of Copper" [ref=e202] [cursor=pointer]:
+                    - /url: /series/PCOPPUSDM
+                    - img [ref=e203]
+                  - generic [ref=e204]:
+                    - text: ...
+                    - link "Global price of Copper" [ref=e205] [cursor=pointer]:
+                      - /url: /series/PCOPPUSDM
+                      - strong [ref=e206]: Global price of Copper
+                - text: ... ... ... ...
+                - generic [ref=e207]:
+                  - button "click to see more" [ref=e208] [cursor=pointer]: See More...
+                  - separator [ref=e209]
+              - heading "Content Suggestions" [level=3] [ref=e210]
+              - generic [ref=e211]:
+                - generic [ref=e212]:
+                  - link "Friction in oil markets" [ref=e213] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2016/09/friction-in-oil-markets/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e214]
+                  - generic [ref=e215]: FRED Blog
+                  - generic [ref=e216]:
+                    - text: ...
+                    - link "Friction in oil markets" [ref=e217] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2016/09/friction-in-oil-markets/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e218]: Friction in oil markets
+                - generic [ref=e219]:
+                  - link "The relationship among oil prices, food costs, and consumer inflation" [ref=e220] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2026/03/the-relationship-among-pil-prices-food-costs-and-consumer-inflation/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e221]
+                  - generic [ref=e222]: FRED Blog
+                  - generic [ref=e223]:
+                    - text: ...
+                    - link "The relationship among oil prices, food costs, and consumer inflation" [ref=e224] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2026/03/the-relationship-among-pil-prices-food-costs-and-consumer-inflation/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e225]: The relationship among oil prices, food costs, and consumer inflation
+                - generic [ref=e226]:
+                  - 'link "WTI vs. Brent oil prices: When and why do they diverge?" [ref=e227] [cursor=pointer]':
+                    - /url: "                                https://fredblog.stlouisfed.org/2020/05/wti-vs-brent-oil-prices-when-and-why-do-they-diverge/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e228]
+                  - generic [ref=e229]: FRED Blog
+                  - generic [ref=e230]:
+                    - text: ...
+                    - 'link "WTI vs. Brent oil prices: When and why do they diverge?" [ref=e231] [cursor=pointer]':
+                      - /url: "                                https://fredblog.stlouisfed.org/2020/05/wti-vs-brent-oil-prices-when-and-why-do-they-diverge/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e232]: "WTI vs. Brent oil prices: When and why do they diverge?"
+                - generic [ref=e233]:
+                  - 'link "Crude Oil Prices: Brent - Europe" [ref=e234] [cursor=pointer]':
+                    - /url: https://alfred.stlouisfed.org/series?seid=DCOILBRENTEU&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e235]
+                  - generic [ref=e236]: ALFRED Vintage Series
+                  - generic [ref=e237]:
+                    - text: ...
+                    - 'link "Crude Oil Prices: Brent - Europe" [ref=e238] [cursor=pointer]':
+                      - /url: https://alfred.stlouisfed.org/series?seid=DCOILBRENTEU&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e239]: "Crude Oil Prices: Brent - Europe"
+                - text: ... ...
+                - generic [ref=e240]:
+                  - button "click to see more" [ref=e241] [cursor=pointer]: See More...
+                  - separator [ref=e242]
+              - heading "Other Formats" [level=3] [ref=e243]
+              - generic [ref=e244]:
+                - link "Annual, Not Seasonally Adjusted" [ref=e245] [cursor=pointer]:
+                  - /url: /series/ACOILBRENTEU
+                - link "Monthly, Not Seasonally Adjusted" [ref=e246] [cursor=pointer]:
+                  - /url: /series/MCOILBRENTEU
+                - link "Weekly, Not Seasonally Adjusted" [ref=e247] [cursor=pointer]:
+                  - /url: /series/WCOILBRENTEU
+              - heading "Related Categories" [level=3] [ref=e249]
+              - generic [ref=e250]:
+                - link "Commodities" [ref=e251] [cursor=pointer]:
+                  - /url: /categories/32217
+                - link "Prices" [ref=e252] [cursor=pointer]:
+                  - /url: /categories/32455
+              - heading "Releases" [level=3] [ref=e254]
+              - link "More Series from Spot Prices" [ref=e256] [cursor=pointer]:
+                - /url: /release?rid=212
+              - heading "Tags" [level=3] [ref=e258]
+              - generic:
+                - link "Crude" [ref=e259] [cursor=pointer]:
+                  - /url: /tags/series?t=crude
+                - link "Energy Information Administration" [ref=e260] [cursor=pointer]:
+                  - /url: /tags/series?t=eia
+                - link "Oil" [ref=e261] [cursor=pointer]:
+                  - /url: /tags/series?t=oil
+                - link "Europe" [ref=e262] [cursor=pointer]:
+                  - /url: /tags/series?t=europe
+                - link "Transnational" [ref=e263] [cursor=pointer]:
+                  - /url: /tags/series?t=transnational
+                - link "Daily" [ref=e264] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "Commodities" [ref=e265] [cursor=pointer]:
+                  - /url: /tags/series?t=commodities
+                - link "Price" [ref=e266] [cursor=pointer]:
+                  - /url: /tags/series?t=price
+                - 'link "Public Domain: Citation Requested" [ref=e267] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "Not Seasonally Adjusted" [ref=e268] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e271]:
+    - generic [ref=e272]:
+      - generic [ref=e273]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e274]
+        - generic [ref=e277]:
+          - textbox "email" [ref=e278]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e279] [cursor=pointer]
+      - generic [ref=e280]:
+        - heading "Follow us" [level=3] [ref=e281]
+        - generic [ref=e282]:
+          - link "Saint Louis Fed linkedin page" [ref=e284] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e285]: 
+            - generic [ref=e286]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e288] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e289]: 
+            - generic [ref=e290]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e292] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e293]: 
+            - generic [ref=e294]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e296] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e297]: 
+            - generic [ref=e298]: Saint Louis Fed YouTube page
+    - generic [ref=e300]:
+      - heading "Need Help?" [level=3] [ref=e301]
+      - generic [ref=e302]:
+        - link "Questions or Comments" [ref=e304] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e306] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e307]
+      - generic [ref=e308]:
+        - link "Legal" [ref=e310] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e312] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

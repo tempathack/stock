@@ -50,7 +50,7 @@ def _validate_horizon(horizon: int | None) -> None:
         )
 
 
-@router.get("/horizons", response_model=AvailableHorizonsResponse)
+@router.get("/horizons", response_model=AvailableHorizonsResponse, summary="List available prediction horizons")
 async def predict_horizons() -> AvailableHorizonsResponse:
     """Return available prediction horizons."""
     key = build_key("predict", "horizons")
@@ -64,7 +64,7 @@ async def predict_horizons() -> AvailableHorizonsResponse:
     return response
 
 
-@router.get("/bulk", response_model=BulkPredictionResponse)
+@router.get("/bulk", response_model=BulkPredictionResponse, summary="Get predictions for all tickers")
 async def predict_bulk(
     horizon: int | None = Query(default=None, description="Prediction horizon in days"),
 ) -> BulkPredictionResponse:
@@ -163,7 +163,7 @@ async def predict_bulk(
 
 
 
-@router.get("/{ticker}", response_model=PredictionResponse)
+@router.get("/{ticker}", response_model=PredictionResponse, summary="Get prediction for a single ticker")
 async def predict_ticker(
     ticker: str,
     horizon: int | None = Query(default=None, description="Prediction horizon in days"),

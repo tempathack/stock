@@ -196,6 +196,7 @@ def run_training_pipeline(
         pipeline_version=PIPELINE_VERSION,
         started_at=started_at,
     )
+    logger.info(json.dumps({"event": "training_start", "run_id": run_id, "tickers": tickers, "horizons": horizons}))
 
     try:
         # Step 1: Load data
@@ -268,6 +269,7 @@ def run_training_pipeline(
             enriched = data_dict
             result.steps_completed.append("engineer_features")
             logger.info("Step 2/12 engineer_features (Feast mode — passthrough) — done")
+            logger.info(json.dumps({"event": "feature_engineering_complete", "run_id": run_id, "source": "feast"}))
         else:
             fs_settings = db_settings
             if use_feature_store and fs_settings is None:
@@ -285,6 +287,7 @@ def run_training_pipeline(
             source = "feature_store" if use_feature_store else "on-the-fly"
             result.steps_completed.append("engineer_features")
             logger.info("Step 2/12 engineer_features (source: %s) — done", source)
+            logger.info(json.dumps({"event": "feature_engineering_complete", "run_id": run_id, "source": source}))
 
         # Step 3: Generate labels
         if horizons is not None:
@@ -375,6 +378,8 @@ def run_training_pipeline(
                     }
                     result.steps_completed.append(f"horizon_{h}d_complete")
                     logger.info("══ Horizon %dd ══ Complete — winner: %s", h, winner_info_h.get("winner_name"))
+                    logger.info(json.dumps({"event": "model_fit_complete", "run_id": run_id, "horizon_days": h, "model_name": winner_info_h.get("winner_name"), "rmse": winner_info_h.get("winner_rmse")}))
+                    logger.info(json.dumps({"event": "model_saved", "run_id": run_id, "horizon_days": h, "registry_dir": h_registry_dir, "serving_dir": h_serving_dir}))
 
                 except Exception as exc:
                     logger.error("══ Horizon %dd ══ FAILED: %s", h, exc)
@@ -504,6 +509,7 @@ def run_training_pipeline(
         result.status = "failed"
         result.error = traceback.format_exc()
         _save_run_result(result, registry_dir)
+        logger.error(json.dumps({"event": "training_error", "run_id": run_id, "error": result.error}))
         raise
 
     return result
@@ -516,7 +522,11 @@ def run_training_pipeline(
 if __name__ == "__main__":
     import argparse
 
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='{"time": "%(asctime)s", "level": "%(levelname)s", "logger": "%(name)s", "message": %(message)s}',
+        datefmt="%Y-%m-%dT%H:%M:%SZ",
+    )
 
     parser = argparse.ArgumentParser(
         description="Run the stock prediction training pipeline",
@@ -564,4 +574,4 @@ if __name__ == "__main__":
         include_sktime=not args.skip_sktime,
         include_sktime_regression=not args.skip_sktime_regression,
     )
-    print(json.dumps(run_result.to_dict(), indent=2, default=str))
+    logger.info(json.dumps({"event": "pipeline_complete", "result": run_result.to_dict()}, default=str))

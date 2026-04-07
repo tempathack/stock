@@ -1,0 +1,775 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SP
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: S&P 500 AI
+        - paragraph [ref=e9]: Platform
+    - navigation [ref=e10]:
+      - link "Dashboard" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e12]
+        - paragraph [ref=e14]: Dashboard
+      - link "Models" [ref=e15] [cursor=pointer]:
+        - /url: /models
+        - img [ref=e16]
+        - paragraph [ref=e19]: Models
+      - link "Forecasts" [ref=e20] [cursor=pointer]:
+        - /url: /forecasts
+        - img [ref=e21]
+        - paragraph [ref=e23]: Forecasts
+      - link "Drift" [ref=e24] [cursor=pointer]:
+        - /url: /drift
+        - img [ref=e25]
+        - paragraph [ref=e27]: Drift
+      - link "Backtest" [ref=e28] [cursor=pointer]:
+        - /url: /backtest
+        - img [ref=e29]
+        - paragraph [ref=e31]: Backtest
+      - link "Analytics" [ref=e32] [cursor=pointer]:
+        - /url: /analytics
+        - img [ref=e33]
+        - paragraph [ref=e36]: Analytics
+      - link "Search" [ref=e37] [cursor=pointer]:
+        - /url: /search
+        - img [ref=e38]
+        - paragraph [ref=e40]: Search
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e45]: API
+        - generic [ref=e48]: KAFKA
+        - generic [ref=e51]: DB
+      - generic [ref=e52]: 09:39:37 PM
+  - main [ref=e53]:
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - heading "Stock Forecasts" [level=4] [ref=e62]
+        - paragraph [ref=e64]: Multi-horizon price predictions for S&P 500 tickers
+      - group [ref=e78]:
+        - button "CSV" [ref=e79] [cursor=pointer]:
+          - img [ref=e81]
+          - text: CSV
+        - button "PDF" [ref=e83] [cursor=pointer]:
+          - img [ref=e85]
+          - text: PDF
+      - generic [ref=e89]:
+        - generic [ref=e91]:
+          - generic [ref=e92]: Search
+          - generic [ref=e93]:
+            - img [ref=e94]
+            - textbox "Search" [ref=e96]:
+              - /placeholder: Ticker or company…
+            - group:
+              - generic: Search
+        - generic [ref=e98]:
+          - generic: Sector
+          - generic [ref=e99]:
+            - combobox [ref=e100] [cursor=pointer]
+            - textbox
+            - img
+            - group:
+              - generic: Sector
+        - generic [ref=e102]:
+          - generic: Min Return %
+          - generic [ref=e103]:
+            - spinbutton "Min Return %" [ref=e104]
+            - group:
+              - generic: Min Return %
+        - generic [ref=e106]:
+          - generic: Max Return %
+          - generic [ref=e107]:
+            - spinbutton "Max Return %" [ref=e108]
+            - group:
+              - generic: Max Return %
+        - generic [ref=e110]:
+          - generic [ref=e111]: "Min Confidence: Any"
+          - slider [ref=e115]: "0"
+        - generic [ref=e116]:
+          - button "Clear" [disabled]
+      - generic [ref=e117]:
+        - grid [ref=e118]:
+          - row "1-Day Forecast 7-Day Forecast 14-Day Forecast 30-Day Forecast" [ref=e119]:
+            - columnheader [ref=e120]:
+              - img [ref=e122]
+            - columnheader "1-Day Forecast" [ref=e124]:
+              - generic [ref=e126]: 1-Day Forecast
+              - img [ref=e128]
+            - columnheader "7-Day Forecast" [ref=e130]:
+              - generic [ref=e132]: 7-Day Forecast
+              - img [ref=e134]
+            - columnheader "14-Day Forecast" [ref=e136]:
+              - generic [ref=e138]: 14-Day Forecast
+              - img [ref=e140]
+            - columnheader "30-Day Forecast" [ref=e142]:
+              - generic [ref=e144]: 30-Day Forecast
+              - img [ref=e146]
+          - row "Ticker Company Sector Price Daily Δ Pred. Price Return % Pred. Price Return % Sort Pred. Price Return % Pred. Price Return %" [ref=e148]:
+            - columnheader "Ticker" [ref=e149] [cursor=pointer]:
+              - generic [ref=e151]: Ticker
+              - generic [ref=e152]:
+                - img
+            - columnheader "Company" [ref=e153] [cursor=pointer]:
+              - generic [ref=e155]: Company
+              - generic [ref=e156]:
+                - img
+            - columnheader "Sector" [ref=e157] [cursor=pointer]:
+              - generic [ref=e159]: Sector
+              - generic [ref=e160]:
+                - img
+            - columnheader "Price" [ref=e161] [cursor=pointer]:
+              - generic [ref=e163]: Price
+              - generic [ref=e164]:
+                - img
+            - columnheader "Daily Δ" [ref=e165] [cursor=pointer]:
+              - generic [ref=e167]: Daily Δ
+              - generic [ref=e168]:
+                - img
+            - columnheader "Pred. Price" [ref=e169] [cursor=pointer]:
+              - generic [ref=e171]: Pred. Price
+              - generic [ref=e172]:
+                - img
+            - columnheader "Return %" [ref=e173] [cursor=pointer]:
+              - generic [ref=e175]: Return %
+              - generic [ref=e176]:
+                - img
+            - columnheader "Pred. Price" [ref=e177] [cursor=pointer]:
+              - generic [ref=e179]: Pred. Price
+              - generic [ref=e180]:
+                - img
+            - columnheader "Return % Sort" [ref=e181] [cursor=pointer]:
+              - generic [ref=e183]: Return %
+              - generic "Sort" [ref=e185]:
+                - button "Sort" [ref=e186]:
+                  - img [ref=e187]
+              - generic [ref=e189]:
+                - img
+            - columnheader "Pred. Price" [ref=e190] [cursor=pointer]:
+              - generic [ref=e192]: Pred. Price
+              - generic [ref=e193]:
+                - img
+            - columnheader "Return %" [ref=e194] [cursor=pointer]:
+              - generic [ref=e196]: Return %
+              - generic [ref=e197]:
+                - img
+            - columnheader "Pred. Price" [ref=e198] [cursor=pointer]:
+              - generic [ref=e200]: Pred. Price
+              - generic [ref=e201]:
+                - img
+            - columnheader "Return %" [ref=e202] [cursor=pointer]:
+              - generic [ref=e204]: Return %
+              - generic [ref=e205]:
+                - img
+          - rowgroup [ref=e206]:
+            - 'row "TSLA Tesla Inc. Consumer Cyclical $352.87 -3.55% Predicted date: 2026-04-04 -0.92% Predicted date: 2026-04-10 +1.00% Predicted date: 2026-04-17 -0.15% Predicted date: 2026-05-03 -0.10%" [ref=e207] [cursor=pointer]':
+              - gridcell "TSLA" [ref=e208]
+              - gridcell "Tesla Inc." [ref=e209]
+              - gridcell "Consumer Cyclical" [ref=e210]
+              - gridcell "$352.87" [ref=e211]:
+                - generic [ref=e212]: $352.87
+              - gridcell "-3.55%" [ref=e213]:
+                - generic [ref=e214]: "-3.55%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e215]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e216]': $349.62
+              - gridcell "-0.92%" [ref=e217]:
+                - generic [ref=e218]: "-0.92%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e219]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e220]': $356.39
+              - gridcell "+1.00%" [ref=e221]:
+                - generic [ref=e222]: +1.00%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e223]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e224]': $352.34
+              - gridcell "-0.15%" [ref=e225]:
+                - generic [ref=e226]: "-0.15%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e227]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e228]': $352.51
+              - gridcell "-0.10%" [ref=e229]:
+                - generic [ref=e230]: "-0.10%"
+            - 'row "BWA BWA $56.12 -0.21% Predicted date: 2026-04-04 +0.51% Predicted date: 2026-04-10 +0.99% Predicted date: 2026-04-17 -0.30% Predicted date: 2026-05-03 -0.09%" [ref=e231] [cursor=pointer]':
+              - gridcell "BWA" [ref=e232]
+              - gridcell "BWA" [ref=e233]
+              - gridcell [ref=e234]
+              - gridcell "$56.12" [ref=e235]:
+                - generic [ref=e236]: $56.12
+              - gridcell "-0.21%" [ref=e237]:
+                - generic [ref=e238]: "-0.21%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e239]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e240]': $56.41
+              - gridcell "+0.51%" [ref=e241]:
+                - generic [ref=e242]: +0.51%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e243]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e244]': $56.68
+              - gridcell "+0.99%" [ref=e245]:
+                - generic [ref=e246]: +0.99%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e247]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e248]': $55.95
+              - gridcell "-0.30%" [ref=e249]:
+                - generic [ref=e250]: "-0.30%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e251]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e252]': $56.07
+              - gridcell "-0.09%" [ref=e253]:
+                - generic [ref=e254]: "-0.09%"
+            - 'row "AWK AWK $134.59 +0.23% Predicted date: 2026-04-04 -0.14% Predicted date: 2026-04-10 +0.95% Predicted date: 2026-04-17 -0.83% Predicted date: 2026-05-03 -0.16%" [ref=e255] [cursor=pointer]':
+              - gridcell "AWK" [ref=e256]
+              - gridcell "AWK" [ref=e257]
+              - gridcell [ref=e258]
+              - gridcell "$134.59" [ref=e259]:
+                - generic [ref=e260]: $134.59
+              - gridcell "+0.23%" [ref=e261]:
+                - generic [ref=e262]: +0.23%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e263]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e264]': $134.40
+              - gridcell "-0.14%" [ref=e265]:
+                - generic [ref=e266]: "-0.14%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e267]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e268]': $135.87
+              - gridcell "+0.95%" [ref=e269]:
+                - generic [ref=e270]: +0.95%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e271]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e272]': $133.48
+              - gridcell "-0.83%" [ref=e273]:
+                - generic [ref=e274]: "-0.83%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e275]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e276]': $134.37
+              - gridcell "-0.16%" [ref=e277]:
+                - generic [ref=e278]: "-0.16%"
+            - 'row "CTSH CTSH $59.79 -1.43% Predicted date: 2026-04-04 +0.20% Predicted date: 2026-04-10 +0.95% Predicted date: 2026-04-17 -0.08% Predicted date: 2026-05-03 -0.45%" [ref=e279] [cursor=pointer]':
+              - gridcell "CTSH" [ref=e280]
+              - gridcell "CTSH" [ref=e281]
+              - gridcell [ref=e282]
+              - gridcell "$59.79" [ref=e283]:
+                - generic [ref=e284]: $59.79
+              - gridcell "-1.43%" [ref=e285]:
+                - generic [ref=e286]: "-1.43%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e287]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e288]': $59.91
+              - gridcell "+0.20%" [ref=e289]:
+                - generic [ref=e290]: +0.20%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e291]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e292]': $60.36
+              - gridcell "+0.95%" [ref=e293]:
+                - generic [ref=e294]: +0.95%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e295]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e296]': $59.74
+              - gridcell "-0.08%" [ref=e297]:
+                - generic [ref=e298]: "-0.08%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e299]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e300]': $59.52
+              - gridcell "-0.45%" [ref=e301]:
+                - generic [ref=e302]: "-0.45%"
+            - 'row "APH APH $128.73 -0.72% Predicted date: 2026-04-04 +0.49% Predicted date: 2026-04-10 +0.93% Predicted date: 2026-04-17 +0.99% Predicted date: 2026-05-03 -0.43%" [ref=e303] [cursor=pointer]':
+              - gridcell "APH" [ref=e304]
+              - gridcell "APH" [ref=e305]
+              - gridcell [ref=e306]
+              - gridcell "$128.73" [ref=e307]:
+                - generic [ref=e308]: $128.73
+              - gridcell "-0.72%" [ref=e309]:
+                - generic [ref=e310]: "-0.72%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e311]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e312]': $129.36
+              - gridcell "+0.49%" [ref=e313]:
+                - generic [ref=e314]: +0.49%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e315]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e316]': $129.93
+              - gridcell "+0.93%" [ref=e317]:
+                - generic [ref=e318]: +0.93%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e319]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e320]': $130.01
+              - gridcell "+0.99%" [ref=e321]:
+                - generic [ref=e322]: +0.99%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e323]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e324]': $128.18
+              - gridcell "-0.43%" [ref=e325]:
+                - generic [ref=e326]: "-0.43%"
+            - 'row "SCHW SCHW $94.99 -1.02% Predicted date: 2026-04-04 +0.50% Predicted date: 2026-04-10 +0.92% Predicted date: 2026-04-17 +0.76% Predicted date: 2026-05-03 -0.42%" [ref=e327] [cursor=pointer]':
+              - gridcell "SCHW" [ref=e328]
+              - gridcell "SCHW" [ref=e329]
+              - gridcell [ref=e330]
+              - gridcell "$94.99" [ref=e331]:
+                - generic [ref=e332]: $94.99
+              - gridcell "-1.02%" [ref=e333]:
+                - generic [ref=e334]: "-1.02%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e335]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e336]': $95.47
+              - gridcell "+0.50%" [ref=e337]:
+                - generic [ref=e338]: +0.50%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e339]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e340]': $95.86
+              - gridcell "+0.92%" [ref=e341]:
+                - generic [ref=e342]: +0.92%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e343]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e344]': $95.71
+              - gridcell "+0.76%" [ref=e345]:
+                - generic [ref=e346]: +0.76%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e347]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e348]': $94.59
+              - gridcell "-0.42%" [ref=e349]:
+                - generic [ref=e350]: "-0.42%"
+            - 'row "CZR CZR $26.82 +1.36% Predicted date: 2026-04-04 +0.85% Predicted date: 2026-04-10 +0.92% Predicted date: 2026-04-17 +0.01% Predicted date: 2026-05-03 -0.93%" [ref=e351] [cursor=pointer]':
+              - gridcell "CZR" [ref=e352]
+              - gridcell "CZR" [ref=e353]
+              - gridcell [ref=e354]
+              - gridcell "$26.82" [ref=e355]:
+                - generic [ref=e356]: $26.82
+              - gridcell "+1.36%" [ref=e357]:
+                - generic [ref=e358]: +1.36%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e359]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e360]': $27.05
+              - gridcell "+0.85%" [ref=e361]:
+                - generic [ref=e362]: +0.85%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e363]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e364]': $27.07
+              - gridcell "+0.92%" [ref=e365]:
+                - generic [ref=e366]: +0.92%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e367]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e368]': $26.82
+              - gridcell "+0.01%" [ref=e369]:
+                - generic [ref=e370]: +0.01%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e371]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e372]': $26.57
+              - gridcell "-0.93%" [ref=e373]:
+                - generic [ref=e374]: "-0.93%"
+            - 'row "AVB AVB $163.65 -0.68% Predicted date: 2026-04-04 +0.42% Predicted date: 2026-04-10 +0.91% Predicted date: 2026-04-17 +0.02% Predicted date: 2026-05-03 +0.04%" [ref=e375] [cursor=pointer]':
+              - gridcell "AVB" [ref=e376]
+              - gridcell "AVB" [ref=e377]
+              - gridcell [ref=e378]
+              - gridcell "$163.65" [ref=e379]:
+                - generic [ref=e380]: $163.65
+              - gridcell "-0.68%" [ref=e381]:
+                - generic [ref=e382]: "-0.68%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e383]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e384]': $164.33
+              - gridcell "+0.42%" [ref=e385]:
+                - generic [ref=e386]: +0.42%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e387]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e388]': $165.14
+              - gridcell "+0.91%" [ref=e389]:
+                - generic [ref=e390]: +0.91%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e391]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e392]': $163.68
+              - gridcell "+0.02%" [ref=e393]:
+                - generic [ref=e394]: +0.02%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e395]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e396]': $163.71
+              - gridcell "+0.04%" [ref=e397]:
+                - generic [ref=e398]: +0.04%
+            - 'row "CLX CLX $104.76 +0.43% Predicted date: 2026-04-04 +0.66% Predicted date: 2026-04-10 +0.91% Predicted date: 2026-04-17 -0.71% Predicted date: 2026-05-03 -0.79%" [ref=e399] [cursor=pointer]':
+              - gridcell "CLX" [ref=e400]
+              - gridcell "CLX" [ref=e401]
+              - gridcell [ref=e402]
+              - gridcell "$104.76" [ref=e403]:
+                - generic [ref=e404]: $104.76
+              - gridcell "+0.43%" [ref=e405]:
+                - generic [ref=e406]: +0.43%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e407]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e408]': $105.45
+              - gridcell "+0.66%" [ref=e409]:
+                - generic [ref=e410]: +0.66%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e411]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e412]': $105.71
+              - gridcell "+0.91%" [ref=e413]:
+                - generic [ref=e414]: +0.91%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e415]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e416]': $104.01
+              - gridcell "-0.71%" [ref=e417]:
+                - generic [ref=e418]: "-0.71%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e419]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e420]': $103.94
+              - gridcell "-0.79%" [ref=e421]:
+                - generic [ref=e422]: "-0.79%"
+            - 'row "CHD CHD $94.38 -1.17% Predicted date: 2026-04-04 +0.47% Predicted date: 2026-04-10 +0.90% Predicted date: 2026-04-17 -0.18% Predicted date: 2026-05-03 -0.95%" [ref=e423] [cursor=pointer]':
+              - gridcell "CHD" [ref=e424]
+              - gridcell "CHD" [ref=e425]
+              - gridcell [ref=e426]
+              - gridcell "$94.38" [ref=e427]:
+                - generic [ref=e428]: $94.38
+              - gridcell "-1.17%" [ref=e429]:
+                - generic [ref=e430]: "-1.17%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e431]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e432]': $94.82
+              - gridcell "+0.47%" [ref=e433]:
+                - generic [ref=e434]: +0.47%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e435]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e436]': $95.22
+              - gridcell "+0.90%" [ref=e437]:
+                - generic [ref=e438]: +0.90%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e439]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e440]': $94.21
+              - gridcell "-0.18%" [ref=e441]:
+                - generic [ref=e442]: "-0.18%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e443]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e444]': $93.48
+              - gridcell "-0.95%" [ref=e445]:
+                - generic [ref=e446]: "-0.95%"
+            - 'row "CMCSA CMCSA $28.73 -1.47% Predicted date: 2026-04-04 -0.95% Predicted date: 2026-04-10 +0.88% Predicted date: 2026-04-17 +0.78% Predicted date: 2026-05-03 -0.65%" [ref=e447] [cursor=pointer]':
+              - gridcell "CMCSA" [ref=e448]
+              - gridcell "CMCSA" [ref=e449]
+              - gridcell [ref=e450]
+              - gridcell "$28.73" [ref=e451]:
+                - generic [ref=e452]: $28.73
+              - gridcell "-1.47%" [ref=e453]:
+                - generic [ref=e454]: "-1.47%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e455]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e456]': $28.46
+              - gridcell "-0.95%" [ref=e457]:
+                - generic [ref=e458]: "-0.95%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e459]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e460]': $28.98
+              - gridcell "+0.88%" [ref=e461]:
+                - generic [ref=e462]: +0.88%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e463]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e464]': $28.95
+              - gridcell "+0.78%" [ref=e465]:
+                - generic [ref=e466]: +0.78%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e467]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e468]': $28.54
+              - gridcell "-0.65%" [ref=e469]:
+                - generic [ref=e470]: "-0.65%"
+            - 'row "ETN ETN $375.00 -0.96% Predicted date: 2026-04-04 -0.45% Predicted date: 2026-04-10 +0.86% Predicted date: 2026-04-17 -0.23% Predicted date: 2026-05-03 +0.70%" [ref=e471] [cursor=pointer]':
+              - gridcell "ETN" [ref=e472]
+              - gridcell "ETN" [ref=e473]
+              - gridcell [ref=e474]
+              - gridcell "$375.00" [ref=e475]:
+                - generic [ref=e476]: $375.00
+              - gridcell "-0.96%" [ref=e477]:
+                - generic [ref=e478]: "-0.96%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e479]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e480]': $373.31
+              - gridcell "-0.45%" [ref=e481]:
+                - generic [ref=e482]: "-0.45%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e483]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e484]': $378.23
+              - gridcell "+0.86%" [ref=e485]:
+                - generic [ref=e486]: +0.86%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e487]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e488]': $374.15
+              - gridcell "-0.23%" [ref=e489]:
+                - generic [ref=e490]: "-0.23%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e491]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e492]': $377.64
+              - gridcell "+0.70%" [ref=e493]:
+                - generic [ref=e494]: +0.70%
+            - 'row "PG Procter & Gamble Co. Consumer Defensive $144.88 +1.29% Predicted date: 2026-04-04 +0.51% Predicted date: 2026-04-10 +0.86% Predicted date: 2026-04-17 -0.50% Predicted date: 2026-05-03 +0.93%" [ref=e495] [cursor=pointer]':
+              - gridcell "PG" [ref=e496]
+              - gridcell "Procter & Gamble Co." [ref=e497]
+              - gridcell "Consumer Defensive" [ref=e498]
+              - gridcell "$144.88" [ref=e499]:
+                - generic [ref=e500]: $144.88
+              - gridcell "+1.29%" [ref=e501]:
+                - generic [ref=e502]: +1.29%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e503]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e504]': $145.63
+              - gridcell "+0.51%" [ref=e505]:
+                - generic [ref=e506]: +0.51%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e507]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e508]': $146.13
+              - gridcell "+0.86%" [ref=e509]:
+                - generic [ref=e510]: +0.86%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e511]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e512]': $144.16
+              - gridcell "-0.50%" [ref=e513]:
+                - generic [ref=e514]: "-0.50%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e515]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e516]': $146.23
+              - gridcell "+0.93%" [ref=e517]:
+                - generic [ref=e518]: +0.93%
+            - 'row "CBRE CBRE $134.75 +0.28% Predicted date: 2026-04-04 +0.34% Predicted date: 2026-04-10 +0.85% Predicted date: 2026-04-17 -0.33% Predicted date: 2026-05-03 -0.19%" [ref=e519] [cursor=pointer]':
+              - gridcell "CBRE" [ref=e520]
+              - gridcell "CBRE" [ref=e521]
+              - gridcell [ref=e522]
+              - gridcell "$134.75" [ref=e523]:
+                - generic [ref=e524]: $134.75
+              - gridcell "+0.28%" [ref=e525]:
+                - generic [ref=e526]: +0.28%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e527]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e528]': $135.21
+              - gridcell "+0.34%" [ref=e529]:
+                - generic [ref=e530]: +0.34%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e531]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e532]': $135.89
+              - gridcell "+0.85%" [ref=e533]:
+                - generic [ref=e534]: +0.85%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e535]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e536]': $134.31
+              - gridcell "-0.33%" [ref=e537]:
+                - generic [ref=e538]: "-0.33%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e539]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e540]': $134.50
+              - gridcell "-0.19%" [ref=e541]:
+                - generic [ref=e542]: "-0.19%"
+            - 'row "CEG CEG $303.32 +0.18% Predicted date: 2026-04-04 -0.52% Predicted date: 2026-04-10 +0.81% Predicted date: 2026-04-17 -0.77% Predicted date: 2026-05-03 +0.77%" [ref=e543] [cursor=pointer]':
+              - gridcell "CEG" [ref=e544]
+              - gridcell "CEG" [ref=e545]
+              - gridcell [ref=e546]
+              - gridcell "$303.32" [ref=e547]:
+                - generic [ref=e548]: $303.32
+              - gridcell "+0.18%" [ref=e549]:
+                - generic [ref=e550]: +0.18%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e551]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e552]': $301.76
+              - gridcell "-0.52%" [ref=e553]:
+                - generic [ref=e554]: "-0.52%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e555]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e556]': $305.79
+              - gridcell "+0.81%" [ref=e557]:
+                - generic [ref=e558]: +0.81%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e559]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e560]': $300.99
+              - gridcell "-0.77%" [ref=e561]:
+                - generic [ref=e562]: "-0.77%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e563]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e564]': $305.66
+              - gridcell "+0.77%" [ref=e565]:
+                - generic [ref=e566]: +0.77%
+            - 'row "BA BA $199.61 +0.58% Predicted date: 2026-04-04 +0.84% Predicted date: 2026-04-10 +0.81% Predicted date: 2026-04-17 +0.31% Predicted date: 2026-05-03 -0.41%" [ref=e567] [cursor=pointer]':
+              - gridcell "BA" [ref=e568]
+              - gridcell "BA" [ref=e569]
+              - gridcell [ref=e570]
+              - gridcell "$199.61" [ref=e571]:
+                - generic [ref=e572]: $199.61
+              - gridcell "+0.58%" [ref=e573]:
+                - generic [ref=e574]: +0.58%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e575]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e576]': $201.29
+              - gridcell "+0.84%" [ref=e577]:
+                - generic [ref=e578]: +0.84%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e579]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e580]': $201.23
+              - gridcell "+0.81%" [ref=e581]:
+                - generic [ref=e582]: +0.81%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e583]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e584]': $200.23
+              - gridcell "+0.31%" [ref=e585]:
+                - generic [ref=e586]: +0.31%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e587]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e588]': $198.80
+              - gridcell "-0.41%" [ref=e589]:
+                - generic [ref=e590]: "-0.41%"
+            - 'row "CINF CINF $155.45 -2.37% Predicted date: 2026-04-04 -0.29% Predicted date: 2026-04-10 +0.81% Predicted date: 2026-04-17 -0.66% Predicted date: 2026-05-03 -0.88%" [ref=e591] [cursor=pointer]':
+              - gridcell "CINF" [ref=e592]
+              - gridcell "CINF" [ref=e593]
+              - gridcell [ref=e594]
+              - gridcell "$155.45" [ref=e595]:
+                - generic [ref=e596]: $155.45
+              - gridcell "-2.37%" [ref=e597]:
+                - generic [ref=e598]: "-2.37%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e599]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e600]': $155.00
+              - gridcell "-0.29%" [ref=e601]:
+                - generic [ref=e602]: "-0.29%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e603]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e604]': $156.71
+              - gridcell "+0.81%" [ref=e605]:
+                - generic [ref=e606]: +0.81%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e607]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e608]': $154.43
+              - gridcell "-0.66%" [ref=e609]:
+                - generic [ref=e610]: "-0.66%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e611]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e612]': $154.08
+              - gridcell "-0.88%" [ref=e613]:
+                - generic [ref=e614]: "-0.88%"
+            - 'row "COR COR $325.08 -0.88% Predicted date: 2026-04-04 +0.67% Predicted date: 2026-04-10 +0.76% Predicted date: 2026-04-17 +0.48% Predicted date: 2026-05-03 -0.06%" [ref=e615] [cursor=pointer]':
+              - gridcell "COR" [ref=e616]
+              - gridcell "COR" [ref=e617]
+              - gridcell [ref=e618]
+              - gridcell "$325.08" [ref=e619]:
+                - generic [ref=e620]: $325.08
+              - gridcell "-0.88%" [ref=e621]:
+                - generic [ref=e622]: "-0.88%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e623]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e624]': $327.26
+              - gridcell "+0.67%" [ref=e625]:
+                - generic [ref=e626]: +0.67%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e627]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e628]': $327.56
+              - gridcell "+0.76%" [ref=e629]:
+                - generic [ref=e630]: +0.76%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e631]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e632]': $326.63
+              - gridcell "+0.48%" [ref=e633]:
+                - generic [ref=e634]: +0.48%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e635]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e636]': $324.87
+              - gridcell "-0.06%" [ref=e637]:
+                - generic [ref=e638]: "-0.06%"
+            - 'row "COST COST $974.86 -0.32% Predicted date: 2026-04-04 -0.07% Predicted date: 2026-04-10 +0.76% Predicted date: 2026-04-17 -0.06% Predicted date: 2026-05-03 -0.11%" [ref=e639] [cursor=pointer]':
+              - gridcell "COST" [ref=e640]
+              - gridcell "COST" [ref=e641]
+              - gridcell [ref=e642]
+              - gridcell "$974.86" [ref=e643]:
+                - generic [ref=e644]: $974.86
+              - gridcell "-0.32%" [ref=e645]:
+                - generic [ref=e646]: "-0.32%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e647]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e648]': $974.20
+              - gridcell "-0.07%" [ref=e649]:
+                - generic [ref=e650]: "-0.07%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e651]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e652]': $982.27
+              - gridcell "+0.76%" [ref=e653]:
+                - generic [ref=e654]: +0.76%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e655]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e656]': $974.31
+              - gridcell "-0.06%" [ref=e657]:
+                - generic [ref=e658]: "-0.06%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e659]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e660]': $973.80
+              - gridcell "-0.11%" [ref=e661]:
+                - generic [ref=e662]: "-0.11%"
+            - 'row "ALGN ALGN $180.27 -0.28% Predicted date: 2026-04-04 -0.17% Predicted date: 2026-04-10 +0.74% Predicted date: 2026-04-17 +0.82% Predicted date: 2026-05-03 -0.68%" [ref=e663] [cursor=pointer]':
+              - gridcell "ALGN" [ref=e664]
+              - gridcell "ALGN" [ref=e665]
+              - gridcell [ref=e666]
+              - gridcell "$180.27" [ref=e667]:
+                - generic [ref=e668]: $180.27
+              - gridcell "-0.28%" [ref=e669]:
+                - generic [ref=e670]: "-0.28%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e671]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e672]': $179.96
+              - gridcell "-0.17%" [ref=e673]:
+                - generic [ref=e674]: "-0.17%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e675]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e676]': $181.60
+              - gridcell "+0.74%" [ref=e677]:
+                - generic [ref=e678]: +0.74%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e679]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e680]': $181.74
+              - gridcell "+0.82%" [ref=e681]:
+                - generic [ref=e682]: +0.82%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e683]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e684]': $179.04
+              - gridcell "-0.68%" [ref=e685]:
+                - generic [ref=e686]: "-0.68%"
+            - 'row "ABNB ABNB $131.81 +0.70% Predicted date: 2026-04-04 +0.96% Predicted date: 2026-04-10 +0.74% Predicted date: 2026-04-17 -0.08% Predicted date: 2026-05-03 -1.00%" [ref=e687] [cursor=pointer]':
+              - gridcell "ABNB" [ref=e688]
+              - gridcell "ABNB" [ref=e689]
+              - gridcell [ref=e690]
+              - gridcell "$131.81" [ref=e691]:
+                - generic [ref=e692]: $131.81
+              - gridcell "+0.70%" [ref=e693]:
+                - generic [ref=e694]: +0.70%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e695]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e696]': $133.07
+              - gridcell "+0.96%" [ref=e697]:
+                - generic [ref=e698]: +0.96%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e699]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e700]': $132.78
+              - gridcell "+0.74%" [ref=e701]:
+                - generic [ref=e702]: +0.74%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e703]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e704]': $131.71
+              - gridcell "-0.08%" [ref=e705]:
+                - generic [ref=e706]: "-0.08%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e707]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e708]': $130.50
+              - gridcell "-1.00%" [ref=e709]:
+                - generic [ref=e710]: "-1.00%"
+            - 'row "CVX Chevron Corp. Energy $205.15 -0.41% Predicted date: 2026-04-04 +0.39% Predicted date: 2026-04-10 +0.71% Predicted date: 2026-04-17 -0.30% Predicted date: 2026-05-03 +0.00%" [ref=e711] [cursor=pointer]':
+              - gridcell "CVX" [ref=e712]
+              - gridcell "Chevron Corp." [ref=e713]
+              - gridcell "Energy" [ref=e714]
+              - gridcell "$205.15" [ref=e715]:
+                - generic [ref=e716]: $205.15
+              - gridcell "-0.41%" [ref=e717]:
+                - generic [ref=e718]: "-0.41%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e719]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e720]': $205.95
+              - gridcell "+0.39%" [ref=e721]:
+                - generic [ref=e722]: +0.39%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e723]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e724]': $206.62
+              - gridcell "+0.71%" [ref=e725]:
+                - generic [ref=e726]: +0.71%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e727]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e728]': $204.52
+              - gridcell "-0.30%" [ref=e729]:
+                - generic [ref=e730]: "-0.30%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e731]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e732]': $205.15
+              - gridcell "+0.00%" [ref=e733]:
+                - generic [ref=e734]: +0.00%
+            - 'row "CNC CNC $32.73 -1.53% Predicted date: 2026-04-04 +0.35% Predicted date: 2026-04-10 +0.71% Predicted date: 2026-04-17 -0.04% Predicted date: 2026-05-03 -0.04%" [ref=e735] [cursor=pointer]':
+              - gridcell "CNC" [ref=e736]
+              - gridcell "CNC" [ref=e737]
+              - gridcell [ref=e738]
+              - gridcell "$32.73" [ref=e739]:
+                - generic [ref=e740]: $32.73
+              - gridcell "-1.53%" [ref=e741]:
+                - generic [ref=e742]: "-1.53%"
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e743]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e744]': $32.84
+              - gridcell "+0.35%" [ref=e745]:
+                - generic [ref=e746]: +0.35%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e747]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e748]': $32.96
+              - gridcell "+0.71%" [ref=e749]:
+                - generic [ref=e750]: +0.71%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e751]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e752]': $32.72
+              - gridcell "-0.04%" [ref=e753]:
+                - generic [ref=e754]: "-0.04%"
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e755]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e756]': $32.72
+              - gridcell "-0.04%" [ref=e757]:
+                - generic [ref=e758]: "-0.04%"
+            - 'row "MA Mastercard Inc. Financial Services $492.51 +0.92% Predicted date: 2026-04-04 +0.36% Predicted date: 2026-04-10 +0.70% Predicted date: 2026-04-17 +0.02% Predicted date: 2026-05-03 -0.28%" [ref=e759] [cursor=pointer]':
+              - gridcell "MA" [ref=e760]
+              - gridcell "Mastercard Inc." [ref=e761]
+              - gridcell "Financial Services" [ref=e762]
+              - gridcell "$492.51" [ref=e763]:
+                - generic [ref=e764]: $492.51
+              - gridcell "+0.92%" [ref=e765]:
+                - generic [ref=e766]: +0.92%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e767]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e768]': $494.28
+              - gridcell "+0.36%" [ref=e769]:
+                - generic [ref=e770]: +0.36%
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e771]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e772]': $495.97
+              - gridcell "+0.70%" [ref=e773]:
+                - generic [ref=e774]: +0.70%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e775]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e776]': $492.63
+              - gridcell "+0.02%" [ref=e777]:
+                - generic [ref=e778]: +0.02%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e779]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e780]': $491.11
+              - gridcell "-0.28%" [ref=e781]:
+                - generic [ref=e782]: "-0.28%"
+            - 'row "BSX BSX $69.78 +1.28% Predicted date: 2026-04-04 -0.19% Predicted date: 2026-04-10 +0.69% Predicted date: 2026-04-17 +0.10% Predicted date: 2026-05-03 +0.23%" [ref=e783] [cursor=pointer]':
+              - gridcell "BSX" [ref=e784]
+              - gridcell "BSX" [ref=e785]
+              - gridcell [ref=e786]
+              - gridcell "$69.78" [ref=e787]:
+                - generic [ref=e788]: $69.78
+              - gridcell "+1.28%" [ref=e789]:
+                - generic [ref=e790]: +1.28%
+              - 'gridcell "Predicted date: 2026-04-04" [ref=e791]':
+                - 'generic "Predicted date: 2026-04-04" [ref=e792]': $69.65
+              - gridcell "-0.19%" [ref=e793]:
+                - generic [ref=e794]: "-0.19%"
+              - 'gridcell "Predicted date: 2026-04-10" [ref=e795]':
+                - 'generic "Predicted date: 2026-04-10" [ref=e796]': $70.26
+              - gridcell "+0.69%" [ref=e797]:
+                - generic [ref=e798]: +0.69%
+              - 'gridcell "Predicted date: 2026-04-17" [ref=e799]':
+                - 'generic "Predicted date: 2026-04-17" [ref=e800]': $69.85
+              - gridcell "+0.10%" [ref=e801]:
+                - generic [ref=e802]: +0.10%
+              - 'gridcell "Predicted date: 2026-05-03" [ref=e803]':
+                - 'generic "Predicted date: 2026-05-03" [ref=e804]': $69.94
+              - gridcell "+0.23%" [ref=e805]:
+                - generic [ref=e806]: +0.23%
+        - generic [ref=e809]:
+          - paragraph [ref=e810]: "Rows per page:"
+          - generic [ref=e811]:
+            - 'combobox "Rows per page: 25" [ref=e812] [cursor=pointer]': "25"
+            - textbox: "25"
+            - img
+          - paragraph [ref=e813]: 1–25 of 160
+          - generic [ref=e814]:
+            - button "Go to previous page" [disabled]:
+              - img
+            - button "Go to next page" [ref=e815] [cursor=pointer]:
+              - img [ref=e816]
+      - paragraph [ref=e818]: Select 2+ stocks in the table to compare side by side.

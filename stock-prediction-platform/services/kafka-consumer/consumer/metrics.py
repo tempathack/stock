@@ -22,6 +22,13 @@ consumer_lag = Gauge(
 )
 
 
+dlq_messages_total = Counter(
+    "dlq_messages_total",
+    "Total messages routed to dead letter queue",
+    ["topic", "reason"],  # reason: "deserialization_error" | "db_write_error"
+)
+
+
 def start_metrics_server(port: int = 9090) -> None:
     """Start a Prometheus metrics HTTP server on a daemon thread."""
     start_http_server(port)

@@ -1,0 +1,13 @@
+[     102ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[     313ms] [WARNING] WebSocket connection to 'ws://localhost:8010/ws/prices' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useWebSocket.ts:76
+[     432ms] [WARNING] [ECharts] Instance ec_1775322594453 has been disposed @ http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:7472
+[    6197ms] [WARNING] WebSocket connection to 'ws://localhost:8010/ws/sentiment/AAPL' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useSentimentSocket.ts:51
+[    6216ms] TypeError: Cannot set properties of null (setting 'innerHTML')
+    at TooltipHTMLContent2.setContent (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:64857:22)
+    at TooltipView2._showTooltipContent (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65509:22)
+    at TooltipView2.<anonymous> (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65421:14)
+    at TooltipView2._showOrMove (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65314:62)
+    at TooltipView2._showSeriesItemTooltip (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65420:12)
+    at TooltipView2._tryShow (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65299:16)
+    at TooltipView2.manuallyShowTip (http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65227:14)
+    at http://localhost:5173/node_modules/.vite/deps/echarts.js?v=c58695fe:65153:39

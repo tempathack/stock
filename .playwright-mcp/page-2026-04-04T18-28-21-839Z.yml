@@ -1,0 +1,333 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SP
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: S&P 500 AI
+        - paragraph [ref=e9]: Platform
+    - navigation [ref=e10]:
+      - link "Dashboard" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e12]
+        - paragraph [ref=e14]: Dashboard
+      - link "Models" [ref=e15] [cursor=pointer]:
+        - /url: /models
+        - img [ref=e16]
+        - paragraph [ref=e19]: Models
+      - link "Forecasts" [ref=e20] [cursor=pointer]:
+        - /url: /forecasts
+        - img [ref=e21]
+        - paragraph [ref=e23]: Forecasts
+      - link "Drift" [ref=e24] [cursor=pointer]:
+        - /url: /drift
+        - img [ref=e25]
+        - paragraph [ref=e27]: Drift
+      - link "Backtest" [ref=e28] [cursor=pointer]:
+        - /url: /backtest
+        - img [ref=e29]
+        - paragraph [ref=e31]: Backtest
+      - link "Analytics" [ref=e32] [cursor=pointer]:
+        - /url: /analytics
+        - img [ref=e33]
+        - paragraph [ref=e36]: Analytics
+      - link "Search" [ref=e37] [cursor=pointer]:
+        - /url: /search
+        - img [ref=e38]
+        - paragraph [ref=e40]: Search
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e45]: API
+        - generic [ref=e48]: KAFKA
+        - generic [ref=e51]: DB
+      - generic [ref=e52]: 08:28:21 PM
+  - main [ref=e53]:
+    - generic [ref=e58]:
+      - generic [ref=e60]:
+        - paragraph [ref=e63]: Market Dashboard
+        - paragraph [ref=e66]: WS connected
+      - group [ref=e69]:
+        - button "Market" [active] [pressed] [ref=e70] [cursor=pointer]: Market
+        - button "Macro" [ref=e71] [cursor=pointer]
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e76]: AAPL
+          - generic [ref=e77]: $252.62
+          - generic [ref=e78]: "-0.58%"
+        - generic [ref=e79]:
+          - generic [ref=e81]: MSFT
+          - generic [ref=e82]: $358.06
+          - generic [ref=e83]: "-1.06%"
+        - generic [ref=e84]:
+          - generic [ref=e86]: NVDA
+          - generic [ref=e87]: $164.56
+          - generic [ref=e88]: "-2.48%"
+        - generic [ref=e89]:
+          - generic [ref=e91]: GOOGL
+          - generic [ref=e92]: $290.93
+          - generic [ref=e93]: "-0.86%"
+        - generic [ref=e94]:
+          - generic [ref=e96]: AMZN
+          - generic [ref=e97]: $211.71
+          - generic [ref=e98]: +0.07%
+        - generic [ref=e99]:
+          - generic [ref=e101]: META
+          - generic [ref=e102]: $534.07
+          - generic [ref=e103]: "-0.43%"
+        - generic [ref=e104]:
+          - generic [ref=e106]: BRK-B
+          - generic [ref=e107]: $476.19
+          - generic [ref=e108]: "-1.33%"
+        - generic [ref=e109]:
+          - generic [ref=e111]: TSLA
+          - generic [ref=e112]: $352.87
+          - generic [ref=e113]: "-3.55%"
+        - generic [ref=e114]:
+          - generic [ref=e116]: JPM
+          - generic [ref=e117]: $282.91
+          - generic [ref=e118]: "-0.64%"
+        - generic [ref=e119]:
+          - generic [ref=e121]: V
+          - generic [ref=e122]: $298.82
+          - generic [ref=e123]: +0.03%
+        - generic [ref=e124]:
+          - generic [ref=e126]: UNH
+          - generic [ref=e127]: $261.10
+          - generic [ref=e128]: +0.35%
+        - generic [ref=e129]:
+          - generic [ref=e131]: XOM
+          - generic [ref=e132]: $171.75
+          - generic [ref=e133]: "-0.43%"
+        - generic [ref=e134]:
+          - generic [ref=e136]: MA
+          - generic [ref=e137]: $492.51
+          - generic [ref=e138]: +0.92%
+        - generic [ref=e139]:
+          - generic [ref=e141]: JNJ
+          - generic [ref=e142]: $242.13
+          - generic [ref=e143]: "-0.56%"
+        - generic [ref=e144]:
+          - generic [ref=e146]: PG
+          - generic [ref=e147]: $144.88
+          - generic [ref=e148]: +1.29%
+        - generic [ref=e149]:
+          - generic [ref=e151]: HD
+          - generic [ref=e152]: $322.92
+          - generic [ref=e153]: "-0.86%"
+        - generic [ref=e154]:
+          - generic [ref=e156]: ABBV
+          - generic [ref=e157]: $207.18
+          - generic [ref=e158]: +0.15%
+        - generic [ref=e159]:
+          - generic [ref=e161]: BAC
+          - generic [ref=e162]: $48.75
+          - generic [ref=e163]: +0.39%
+        - generic [ref=e164]:
+          - generic [ref=e166]: CVX
+          - generic [ref=e167]: $205.15
+          - generic [ref=e168]: "-0.41%"
+        - generic [ref=e169]:
+          - generic [ref=e171]: PFE
+          - generic [ref=e172]: $27.68
+          - generic [ref=e173]: +0.97%
+        - generic [ref=e174]:
+          - generic [ref=e176]: AAPL
+          - generic [ref=e177]: $252.62
+          - generic [ref=e178]: "-0.58%"
+        - generic [ref=e179]:
+          - generic [ref=e181]: MSFT
+          - generic [ref=e182]: $358.06
+          - generic [ref=e183]: "-1.06%"
+        - generic [ref=e184]:
+          - generic [ref=e186]: NVDA
+          - generic [ref=e187]: $164.56
+          - generic [ref=e188]: "-2.48%"
+        - generic [ref=e189]:
+          - generic [ref=e191]: GOOGL
+          - generic [ref=e192]: $290.93
+          - generic [ref=e193]: "-0.86%"
+        - generic [ref=e194]:
+          - generic [ref=e196]: AMZN
+          - generic [ref=e197]: $211.71
+          - generic [ref=e198]: +0.07%
+        - generic [ref=e199]:
+          - generic [ref=e201]: META
+          - generic [ref=e202]: $534.07
+          - generic [ref=e203]: "-0.43%"
+        - generic [ref=e204]:
+          - generic [ref=e206]: BRK-B
+          - generic [ref=e207]: $476.19
+          - generic [ref=e208]: "-1.33%"
+        - generic [ref=e209]:
+          - generic [ref=e211]: TSLA
+          - generic [ref=e212]: $352.87
+          - generic [ref=e213]: "-3.55%"
+        - generic [ref=e214]:
+          - generic [ref=e216]: JPM
+          - generic [ref=e217]: $282.91
+          - generic [ref=e218]: "-0.64%"
+        - generic [ref=e219]:
+          - generic [ref=e221]: V
+          - generic [ref=e222]: $298.82
+          - generic [ref=e223]: +0.03%
+        - generic [ref=e224]:
+          - generic [ref=e226]: UNH
+          - generic [ref=e227]: $261.10
+          - generic [ref=e228]: +0.35%
+        - generic [ref=e229]:
+          - generic [ref=e231]: XOM
+          - generic [ref=e232]: $171.75
+          - generic [ref=e233]: "-0.43%"
+        - generic [ref=e234]:
+          - generic [ref=e236]: MA
+          - generic [ref=e237]: $492.51
+          - generic [ref=e238]: +0.92%
+        - generic [ref=e239]:
+          - generic [ref=e241]: JNJ
+          - generic [ref=e242]: $242.13
+          - generic [ref=e243]: "-0.56%"
+        - generic [ref=e244]:
+          - generic [ref=e246]: PG
+          - generic [ref=e247]: $144.88
+          - generic [ref=e248]: +1.29%
+        - generic [ref=e249]:
+          - generic [ref=e251]: HD
+          - generic [ref=e252]: $322.92
+          - generic [ref=e253]: "-0.86%"
+        - generic [ref=e254]:
+          - generic [ref=e256]: ABBV
+          - generic [ref=e257]: $207.18
+          - generic [ref=e258]: +0.15%
+        - generic [ref=e259]:
+          - generic [ref=e261]: BAC
+          - generic [ref=e262]: $48.75
+          - generic [ref=e263]: +0.39%
+        - generic [ref=e264]:
+          - generic [ref=e266]: CVX
+          - generic [ref=e267]: $205.15
+          - generic [ref=e268]: "-0.41%"
+        - generic [ref=e269]:
+          - generic [ref=e271]: PFE
+          - generic [ref=e272]: $27.68
+          - generic [ref=e273]: +0.97%
+      - generic [ref=e275]:
+        - generic [ref=e276]:
+          - generic [ref=e277]:
+            - paragraph [ref=e280]: S&P 500 Market Treemap
+            - paragraph [ref=e281]: Click any cell to inspect · Click sector to zoom in
+          - generic [ref=e282]:
+            - generic [ref=e284]: 62 Gainers
+            - generic [ref=e286]: 98 Losers
+        - generic [ref=e292]:
+          - paragraph [ref=e293]: "-3%+"
+          - paragraph [ref=e294]: "-2%"
+          - paragraph [ref=e295]: "-1%"
+          - paragraph [ref=e296]: 0%
+          - paragraph [ref=e297]: +1%
+          - paragraph [ref=e298]: +2%
+          - paragraph [ref=e299]: +3%+
+      - generic [ref=e300]:
+        - generic [ref=e301]:
+          - generic [ref=e302]:
+            - img [ref=e304]
+            - paragraph [ref=e306]: Top Gainers
+          - generic [ref=e307] [cursor=pointer]:
+            - paragraph [ref=e308]: AMD
+            - paragraph [ref=e309]: AMD
+            - paragraph [ref=e310]: $220.27
+            - generic [ref=e311]:
+              - img [ref=e312]
+              - paragraph [ref=e314]: +4.14%
+          - generic [ref=e315] [cursor=pointer]:
+            - paragraph [ref=e316]: DOW
+            - paragraph [ref=e317]: DOW
+            - paragraph [ref=e318]: $39.62
+            - generic [ref=e319]:
+              - img [ref=e320]
+              - paragraph [ref=e322]: +3.45%
+          - generic [ref=e323] [cursor=pointer]:
+            - paragraph [ref=e324]: APA
+            - paragraph [ref=e325]: APA
+            - paragraph [ref=e326]: $41.32
+            - generic [ref=e327]:
+              - img [ref=e328]
+              - paragraph [ref=e330]: +2.81%
+          - generic [ref=e331] [cursor=pointer]:
+            - paragraph [ref=e332]: AKAM
+            - paragraph [ref=e333]: AKAM
+            - paragraph [ref=e334]: $119.15
+            - generic [ref=e335]:
+              - img [ref=e336]
+              - paragraph [ref=e338]: +2.71%
+          - generic [ref=e339] [cursor=pointer]:
+            - paragraph [ref=e340]: BIIB
+            - paragraph [ref=e341]: BIIB
+            - paragraph [ref=e342]: $189.18
+            - generic [ref=e343]:
+              - img [ref=e344]
+              - paragraph [ref=e346]: +2.31%
+        - generic [ref=e347]:
+          - generic [ref=e348]:
+            - img [ref=e350]
+            - paragraph [ref=e352]: Top Losers
+          - generic [ref=e353] [cursor=pointer]:
+            - paragraph [ref=e354]: CTAS
+            - paragraph [ref=e355]: CTAS
+            - paragraph [ref=e356]: $176.85
+            - generic [ref=e357]:
+              - img [ref=e358]
+              - paragraph [ref=e360]: "-3.98%"
+          - generic [ref=e361] [cursor=pointer]:
+            - paragraph [ref=e362]: TSLA
+            - paragraph [ref=e363]: Tesla Inc.
+            - paragraph [ref=e364]: $352.87
+            - generic [ref=e365]:
+              - img [ref=e366]
+              - paragraph [ref=e368]: "-3.55%"
+          - generic [ref=e369] [cursor=pointer]:
+            - paragraph [ref=e370]: BBY
+            - paragraph [ref=e371]: BBY
+            - paragraph [ref=e372]: $60.40
+            - generic [ref=e373]:
+              - img [ref=e374]
+              - paragraph [ref=e376]: "-2.93%"
+          - generic [ref=e377] [cursor=pointer]:
+            - paragraph [ref=e378]: CCI
+            - paragraph [ref=e379]: CCI
+            - paragraph [ref=e380]: $76.96
+            - generic [ref=e381]:
+              - img [ref=e382]
+              - paragraph [ref=e384]: "-2.59%"
+          - generic [ref=e385] [cursor=pointer]:
+            - paragraph [ref=e386]: CBOE
+            - paragraph [ref=e387]: CBOE
+            - paragraph [ref=e388]: $277.04
+            - generic [ref=e389]:
+              - img [ref=e390]
+              - paragraph [ref=e392]: "-2.59%"
+      - generic [ref=e393]:
+        - generic [ref=e394]:
+          - img [ref=e397]
+          - paragraph [ref=e399]: Market Sentiment
+        - generic [ref=e400]:
+          - generic [ref=e401]:
+            - paragraph [ref=e402]: "Ticker:"
+            - button "AAPL" [ref=e403] [cursor=pointer]:
+              - generic [ref=e404]: AAPL
+            - button "TSLA" [ref=e405] [cursor=pointer]:
+              - generic [ref=e406]: TSLA
+            - button "MSFT" [ref=e407] [cursor=pointer]:
+              - generic [ref=e408]: MSFT
+            - button "NVDA" [ref=e409] [cursor=pointer]:
+              - generic [ref=e410]: NVDA
+            - button "AMZN" [ref=e411] [cursor=pointer]:
+              - generic [ref=e412]: AMZN
+            - paragraph [ref=e415]: —
+          - generic [ref=e416]:
+            - paragraph [ref=e417]: No sentiment data available
+            - paragraph [ref=e418]: Reddit pipeline may be starting up
+      - generic [ref=e420] [cursor=pointer]:
+        - img [ref=e422]
+        - generic [ref=e424]:
+          - paragraph [ref=e425]: Select a stock to analyze
+          - paragraph [ref=e426]: Choose from 160 S&P 500 stocks
+        - img [ref=e427]

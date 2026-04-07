@@ -1,0 +1,170 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e10] [cursor=pointer]:
+    - /url: "#pageContent"
+    - generic [ref=e11]: Skip to main content
+  - generic [ref=e12]:
+    - generic [ref=e13]:
+      - link "Grafana" [ref=e15] [cursor=pointer]:
+        - /url: /
+        - img "Grafana" [ref=e16]
+      - generic [ref=e19]:
+        - img [ref=e21]
+        - button "Search or jump to..." [ref=e23] [cursor=pointer]
+        - generic [ref=e24]:
+          - img [ref=e25]
+          - generic [ref=e27]: ctrl+k
+      - generic [ref=e28]:
+        - button "New" [ref=e29] [cursor=pointer]:
+          - img [ref=e30]
+          - img [ref=e32]
+        - button "Help" [ref=e35] [cursor=pointer]:
+          - img [ref=e36]
+        - button "News" [ref=e38] [cursor=pointer]:
+          - img [ref=e39]
+        - button "Profile" [ref=e41] [cursor=pointer]:
+          - img "User avatar" [ref=e42]
+    - generic [ref=e43]:
+      - button "Open menu" [ref=e45] [cursor=pointer]:
+        - img [ref=e46]
+      - navigation "Breadcrumbs" [ref=e48]:
+        - list [ref=e49]:
+          - listitem [ref=e50]:
+            - link "Home" [ref=e51] [cursor=pointer]:
+              - /url: /
+            - img [ref=e53]
+          - listitem [ref=e55]:
+            - link "Dashboards" [ref=e222] [cursor=pointer]:
+              - /url: /dashboards
+            - img [ref=e224]
+          - listitem [ref=e226]:
+            - generic "API Health" [ref=e227]
+      - generic [ref=e57]:
+        - button "Mark as favorite" [ref=e229] [cursor=pointer]:
+          - img [ref=e230]
+        - generic [ref=e232]:
+          - button "Save dashboard" [ref=e234] [cursor=pointer]:
+            - img [ref=e235]
+          - button "Dashboard settings" [ref=e238] [cursor=pointer]:
+            - img [ref=e239]
+          - button "Add" [ref=e242] [cursor=pointer]:
+            - generic [ref=e243]:
+              - text: Add
+              - img [ref=e244]
+          - button "Share" [ref=e247] [cursor=pointer]:
+            - generic [ref=e248]: Share
+          - generic [ref=e251]:
+            - generic [ref=e252]:
+              - 'button "Time range selected: Last 1 hour" [ref=e253] [cursor=pointer]':
+                - img [ref=e254]
+                - generic [ref=e258]: Last 1 hour
+                - img [ref=e259]
+              - button "Zoom out time range" [ref=e261] [cursor=pointer]:
+                - img [ref=e262]
+            - generic [ref=e264]:
+              - button "Refresh dashboard" [ref=e265] [cursor=pointer]:
+                - img [ref=e266]
+              - button "Auto refresh turned off. Choose refresh time interval" [ref=e269] [cursor=pointer]:
+                - img [ref=e270]
+        - button "Toggle top search bar" [ref=e58] [cursor=pointer]:
+          - img [ref=e60]
+  - main [ref=e4]:
+    - generic [ref=e276]:
+      - region "Dashboard submenu" [ref=e277]:
+        - form "Template variables" [ref=e279]:
+          - generic [ref=e281]:
+            - generic [ref=e282]: namespace
+            - button "namespace" [ref=e284] [cursor=pointer]:
+              - generic [ref=e285]: ingestion
+              - img [ref=e286]
+      - generic [ref=e290]:
+        - generic [ref=e292]:
+          - button "HTTP Overview" [ref=e293] [cursor=pointer]:
+            - img [ref=e294]
+            - text: HTTP Overview
+          - generic [ref=e296]:
+            - button "Row options" [ref=e297] [cursor=pointer]:
+              - img [ref=e298]
+            - button "Delete row" [ref=e300] [cursor=pointer]:
+              - img [ref=e301]
+        - generic [ref=e305]:
+          - generic [ref=e306]:
+            - heading "Request Rate" [level=6] [ref=e307]
+            - button "Menu for panel with title Request Rate" [ref=e308] [cursor=pointer]:
+              - img [ref=e309]
+          - list [ref=e328]:
+            - listitem [ref=e329]:
+              - button "Total Request Rate" [ref=e333] [cursor=pointer]
+        - generic [ref=e338]:
+          - heading "Error Rate %" [level=6] [ref=e340]
+          - generic [ref=e346]: No data
+        - generic [ref=e348]:
+          - button "Latency" [ref=e349] [cursor=pointer]:
+            - img [ref=e350]
+            - text: Latency
+          - generic [ref=e352]:
+            - button "Row options" [ref=e353] [cursor=pointer]:
+              - img [ref=e354]
+            - button "Delete row" [ref=e356] [cursor=pointer]:
+              - img [ref=e357]
+        - generic [ref=e361]:
+          - heading "p50 Latency" [level=6] [ref=e363]
+          - generic "p50" [ref=e366]:
+            - generic [ref=e369]: 51.9 ms
+        - generic [ref=e372]:
+          - heading "p95 Latency" [level=6] [ref=e374]
+          - generic "p95" [ref=e377]:
+            - generic [ref=e380]: 98.6 ms
+        - generic [ref=e383]:
+          - heading "p99 Latency" [level=6] [ref=e385]
+          - generic "p99" [ref=e388]:
+            - generic [ref=e391]: 1 s
+        - generic [ref=e394]:
+          - heading "Latency Distribution" [level=6] [ref=e396]
+          - list [ref=e414]:
+            - listitem [ref=e415]:
+              - button "p50" [ref=e419] [cursor=pointer]
+            - listitem [ref=e420]:
+              - button "p95" [ref=e424] [cursor=pointer]
+            - listitem [ref=e425]:
+              - button "p99" [ref=e429] [cursor=pointer]
+        - generic [ref=e432]:
+          - button "Predictions" [ref=e433] [cursor=pointer]:
+            - img [ref=e434]
+            - text: Predictions
+          - generic [ref=e436]:
+            - button "Row options" [ref=e437] [cursor=pointer]:
+              - img [ref=e438]
+            - button "Delete row" [ref=e440] [cursor=pointer]:
+              - img [ref=e441]
+        - generic [ref=e445]:
+          - heading "Prediction Request Rate" [level=6] [ref=e447]
+          - list [ref=e465]:
+            - listitem [ref=e466]:
+              - button "success" [ref=e470] [cursor=pointer]
+        - generic [ref=e474]:
+          - heading "Prediction Latency p95" [level=6] [ref=e476]
+          - generic "p95" [ref=e479]:
+            - generic [ref=e482]: 9.75 s
+        - generic [ref=e493]:
+          - heading "Inference Errors" [level=6] [ref=e495]
+          - generic [ref=e498]: No data
+        - generic [ref=e500]:
+          - button "Cluster" [ref=e501] [cursor=pointer]:
+            - img [ref=e502]
+            - text: Cluster
+          - generic [ref=e504]:
+            - button "Row options" [ref=e505] [cursor=pointer]:
+              - img [ref=e506]
+            - button "Delete row" [ref=e508] [cursor=pointer]:
+              - img [ref=e509]
+        - generic [ref=e513]:
+          - heading "Active Pods" [level=6] [ref=e515]
+          - generic "Active Pods" [ref=e518]:
+            - generic [ref=e521]: "1"
+        - generic [ref=e524]:
+          - heading "Pods by Namespace" [level=6] [ref=e526]
+          - list [ref=e544]:
+            - listitem [ref=e545]:
+              - button "ingestion" [ref=e549] [cursor=pointer]
+            - listitem [ref=e550]:
+              - button "processing" [ref=e554] [cursor=pointer]

@@ -1,0 +1,350 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+        - text: ">"
+        - link "Corporate Bonds" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32348
+    - generic [ref=e68]:
+      - generic "BAMLC0A4CBBB"
+      - generic [ref=e69]:
+        - heading "Add to favorites ICE BofA BBB US Corporate Index Option-Adjusted Spread (BAMLC0A4CBBB)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: ICE BofA BBB US Corporate Index Option-Adjusted Spread (BAMLC0A4CBBB)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-02: 1.09"
+              - generic "Apr 3, 2026 2:11 PM CDT" [ref=e85]: "Updated: Apr 3, 2026 2:11 PM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=209&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily,
+              - generic [ref=e98]: Close
+          - generic [ref=e101]:
+            - generic [ref=e103]:
+              - generic "1 year date range" [ref=e104] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e105] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e106] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e107] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]: From
+                - textbox "Change start date" [ref=e112]
+              - generic [ref=e114]: to
+              - textbox "Change end date" [ref=e116]
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - button "Edit Graph " [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]:
+                  - text: Edit Graph
+                  - generic [ref=e121]: 
+              - text: 
+            - generic [ref=e123]:
+              - button "Download" [ref=e124] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e125]: 
+              - text: 
+        - generic "Full screen" [ref=e130] [cursor=pointer]:
+          - text: Fullscreen
+          - generic [ref=e131]: 
+        - generic [ref=e132]:
+          - paragraph [ref=e135]:
+            - strong [ref=e136]:
+              - text: Data in this graph are copyrighted. Please review the copyright information in the
+              - link "series notes" [ref=e137] [cursor=pointer]:
+                - /url: "#notes"
+              - text: before sharing.
+          - generic [ref=e138]:
+            - generic [ref=e139]:
+              - generic [ref=e140]:
+                - button "Share Graph " [ref=e141] [cursor=pointer]:
+                  - text: Share Graph
+                  - generic [ref=e142]: 
+                - text:   
+              - generic [ref=e143]:
+                - button "Account Tools " [ref=e144] [cursor=pointer]:
+                  - text: Account Tools
+                  - generic [ref=e145]: 
+                - text:     
+            - generic [ref=e147]:
+              - link "Share on X" [ref=e148] [cursor=pointer]:
+                - /url: /graph/share.php
+              - link "Post on Facebook" [ref=e149] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e150]: 
+              - link "Share on Reddit" [ref=e151] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e152]: 
+              - link "Post to Linkedin" [ref=e153] [cursor=pointer]:
+                - /url: /graph/share.php
+                - generic [ref=e154]: 
+        - generic [ref=e156]:
+          - generic [ref=e158]:
+            - heading "Notes" [level=2] [ref=e159]
+            - generic [ref=e160]:
+              - paragraph [ref=e161]:
+                - strong [ref=e162]: "Source:"
+                - link "Ice Data Indices, LLC" [ref=e163] [cursor=pointer]:
+                  - /url: https://www.theice.com/market-data/indices
+                  - text: Ice Data Indices, LLC
+                  - generic [ref=e164]: 
+              - paragraph [ref=e165]:
+                - strong [ref=e166]: "Release:"
+                - link "ICE BofA Indices" [ref=e167] [cursor=pointer]:
+                  - /url: https://www.theice.com/market-data/indices
+                  - text: ICE BofA Indices
+                  - generic [ref=e168]: 
+              - paragraph [ref=e170]:
+                - strong [ref=e171]: "Units:"
+                - generic [ref=e172]: Percent, Not Seasonally Adjusted
+              - paragraph [ref=e173]:
+                - strong [ref=e174]: "Frequency:"
+                - generic [ref=e175]: Daily, Close
+              - heading "Notes:" [level=4] [ref=e177]
+              - paragraph [ref=e178]:
+                - text: This data represents the Option-Adjusted Spread (OAS) of the ICE BofA BBB US Corporate Index, a subset of the ICE BofA US Corporate Master Index tracking the performance of US dollar denominated investment grade rated corporate debt publicly issued in the US domestic market. This subset includes all securities with a given investment grade rating BBB.
+                - text: The ICE BofA OASs are the calculated spreads between a computed OAS index of all bonds in a given rating category and a spot Treasury curve. An OAS index is constructed using each constituent bond's OAS, weighted by market capitalization. When the last calendar day of the month takes place on the weekend, weekend observations will occur as a result of month ending accrued interest adjustments.
+                - text: Certain indices and index data included in FRED are the property of ICE Data Indices, LLC (“ICE DATA”) and used under license. ICE® IS A REGISTERED TRADEMARK OF ICE DATA OR ITS AFFILIATES AND BOFA® IS A REGISTERED TRADEMARK OF BANK OF AMERICA CORPORATION LICENSED BY BANK OF AMERICA CORPORATION AND ITS AFFILIATES (“BOFA”) AND MAY NOT BE USED WITHOUT BOFA’S PRIOR WRITTEN APPROVAL. ICE DATA, ITS AFFILIATES AND THEIR RESPECTIVE THIRD PARTY SUPPLIERS DISCLAIM ANY AND ALL WARRANTIES AND REPRESENTATIONS, EXPRESS AND/OR IMPLIED, INCLUDING ANY WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE OR USE, INCLUDING WITH REGARD TO THE INDICES, INDEX DATA AND ANY DATA INCLUDED IN, RELATED TO, OR DERIVED THEREFROM. NEITHER ICE DATA, NOR ITS AFFILIATES OR THEIR RESPECTIVE THIRD PARTY PROVIDERS SHALL BE SUBJECT TO ANY DAMAGES OR LIABILITY WITH RESPECT TO THE ADEQUACY, ACCURACY, TIMELINESS OR COMPLETENESS OF THE INDICES OR THE INDEX DATA OR ANY COMPONENT THEREOF. THE INDICES AND INDEX DATA AND ALL COMPONENTS THEREOF ARE PROVIDED ON AN “AS IS” BASIS AND YOUR USE IS AT YOUR OWN RISK. ICE DATA, ITS AFFILIATES AND THEIR RESPECTIVE THIRD PARTY SUPPLIERS DO NOT SPONSOR, ENDORSE, OR RECOMMEND FRED, OR ANY OF ITS PRODUCTS OR SERVICES.
+                - text: Copyright, 2023, ICE Data Indices. Reproduction of this data in any form is prohibited except with the prior written permission of ICE Data Indices.
+                - text: The end of day Index values, Index returns, and Index statistics (“Top Level Data”) are being provided for your internal use only and you are not authorized or permitted to publish, distribute or otherwise furnish Top Level Data to any third-party without prior written approval of ICE Data.
+                - text: Neither ICE Data, its affiliates nor any of its third party suppliers shall have any liability for the accuracy or completeness of the Top Level Data furnished through FRED, or for delays, interruptions or omissions therein nor for any lost profits, direct, indirect, special or consequential damages.
+                - text: The Top Level Data is not investment advice and a reference to a particular investment or security, a credit rating or any observation concerning a security or investment provided in the Top Level Data is not a recommendation to buy, sell or hold such investment or security or make any other investment decisions.
+                - text: You shall not use any Indices as a reference index for the purpose of creating financial products (including but not limited to any exchange-traded fund or other passive index-tracking fund, or any other financial instrument whose objective or return is linked in any way to any Index) without prior written approval of ICE Data.
+                - text: ICE Data, their affiliates or their third party suppliers have exclusive proprietary rights in the Top Level Data and any information and software received in connection therewith.
+                - text: You shall not use or permit anyone to use the Top Level Data for any unlawful or unauthorized purpose.
+                - text: Access to the Top Level Data is subject to termination in the event that any agreement between FRED and ICE Data terminates for any reason.
+                - text: ICE Data may enforce its rights against you as the third-party beneficiary of the FRED Services Terms of Use, even though ICE Data is not a party to the FRED Services Terms of Use.
+                - text: The FRED Services Terms of Use, including but limited to the limitation of liability, indemnity and disclaimer provisions, shall extend to third party suppliers.
+              - generic [ref=e179]:
+                - heading "Suggested Citation:" [level=4] [ref=e180]
+                - paragraph [ref=e182]: Ice Data Indices, LLC, ICE BofA BBB US Corporate Index Option-Adjusted Spread [BAMLC0A4CBBB], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/BAMLC0A4CBBB, April 4, 2026.
+          - generic [ref=e184]:
+            - heading "Related Data and Content" [level=2] [ref=e185]
+            - generic [ref=e186]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e187]
+              - generic [ref=e188]:
+                - generic [ref=e189]:
+                  - link "ICE BofA BB US High Yield Index Option-Adjusted Spread" [ref=e190] [cursor=pointer]:
+                    - /url: /series/BAMLH0A1HYBB
+                    - img [ref=e191]
+                  - generic [ref=e192]:
+                    - text: ...
+                    - link "ICE BofA BB US High Yield Index Option-Adjusted Spread" [ref=e193] [cursor=pointer]:
+                      - /url: /series/BAMLH0A1HYBB
+                      - strong [ref=e194]: ICE BofA BB US High Yield Index Option-Adjusted Spread
+                - generic [ref=e195]:
+                  - link "ICE BofA Single-A US Corporate Index Option-Adjusted Spread" [ref=e196] [cursor=pointer]:
+                    - /url: /series/BAMLC0A3CA
+                    - img [ref=e197]
+                  - generic [ref=e198]:
+                    - text: ...
+                    - link "ICE BofA Single-A US Corporate Index Option-Adjusted Spread" [ref=e199] [cursor=pointer]:
+                      - /url: /series/BAMLC0A3CA
+                      - strong [ref=e200]: ICE BofA Single-A US Corporate Index Option-Adjusted Spread
+                - generic [ref=e201]:
+                  - link "ICE BofA CCC & Lower US High Yield Index Option-Adjusted Spread" [ref=e202] [cursor=pointer]:
+                    - /url: /series/BAMLH0A3HYC
+                    - img [ref=e203]
+                  - generic [ref=e204]:
+                    - text: ...
+                    - link "ICE BofA CCC & Lower US High Yield Index Option-Adjusted Spread" [ref=e205] [cursor=pointer]:
+                      - /url: /series/BAMLH0A3HYC
+                      - strong [ref=e206]: ICE BofA CCC & Lower US High Yield Index Option-Adjusted Spread
+                - generic [ref=e207]:
+                  - link "ICE BofA AA US Corporate Index Option-Adjusted Spread" [ref=e208] [cursor=pointer]:
+                    - /url: /series/BAMLC0A2CAA
+                    - img [ref=e209]
+                  - generic [ref=e210]:
+                    - text: ...
+                    - link "ICE BofA AA US Corporate Index Option-Adjusted Spread" [ref=e211] [cursor=pointer]:
+                      - /url: /series/BAMLC0A2CAA
+                      - strong [ref=e212]: ICE BofA AA US Corporate Index Option-Adjusted Spread
+                - text: ... ... ... ...
+                - generic [ref=e213]:
+                  - button "click to see more" [ref=e214] [cursor=pointer]: See More...
+                  - separator [ref=e215]
+              - heading "Content Suggestions" [level=3] [ref=e216]
+              - generic [ref=e217]:
+                - generic [ref=e218]:
+                  - link "Are financial conditions tight or loose?" [ref=e219] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/12/are-financial-conditions-tight-or-loose/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e220]
+                  - generic [ref=e221]: FRED Blog
+                  - generic [ref=e222]:
+                    - text: ...
+                    - link "Are financial conditions tight or loose?" [ref=e223] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/12/are-financial-conditions-tight-or-loose/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e224]: Are financial conditions tight or loose?
+                - generic [ref=e225]:
+                  - link "ICE BofA BBB US Corporate Index Option-Adjusted Spread" [ref=e226] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=BAMLC0A4CBBB&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e227]
+                  - generic [ref=e228]: ALFRED Vintage Series
+                  - generic [ref=e229]:
+                    - text: ...
+                    - link "ICE BofA BBB US Corporate Index Option-Adjusted Spread" [ref=e230] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=BAMLC0A4CBBB&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e231]: ICE BofA BBB US Corporate Index Option-Adjusted Spread
+                - generic [ref=e232]:
+                  - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e233] [cursor=pointer]:
+                    - /url: /series/BAMLH0A0HYM2
+                    - img [ref=e234]
+                  - generic [ref=e235]:
+                    - text: ...
+                    - link "ICE BofA US High Yield Index Option-Adjusted Spread" [ref=e236] [cursor=pointer]:
+                      - /url: /series/BAMLH0A0HYM2
+                      - strong [ref=e237]: ICE BofA US High Yield Index Option-Adjusted Spread
+              - heading "Related Categories" [level=3] [ref=e238]
+              - generic [ref=e239]:
+                - link "Corporate Bonds" [ref=e240] [cursor=pointer]:
+                  - /url: /categories/32348
+                - link "Interest Rates" [ref=e241] [cursor=pointer]:
+                  - /url: /categories/22
+                - link "Money, Banking, & Finance" [ref=e242] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e244]
+              - link "More Series from ICE BofA Indices" [ref=e246] [cursor=pointer]:
+                - /url: /release?rid=209
+              - heading "Tags" [level=3] [ref=e248]
+              - generic:
+                - link "BBB Bond Rating" [ref=e249] [cursor=pointer]:
+                  - /url: /tags/series?t=bbb
+                - link "Option-Adjusted Spread" [ref=e250] [cursor=pointer]:
+                  - /url: /tags/series?t=option-adjusted%20spread
+                - link "BofA Merrill Lynch" [ref=e251] [cursor=pointer]:
+                  - /url: /tags/series?t=baml
+                - link "BofA Merrill Lynch" [ref=e252] [cursor=pointer]:
+                  - /url: /tags/series?t=bofaml
+                - link "Ice Data Indices, Llc" [ref=e253] [cursor=pointer]:
+                  - /url: /tags/series?t=ice%20data%20indices%2C%20llc
+                - link "Corporate" [ref=e254] [cursor=pointer]:
+                  - /url: /tags/series?t=corporate
+                - 'link "Copyrighted: Pre-Approval Required" [ref=e255] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20pre-approval%20required
+                - link "Daily" [ref=e256] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "Nation" [ref=e257] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e258] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e259] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e262]:
+    - generic [ref=e263]:
+      - generic [ref=e264]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e265]
+        - generic [ref=e268]:
+          - textbox "email" [ref=e269]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e270] [cursor=pointer]
+      - generic [ref=e271]:
+        - heading "Follow us" [level=3] [ref=e272]
+        - generic [ref=e273]:
+          - link "Saint Louis Fed linkedin page" [ref=e275] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e276]: 
+            - generic [ref=e277]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e279] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e280]: 
+            - generic [ref=e281]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e283] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e284]: 
+            - generic [ref=e285]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e287] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e288]: 
+            - generic [ref=e289]: Saint Louis Fed YouTube page
+    - generic [ref=e291]:
+      - heading "Need Help?" [level=3] [ref=e292]
+      - generic [ref=e293]:
+        - link "Questions or Comments" [ref=e295] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e297] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e298]
+      - generic [ref=e299]:
+        - link "Legal" [ref=e301] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e303] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

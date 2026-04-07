@@ -34,7 +34,7 @@ SENTIMENT_TIMESERIES_TTL = 120  # 2 minutes — matches 2-min window emission ra
 router = APIRouter(prefix="/market", tags=["market"])
 
 
-@router.get("/overview", response_model=MarketOverviewResponse)
+@router.get("/overview", response_model=MarketOverviewResponse, summary="Get market overview (treemap data)")
 async def market_overview() -> MarketOverviewResponse:
     """Return treemap data: ticker, sector, market_cap, daily change for all stocks."""
     key = build_key("market", "overview")
@@ -59,7 +59,7 @@ async def market_overview() -> MarketOverviewResponse:
     return response
 
 
-@router.get("/indicators/{ticker}", response_model=TickerIndicatorsResponse)
+@router.get("/indicators/{ticker}", response_model=TickerIndicatorsResponse, summary="Get technical indicators for a ticker")
 async def market_indicators(ticker: str) -> TickerIndicatorsResponse:
     """Return technical indicators for a single ticker."""
     key = build_key("market", "indicators", ticker.upper())
@@ -86,7 +86,7 @@ async def market_indicators(ticker: str) -> TickerIndicatorsResponse:
 SUPPORTED_CANDLE_INTERVALS = {"1h", "1d"}
 
 
-@router.get("/candles", response_model=CandlesResponse)
+@router.get("/candles", response_model=CandlesResponse, summary="Get OHLCV candle bars for a ticker")
 async def market_candles(
     ticker: str,
     interval: str = "1h",
@@ -137,7 +137,7 @@ async def market_candles(
     return response
 
 
-@router.get("/streaming-features/{ticker}", response_model=StreamingFeaturesResponse)
+@router.get("/streaming-features/{ticker}", response_model=StreamingFeaturesResponse, summary="Get live Flink streaming features for a ticker")
 async def streaming_features(ticker: str) -> StreamingFeaturesResponse:
     """Return live Flink-computed streaming features (EMA-20, RSI-14, MACD signal) for a ticker.
 
@@ -155,7 +155,7 @@ async def streaming_features(ticker: str) -> StreamingFeaturesResponse:
     return result
 
 
-@router.get("/sentiment/{ticker}/timeseries", response_model=SentimentTimeseriesResponse)
+@router.get("/sentiment/{ticker}/timeseries", response_model=SentimentTimeseriesResponse, summary="Get rolling sentiment timeseries for a ticker")
 async def get_sentiment_timeseries_endpoint(
     ticker: str, hours: int = 10
 ) -> SentimentTimeseriesResponse:
@@ -184,7 +184,7 @@ MACRO_LATEST_TTL = 300   # 5 minutes — FRED/yfinance data changes at most dail
 MACRO_HISTORY_TTL = 300  # 5 minutes — same cadence
 
 
-@router.get("/macro/history", response_model=list[MacroHistoryPoint])
+@router.get("/macro/history", response_model=list[MacroHistoryPoint], summary="Get macro indicator history")
 async def get_macro_history_endpoint(days: int = 90) -> list[MacroHistoryPoint]:
     """Return up to *days* rows from macro_fred_daily sorted ASC by as_of_date.
 
@@ -201,7 +201,7 @@ async def get_macro_history_endpoint(days: int = 90) -> list[MacroHistoryPoint]:
     return points
 
 
-@router.get("/macro/latest", response_model=MacroLatestResponse)
+@router.get("/macro/latest", response_model=MacroLatestResponse, summary="Get latest macro indicator snapshot")
 async def get_macro_latest_endpoint() -> MacroLatestResponse:
     """Return latest macro indicator snapshot for the Dashboard macro panel.
 

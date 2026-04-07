@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import QueryProvider from "./providers/QueryProvider";
 import Layout from "./components/layout/Layout";
 import { LoadingSpinner } from "./components/ui";
+import ErrorFallback from "./components/ui/ErrorFallback";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Models = lazy(() => import("./pages/Models"));
@@ -22,57 +24,71 @@ export default function App() {
             <Route
               path="dashboard"
               element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Dashboard />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Dashboard />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
             <Route
               path="models"
               element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Models />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Models />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
             <Route
               path="forecasts"
               element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Forecasts />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Forecasts />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
             <Route
               path="drift"
               element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Drift />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Drift />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
             <Route
               path="backtest"
               element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Backtest />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Backtest />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
             <Route
               path="analytics"
               element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Analytics />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Analytics />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
             <Route
               path="search"
               element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <Search />
-                </Suspense>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Search />
+                  </Suspense>
+                </ErrorBoundary>
               }
             />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

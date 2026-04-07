@@ -1,0 +1,40 @@
+[      89ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-F34GCA6J.js?v=c58695fe:21608
+[     434ms] [ERROR] Warning: Each child in a list should have a unique "key" prop.%s%s See https://reactjs.org/link/warning-keys for more information.%s 
+
+Check the render method of `OLAPCandleChart`.  
+    at Cell
+    at OLAPCandleChart (http://localhost:5173/src/components/analytics/OLAPCandleChart.tsx:106:35)
+    at PanelErrorBoundary (http://localhost:5173/src/pages/Analytics.tsx:30:5)
+    at div
+    at http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:2408:45
+    at Grid3 (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:7796:19)
+    at div
+    at http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:2408:45
+    at Grid3 (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:7796:19)
+    at div
+    at http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:2408:45
+    at Container3 (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:7355:19)
+    at Analytics
+    at Suspense
+    at RenderedRoute (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=c58695fe:6355:26)
+    at Outlet (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=c58695fe:7143:26)
+    at main
+    at http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:2408:45
+    at Box3 (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:5420:19)
+    at div
+    at http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:2408:45
+    at Box3 (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:5420:19)
+    at Layout
+    at RenderedRoute (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=c58695fe:6355:26)
+    at Routes (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=c58695fe:7222:3)
+    at Router (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=c58695fe:7152:13)
+    at BrowserRouter (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=c58695fe:10363:3)
+    at QueryClientProvider (http://localhost:5173/node_modules/.vite/deps/@tanstack_react-query.js?v=c58695fe:3193:3)
+    at QueryProvider (http://localhost:5173/src/providers/QueryProvider.tsx:27:41)
+    at App
+    at DefaultPropsProvider (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:6085:3)
+    at RtlProvider (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:6061:3)
+    at ThemeProvider2 (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:6017:5)
+    at ThemeProvider3 (http://localhost:5173/node_modules/.vite/deps/chunk-2X4PVDAD.js?v=c58695fe:6237:5)
+    at ThemeProviderNoVars (http://localhost:5173/node_modules/.vite/deps/chunk-IAZ2UTAW.js?v=c58695fe:277:10)
+    at ThemeProvider (http://localhost:5173/node_modules/.vite/deps/chunk-IAZ2UTAW.js?v=c58695fe:426:3) @ http://localhost:5173/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=c58695fe:63

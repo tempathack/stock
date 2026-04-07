@@ -1,0 +1,56 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SP
+      - generic [ref=e7]:
+        - paragraph [ref=e8]: S&P 500 AI
+        - paragraph [ref=e9]: Platform
+    - navigation [ref=e10]:
+      - link "Dashboard" [ref=e11] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e12]
+        - paragraph [ref=e14]: Dashboard
+      - link "Models" [ref=e15] [cursor=pointer]:
+        - /url: /models
+        - img [ref=e16]
+        - paragraph [ref=e18]: Models
+      - link "Forecasts" [ref=e19] [cursor=pointer]:
+        - /url: /forecasts
+        - img [ref=e20]
+        - paragraph [ref=e22]: Forecasts
+      - link "Drift" [ref=e23] [cursor=pointer]:
+        - /url: /drift
+        - img [ref=e24]
+        - paragraph [ref=e28]: Drift
+      - link "Backtest" [ref=e29] [cursor=pointer]:
+        - /url: /backtest
+        - img [ref=e30]
+        - paragraph [ref=e32]: Backtest
+      - link "Analytics" [ref=e33] [cursor=pointer]:
+        - /url: /analytics
+        - img [ref=e34]
+        - paragraph [ref=e36]: Analytics
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e41]: API
+        - generic [ref=e44]: KAFKA
+        - generic [ref=e47]: DB
+      - generic [ref=e48]: 12:01:24 AM
+  - main [ref=e49]:
+    - generic [ref=e50]:
+      - generic [ref=e52]:
+        - paragraph [ref=e55]: Market Dashboard
+        - paragraph [ref=e58]: WS disconnected
+      - generic [ref=e63]:
+        - generic [ref=e65]:
+          - img [ref=e67]
+          - paragraph [ref=e69]: Top Gainers
+        - generic [ref=e76]:
+          - img [ref=e78]
+          - paragraph [ref=e80]: Top Losers
+      - generic [ref=e87] [cursor=pointer]:
+        - img [ref=e89]
+        - generic [ref=e91]:
+          - paragraph [ref=e92]: Select a stock to analyze
+          - paragraph [ref=e93]: Choose from 0 S&P 500 stocks
+        - img [ref=e94]

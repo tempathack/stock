@@ -1,0 +1,84 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: SP
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: S&P 500 AI
+          - paragraph [ref=e9]: Platform
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e12]
+          - paragraph [ref=e14]: Dashboard
+        - link "Models" [ref=e15] [cursor=pointer]:
+          - /url: /models
+          - img [ref=e16]
+          - paragraph [ref=e18]: Models
+        - link "Forecasts" [ref=e19] [cursor=pointer]:
+          - /url: /forecasts
+          - img [ref=e20]
+          - paragraph [ref=e22]: Forecasts
+        - link "Drift" [ref=e23] [cursor=pointer]:
+          - /url: /drift
+          - img [ref=e24]
+          - paragraph [ref=e28]: Drift
+        - link "Backtest" [ref=e29] [cursor=pointer]:
+          - /url: /backtest
+          - img [ref=e30]
+          - paragraph [ref=e32]: Backtest
+        - link "Analytics" [ref=e33] [cursor=pointer]:
+          - /url: /analytics
+          - img [ref=e34]
+          - paragraph [ref=e36]: Analytics
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e41]: API
+          - generic [ref=e44]: KAFKA
+          - generic [ref=e47]: DB
+        - generic [ref=e48]: 01:14:08 AM
+    - main [ref=e49]:
+      - generic [ref=e54]:
+        - heading "Backtest" [level=4] [ref=e55]
+        - generic [ref=e57]:
+          - generic [ref=e60]:
+            - generic [ref=e61]: Ticker
+            - generic [ref=e62]:
+              - combobox "Ticker" [ref=e63]: AAPL
+              - group:
+                - generic: Ticker
+          - generic [ref=e66]:
+            - generic [ref=e67]: Start Date
+            - generic [ref=e68]:
+              - textbox "Start Date" [ref=e69]: 2030-01-01
+              - group:
+                - generic: Start Date
+          - generic [ref=e71]:
+            - generic [ref=e72]: End Date
+            - generic [ref=e73]:
+              - textbox "End Date" [ref=e74]: 2030-12-31
+              - group:
+                - generic: End Date
+          - generic [ref=e76]:
+            - combobox [ref=e77] [cursor=pointer]: All Horizons
+            - textbox
+            - img
+            - group
+          - generic "Run backtest with selected parameters" [ref=e79]:
+            - button "Run Backtest" [ref=e80] [cursor=pointer]:
+              - img [ref=e82]
+              - text: Run Backtest
+          - group [ref=e85]:
+            - button "CSV" [disabled]:
+              - generic:
+                - img
+              - text: CSV
+            - button "PDF" [disabled]:
+              - generic:
+                - img
+              - text: PDF
+        - generic [ref=e90]:
+          - img [ref=e91]
+          - paragraph [ref=e94]: No backtest data found for AAPL in the selected date range.
+  - tooltip "Run backtest with selected parameters" [ref=e95]:
+    - generic [ref=e96]: Run backtest with selected parameters

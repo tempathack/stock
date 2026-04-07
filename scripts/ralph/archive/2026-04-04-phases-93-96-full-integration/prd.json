@@ -1,0 +1,177 @@
+{
+  "project": "Stock Prediction Platform — Phases 93-96 Full Integration",
+  "branchName": "ralph/phases-93-96-full-integration",
+  "description": "Execute phase 96 sktime models, retrain with 49-feature set, add forecast model attribution column, and verify ALL UI tabs end-to-end via Playwright MCP. Goal: a fully working production system where every tab loads real data, no crashes, no blank sections, and the forecasts tab shows which model produced each prediction. EVERY story that touches or depends on the frontend MUST be verified live in the browser via Playwright MCP before marking passes: true. Screenshots are mandatory proof — do not skip them.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Add sktime statistical forecaster dependencies and 6 wrapper classes",
+      "description": "As an ML engineer, I need sktime and its statistical forecasting deps installed plus 6 sklearn-compatible wrapper classes so the training pipeline can use statistical models.",
+      "acceptanceCriteria": [
+        "ml/requirements.txt contains a '# Statistical Time-Series Models (sktime)' block with: sktime==0.31.0, statsforecast==1.7.8, pmdarima==2.0.4, statsmodels==0.14.2, tbats==1.1.3",
+        "ml/models/sktime_wrappers.py created with 6 wrapper classes: NaiveForecasterWrapper, ExponentialSmoothingWrapper, AutoETSWrapper, ThetaForecasterWrapper, AutoARIMAWrapper, BATSWrapper",
+        "Each wrapper inherits _SktimeBase(BaseEstimator, RegressorMixin) with fit(X, y) and predict(X) interface",
+        "All wrappers store forecast_value_ after fit and broadcast via np.full() in predict()",
+        "Import check passes: python3 -c \"from ml.models.sktime_wrappers import NaiveForecasterWrapper, ExponentialSmoothingWrapper, AutoETSWrapper, ThetaForecasterWrapper, AutoARIMAWrapper, BATSWrapper; print('OK')\" exits 0 (lazy imports inside fit — no hard dep error at import time)",
+        "Reference: .planning/phases/96-sktime-statistical-forecasting-models/96-01-PLAN.md",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Register SKTIME_MODELS family in model_configs.py and wire train_sktime_models() into trainer",
+      "description": "As an ML engineer, I need 6 sktime statistical model configs and a train_sktime_models() function wired into train_all_models() so statistical forecasters train alongside existing model families.",
+      "acceptanceCriteria": [
+        "ml/models/model_configs.py exports SKTIME_MODELS list with 6 ModelConfig entries: naive_last, exponential_smoothing, auto_ets, theta, auto_arima, bats",
+        "ml/pipelines/components/model_trainer.py has train_sktime_models() function matching train_linear_models() pattern",
+        "train_all_models() in model_trainer.py has include_sktime: bool = True parameter and calls train_sktime_models() when True",
+        "training_pipeline.py has --skip-sktime CLI flag (action='store_true', default=False) passed as include_sktime=not args.skip_sktime to train_all_models()",
+        "Import check: python3 -c \"from ml.models.model_configs import SKTIME_MODELS; assert len(SKTIME_MODELS)==6; print('OK')\" exits 0",
+        "Reference: .planning/phases/96-sktime-statistical-forecasting-models/96-02-PLAN.md",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": true,
+      "notes": "SKTIME_MODELS list with 6 entries added to model_configs.py. train_sktime_models() added to model_trainer.py. train_all_models() updated with include_sktime param. --skip-sktime CLI flag added to training_pipeline.py."
+    },
+    {
+      "id": "US-003",
+      "title": "Add SktimeRegressionWrapper base and 5 regression model wrappers",
+      "description": "As an ML engineer, I need 5 sktime regression wrappers (MiniROCKET, ROCKET, TimeSeriesForest, RandomInterval, Catch22) that reshape 2D tabular features into 3D format for sktime regressors.",
+      "acceptanceCriteria": [
+        "ml/requirements.txt updated to add numba>=0.59.0 and pycatch22>=0.4.2 to the sktime block",
+        "ml/models/sktime_wrappers.py extended with SktimeRegressionWrapper base class that reshapes X from (n, T) to (n, 1, T) in fit() and predict()",
+        "5 regression wrappers added: MiniRocketWrapper, RocketWrapper, TimeSeriesForestWrapper, RandomIntervalWrapper, Catch22Wrapper — each wrapping the corresponding sktime.regression class",
+        "Import check: python3 -c \"from ml.models.sktime_wrappers import MiniRocketWrapper, RocketWrapper, TimeSeriesForestWrapper, RandomIntervalWrapper, Catch22Wrapper; print('OK')\" exits 0",
+        "Reference: .planning/phases/96-sktime-statistical-forecasting-models/96-04-PLAN.md",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": true,
+      "notes": "SktimeRegressionWrapper base + 5 concrete wrappers added. All use lazy imports via _make_regressor() to avoid import-time failures. numba and pycatch22 added to requirements. Import check confirmed OK."
+    },
+    {
+      "id": "US-004",
+      "title": "Register SKTIME_REGRESSION_MODELS family, wire into trainer, rebuild ML Docker image",
+      "description": "As an ML engineer, I need 5 sktime regression model configs wired into the training pipeline and the ML Docker image rebuilt with Numba pre-warm so ROCKET trains without JIT delay.",
+      "acceptanceCriteria": [
+        "ml/models/model_configs.py exports SKTIME_REGRESSION_MODELS list with 5 ModelConfig entries: minirocket, rocket, timeseries_forest, random_interval, catch22",
+        "ml/pipelines/components/model_trainer.py has train_sktime_regression_models() function; train_all_models() has include_sktime_regression: bool = True parameter",
+        "training_pipeline.py has --skip-sktime-regression CLI flag",
+        "ml/Dockerfile has Numba pre-warm RUN step after pip install: python -c 'from sktime.regression.kernel_based import RocketRegressor; ...' that exits 0",
+        "ML Docker image rebuilt in Minikube context: eval $(minikube docker-env) && docker build -t stock-ml:latest stock-prediction-platform/ml/",
+        "Import check: python3 -c \"from ml.models.model_configs import SKTIME_REGRESSION_MODELS; assert len(SKTIME_REGRESSION_MODELS)==5; print('OK')\" exits 0",
+        "kubectl rollout restart deployment -n ml (if applicable) to pick up new image",
+        "Reference: .planning/phases/96-sktime-statistical-forecasting-models/96-05-PLAN.md",
+        "Typecheck passes"
+      ],
+      "priority": 4,
+      "passes": true,
+      "notes": "SKTIME_REGRESSION_MODELS (5 entries) added to model_configs.py. train_sktime_regression_models() added to model_trainer.py. train_all_models() updated with include_sktime_regression param. --skip-sktime-regression CLI flag added. Dockerfile updated with gcc build tools for pycatch22 and numba pre-warm (non-fatal). ML Docker image rebuilt in Minikube context successfully."
+    },
+    {
+      "id": "US-005",
+      "title": "Retrain linear models with full 49-feature set (AAPL canary) and verify Forecasts tab shows live data",
+      "description": "As an ML engineer, I need linear models retrained with all 49 features (35 original + 5 yfinance macro + 14 FRED) so predictions reflect the phases 93-94 feature schema, and the Forecasts tab shows real data.",
+      "acceptanceCriteria": [
+        "Exec into training pod or create k8s job: run python -m ml.pipelines.training_pipeline --tickers AAPL --horizons 1 7 14 30 --skip-sktime --skip-sktime-regression 2>&1 | tail -20",
+        "Training completes without ImportError, KeyError, or feature shape mismatch error",
+        "Predictions table updated: kubectl exec -n storage deployment/postgresql -- psql -U stockuser -d stockdb -c \"SELECT COUNT(*), MAX(prediction_date) FROM predictions WHERE ticker='AAPL'\" — shows recent prediction_date (today or yesterday)",
+        "curl http://localhost:8010/predict/bulk?horizon=7 returns JSON array with AAPL entry having non-null predicted_price",
+        "Navigate to http://localhost:5173/forecasts via Playwright MCP — take screenshot forecasts-after-retrain.png",
+        "Confirm Forecasts table shows rows with ticker data — NOT empty, NOT stuck in skeleton",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 5,
+      "passes": true,
+      "notes": "Rebuilt stock-ml-pipeline:latest with 49-feature code. Fixed NaN macro fill bug — when yfinance fetch fails in k8s (no internet), macro columns filled with 0 so drop_incomplete_rows doesn't remove all rows. Training job aapl-retrain-v2 completed: 72 linear models trained across 4 horizons. Predictions table has 4 AAPL rows with prediction_date=2026-04-03. /predict/bulk?horizon=7 returns AAPL predicted_price=251.97. Forecasts tab verified via Playwright — forecasts-after-retrain.png shows 160 tickers with all 4 horizon columns. feast_fred_macro table schema updated to include ticker column (DEFAULT MACRO) with composite PK (ticker, timestamp)."
+    },
+    {
+      "id": "US-006",
+      "title": "Add model_name column to ForecastTable and verify it shows in Forecasts tab",
+      "description": "As a user, I want to see exactly which ML model produced each forecast row in the Forecasts table so I can understand which model is driving predictions per ticker.",
+      "acceptanceCriteria": [
+        "ForecastTable.tsx flatRows mapping includes model_name field sourced from row.model_name (MultiHorizonForecastRow already has this field)",
+        "New GridColDef added: field='model_name', headerName='Model', width=110, renderCell uses monospace font + lowercase + text overflow ellipsis",
+        "Column wrapped in MUI Tooltip showing full model name on hover",
+        "Column positioned after daily_change_pct column and before the 1D forecast group",
+        "TypeScript compiles: npx tsc --noEmit returns 0 errors",
+        "npm run build succeeds",
+        "Navigate to http://localhost:5173/forecasts via Playwright MCP",
+        "Take screenshot forecasts-model-col.png",
+        "Confirm 'MODEL' column header is visible in the DataGrid table",
+        "Confirm at least one row shows a model name (not blank/dash) if predictions exist",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 6,
+      "passes": true,
+      "notes": "Added model_name to flatRows mapping. Added GridColDef for 'Model' column (width=110, monospace, lowercase, ellipsis, Tooltip showing full name). Column positioned after daily_change_pct. TypeScript 0 errors, build OK. Playwright verified: forecasts-model-col.png shows MODEL column with catboost_st... truncated values for 160+ rows."
+    },
+    {
+      "id": "US-007",
+      "title": "Verify Dashboard tab is fully working: MacroPanel + price cards + sentiment all render with live data",
+      "description": "As a user, I want the Dashboard tab to be fully functional showing all sections including the Macro Environment panel from phase 95, so the production system gives a complete market view on first load.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/ via Playwright MCP",
+        "Take fullPage screenshot dashboard-full-verify.png",
+        "Confirm 'Macro Environment' heading is visible in the page",
+        "Confirm MacroPanel renders 9 indicator cards (showing real values or '—' gracefully — no crash, no blank white section)",
+        "Confirm MetricCards (price/change) section is visible and populated",
+        "Confirm SentimentPanel section is visible",
+        "Confirm CandlestickChart or HistoricalChart is visible for default ticker",
+        "If any section is blank/crashed: fix the regression in the relevant component (Dashboard.tsx, MacroPanel.tsx, etc.)",
+        "After any fix: TypeScript 0 errors, npm run build succeeds, re-screenshot to confirm fix",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 7,
+      "passes": true,
+      "notes": "Verified all Dashboard sections render: Macro Environment (9 cards, all '—' gracefully), Market Sentiment (visible, no data — pipeline down), Top Gainers/Losers, Market Treemap, and AAPL stock detail with KEY METRICS (6 populated cards: $252.62, -0.58%, $3.40T, 41.3M, $232.96, $9-$286) and AAPL HISTORICAL chart with real data. Fixed critical bug: import feast outside try/except in feast_online_service.py caused ModuleNotFoundError to bubble up to uvicorn (bypassing CORS middleware) returning 500 with no CORS headers → streaming-features endpoint now gracefully returns available=false. Rebuilt stock-api Docker image and rolled out. TypeScript 0 errors, build OK. Screenshots: dashboard-full-verify.png, dashboard-macro-section.png, dashboard-streaming-fixed.png."
+    },
+    {
+      "id": "US-008",
+      "title": "Verify Models, Drift, and Analytics tabs are fully working — fix any production regressions",
+      "description": "As a platform operator, I need Models, Drift, and Analytics tabs to show real data from the production system with no crashes, blank tables, or missing sections after phases 93-96 changes.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/models via Playwright MCP — take screenshot models-full-verify.png",
+        "Models tab: model comparison table has at least 1 row with model name + metrics visible; WinnerCard or best model highlighted",
+        "Navigate to http://localhost:5173/drift via Playwright MCP — take screenshot drift-full-verify.png",
+        "Drift tab: ActiveModelCard or DriftTimeline renders without crash; shows model name and status",
+        "Navigate to http://localhost:5173/analytics via Playwright MCP — take screenshot analytics-full-verify.png",
+        "Analytics tab: at least one panel (OLAPCandleChart, StreamHealthPanel, or FeatureFreshnessPanel) renders with content",
+        "For any broken tab: check browser console errors via mcp__playwright__browser_console_messages, identify root cause, apply minimal fix",
+        "After any fix: TypeScript 0 errors, npm run build succeeds, re-screenshot to confirm fix",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 8,
+      "passes": true,
+      "notes": "All 3 tabs verified via Playwright MCP. Models: 9 models, stacking_ensemble Winner, CatBoost_standard Active, 0 console errors. Drift: ActiveModelCard (CatBoost_standard Active), Retraining Status (Up to Date), DriftTimeline with 15 events, 0 console errors. Analytics: all panels render (Stream Health, Feature Freshness, OLAP Candle Chart, Kafka Stream Lag). Fixed 1 console error: OLAPCandleChart Cell key used `entry.date` alone causing duplicate-key React warning; changed to `${entry.date}-${i}` for uniqueness. TypeScript 0 errors, build OK. Screenshots: models-full-verify.png, drift-full-verify.png, analytics-fixed-verify.png."
+    },
+    {
+      "id": "US-009",
+      "title": "Verify Backtest and Search tabs are fully working — fix any production regressions; final full-system screenshot pass",
+      "description": "As a platform operator, I need Backtest and Search to respond to user input with real results, and I need a final screenshot of every tab confirming the production system is fully operational end-to-end.",
+      "acceptanceCriteria": [
+        "Navigate to http://localhost:5173/backtest via Playwright MCP — take screenshot backtest-full-verify.png",
+        "Backtest tab: form with ticker input visible; click Run Backtest for AAPL; results chart + metrics render (not blank, not error)",
+        "Navigate to http://localhost:5173/search via Playwright MCP — take screenshot search-full-verify.png",
+        "Search tab: search input visible; type 'AAPL'; results list renders with at least 1 prediction or model result row",
+        "For any broken tab: check console errors via mcp__playwright__browser_console_messages, fix root cause, re-screenshot",
+        "Final production pass — revisit all 7 tabs in sequence and confirm no regressions: Dashboard, Forecasts (with Model column), Models, Drift, Analytics, Backtest, Search",
+        "All 7 final screenshots saved with descriptive names",
+        "After any fix: TypeScript 0 errors, npm run build succeeds",
+        "Verify in browser using dev-browser skill",
+        "Typecheck passes"
+      ],
+      "priority": 9,
+      "passes": true,
+      "notes": "Backtest tab: Run Backtest for AAPL renders chart + 6 metric cards (RMSE, MAE, MAPE, R², Dir.Accuracy, 254 pts), 0 console errors. Search tab: created and populated 4 Elasticsearch indices from PostgreSQL (stocks=160, predictions=640, model_registry=15, drift_logs=15). PREDICTIONS (4) and STOCKS (1) render for AAPL query, 0 console errors. Fixed MUI DataGrid rowCount warning by removing rowCount prop from all 4 DataGrids (client-side pagination). Final 7-tab pass: Dashboard, Forecasts (MODEL column), Models (9 models), Drift (15 events), Analytics (4 panels), Backtest (chart+metrics), Search (predictions+stocks) — all 0 console errors. TypeScript 0 errors, build OK. Screenshots: backtest-full-verify.png, backtest-after-run.png, search-full-verify.png, search-aapl-predictions.png, final-search.png, final-dashboard.png, final-forecasts.png, final-models.png, final-drift.png, final-analytics.png."
+    }
+  ]
+}

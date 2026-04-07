@@ -315,6 +315,24 @@ export interface FeatureDistribution {
   isDrifted: boolean;
 }
 
+/** Backend response shape for a single feature distribution (snake_case from API). */
+export interface FeatureDistributionEntry {
+  feature: string;
+  training_bins: { bin: string; count: number }[];
+  recent_bins: { bin: string; count: number }[];
+  ks_stat: number | null;
+  psi_value: number | null;
+  is_drifted: boolean;
+}
+
+/** Backend response for /models/drift/feature-distributions */
+export interface FeatureDistributionResponse {
+  features: FeatureDistributionEntry[];
+  training_period: string;
+  recent_period: string;
+  count: number;
+}
+
 /** Aggregated drift page data for the mock generator. */
 export interface DriftPageData {
   activeModel: ActiveModelInfo | null;

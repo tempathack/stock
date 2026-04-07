@@ -1,0 +1,2 @@
+[    1666ms] [ERROR] Access to fetch at 'https://grafana.com/blog/news.xml' from origin 'http://192.168.49.2:30300' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30300/?orgId=1:0
+[    1666ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://grafana.com/blog/news.xml:0

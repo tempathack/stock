@@ -1,0 +1,284 @@
+- generic [ref=e2]:
+  - main [ref=e4]:
+    - main [ref=e5]:
+      - generic [ref=e8]:
+        - generic [ref=e13]:
+          - generic [ref=e14]:
+            - generic [ref=e15]:
+              - generic [ref=e18]:
+                - button "21st logo 21st" [ref=e20] [cursor=pointer]:
+                  - generic [ref=e21]:
+                    - generic [ref=e23]:
+                      - img "21st logo"
+                    - generic [ref=e25]: 21st
+                    - img
+                - button "Close sidebar" [ref=e27] [cursor=pointer]:
+                  - img
+              - generic [ref=e30]:
+                - img
+                - textbox "Search" [ref=e31] [cursor=pointer]
+                - generic:
+                  - img
+                  - generic: K
+            - generic [ref=e32]:
+              - generic [ref=e35]:
+                - link "Home" [ref=e37] [cursor=pointer]:
+                  - /url: /
+                  - img [ref=e38]
+                  - generic [ref=e41]: Home
+                - generic [ref=e42]:
+                  - heading "Explore" [level=3] [ref=e44]
+                  - generic [ref=e45]:
+                    - button "Components" [ref=e46] [cursor=pointer]:
+                      - img [ref=e47]
+                      - generic [ref=e49]: Components
+                      - img [ref=e51]
+                    - link "Agent Templates" [ref=e53] [cursor=pointer]:
+                      - /url: /community/templates
+                      - img [ref=e54]
+                      - generic [ref=e56]: Agent Templates
+                - generic [ref=e57]:
+                  - heading "Build" [level=3] [ref=e59]
+                  - generic [ref=e60]:
+                    - button "Agents" [ref=e61] [cursor=pointer]:
+                      - img [ref=e62]
+                      - generic [ref=e77]: Agents
+                      - img [ref=e79]
+                    - link "1Code" [ref=e81] [cursor=pointer]:
+                      - /url: /1code
+                      - generic [ref=e82]:
+                        - img [ref=e83]
+                        - img [ref=e85]
+                      - generic [ref=e87]: 1Code
+                      - img [ref=e88]
+                    - link "Magic Chat" [ref=e92] [cursor=pointer]:
+                      - /url: /magic
+                      - img [ref=e93]
+                      - generic [ref=e97]: Magic Chat
+                      - img [ref=e98]
+              - generic [ref=e104]:
+                - generic [ref=e107]:
+                  - generic [ref=e108]:
+                    - generic [ref=e109]: 21st Agents SDK
+                    - paragraph [ref=e110]: The fastest way to build and deploy AI agents.
+                  - link [ref=e111] [cursor=pointer]:
+                    - /url: https://21st.dev/agents
+                  - generic [ref=e112]:
+                    - link [ref=e113] [cursor=pointer]:
+                      - /url: https://21st.dev/agents
+                      - text: Read more
+                    - button [ref=e114] [cursor=pointer]: Dismiss
+                - generic [ref=e117]:
+                  - generic [ref=e118]:
+                    - generic [ref=e119]: We're in YC
+                    - paragraph [ref=e120]: 21st is backed by Y Combinator. Excited for what's ahead!
+                  - link [ref=e121] [cursor=pointer]:
+                    - /url: https://www.ycombinator.com/companies/1code-21stdev
+                  - generic [ref=e122]:
+                    - link "Read more" [ref=e123] [cursor=pointer]:
+                      - /url: https://www.ycombinator.com/companies/1code-21stdev
+                    - button "Dismiss" [ref=e124] [cursor=pointer]
+              - generic [ref=e126]:
+                - generic [ref=e127]:
+                  - button "Toggle theme" [ref=e128] [cursor=pointer]
+                  - button "Settings" [ref=e130] [cursor=pointer]:
+                    - img
+                - button "Log in" [ref=e131] [cursor=pointer]:
+                  - generic [ref=e132]: Log in
+          - button "Toggle Sidebar" [ref=e133] [cursor=pointer]
+        - generic [ref=e136]:
+          - generic [ref=e138]:
+            - generic [ref=e141]: Home
+            - generic [ref=e142]:
+              - generic:
+                - button "Search":
+                  - img
+                  - generic: Search
+                  - generic:
+                    - img
+                    - generic: K
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - generic [ref=e146]:
+                - heading "UI Components" [level=2] [ref=e147]
+                - button "View all" [ref=e148] [cursor=pointer]:
+                  - generic [ref=e149]:
+                    - text: View all
+                    - img
+              - generic [ref=e150]:
+                - generic [ref=e154]:
+                  - listitem [ref=e156]
+                  - listitem [ref=e159]
+                  - listitem [ref=e162]
+                  - listitem [ref=e165]
+                  - listitem [ref=e168]
+                  - listitem [ref=e171]
+                - button:
+                  - img
+                - button [ref=e173] [cursor=pointer]:
+                  - img
+            - generic [ref=e174]:
+              - generic [ref=e175]:
+                - heading "Agents SDK" [level=2] [ref=e176]
+                - link "Read docs" [ref=e177] [cursor=pointer]:
+                  - /url: /agents/docs
+                  - text: Read docs
+                  - img [ref=e178]
+              - generic [ref=e181]:
+                - generic [ref=e182]:
+                  - generic [ref=e183]:
+                    - heading "The fastest way to ship AI agents" [level=3] [ref=e184]
+                    - paragraph [ref=e185]: Built-in UI, chat history, spend limits, sandbox execution, and observability. Works with Claude and OpenAI.
+                  - generic [ref=e186]:
+                    - link "Get started" [ref=e187] [cursor=pointer]:
+                      - /url: /agents/app
+                      - text: Get started
+                      - img [ref=e188]
+                    - link "Documentation" [ref=e190] [cursor=pointer]:
+                      - /url: /agents/docs
+                - generic [ref=e191]:
+                  - generic [ref=e192]:
+                    - img [ref=e193]
+                    - generic [ref=e195]:
+                      - generic [ref=e196]: E2B Sandboxes
+                      - generic [ref=e197]: Isolated VM per session
+                  - generic [ref=e198]:
+                    - img [ref=e199]
+                    - generic [ref=e201]:
+                      - generic [ref=e202]: Streaming
+                      - generic [ref=e203]: Token-by-token via SSE
+                  - generic [ref=e204]:
+                    - img [ref=e205]
+                    - generic [ref=e207]:
+                      - generic [ref=e208]: Auth & Limits
+                      - generic [ref=e209]: Tokens, rate limits, spend caps
+                  - generic [ref=e210]:
+                    - img [ref=e211]
+                    - generic [ref=e214]:
+                      - generic [ref=e215]: Observability
+                      - generic [ref=e216]: Session replay & traces
+            - generic [ref=e217]:
+              - generic [ref=e218]:
+                - heading "Agent Templates" [level=2] [ref=e219]
+                - button "View all" [ref=e220] [cursor=pointer]:
+                  - generic [ref=e221]:
+                    - text: View all
+                    - img
+              - generic [ref=e222]:
+                - generic [ref=e226]:
+                  - button "Next.js Next.js Starter Next.js chat interface with AI agent powered by 21st Agents SDK Claude Code DuckDuckGo" [ref=e228] [cursor=pointer]:
+                    - generic [ref=e229]:
+                      - img "Next.js" [ref=e231]
+                      - generic [ref=e232]:
+                        - paragraph [ref=e233]: Next.js Starter
+                        - paragraph [ref=e234]: Next.js chat interface with AI agent powered by 21st Agents SDK
+                        - generic [ref=e235]:
+                          - generic [ref=e236]: Claude Code
+                          - generic [ref=e237]: DuckDuckGo
+                  - button "Python Python Starter Minimal server-side Python chat client using the 21st SDK Python 21st SDK" [ref=e239] [cursor=pointer]:
+                    - generic [ref=e240]:
+                      - img "Python" [ref=e242]
+                      - generic [ref=e243]:
+                        - paragraph [ref=e244]: Python Starter
+                        - paragraph [ref=e245]: Minimal server-side Python chat client using the 21st SDK
+                        - generic [ref=e246]:
+                          - generic [ref=e247]: Python
+                          - generic [ref=e248]: 21st SDK
+                  - button "Go Go Starter Minimal terminal chat client in Go using the 21st SDK Go 21st SDK" [ref=e250] [cursor=pointer]:
+                    - generic [ref=e251]:
+                      - img "Go" [ref=e253]
+                      - generic [ref=e254]:
+                        - paragraph [ref=e255]: Go Starter
+                        - paragraph [ref=e256]: Minimal terminal chat client in Go using the 21st SDK
+                        - generic [ref=e257]:
+                          - generic [ref=e258]: Go
+                          - generic [ref=e259]: 21st SDK
+                  - button "Slack Lead Research Agent Research people by email online, qualify leads, and send Slack alerts for interesting prospects Claude Code Slack Exa.ai" [ref=e261] [cursor=pointer]:
+                    - generic [ref=e262]:
+                      - img "Slack" [ref=e264]
+                      - generic [ref=e265]:
+                        - paragraph [ref=e266]: Lead Research Agent
+                        - paragraph [ref=e267]: Research people by email online, qualify leads, and send Slack alerts for interesting prospects
+                        - generic [ref=e268]:
+                          - generic [ref=e269]: Claude Code
+                          - generic [ref=e270]: Slack
+                          - generic [ref=e271]: Exa.ai
+                  - button "Form Autocomplete AI-powered form filling with tabbed forms and chat interface Claude Code" [ref=e273] [cursor=pointer]:
+                    - generic [ref=e274]:
+                      - img [ref=e276]
+                      - generic [ref=e279]:
+                        - paragraph [ref=e280]: Form Autocomplete
+                        - paragraph [ref=e281]: AI-powered form filling with tabbed forms and chat interface
+                        - generic [ref=e283]: Claude Code
+                  - button "Docs Assistant (llms.txt) Documentation Q&A agent — provide a docs URL and get an instant assistant that searches via llms.txt Claude Code llms.txt" [ref=e285] [cursor=pointer]:
+                    - generic [ref=e286]:
+                      - img [ref=e288]
+                      - generic [ref=e290]:
+                        - paragraph [ref=e291]: Docs Assistant (llms.txt)
+                        - paragraph [ref=e292]: Documentation Q&A agent — provide a docs URL and get an instant assistant that searches via llms.txt
+                        - generic [ref=e293]:
+                          - generic [ref=e294]: Claude Code
+                          - generic [ref=e295]: llms.txt
+                  - button "Support Agent Docs-powered support agent that answers questions from llms.txt and escalates unanswered ones via email (Resend) Claude Code llms.txt Resend" [ref=e297] [cursor=pointer]:
+                    - generic [ref=e298]:
+                      - img [ref=e300]
+                      - generic [ref=e302]:
+                        - paragraph [ref=e303]: Support Agent
+                        - paragraph [ref=e304]: Docs-powered support agent that answers questions from llms.txt and escalates unanswered ones via email (Resend)
+                        - generic [ref=e305]:
+                          - generic [ref=e306]: Claude Code
+                          - generic [ref=e307]: llms.txt
+                          - generic [ref=e308]: Resend
+                  - generic [ref=e309]:
+                    - generic [ref=e311]: Examples
+                    - button "Nia MCP Explain GitHub repos with Nia Next.js repository chat with Nia MCP-backed GitHub analysis Claude Code Nia MCP" [ref=e312] [cursor=pointer]:
+                      - generic [ref=e313]:
+                        - img "Nia MCP" [ref=e315]
+                        - generic [ref=e316]:
+                          - paragraph [ref=e317]: Explain GitHub repos with Nia
+                          - paragraph [ref=e318]: Next.js repository chat with Nia MCP-backed GitHub analysis
+                          - generic [ref=e319]:
+                            - generic [ref=e320]: Claude Code
+                            - generic [ref=e321]: Nia MCP
+                  - button "AgentMail AgentMail Agent Email operations copilot — send, read inbox, auto-reply via AgentMail Claude Code AgentMail" [ref=e323] [cursor=pointer]:
+                    - generic [ref=e324]:
+                      - img "AgentMail" [ref=e326]
+                      - generic [ref=e327]:
+                        - paragraph [ref=e328]: AgentMail Agent
+                        - paragraph [ref=e329]: Email operations copilot — send, read inbox, auto-reply via AgentMail
+                        - generic [ref=e330]:
+                          - generic [ref=e331]: Claude Code
+                          - generic [ref=e332]: AgentMail
+                  - button "Convex Note Taker with Convex AI notebook assistant with persistent notes and real-time sync via Convex Claude Code Convex" [ref=e334] [cursor=pointer]:
+                    - generic [ref=e335]:
+                      - img "Convex" [ref=e337]
+                      - generic [ref=e338]:
+                        - paragraph [ref=e339]: Note Taker with Convex
+                        - paragraph [ref=e340]: AI notebook assistant with persistent notes and real-time sync via Convex
+                        - generic [ref=e341]:
+                          - generic [ref=e342]: Claude Code
+                          - generic [ref=e343]: Convex
+                  - button "Slack Slack Monitor Agent Track service status and send updates directly to Slack Claude Code Slack Atlassian Statuspage" [ref=e345] [cursor=pointer]:
+                    - generic [ref=e346]:
+                      - img "Slack" [ref=e348]
+                      - generic [ref=e349]:
+                        - paragraph [ref=e350]: Slack Monitor Agent
+                        - paragraph [ref=e351]: Track service status and send updates directly to Slack
+                        - generic [ref=e352]:
+                          - generic [ref=e353]: Claude Code
+                          - generic [ref=e354]: Slack
+                          - generic [ref=e355]: Atlassian Statuspage
+                  - button "Browser Use BrowserUse Agent Extract structured data from any website using Browser Use Cloud Claude Code Browser Use" [ref=e357] [cursor=pointer]:
+                    - generic [ref=e358]:
+                      - img "Browser Use" [ref=e360]
+                      - generic [ref=e361]:
+                        - paragraph [ref=e362]: BrowserUse Agent
+                        - paragraph [ref=e363]: Extract structured data from any website using Browser Use Cloud
+                        - generic [ref=e364]:
+                          - generic [ref=e365]: Claude Code
+                          - generic [ref=e366]: Browser Use
+                - button:
+                  - img
+                - button [ref=e367] [cursor=pointer]:
+                  - img
+  - region "Notifications alt+T"

@@ -1,0 +1,27 @@
+[      77ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/health/k8s' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[      78ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      78ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/health/k8s:0
+[      95ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/health' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[      95ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      95ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/health:0
+[      95ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/models/drift' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[      95ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[      95ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/models/drift:0
+[     130ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[     130ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[     130ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[    1102ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/models/drift' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[    1102ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[    1102ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/models/drift:0
+[    1144ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[    1145ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[    1145ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[   30108ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/health' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   30108ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   30109ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/health:0
+[   31159ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   31159ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   31159ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0
+[   32179ms] [ERROR] Access to XMLHttpRequest at 'http://localhost:8000/market/overview' from origin 'http://192.168.49.2:30080' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://192.168.49.2:30080/dashboard:0
+[   32179ms] [ERROR] [API] undefined Network Error @ http://192.168.49.2:30080/assets/index-CTONKCtc.js:105
+[   32179ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/market/overview:0

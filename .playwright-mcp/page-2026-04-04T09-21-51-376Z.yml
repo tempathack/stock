@@ -1,0 +1,430 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - heading "Treasury Constant Maturity" [level=1] [ref=e69]
+        - separator [ref=e70]
+      - generic [ref=e71]:
+        - generic: 
+      - generic [ref=e73]:
+        - banner [ref=e74]
+        - generic [ref=e76]:
+          - generic [ref=e78]:
+            - checkbox "Select All Releases" [ref=e79]
+            - button "Add to Data List" [ref=e80] [cursor=pointer]
+            - button "Add to Graph" [ref=e81] [cursor=pointer]
+            - button "Add to Dashboard" [ref=e83] [cursor=pointer]
+            - combobox "Sort by Popularity" [ref=e85] [cursor=pointer]: Sort by Popularity
+          - generic [ref=e86]:
+            - heading "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e88]:
+              - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis" [ref=e89] [cursor=pointer]:
+                - /url: /series/DGS10
+            - generic [ref=e90]:
+              - generic "popularity 99% popular"
+            - generic [ref=e94]: Percent, Not Seasonally Adjusted
+            - generic [ref=e95]:
+              - checkbox "Daily" [ref=e96]
+              - link "Daily" [ref=e97] [cursor=pointer]:
+                - /url: /series/DGS10
+              - generic "From 1962-01-02 to 2026-04-02 13 hours ago" [ref=e98]: 1962-01-02 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e99]
+              - link "Monthly" [ref=e100] [cursor=pointer]:
+                - /url: /series/GS10
+              - generic "From Apr 1953 to Mar 2026 2 days ago" [ref=e101]: Apr 1953 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e102]
+              - link "Weekly" [ref=e103] [cursor=pointer]:
+                - /url: /series/WGS10YR
+              - generic "From 1962-01-05 to 2026-03-27 4 days ago" [ref=e104]: 1962-01-05 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e105]
+              - link "Annual" [ref=e106] [cursor=pointer]:
+                - /url: /series/RIFLGFCY10NA
+              - generic "From 1962 to 2025 Jan 2" [ref=e107]: 1962 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [level=3] [ref=e109]:
+              - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e110] [cursor=pointer]:
+                - /url: /series/DFII10
+            - generic [ref=e111]:
+              - generic "popularity 89% popular"
+            - generic [ref=e115]: Percent, Not Seasonally Adjusted
+            - generic [ref=e116]:
+              - checkbox "Daily" [ref=e117]
+              - link "Daily" [ref=e118] [cursor=pointer]:
+                - /url: /series/DFII10
+              - generic "From 2003-01-02 to 2026-04-02 13 hours ago" [ref=e119]: 2003-01-02 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e120]
+              - link "Monthly" [ref=e121] [cursor=pointer]:
+                - /url: /series/FII10
+              - generic "From Jan 2003 to Mar 2026 2 days ago" [ref=e122]: Jan 2003 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e123]
+              - link "Weekly" [ref=e124] [cursor=pointer]:
+                - /url: /series/WFII10
+              - generic "From 2003-01-03 to 2026-03-27 4 days ago" [ref=e125]: 2003-01-03 to 2026-03-27 (4 days ago)
+            - heading "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e127]:
+              - link "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis" [ref=e128] [cursor=pointer]:
+                - /url: /series/DGS5
+            - generic [ref=e129]:
+              - generic "popularity 86% popular"
+            - generic [ref=e133]: Percent, Not Seasonally Adjusted
+            - generic [ref=e134]:
+              - checkbox "Daily" [ref=e135]
+              - link "Daily" [ref=e136] [cursor=pointer]:
+                - /url: /series/DGS5
+              - generic "From 1962-01-02 to 2026-04-02 13 hours ago" [ref=e137]: 1962-01-02 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e138]
+              - link "Monthly" [ref=e139] [cursor=pointer]:
+                - /url: /series/GS5
+              - generic "From Apr 1953 to Mar 2026 2 days ago" [ref=e140]: Apr 1953 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e141]
+              - link "Weekly" [ref=e142] [cursor=pointer]:
+                - /url: /series/WGS5YR
+              - generic "From 1962-01-05 to 2026-03-27 4 days ago" [ref=e143]: 1962-01-05 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e144]
+              - link "Annual" [ref=e145] [cursor=pointer]:
+                - /url: /series/RIFLGFCY05NA
+              - generic "From 1962 to 2025 Jan 2" [ref=e146]: 1962 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 1-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e148]:
+              - link "Market Yield on U.S. Treasury Securities at 1-Year Constant Maturity, Quoted on an Investment Basis" [ref=e149] [cursor=pointer]:
+                - /url: /series/DGS1
+            - generic [ref=e150]:
+              - generic "popularity 85% popular"
+            - generic [ref=e154]: Percent, Not Seasonally Adjusted
+            - generic [ref=e155]:
+              - checkbox "Daily" [ref=e156]
+              - link "Daily" [ref=e157] [cursor=pointer]:
+                - /url: /series/DGS1
+              - generic "From 1962-01-02 to 2026-04-02 13 hours ago" [ref=e158]: 1962-01-02 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e159]
+              - link "Monthly" [ref=e160] [cursor=pointer]:
+                - /url: /series/GS1
+              - generic "From Apr 1953 to Mar 2026 2 days ago" [ref=e161]: Apr 1953 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e162]
+              - link "Weekly" [ref=e163] [cursor=pointer]:
+                - /url: /series/WGS1YR
+              - generic "From 1962-01-05 to 2026-03-27 4 days ago" [ref=e164]: 1962-01-05 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e165]
+              - link "Annual" [ref=e166] [cursor=pointer]:
+                - /url: /series/RIFLGFCY01NA
+              - generic "From 1962 to 2025 Jan 2" [ref=e167]: 1962 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e169]:
+              - link "Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis" [ref=e170] [cursor=pointer]:
+                - /url: /series/DGS2
+            - generic [ref=e171]:
+              - generic "popularity 85% popular"
+            - generic [ref=e175]: Percent, Not Seasonally Adjusted
+            - generic [ref=e176]:
+              - checkbox "Daily" [ref=e177]
+              - link "Daily" [ref=e178] [cursor=pointer]:
+                - /url: /series/DGS2
+              - generic "From 1976-06-01 to 2026-04-02 13 hours ago" [ref=e179]: 1976-06-01 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e180]
+              - link "Monthly" [ref=e181] [cursor=pointer]:
+                - /url: /series/GS2
+              - generic "From Jun 1976 to Mar 2026 2 days ago" [ref=e182]: Jun 1976 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e183]
+              - link "Weekly" [ref=e184] [cursor=pointer]:
+                - /url: /series/WGS2YR
+              - generic "From 1976-06-04 to 2026-03-27 4 days ago" [ref=e185]: 1976-06-04 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e186]
+              - link "Annual" [ref=e187] [cursor=pointer]:
+                - /url: /series/RIFLGFCY02NA
+              - generic "From 1976 to 2025 Jan 2" [ref=e188]: 1976 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 30-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e190]:
+              - link "Market Yield on U.S. Treasury Securities at 30-Year Constant Maturity, Quoted on an Investment Basis" [ref=e191] [cursor=pointer]:
+                - /url: /series/DGS30
+            - generic [ref=e192]:
+              - generic "popularity 83% popular"
+            - generic [ref=e196]: Percent, Not Seasonally Adjusted
+            - generic [ref=e197]:
+              - checkbox "Daily" [ref=e198]
+              - link "Daily" [ref=e199] [cursor=pointer]:
+                - /url: /series/DGS30
+              - generic "From 1977-02-15 to 2026-04-02 13 hours ago" [ref=e200]: 1977-02-15 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e201]
+              - link "Monthly" [ref=e202] [cursor=pointer]:
+                - /url: /series/GS30
+              - generic "From Feb 1977 to Mar 2026 2 days ago" [ref=e203]: Feb 1977 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e204]
+              - link "Weekly" [ref=e205] [cursor=pointer]:
+                - /url: /series/WGS30YR
+              - generic "From 1977-02-18 to 2026-03-27 4 days ago" [ref=e206]: 1977-02-18 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e207]
+              - link "Annual" [ref=e208] [cursor=pointer]:
+                - /url: /series/RIFLGFCY30NA
+              - generic "From 1977 to 2025 Jan 2" [ref=e209]: 1977 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 3-Month Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e211]:
+              - link "Market Yield on U.S. Treasury Securities at 3-Month Constant Maturity, Quoted on an Investment Basis" [ref=e212] [cursor=pointer]:
+                - /url: /series/DGS3MO
+            - generic [ref=e213]:
+              - generic "popularity 79% popular"
+            - generic [ref=e217]: Percent, Not Seasonally Adjusted
+            - generic [ref=e218]:
+              - checkbox "Daily" [ref=e219]
+              - link "Daily" [ref=e220] [cursor=pointer]:
+                - /url: /series/DGS3MO
+              - generic "From 1981-09-01 to 2026-04-02 13 hours ago" [ref=e221]: 1981-09-01 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e222]
+              - link "Monthly" [ref=e223] [cursor=pointer]:
+                - /url: /series/GS3M
+              - generic "From Sep 1981 to Mar 2026 2 days ago" [ref=e224]: Sep 1981 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e225]
+              - link "Weekly" [ref=e226] [cursor=pointer]:
+                - /url: /series/WGS3MO
+              - generic "From 1981-09-04 to 2026-03-27 4 days ago" [ref=e227]: 1981-09-04 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e228]
+              - link "Annual" [ref=e229] [cursor=pointer]:
+                - /url: /series/RIFLGFCM03NA
+              - generic "From 1981 to 2025 Jan 2" [ref=e230]: 1981 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 20-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e232]:
+              - link "Market Yield on U.S. Treasury Securities at 20-Year Constant Maturity, Quoted on an Investment Basis" [ref=e233] [cursor=pointer]:
+                - /url: /series/DGS20
+            - generic [ref=e234]:
+              - generic "popularity 78% popular"
+            - generic [ref=e238]: Percent, Not Seasonally Adjusted
+            - generic [ref=e239]:
+              - checkbox "Daily" [ref=e240]
+              - link "Daily" [ref=e241] [cursor=pointer]:
+                - /url: /series/DGS20
+              - generic "From 1962-01-02 to 2026-04-02 13 hours ago" [ref=e242]: 1962-01-02 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e243]
+              - link "Monthly" [ref=e244] [cursor=pointer]:
+                - /url: /series/GS20
+              - generic "From Apr 1953 to Mar 2026 2 days ago" [ref=e245]: Apr 1953 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e246]
+              - link "Weekly" [ref=e247] [cursor=pointer]:
+                - /url: /series/WGS20YR
+              - generic "From 1962-01-05 to 2026-03-27 4 days ago" [ref=e248]: 1962-01-05 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e249]
+              - link "Annual" [ref=e250] [cursor=pointer]:
+                - /url: /series/RIFLGFCY20NA
+              - generic "From 1962 to 2025 Jan 5" [ref=e251]: 1962 to 2025 (Jan 5)
+            - heading "Market Yield on U.S. Treasury Securities at 1-Month Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e253]:
+              - link "Market Yield on U.S. Treasury Securities at 1-Month Constant Maturity, Quoted on an Investment Basis" [ref=e254] [cursor=pointer]:
+                - /url: /series/DGS1MO
+            - generic [ref=e255]:
+              - generic "popularity 76% popular"
+            - generic [ref=e259]: Percent, Not Seasonally Adjusted
+            - generic [ref=e260]:
+              - checkbox "Daily" [ref=e261]
+              - link "Daily" [ref=e262] [cursor=pointer]:
+                - /url: /series/DGS1MO
+              - generic "From 2001-07-31 to 2026-04-02 13 hours ago" [ref=e263]: 2001-07-31 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e264]
+              - link "Monthly" [ref=e265] [cursor=pointer]:
+                - /url: /series/GS1M
+              - generic "From Jul 2001 to Mar 2026 2 days ago" [ref=e266]: Jul 2001 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e267]
+              - link "Weekly" [ref=e268] [cursor=pointer]:
+                - /url: /series/WGS1MO
+              - generic "From 2001-08-03 to 2026-03-27 4 days ago" [ref=e269]: 2001-08-03 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e270]
+              - link "Annual" [ref=e271] [cursor=pointer]:
+                - /url: /series/RIFLGFCM01NA
+              - generic "From 2001 to 2025 Jan 2" [ref=e272]: 2001 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e274]:
+              - link "Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment Basis" [ref=e275] [cursor=pointer]:
+                - /url: /series/DGS3
+            - generic [ref=e276]:
+              - generic "popularity 74% popular"
+            - generic [ref=e280]: Percent, Not Seasonally Adjusted
+            - generic [ref=e281]:
+              - checkbox "Daily" [ref=e282]
+              - link "Daily" [ref=e283] [cursor=pointer]:
+                - /url: /series/DGS3
+              - generic "From 1962-01-02 to 2026-04-02 13 hours ago" [ref=e284]: 1962-01-02 to 2026-04-02 (13 hours ago)
+              - checkbox "Weekly" [ref=e285]
+              - link "Weekly" [ref=e286] [cursor=pointer]:
+                - /url: /series/WGS3YR
+              - generic "From 1962-01-05 to 2026-03-27 4 days ago" [ref=e287]: 1962-01-05 to 2026-03-27 (4 days ago)
+              - checkbox "Monthly" [ref=e288]
+              - link "Monthly" [ref=e289] [cursor=pointer]:
+                - /url: /series/GS3
+              - generic "From Apr 1953 to Mar 2026 2 days ago" [ref=e290]: Apr 1953 to Mar 2026 (2 days ago)
+              - checkbox "Annual" [ref=e291]
+              - link "Annual" [ref=e292] [cursor=pointer]:
+                - /url: /series/RIFLGFCY03NA
+              - generic "From 1962 to 2025 Jan 2" [ref=e293]: 1962 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [level=3] [ref=e295]:
+              - link "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e296] [cursor=pointer]:
+                - /url: /series/DFII5
+            - generic [ref=e297]:
+              - generic "popularity 72% popular"
+            - generic [ref=e301]: Percent, Not Seasonally Adjusted
+            - generic [ref=e302]:
+              - checkbox "Daily" [ref=e303]
+              - link "Daily" [ref=e304] [cursor=pointer]:
+                - /url: /series/DFII5
+              - generic "From 2003-01-02 to 2026-04-02 13 hours ago" [ref=e305]: 2003-01-02 to 2026-04-02 (13 hours ago)
+              - checkbox "Weekly" [ref=e306]
+              - link "Weekly" [ref=e307] [cursor=pointer]:
+                - /url: /series/WFII5
+              - generic "From 2003-01-03 to 2026-03-27 4 days ago" [ref=e308]: 2003-01-03 to 2026-03-27 (4 days ago)
+              - checkbox "Monthly" [ref=e309]
+              - link "Monthly" [ref=e310] [cursor=pointer]:
+                - /url: /series/FII5
+              - generic "From Jan 2003 to Mar 2026 2 days ago" [ref=e311]: Jan 2003 to Mar 2026 (2 days ago)
+            - heading "Market Yield on U.S. Treasury Securities at 6-Month Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e313]:
+              - link "Market Yield on U.S. Treasury Securities at 6-Month Constant Maturity, Quoted on an Investment Basis" [ref=e314] [cursor=pointer]:
+                - /url: /series/DGS6MO
+            - generic [ref=e315]:
+              - generic "popularity 68% popular"
+            - generic [ref=e319]: Percent, Not Seasonally Adjusted
+            - generic [ref=e320]:
+              - checkbox "Daily" [ref=e321]
+              - link "Daily" [ref=e322] [cursor=pointer]:
+                - /url: /series/DGS6MO
+              - generic "From 1981-09-01 to 2026-04-02 13 hours ago" [ref=e323]: 1981-09-01 to 2026-04-02 (13 hours ago)
+              - checkbox "Monthly" [ref=e324]
+              - link "Monthly" [ref=e325] [cursor=pointer]:
+                - /url: /series/GS6M
+              - generic "From Sep 1981 to Mar 2026 2 days ago" [ref=e326]: Sep 1981 to Mar 2026 (2 days ago)
+              - checkbox "Weekly" [ref=e327]
+              - link "Weekly" [ref=e328] [cursor=pointer]:
+                - /url: /series/WGS6MO
+              - generic "From 1981-09-04 to 2026-03-27 4 days ago" [ref=e329]: 1981-09-04 to 2026-03-27 (4 days ago)
+              - checkbox "Annual" [ref=e330]
+              - link "Annual" [ref=e331] [cursor=pointer]:
+                - /url: /series/RIFLGFCM06NA
+              - generic "From 1981 to 2025 Jan 2" [ref=e332]: 1981 to 2025 (Jan 2)
+            - heading "Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis" [level=3] [ref=e334]:
+              - link "Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis" [ref=e335] [cursor=pointer]:
+                - /url: /series/DGS7
+            - generic [ref=e336]:
+              - generic "popularity 67% popular"
+            - generic [ref=e340]: Percent, Not Seasonally Adjusted
+            - generic [ref=e341]:
+              - checkbox "Daily" [ref=e342]
+              - link "Daily" [ref=e343] [cursor=pointer]:
+                - /url: /series/DGS7
+              - generic "From 1969-07-01 to 2026-04-02 13 hours ago" [ref=e344]: 1969-07-01 to 2026-04-02 (13 hours ago)
+              - checkbox "Weekly" [ref=e345]
+              - link "Weekly" [ref=e346] [cursor=pointer]:
+                - /url: /series/WGS7YR
+              - generic "From 1969-07-04 to 2026-03-27 4 days ago" [ref=e347]: 1969-07-04 to 2026-03-27 (4 days ago)
+              - checkbox "Monthly" [ref=e348]
+              - link "Monthly" [ref=e349] [cursor=pointer]:
+                - /url: /series/GS7
+              - generic "From Jul 1969 to Mar 2026 2 days ago" [ref=e350]: Jul 1969 to Mar 2026 (2 days ago)
+              - checkbox "Annual" [ref=e351]
+              - link "Annual" [ref=e352] [cursor=pointer]:
+                - /url: /series/RIFLGFCY07NA
+              - generic "From 1969 to 2025 Jan 2" [ref=e353]: 1969 to 2025 (Jan 2)
+            - generic [ref=e354]:
+              - checkbox "Select All Releases" [ref=e355]
+              - button "Add to Data List" [ref=e356] [cursor=pointer]
+              - button "Add to Graph" [ref=e357] [cursor=pointer]
+              - button "Add to Dashboard" [ref=e359] [cursor=pointer]
+            - paragraph [ref=e360]:
+              - text: "1"
+              - link "page 2" [ref=e361] [cursor=pointer]:
+                - /url: /categories/115?cid=115&t=&et=&pageID=2
+                - text: "2"
+              - link "next page" [ref=e362] [cursor=pointer]:
+                - /url: /categories/115?cid=115&t=&et=&pageID=2
+                - text: Next »
+  - text:  
+  - generic [ref=e364]:
+    - generic [ref=e365]:
+      - generic [ref=e366]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e367]
+        - generic [ref=e370]:
+          - textbox "email" [ref=e371]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e372] [cursor=pointer]
+      - generic [ref=e373]:
+        - heading "Follow us" [level=3] [ref=e374]
+        - generic [ref=e375]:
+          - link "Saint Louis Fed linkedin page" [ref=e377] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e378]: 
+            - generic [ref=e379]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e381] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e382]: 
+            - generic [ref=e383]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e385] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e386]: 
+            - generic [ref=e387]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e389] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e390]: 
+            - generic [ref=e391]: Saint Louis Fed YouTube page
+    - generic [ref=e393]:
+      - heading "Need Help?" [level=3] [ref=e394]
+      - generic [ref=e395]:
+        - link "Questions or Comments" [ref=e397] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e399] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e400]
+      - generic [ref=e401]:
+        - link "Legal" [ref=e403] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e405] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/backtest", tags=["backtest"])
 
 
-@router.get("/{ticker}", response_model=BacktestResponse)
+@router.get("/{ticker}", response_model=BacktestResponse, summary="Get backtest accuracy for a ticker")
 async def backtest_ticker(
     ticker: str,
     start: str | None = Query(default=None, description="Start date (YYYY-MM-DD). Defaults to 1 year ago."),

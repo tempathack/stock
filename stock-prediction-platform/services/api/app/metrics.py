@@ -1,6 +1,6 @@
 """Custom Prometheus metrics for prediction endpoints."""
 
-from prometheus_client import Counter, Histogram
+from prometheus_client import Counter, Gauge, Histogram
 
 prediction_requests_total = Counter(
     "prediction_requests_total",
@@ -25,4 +25,10 @@ feast_stale_features_total = Counter(
     "feast_stale_features_total",
     "Total Feast feature fallbacks due to staleness or unavailability",
     ["ticker", "reason"],  # reason: "feast_unavailable" | "feast_stale"
+)
+
+drift_score_current = Gauge(
+    "drift_score_current",
+    "Current drift score (KS statistic) per feature",
+    ["feature", "model_id"],
 )

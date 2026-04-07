@@ -1,0 +1,22 @@
+[      33ms] [ERROR] TypeError: Failed to fetch
+    at Ei.request (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149462)
+    at Ei.post (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:150051)
+    at dme (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:150765)
+    at hme (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:150827)
+    at k0e.fetchObs (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:26:826590)
+    at k0e.componentDidUpdate (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:26:825975)
+    at oue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:33086)
+    at iue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32757)
+    at Nje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32254)
+    at Dje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:42577) @ https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:22
+[    9898ms] [ERROR] TypeError: Failed to fetch
+    at Ei.request (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:149462)
+    at Ei.post (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:150051)
+    at dme (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:150765)
+    at hme (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:23:150827)
+    at k0e.fetchObs (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:26:826590)
+    at k0e.componentDidUpdate (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:26:825975)
+    at oue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:33086)
+    at iue (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32757)
+    at Nje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:32254)
+    at Dje (https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:8:42577) @ https://fred.stlouisfed.org/assets/research/fred-graph-react/1775240960.fred-graph-react.umd.js:22

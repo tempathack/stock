@@ -1,0 +1,442 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Money, Banking, & Finance" [ref=e65] [cursor=pointer]:
+          - /url: /categories/32991
+        - text: ">"
+        - link "Interest Rates" [ref=e66] [cursor=pointer]:
+          - /url: /categories/22
+        - text: ">"
+        - link "Interest Rate Spreads" [ref=e67] [cursor=pointer]:
+          - /url: /categories/33446
+    - generic [ref=e68]:
+      - generic "T5YIE"
+      - generic [ref=e69]:
+        - heading "Add to favorites 5-Year Breakeven Inflation Rate (T5YIE)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: 5-Year Breakeven Inflation Rate (T5YIE)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "2026-04-03: 2.61"
+              - generic "Apr 3, 2026 5:22 PM CDT" [ref=e85]: "Updated: Apr 3, 2026 5:22 PM CDT"
+              - 'link "Next Release Date: Apr 6, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=304&y=2026
+                - generic "Apr 6, 2026" [ref=e88]: "Next Release Date: Apr 6, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Not Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Daily
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]: 2021-04-03
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]: 2026-04-03
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic [ref=e127]:
+          - generic [ref=e321]:
+            - region "FRED Graph" [ref=e323]:
+              - generic [ref=e324]:
+                - paragraph [ref=e325]: Chart
+                - generic [ref=e326]: Line chart with 1306 data points.
+                - button "View as data table, Chart" [ref=e328] [cursor=pointer]
+                - generic [ref=e329]: The chart has 1 X axis displaying xAxis. Data ranges from 2003-01-02 1:00:00 to 2026-04-03 1:00:00.
+                - generic [ref=e330]: The chart has 2 Y axes displaying Percent and yAxisRight.
+              - generic [ref=e334]:
+                - generic:
+                  - region "Toggle series visibility, Chart":
+                    - list:
+                      - listitem:
+                        - button "Show 5-Year Breakeven Inflation Rate" [pressed] [ref=e335] [cursor=pointer]
+                - img "Interactive FRED Graph" [ref=e336]:
+                  - region "5-Year Breakeven Inflation Rate series with 1306 points" [ref=e346]
+                  - generic [ref=e350]:
+                    - generic [ref=e351]: "1.8"
+                    - generic [ref=e352]: "2.0"
+                    - generic [ref=e353]: "2.2"
+                    - generic [ref=e354]: "2.4"
+                    - generic [ref=e355]: "2.6"
+                    - generic [ref=e356]: "2.8"
+                    - generic [ref=e357]: "3.0"
+                    - generic [ref=e358]: "3.2"
+                    - generic [ref=e359]: "3.4"
+                    - generic [ref=e360]: "3.6"
+                  - generic [ref=e361]:
+                    - generic [ref=e362]: 2021-07
+                    - generic [ref=e363]: 2022-01
+                    - generic [ref=e364]: 2022-07
+                    - generic [ref=e365]: 2023-01
+                    - generic [ref=e366]: 2023-07
+                    - generic [ref=e367]: 2024-01
+                    - generic [ref=e368]: 2024-07
+                    - generic [ref=e369]: 2025-01
+                    - generic [ref=e370]: 2025-07
+                    - generic [ref=e371]: 2026-01
+                - generic [ref=e372] [cursor=pointer]: 5-Year Breakeven Inflation Rate
+                - generic [ref=e373]: Percent
+              - generic [ref=e375]: End of interactive chart.
+              - generic [ref=e376]:
+                - generic [ref=e377]:
+                  - generic [ref=e378]:
+                    - text: "Source: Federal Reserve Bank of St. Louis"
+                    - generic [ref=e379]: via FRED®
+                  - link [ref=e382] [cursor=pointer]:
+                    - /url: https://fredhelp.stlouisfed.org/fred/data/understanding-the-data/recession-bars/
+                    - emphasis [ref=e383]: Shaded areas indicate U.S. recessions.
+                - generic [ref=e384]: fred.stlouisfed.org
+            - option "Percent" [selected]
+            - option "Change, Percent"
+            - option "Change from Year Ago, Percent"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Index (Scale value to 100 for chosen date)"
+            - option "Daily" [selected]
+            - option "Weekly, Ending Friday"
+            - option "Weekly, Ending Thursday"
+            - option "Weekly, Ending Wednesday"
+            - option "Weekly, Ending Tuesday"
+            - option "Weekly, Ending Monday"
+            - option "Weekly, Ending Sunday"
+            - option "Weekly, Ending Saturday"
+            - option "Biweekly, Ending Wednesday"
+            - option "Biweekly, Ending Monday"
+            - option "Monthly"
+            - option "Quarterly"
+            - option "Semiannual"
+            - option "Annual"
+            - combobox "customize your graph data by combining other series with your existing series." [ref=e386]
+            - option "Select" [selected]
+            - option "Change"
+            - option "Change from Year Ago"
+            - option "Percent Change"
+            - option "Percent Change from Year Ago"
+            - option "Compounded Annual Rate of Change"
+            - option "Continuously Compounded Rate of Change"
+            - option "Continuously Compounded Annual Rate of Change"
+            - option "Natural Log"
+            - option "Index (Scale value to 100 for chosen date)"
+          - generic "Full screen" [ref=e129] [cursor=pointer]:
+            - text: Fullscreen
+            - generic [ref=e130]: 
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]:
+              - button "Share Graph " [ref=e135] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e387]: 
+              - text:   
+            - generic [ref=e137]:
+              - button "Account Tools " [ref=e138] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e139]: 
+              - text:     
+          - generic [ref=e141]:
+            - link "Share on X" [ref=e142] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e143] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e144]: 
+            - link "Share on Reddit" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Post to Linkedin" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+        - generic [ref=e150]:
+          - generic [ref=e152]:
+            - heading "Notes" [level=2] [ref=e153]
+            - generic [ref=e154]:
+              - paragraph [ref=e155]:
+                - strong [ref=e156]: "Source:"
+                - link "Federal Reserve Bank of St. Louis" [ref=e157] [cursor=pointer]:
+                  - /url: http://www.stlouisfed.org/
+                  - text: Federal Reserve Bank of St. Louis
+                  - generic [ref=e158]: 
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "Release:"
+                - text: Interest Rate Spreads
+              - paragraph [ref=e162]:
+                - strong [ref=e163]: "Units:"
+                - generic [ref=e164]: Percent, Not Seasonally Adjusted
+              - paragraph [ref=e165]:
+                - strong [ref=e166]: "Frequency:"
+                - generic [ref=e167]: Daily
+              - heading "Notes:" [level=4] [ref=e169]
+              - paragraph [ref=e170]:
+                - text: The breakeven inflation rate represents a measure of expected inflation derived from 5-Year Treasury Constant Maturity Securities (
+                - link "DGS5" [ref=e171] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/DGS5
+                - text: ) and 5-Year Treasury Inflation-Indexed Constant Maturity Securities (
+                - link "DFII5" [ref=e172] [cursor=pointer]:
+                  - /url: https://fred.stlouisfed.org/series/DFII5
+                - text: ). The latest value implies what market participants expect inflation to be in the next 5 years, on average.
+                - text: Starting with the update on June 21, 2019, the Treasury bond data used in calculating interest rate spreads is obtained directly from the
+                - link "U.S. Treasury Department" [ref=e173] [cursor=pointer]:
+                  - /url: https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield
+                - text: .
+              - generic [ref=e174]:
+                - heading "Suggested Citation:" [level=4] [ref=e175]
+                - paragraph [ref=e177]: Federal Reserve Bank of St. Louis, 5-Year Breakeven Inflation Rate [T5YIE], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/T5YIE, April 4, 2026.
+          - generic [ref=e179]:
+            - heading "Related Data and Content" [level=2] [ref=e180]
+            - generic [ref=e181]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e182]
+              - generic [ref=e183]:
+                - generic [ref=e184]:
+                  - link "10-Year Breakeven Inflation Rate" [ref=e185] [cursor=pointer]:
+                    - /url: /series/T10YIE
+                    - img [ref=e186]
+                  - generic [ref=e187]:
+                    - text: ...
+                    - link "10-Year Breakeven Inflation Rate" [ref=e188] [cursor=pointer]:
+                      - /url: /series/T10YIE
+                      - strong [ref=e189]: 10-Year Breakeven Inflation Rate
+                - generic [ref=e190]:
+                  - link "5-Year, 5-Year Forward Inflation Expectation Rate" [ref=e191] [cursor=pointer]:
+                    - /url: /series/T5YIFR
+                    - img [ref=e192]
+                  - generic [ref=e193]:
+                    - text: ...
+                    - link "5-Year, 5-Year Forward Inflation Expectation Rate" [ref=e194] [cursor=pointer]:
+                      - /url: /series/T5YIFR
+                      - strong [ref=e195]: 5-Year, 5-Year Forward Inflation Expectation Rate
+                - generic [ref=e196]:
+                  - link "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e197] [cursor=pointer]:
+                    - /url: /series/DFII5
+                    - img [ref=e198]
+                  - generic [ref=e199]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e200] [cursor=pointer]:
+                      - /url: /series/DFII5
+                      - strong [ref=e201]: Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed
+                - generic [ref=e202]:
+                  - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e203] [cursor=pointer]:
+                    - /url: /series/DFII10
+                    - img [ref=e204]
+                  - generic [ref=e205]:
+                    - text: ...
+                    - link "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed" [ref=e206] [cursor=pointer]:
+                      - /url: /series/DFII10
+                      - strong [ref=e207]: Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis, Inflation-Indexed
+                - text: ... ... ... ...
+                - generic [ref=e208]:
+                  - button "click to see more" [ref=e209] [cursor=pointer]: See More...
+                  - separator [ref=e210]
+              - heading "Content Suggestions" [level=3] [ref=e211]
+              - generic [ref=e212]:
+                - generic [ref=e213]:
+                  - link "Oil prices and breakeven inflation rates revisited" [ref=e214] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2019/06/oil-prices-and-breakeven-inflation-rates-revisited/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e215]
+                  - generic [ref=e216]: FRED Blog
+                  - generic [ref=e217]:
+                    - text: ...
+                    - link "Oil prices and breakeven inflation rates revisited" [ref=e218] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2019/06/oil-prices-and-breakeven-inflation-rates-revisited/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e219]: Oil prices and breakeven inflation rates revisited
+                - generic [ref=e220]:
+                  - link "Measuring expected inflation with breakevens" [ref=e221] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2021/12/measuring-expected-inflation-with-breakevens/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e222]
+                  - generic [ref=e223]: FRED Blog
+                  - generic [ref=e224]:
+                    - text: ...
+                    - link "Measuring expected inflation with breakevens" [ref=e225] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2021/12/measuring-expected-inflation-with-breakevens/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e226]: Measuring expected inflation with breakevens
+                - generic [ref=e227]:
+                  - link "Breakeven inflation" [ref=e228] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/03/breakeven-inflation/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e229]
+                  - generic [ref=e230]: FRED Blog
+                  - generic [ref=e231]:
+                    - text: ...
+                    - link "Breakeven inflation" [ref=e232] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/03/breakeven-inflation/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e233]: Breakeven inflation
+                - generic [ref=e234]:
+                  - link "5-Year Breakeven Inflation Rate" [ref=e235] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=T5YIE&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e236]
+                  - generic [ref=e237]: ALFRED Vintage Series
+                  - generic [ref=e238]:
+                    - text: ...
+                    - link "5-Year Breakeven Inflation Rate" [ref=e239] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=T5YIE&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e240]: 5-Year Breakeven Inflation Rate
+                - text: ... ...
+                - generic [ref=e241]:
+                  - button "click to see more" [ref=e242] [cursor=pointer]: See More...
+                  - separator [ref=e243]
+              - heading "Other Formats" [level=3] [ref=e244]
+              - link "Monthly, Not Seasonally Adjusted" [ref=e246] [cursor=pointer]:
+                - /url: /series/T5YIEM
+              - heading "Related Categories" [level=3] [ref=e248]
+              - generic [ref=e249]:
+                - link "Interest Rate Spreads" [ref=e250] [cursor=pointer]:
+                  - /url: /categories/33446
+                - link "Interest Rates" [ref=e251] [cursor=pointer]:
+                  - /url: /categories/22
+                - link "Money, Banking, & Finance" [ref=e252] [cursor=pointer]:
+                  - /url: /categories/32991
+              - heading "Releases" [level=3] [ref=e254]
+              - link "More Series from Interest Rate Spreads" [ref=e256] [cursor=pointer]:
+                - /url: /release?rid=304
+              - heading "Tags" [level=3] [ref=e258]
+              - generic:
+                - link "Spread" [ref=e259] [cursor=pointer]:
+                  - /url: /tags/series?t=spread
+                - link "Interest Rate" [ref=e260] [cursor=pointer]:
+                  - /url: /tags/series?t=interest%20rate
+                - link "Interest" [ref=e261] [cursor=pointer]:
+                  - /url: /tags/series?t=interest
+                - link "Daily" [ref=e262] [cursor=pointer]:
+                  - /url: /tags/series?t=daily
+                - link "5-Year" [ref=e263] [cursor=pointer]:
+                  - /url: /tags/series?t=5-year
+                - link "St. Louis Fed" [ref=e264] [cursor=pointer]:
+                  - /url: /tags/series?t=frb%20stl
+                - link "Inflation" [ref=e265] [cursor=pointer]:
+                  - /url: /tags/series?t=inflation
+                - link "Rate" [ref=e266] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - 'link "Copyrighted: Citation Required" [ref=e267] [cursor=pointer]':
+                  - /url: /tags/series?t=copyrighted%3A%20citation%20required
+                - link "Nation" [ref=e268] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - link "United States of America" [ref=e269] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+                - link "Not Seasonally Adjusted" [ref=e270] [cursor=pointer]:
+                  - /url: /tags/series?t=nsa
+        - text:    
+  - text:  
+  - generic [ref=e273]:
+    - generic [ref=e274]:
+      - generic [ref=e275]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e276]
+        - generic [ref=e279]:
+          - textbox "email" [ref=e280]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e281] [cursor=pointer]
+      - generic [ref=e282]:
+        - heading "Follow us" [level=3] [ref=e283]
+        - generic [ref=e284]:
+          - link "Saint Louis Fed linkedin page" [ref=e286] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e287]: 
+            - generic [ref=e288]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e290] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e291]: 
+            - generic [ref=e292]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e294] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e295]: 
+            - generic [ref=e296]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e298] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e299]: 
+            - generic [ref=e300]: Saint Louis Fed YouTube page
+    - generic [ref=e302]:
+      - heading "Need Help?" [level=3] [ref=e303]
+      - generic [ref=e304]:
+        - link "Questions or Comments" [ref=e306] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e308] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e309]
+      - generic [ref=e310]:
+        - link "Legal" [ref=e312] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e314] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

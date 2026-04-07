@@ -1,0 +1,408 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#content-container"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - navigation [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - link "Federal Reserve Bank of St. Louis" [ref=e8] [cursor=pointer]:
+              - /url: https://www.stlouisfed.org
+              - img "Federal Reserve Bank of St. Louis" [ref=e9]
+            - separator [ref=e10]
+          - generic [ref=e11]:
+            - link "FRED homepage" [ref=e13] [cursor=pointer]:
+              - /url: //fred.stlouisfed.org
+              - img "FRED homepage" [ref=e14]
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - listbox [ref=e17]:
+                  - option [selected] [ref=e18]
+                - combobox [ref=e21]:
+                  - list
+                  - searchbox "Search" [ref=e23]
+                - button "Submit Search" [ref=e24] [cursor=pointer]:
+                  - generic "Submit Search" [ref=e25]: 
+              - navigation [ref=e26]:
+                - list [ref=e27]:
+                  - listitem [ref=e28]:
+                    - button "Toggle Explore Our Apps Menu" [ref=e30] [cursor=pointer]:
+                      - img "Toggle Explore Our Apps Menu" [ref=e31]
+                  - listitem [ref=e32]:
+                    - button "Open Login Modal; User Is Not Signed In" [ref=e37] [cursor=pointer]:
+                      - generic "Open Login Modal; User Is Not Signed In" [ref=e38]: 
+        - text:  X  X
+      - text:    
+      - generic [ref=e42]:
+        - separator [ref=e43]
+        - navigation [ref=e44]:
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - link "Release Calendar" [ref=e48] [cursor=pointer]:
+                - /url: https://fred.stlouisfed.org/releases/calendar
+            - listitem [ref=e49]:
+              - button "Tools " [ref=e51] [cursor=pointer]:
+                - text: Tools
+                - generic "Toggle Tools Menu" [ref=e52]: 
+            - listitem [ref=e53]:
+              - link "News" [ref=e54] [cursor=pointer]:
+                - /url: https://news.research.stlouisfed.org/category/fred-announcements/
+            - listitem [ref=e55]:
+              - link "Blog" [ref=e56] [cursor=pointer]:
+                - /url: https://fredblog.stlouisfed.org
+            - listitem [ref=e57]:
+              - button "About " [ref=e59] [cursor=pointer]:
+                - text: About
+                - generic [ref=e60]: 
+    - navigation "site breadcrumbs" [ref=e61]:
+      - generic [ref=e62]:
+        - link "Home" [ref=e63] [cursor=pointer]:
+          - /url: /
+        - text: ">"
+        - link "Categories" [ref=e64] [cursor=pointer]:
+          - /url: /categories
+        - text: ">"
+        - link "Population, Employment, & Labor Markets" [ref=e65] [cursor=pointer]:
+          - /url: /categories/10
+        - text: ">"
+        - link "Current Population Survey (Household Survey)" [ref=e66] [cursor=pointer]:
+          - /url: /categories/12
+        - text: ">"
+        - link "Unemployment Rate" [ref=e67] [cursor=pointer]:
+          - /url: /categories/32447
+    - generic [ref=e68]:
+      - generic "UNRATE"
+      - generic [ref=e69]:
+        - heading "Add to favorites Unemployment Rate (UNRATE)" [level=1] [ref=e73]:
+          - generic "Add to favorites" [ref=e75] [cursor=pointer]: 
+          - text: Unemployment Rate (UNRATE)
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - text: 
+            - generic [ref=e79]:
+              - button "Observations" [ref=e81] [cursor=pointer]:
+                - text: Observations
+                - generic [ref=e82]: 
+              - generic [ref=e83]: "Mar 2026: 4.3"
+              - generic "Apr 3, 2026 8:19 AM CDT" [ref=e85]: "Updated: Apr 3, 2026 8:19 AM CDT"
+              - 'link "Next Release Date: May 8, 2026" [ref=e87] [cursor=pointer]':
+                - /url: /releases/calendar?rid=50&y=2026
+                - generic "May 8, 2026" [ref=e88]: "Next Release Date: May 8, 2026"
+            - generic [ref=e89]:
+              - paragraph [ref=e90]: "Units:"
+              - generic [ref=e92]: Percent,
+              - generic [ref=e93]: Seasonally Adjusted
+            - generic [ref=e94]:
+              - paragraph [ref=e95]: "Frequency:"
+              - generic [ref=e97]: Monthly
+          - generic [ref=e100]:
+            - generic [ref=e102]:
+              - generic "1 year date range" [ref=e103] [cursor=pointer]: 1Y
+              - generic "5 year date range" [ref=e104] [cursor=pointer]: 5Y
+              - generic "10 year date range" [ref=e105] [cursor=pointer]: 10Y
+              - generic "max date range" [ref=e106] [cursor=pointer]: Max
+              - text: 
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: From
+                - textbox "Change start date" [ref=e111]: 1948-01-01
+              - generic [ref=e113]: to
+              - textbox "Change end date" [ref=e115]: 2026-03-01
+          - generic [ref=e116]:
+            - generic [ref=e117]:
+              - button "Edit Graph " [ref=e118] [cursor=pointer]:
+                - generic [ref=e119]:
+                  - text: Edit Graph
+                  - generic [ref=e120]: 
+              - text: 
+            - generic [ref=e122]:
+              - button "Download" [ref=e123] [cursor=pointer]:
+                - text: Download
+                - generic [ref=e124]: 
+              - text: 
+        - generic [ref=e127]:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - option "Percent" [selected]
+                      - option "Change, Percent"
+                      - option "Change from Year Ago, Percent"
+                      - option "Percent Change"
+                      - option "Percent Change from Year Ago"
+                      - option "Compounded Annual Rate of Change"
+                      - option "Continuously Compounded Rate of Change"
+                      - option "Continuously Compounded Annual Rate of Change"
+                      - option "Index (Scale value to 100 for chosen date)"
+                      - option "Monthly" [selected]
+                      - option "Quarterly"
+                      - option "Semiannual"
+                      - option "Annual"
+                      - combobox "customize your graph data by combining other series with your existing series." [ref=e130]
+                      - option "Select" [selected]
+                      - option "Change"
+                      - option "Change from Year Ago"
+                      - option "Percent Change"
+                      - option "Percent Change from Year Ago"
+                      - option "Compounded Annual Rate of Change"
+                      - option "Continuously Compounded Rate of Change"
+                      - option "Continuously Compounded Annual Rate of Change"
+                      - option "Natural Log"
+                      - option "Index (Scale value to 100 for chosen date)"
+          - generic "Full screen" [ref=e131] [cursor=pointer]:
+            - text: Fullscreen
+            - generic [ref=e132]: 
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - button "Share Graph " [ref=e137] [cursor=pointer]:
+                - text: Share Graph
+                - generic [ref=e138]: 
+              - text:   
+            - generic [ref=e139]:
+              - button "Account Tools " [ref=e140] [cursor=pointer]:
+                - text: Account Tools
+                - generic [ref=e141]: 
+              - text:     
+          - generic [ref=e143]:
+            - link "Share on X" [ref=e144] [cursor=pointer]:
+              - /url: /graph/share.php
+            - link "Post on Facebook" [ref=e145] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e146]: 
+            - link "Share on Reddit" [ref=e147] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e148]: 
+            - link "Post to Linkedin" [ref=e149] [cursor=pointer]:
+              - /url: /graph/share.php
+              - generic [ref=e150]: 
+        - generic [ref=e152]:
+          - generic [ref=e154]:
+            - heading "Notes" [level=2] [ref=e155]
+            - generic [ref=e156]:
+              - paragraph [ref=e157]:
+                - strong [ref=e158]: "Source:"
+                - link "U.S. Bureau of Labor Statistics" [ref=e159] [cursor=pointer]:
+                  - /url: https://www.bls.gov/
+                  - text: U.S. Bureau of Labor Statistics
+                  - generic [ref=e160]: 
+              - paragraph [ref=e161]:
+                - strong [ref=e162]: "Release:"
+                - link "Employment Situation" [ref=e163] [cursor=pointer]:
+                  - /url: http://www.bls.gov/ces/
+                  - text: Employment Situation
+                  - generic [ref=e164]: 
+              - paragraph [ref=e166]:
+                - strong [ref=e167]: "Units:"
+                - generic [ref=e168]: Percent, Seasonally Adjusted
+              - paragraph [ref=e169]:
+                - strong [ref=e170]: "Frequency:"
+                - generic [ref=e171]: Monthly
+              - heading "Notes:" [level=4] [ref=e173]
+              - paragraph [ref=e174]:
+                - text: The unemployment rate represents the number of unemployed as a percentage of the labor force. Labor force data are restricted to people 16 years of age and older, who currently reside in 1 of the 50 states or the District of Columbia, who do not reside in institutions (e.g., penal and mental facilities, homes for the aged), and who are not on active duty in the Armed Forces.
+                - text: This rate is also defined as the U-3 measure of labor underutilization.
+                - text: The series comes from the 'Current Population Survey (Household Survey)'
+                - text: "The source code is: LNS14000000"
+              - generic [ref=e175]:
+                - heading "Suggested Citation:" [level=4] [ref=e176]
+                - paragraph [ref=e178]: U.S. Bureau of Labor Statistics, Unemployment Rate [UNRATE], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/UNRATE, April 4, 2026.
+          - generic [ref=e180]:
+            - heading "Release Tables" [level=2] [ref=e181]
+            - generic [ref=e182]:
+              - generic [ref=e183]: Employment Situation
+              - list [ref=e184]:
+                - listitem [ref=e185]:
+                  - 'link "Link to release table: Employment Situation, Monthly, Seasonally Adjusted (population data is not adjusted for seasonal variation; not seasonally adjusted version used)" [ref=e186] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=50&eid=463#snid=471
+                    - generic [ref=e187]: 
+                    - text: Monthly, Seasonally Adjusted (population data is not adjusted for seasonal variation; not seasonally adjusted version used)
+                - listitem [ref=e188]:
+                  - 'link "Link to release table: Employment Situation, Table A-10. Selected unemployment indicators, Seasonally adjusted: Monthly, Unemployment Rates" [ref=e189] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=50&eid=3029#snid=3062
+                    - generic [ref=e190]: 
+                    - text: "Table A-10. Selected unemployment indicators, Seasonally adjusted: Monthly, Unemployment Rates"
+                - listitem [ref=e191]:
+                  - 'link "Link to release table: Employment Situation, Table A-15. Alternative measures of labor underutilization: Monthly, Seasonally Adjusted" [ref=e192] [cursor=pointer]':
+                    - /url: //fred.stlouisfed.org/release/tables?rid=50&eid=4773#snid=4776
+                    - generic [ref=e193]: 
+                    - text: "Table A-15. Alternative measures of labor underutilization: Monthly, Seasonally Adjusted"
+          - generic [ref=e195]:
+            - heading "Related Data and Content" [level=2] [ref=e196]
+            - generic [ref=e197]:
+              - heading "Data Suggestions Based On Your Search" [level=3] [ref=e198]
+              - generic [ref=e199]:
+                - generic [ref=e200]:
+                  - link "Real Gross Domestic Product" [ref=e201] [cursor=pointer]:
+                    - /url: /series/GDPC1
+                    - img [ref=e202]
+                  - generic [ref=e203]:
+                    - text: ...
+                    - link "Real Gross Domestic Product" [ref=e204] [cursor=pointer]:
+                      - /url: /series/GDPC1
+                      - strong [ref=e205]: Real Gross Domestic Product
+                - generic [ref=e206]:
+                  - link "Gross Domestic Product" [ref=e207] [cursor=pointer]:
+                    - /url: /series/GDP
+                    - img [ref=e208]
+                  - generic [ref=e209]:
+                    - text: ...
+                    - link "Gross Domestic Product" [ref=e210] [cursor=pointer]:
+                      - /url: /series/GDP
+                      - strong [ref=e211]: Gross Domestic Product
+                - generic [ref=e212]:
+                  - 'link "Consumer Price Index for All Urban Consumers: All Items in U.S. City Average" [ref=e213] [cursor=pointer]':
+                    - /url: /series/CPIAUCSL
+                    - img [ref=e214]
+                  - generic [ref=e215]:
+                    - text: ...
+                    - 'link "Consumer Price Index for All Urban Consumers: All Items in U.S. City Average" [ref=e216] [cursor=pointer]':
+                      - /url: /series/CPIAUCSL
+                      - strong [ref=e217]: "Consumer Price Index for All Urban Consumers: All Items in U.S. City Average"
+                - generic [ref=e218]:
+                  - link "All Employees, Total Nonfarm" [ref=e219] [cursor=pointer]:
+                    - /url: /series/PAYEMS
+                    - img [ref=e220]
+                  - generic [ref=e221]:
+                    - text: ...
+                    - link "All Employees, Total Nonfarm" [ref=e222] [cursor=pointer]:
+                      - /url: /series/PAYEMS
+                      - strong [ref=e223]: All Employees, Total Nonfarm
+                - text: ... ... ... ...
+                - generic [ref=e224]:
+                  - button "click to see more" [ref=e225] [cursor=pointer]: See More...
+                  - separator [ref=e226]
+              - heading "Content Suggestions" [level=3] [ref=e227]
+              - generic [ref=e228]:
+                - generic [ref=e229]:
+                  - link "Harmonized unemployment rates" [ref=e230] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/05/harmonized-unemployment-rates/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e231]
+                  - generic [ref=e232]: FRED Blog
+                  - generic [ref=e233]:
+                    - text: ...
+                    - link "Harmonized unemployment rates" [ref=e234] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/05/harmonized-unemployment-rates/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e235]: Harmonized unemployment rates
+                - generic [ref=e236]:
+                  - link "The unusual shape of the Beveridge curve" [ref=e237] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2025/01/the-unusual-shape-of-the-beveridge-curve/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e238]
+                  - generic [ref=e239]: FRED Blog
+                  - generic [ref=e240]:
+                    - text: ...
+                    - link "The unusual shape of the Beveridge curve" [ref=e241] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2025/01/the-unusual-shape-of-the-beveridge-curve/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e242]: The unusual shape of the Beveridge curve
+                - generic [ref=e243]:
+                  - link "Measuring labor market tightness with FRED" [ref=e244] [cursor=pointer]:
+                    - /url: "                                https://fredblog.stlouisfed.org/2024/10/measuring-labor-market-tightness-with-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                    - img [ref=e245]
+                  - generic [ref=e246]: FRED Blog
+                  - generic [ref=e247]:
+                    - text: ...
+                    - link "Measuring labor market tightness with FRED" [ref=e248] [cursor=pointer]:
+                      - /url: "                                https://fredblog.stlouisfed.org/2024/10/measuring-labor-market-tightness-with-fred/?utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=fredblog\n            "
+                      - strong [ref=e249]: Measuring labor market tightness with FRED
+                - generic [ref=e250]:
+                  - link "Unemployment Rate" [ref=e251] [cursor=pointer]:
+                    - /url: https://alfred.stlouisfed.org/series?seid=UNRATE&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                    - img [ref=e252]
+                  - generic [ref=e253]: ALFRED Vintage Series
+                  - generic [ref=e254]:
+                    - text: ...
+                    - link "Unemployment Rate" [ref=e255] [cursor=pointer]:
+                      - /url: https://alfred.stlouisfed.org/series?seid=UNRATE&utm_source=series_page&utm_medium=related_content&utm_term=related_resources&utm_campaign=alfred
+                      - strong [ref=e256]: Unemployment Rate
+                - text: ... ... ... ... ... ... ... ... ... ... ... ... ...
+                - generic [ref=e257]:
+                  - button "click to see more" [ref=e258] [cursor=pointer]: See More...
+                  - separator [ref=e259]
+              - heading "Other Formats" [level=3] [ref=e260]
+              - link "Monthly, Not Seasonally Adjusted" [ref=e262] [cursor=pointer]:
+                - /url: /series/UNRATENSA
+              - heading "Related Categories" [level=3] [ref=e264]
+              - generic [ref=e265]:
+                - link "Unemployment Rate" [ref=e266] [cursor=pointer]:
+                  - /url: /categories/32447
+                - link "Current Population Survey (Household Survey)" [ref=e267] [cursor=pointer]:
+                  - /url: /categories/12
+                - link "Population, Employment, & Labor Markets" [ref=e268] [cursor=pointer]:
+                  - /url: /categories/10
+              - heading "Releases" [level=3] [ref=e270]
+              - link "More Series from Employment Situation" [ref=e272] [cursor=pointer]:
+                - /url: /release?rid=50
+              - heading "Tags" [level=3] [ref=e274]
+              - generic:
+                - link "Labor Underutilization" [ref=e275] [cursor=pointer]:
+                  - /url: /tags/series?t=labor%20underutilization
+                - link "Headline Figure" [ref=e276] [cursor=pointer]:
+                  - /url: /tags/series?t=headline%20figure
+                - link "Civilian" [ref=e277] [cursor=pointer]:
+                  - /url: /tags/series?t=civilian
+                - link "16 Years +" [ref=e278] [cursor=pointer]:
+                  - /url: /tags/series?t=16%20years%20%2B
+                - link "Current Population Survey (Household Survey)" [ref=e279] [cursor=pointer]:
+                  - /url: /tags/series?t=household%20survey
+                - link "Labor" [ref=e280] [cursor=pointer]:
+                  - /url: /tags/series?t=labor
+                - link "Unemployment" [ref=e281] [cursor=pointer]:
+                  - /url: /tags/series?t=unemployment
+                - link "Rate" [ref=e282] [cursor=pointer]:
+                  - /url: /tags/series?t=rate
+                - link "Seasonally Adjusted" [ref=e283] [cursor=pointer]:
+                  - /url: /tags/series?t=sa
+                - link "Bureau of Labor Statistics" [ref=e284] [cursor=pointer]:
+                  - /url: /tags/series?t=bls
+                - link "Monthly" [ref=e285] [cursor=pointer]:
+                  - /url: /tags/series?t=monthly
+                - link "Nation" [ref=e286] [cursor=pointer]:
+                  - /url: /tags/series?t=nation
+                - 'link "Public Domain: Citation Requested" [ref=e287] [cursor=pointer]':
+                  - /url: /tags/series?t=public%20domain%3A%20citation%20requested
+                - link "United States of America" [ref=e288] [cursor=pointer]:
+                  - /url: /tags/series?t=usa
+        - text:    
+  - text:  
+  - generic [ref=e291]:
+    - generic [ref=e292]:
+      - generic [ref=e293]:
+        - heading "Subscribe to the FRED newsletter" [level=3] [ref=e294]
+        - generic [ref=e297]:
+          - textbox "email" [ref=e298]:
+            - /placeholder: Email
+          - button "Subscribe" [ref=e299] [cursor=pointer]
+      - generic [ref=e300]:
+        - heading "Follow us" [level=3] [ref=e301]
+        - generic [ref=e302]:
+          - link "Saint Louis Fed linkedin page" [ref=e304] [cursor=pointer]:
+            - /url: http://bit.ly/d056zL
+            - generic [ref=e305]: 
+            - generic [ref=e306]: Saint Louis Fed linkedin page
+          - link "Saint Louis Fed facebook page" [ref=e308] [cursor=pointer]:
+            - /url: https://www.facebook.com/stlfed
+            - generic [ref=e309]: 
+            - generic [ref=e310]: Saint Louis Fed facebook page
+          - link "Saint Louis Fed X page" [ref=e312] [cursor=pointer]:
+            - /url: http://bit.ly/9ngC3L
+            - generic [ref=e313]: 
+            - generic [ref=e314]: Saint Louis Fed X page
+          - link "Saint Louis Fed YouTube page" [ref=e316] [cursor=pointer]:
+            - /url: http://bit.ly/aY9TVF
+            - generic [ref=e317]: 
+            - generic [ref=e318]: Saint Louis Fed YouTube page
+    - generic [ref=e320]:
+      - heading "Need Help?" [level=3] [ref=e321]
+      - generic [ref=e322]:
+        - link "Questions or Comments" [ref=e324] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/contactus/
+        - link "FRED Help" [ref=e326] [cursor=pointer]:
+          - /url: //fredhelp.stlouisfed.org/
+      - separator [ref=e327]
+      - generic [ref=e328]:
+        - link "Legal" [ref=e330] [cursor=pointer]:
+          - /url: //fred.stlouisfed.org/legal/
+        - link "Privacy Notice & Policy" [ref=e332] [cursor=pointer]:
+          - /url: //research.stlouisfed.org/privacy.html

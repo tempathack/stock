@@ -1,0 +1,959 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: SP
+        - generic [ref=e7]:
+          - paragraph [ref=e8]: S&P 500 AI
+          - paragraph [ref=e9]: Platform
+      - navigation [ref=e10]:
+        - link [ref=e873] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e12]
+          - paragraph [ref=e14]: Dashboard
+        - link [ref=e874] [cursor=pointer]:
+          - /url: /models
+          - img [ref=e16]
+          - paragraph [ref=e19]: Models
+        - link [ref=e875] [cursor=pointer]:
+          - /url: /forecasts
+          - img [ref=e21]
+          - paragraph [ref=e23]: Forecasts
+        - link [ref=e876] [cursor=pointer]:
+          - /url: /drift
+          - img [ref=e25]
+          - paragraph [ref=e27]: Drift
+        - link [ref=e877] [cursor=pointer]:
+          - /url: /backtest
+          - img [ref=e29]
+          - paragraph [ref=e31]: Backtest
+        - link [ref=e878] [cursor=pointer]:
+          - /url: /analytics
+          - img [ref=e33]
+          - paragraph [ref=e36]: Analytics
+        - link [ref=e879] [cursor=pointer]:
+          - /url: /search
+          - img [ref=e38]
+          - paragraph [ref=e40]: Search
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e45]: API
+          - generic [ref=e48]: KAFKA
+          - generic [ref=e51]: DB
+        - generic [ref=e52]: 12:48:55 PM
+    - main [ref=e53]:
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - heading [level=4] [ref=e880]: Stock Forecasts
+          - paragraph [ref=e64]: Multi-horizon price predictions for S&P 500 tickers
+        - group [ref=e78]:
+          - button [ref=e881] [cursor=pointer]:
+            - img [ref=e81]
+            - text: CSV
+          - button [ref=e882] [cursor=pointer]:
+            - img [ref=e85]
+            - text: PDF
+        - generic [ref=e89]:
+          - generic [ref=e91]:
+            - generic [ref=e92]: Search
+            - generic [ref=e93]:
+              - img [ref=e94]
+              - textbox [ref=e883]:
+                - /placeholder: Ticker or company…
+              - group:
+                - generic: Search
+          - generic [ref=e98]:
+            - generic: Sector
+            - generic [ref=e99]:
+              - combobox [ref=e100] [cursor=pointer]
+              - textbox
+              - img
+              - group:
+                - generic: Sector
+          - generic [ref=e102]:
+            - generic: Min Return %
+            - generic [ref=e103]:
+              - spinbutton [ref=e884]
+              - group:
+                - generic: Min Return %
+          - generic [ref=e106]:
+            - generic: Max Return %
+            - generic [ref=e107]:
+              - spinbutton [ref=e885]
+              - group:
+                - generic: Max Return %
+          - generic [ref=e110]:
+            - generic [ref=e111]: "Min Confidence: Any"
+            - slider [ref=e115]: "0"
+          - generic [ref=e116]:
+            - button [disabled]: Clear
+        - generic [ref=e117]:
+          - grid [ref=e118]:
+            - row [ref=e886]:
+              - columnheader [ref=e120]:
+                - img [ref=e122]
+              - columnheader [ref=e887]:
+                - generic [ref=e126]: 1-Day Forecast
+                - img [ref=e128]
+              - columnheader [ref=e888]:
+                - generic [ref=e132]: 7-Day Forecast
+                - img [ref=e134]
+              - columnheader [ref=e889]:
+                - generic [ref=e138]: 14-Day Forecast
+                - img [ref=e140]
+              - columnheader [ref=e890]:
+                - generic [ref=e144]: 30-Day Forecast
+                - img [ref=e146]
+            - row [ref=e891]:
+              - columnheader [ref=e892] [cursor=pointer]:
+                - generic [ref=e151]: Ticker
+                - generic [ref=e152]:
+                  - img
+              - columnheader [ref=e893] [cursor=pointer]:
+                - generic [ref=e155]: Company
+                - generic [ref=e156]:
+                  - img
+              - columnheader [ref=e894] [cursor=pointer]:
+                - generic [ref=e159]: Sector
+                - generic [ref=e160]:
+                  - img
+              - columnheader [ref=e895] [cursor=pointer]:
+                - generic [ref=e163]: Price
+                - generic [ref=e164]:
+                  - img
+              - columnheader [ref=e896] [cursor=pointer]:
+                - generic [ref=e167]: Daily Δ
+                - generic [ref=e168]:
+                  - img
+              - columnheader [ref=e897] [cursor=pointer]:
+                - generic [ref=e171]: Model
+                - generic [ref=e172]:
+                  - img
+              - columnheader [ref=e898] [cursor=pointer]:
+                - generic [ref=e175]: Pred. Price
+                - generic [ref=e176]:
+                  - img
+              - columnheader [ref=e899] [cursor=pointer]:
+                - generic [ref=e179]: Return %
+                - generic [ref=e180]:
+                  - img
+              - columnheader [ref=e900] [cursor=pointer]:
+                - generic [ref=e183]: Pred. Price
+                - generic [ref=e184]:
+                  - img
+              - columnheader [ref=e901] [cursor=pointer]:
+                - generic [ref=e187]: Return %
+                - button [ref=e903]:
+                  - img [ref=e191]
+                - generic [ref=e193]:
+                  - img
+              - columnheader [ref=e904] [cursor=pointer]:
+                - generic [ref=e196]: Pred. Price
+                - generic [ref=e197]:
+                  - img
+              - columnheader [ref=e905] [cursor=pointer]:
+                - generic [ref=e200]: Return %
+                - generic [ref=e201]:
+                  - img
+              - columnheader [ref=e906] [cursor=pointer]:
+                - generic [ref=e204]: Pred. Price
+                - generic [ref=e205]:
+                  - img
+              - columnheader [ref=e907] [cursor=pointer]:
+                - generic [ref=e208]: Return %
+                - generic [ref=e209]:
+                  - img
+            - rowgroup [ref=e210]:
+              - row [ref=e908] [cursor=pointer]:
+                - gridcell [ref=e909]: TSLA
+                - gridcell [ref=e910]: Tesla Inc.
+                - gridcell [ref=e911]: Consumer Cyclical
+                - gridcell [ref=e912]:
+                  - generic [ref=e216]: $352.87
+                - gridcell [ref=e913]:
+                  - generic [ref=e218]: "-3.55%"
+                - gridcell [ref=e914]:
+                  - generic [ref=e915]: CatBoost_standard
+                - gridcell [ref=e916]:
+                  - generic [ref=e917]: $349.62
+                - gridcell [ref=e918]:
+                  - generic [ref=e224]: "-0.92%"
+                - gridcell [ref=e919]:
+                  - generic [ref=e920]: $356.39
+                - gridcell [ref=e921]:
+                  - generic [ref=e228]: +1.00%
+                - gridcell [ref=e922]:
+                  - generic [ref=e923]: $352.34
+                - gridcell [ref=e924]:
+                  - generic [ref=e232]: "-0.15%"
+                - gridcell [ref=e925]:
+                  - generic [ref=e926]: $352.51
+                - gridcell [ref=e927]:
+                  - generic [ref=e236]: "-0.10%"
+              - row [ref=e928] [cursor=pointer]:
+                - gridcell [ref=e929]: BWA
+                - gridcell [ref=e930]: BWA
+                - gridcell [ref=e240]
+                - gridcell [ref=e931]:
+                  - generic [ref=e242]: $56.12
+                - gridcell [ref=e932]:
+                  - generic [ref=e244]: "-0.21%"
+                - gridcell [ref=e933]:
+                  - generic [ref=e934]: CatBoost_standard
+                - gridcell [ref=e935]:
+                  - generic [ref=e936]: $56.41
+                - gridcell [ref=e937]:
+                  - generic [ref=e250]: +0.51%
+                - gridcell [ref=e938]:
+                  - generic [ref=e939]: $56.68
+                - gridcell [ref=e940]:
+                  - generic [ref=e254]: +0.99%
+                - gridcell [ref=e941]:
+                  - generic [ref=e942]: $55.95
+                - gridcell [ref=e943]:
+                  - generic [ref=e258]: "-0.30%"
+                - gridcell [ref=e944]:
+                  - generic [ref=e945]: $56.07
+                - gridcell [ref=e946]:
+                  - generic [ref=e262]: "-0.09%"
+              - row [ref=e947] [cursor=pointer]:
+                - gridcell [ref=e948]: AWK
+                - gridcell [ref=e949]: AWK
+                - gridcell [ref=e266]
+                - gridcell [ref=e950]:
+                  - generic [ref=e268]: $134.59
+                - gridcell [ref=e951]:
+                  - generic [ref=e270]: +0.23%
+                - gridcell [ref=e952]:
+                  - generic [ref=e953]: CatBoost_standard
+                - gridcell [ref=e954]:
+                  - generic [ref=e955]: $134.40
+                - gridcell [ref=e956]:
+                  - generic [ref=e276]: "-0.14%"
+                - gridcell [ref=e957]:
+                  - generic [ref=e958]: $135.87
+                - gridcell [ref=e959]:
+                  - generic [ref=e280]: +0.95%
+                - gridcell [ref=e960]:
+                  - generic [ref=e961]: $133.48
+                - gridcell [ref=e962]:
+                  - generic [ref=e284]: "-0.83%"
+                - gridcell [ref=e963]:
+                  - generic [ref=e964]: $134.37
+                - gridcell [ref=e965]:
+                  - generic [ref=e288]: "-0.16%"
+              - row [ref=e966] [cursor=pointer]:
+                - gridcell [ref=e967]: CTSH
+                - gridcell [ref=e968]: CTSH
+                - gridcell [ref=e292]
+                - gridcell [ref=e969]:
+                  - generic [ref=e294]: $59.79
+                - gridcell [ref=e970]:
+                  - generic [ref=e296]: "-1.43%"
+                - gridcell [ref=e971]:
+                  - generic [ref=e972]: CatBoost_standard
+                - gridcell [ref=e973]:
+                  - generic [ref=e974]: $59.91
+                - gridcell [ref=e975]:
+                  - generic [ref=e302]: +0.20%
+                - gridcell [ref=e976]:
+                  - generic [ref=e977]: $60.36
+                - gridcell [ref=e978]:
+                  - generic [ref=e306]: +0.95%
+                - gridcell [ref=e979]:
+                  - generic [ref=e980]: $59.74
+                - gridcell [ref=e981]:
+                  - generic [ref=e310]: "-0.08%"
+                - gridcell [ref=e982]:
+                  - generic [ref=e983]: $59.52
+                - gridcell [ref=e984]:
+                  - generic [ref=e314]: "-0.45%"
+              - row [ref=e985] [cursor=pointer]:
+                - gridcell [ref=e986]: APH
+                - gridcell [ref=e987]: APH
+                - gridcell [ref=e318]
+                - gridcell [ref=e988]:
+                  - generic [ref=e320]: $128.73
+                - gridcell [ref=e989]:
+                  - generic [ref=e322]: "-0.72%"
+                - gridcell [ref=e990]:
+                  - generic [ref=e991]: CatBoost_standard
+                - gridcell [ref=e992]:
+                  - generic [ref=e993]: $129.36
+                - gridcell [ref=e994]:
+                  - generic [ref=e328]: +0.49%
+                - gridcell [ref=e995]:
+                  - generic [ref=e996]: $129.93
+                - gridcell [ref=e997]:
+                  - generic [ref=e332]: +0.93%
+                - gridcell [ref=e998]:
+                  - generic [ref=e999]: $130.01
+                - gridcell [ref=e1000]:
+                  - generic [ref=e336]: +0.99%
+                - gridcell [ref=e1001]:
+                  - generic [ref=e1002]: $128.18
+                - gridcell [ref=e1003]:
+                  - generic [ref=e340]: "-0.43%"
+              - row [ref=e1004] [cursor=pointer]:
+                - gridcell [ref=e1005]: SCHW
+                - gridcell [ref=e1006]: SCHW
+                - gridcell [ref=e344]
+                - gridcell [ref=e1007]:
+                  - generic [ref=e346]: $94.99
+                - gridcell [ref=e1008]:
+                  - generic [ref=e348]: "-1.02%"
+                - gridcell [ref=e1009]:
+                  - generic [ref=e1010]: CatBoost_standard
+                - gridcell [ref=e1011]:
+                  - generic [ref=e1012]: $95.47
+                - gridcell [ref=e1013]:
+                  - generic [ref=e354]: +0.50%
+                - gridcell [ref=e1014]:
+                  - generic [ref=e1015]: $95.86
+                - gridcell [ref=e1016]:
+                  - generic [ref=e358]: +0.92%
+                - gridcell [ref=e1017]:
+                  - generic [ref=e1018]: $95.71
+                - gridcell [ref=e1019]:
+                  - generic [ref=e362]: +0.76%
+                - gridcell [ref=e1020]:
+                  - generic [ref=e1021]: $94.59
+                - gridcell [ref=e1022]:
+                  - generic [ref=e366]: "-0.42%"
+              - row [ref=e1023] [cursor=pointer]:
+                - gridcell [ref=e1024]: CZR
+                - gridcell [ref=e1025]: CZR
+                - gridcell [ref=e370]
+                - gridcell [ref=e1026]:
+                  - generic [ref=e372]: $26.82
+                - gridcell [ref=e1027]:
+                  - generic [ref=e374]: +1.36%
+                - gridcell [ref=e1028]:
+                  - generic [ref=e1029]: CatBoost_standard
+                - gridcell [ref=e1030]:
+                  - generic [ref=e1031]: $27.05
+                - gridcell [ref=e1032]:
+                  - generic [ref=e380]: +0.85%
+                - gridcell [ref=e1033]:
+                  - generic [ref=e1034]: $27.07
+                - gridcell [ref=e1035]:
+                  - generic [ref=e384]: +0.92%
+                - gridcell [ref=e1036]:
+                  - generic [ref=e1037]: $26.82
+                - gridcell [ref=e1038]:
+                  - generic [ref=e388]: +0.01%
+                - gridcell [ref=e1039]:
+                  - generic [ref=e1040]: $26.57
+                - gridcell [ref=e1041]:
+                  - generic [ref=e392]: "-0.93%"
+              - row [ref=e1042] [cursor=pointer]:
+                - gridcell [ref=e1043]: AVB
+                - gridcell [ref=e1044]: AVB
+                - gridcell [ref=e396]
+                - gridcell [ref=e1045]:
+                  - generic [ref=e398]: $163.65
+                - gridcell [ref=e1046]:
+                  - generic [ref=e400]: "-0.68%"
+                - gridcell [ref=e1047]:
+                  - generic [ref=e1048]: CatBoost_standard
+                - gridcell [ref=e1049]:
+                  - generic [ref=e1050]: $164.33
+                - gridcell [ref=e1051]:
+                  - generic [ref=e406]: +0.42%
+                - gridcell [ref=e1052]:
+                  - generic [ref=e1053]: $165.14
+                - gridcell [ref=e1054]:
+                  - generic [ref=e410]: +0.91%
+                - gridcell [ref=e1055]:
+                  - generic [ref=e1056]: $163.68
+                - gridcell [ref=e1057]:
+                  - generic [ref=e414]: +0.02%
+                - gridcell [ref=e1058]:
+                  - generic [ref=e1059]: $163.71
+                - gridcell [ref=e1060]:
+                  - generic [ref=e418]: +0.04%
+              - row [ref=e1061] [cursor=pointer]:
+                - gridcell [ref=e1062]: CLX
+                - gridcell [ref=e1063]: CLX
+                - gridcell [ref=e422]
+                - gridcell [ref=e1064]:
+                  - generic [ref=e424]: $104.76
+                - gridcell [ref=e1065]:
+                  - generic [ref=e426]: +0.43%
+                - gridcell [ref=e1066]:
+                  - generic [ref=e1067]: CatBoost_standard
+                - gridcell [ref=e1068]:
+                  - generic [ref=e1069]: $105.45
+                - gridcell [ref=e1070]:
+                  - generic [ref=e432]: +0.66%
+                - gridcell [ref=e1071]:
+                  - generic [ref=e1072]: $105.71
+                - gridcell [ref=e1073]:
+                  - generic [ref=e436]: +0.91%
+                - gridcell [ref=e1074]:
+                  - generic [ref=e1075]: $104.01
+                - gridcell [ref=e1076]:
+                  - generic [ref=e440]: "-0.71%"
+                - gridcell [ref=e1077]:
+                  - generic [ref=e1078]: $103.94
+                - gridcell [ref=e1079]:
+                  - generic [ref=e444]: "-0.79%"
+              - row [selected] [ref=e1080] [cursor=pointer]:
+                - gridcell [ref=e1081]: CHD
+                - gridcell [ref=e1082]: CHD
+                - gridcell [ref=e448]
+                - gridcell [ref=e1083]:
+                  - generic [ref=e450]: $94.38
+                - gridcell [ref=e1084]:
+                  - generic [ref=e452]: "-1.17%"
+                - gridcell [ref=e1085]:
+                  - generic [ref=e1086]: CatBoost_standard
+                - gridcell [ref=e1087]:
+                  - generic [ref=e1088]: $94.82
+                - gridcell [ref=e1089]:
+                  - generic [ref=e458]: +0.47%
+                - gridcell [ref=e1090]:
+                  - generic [ref=e1091]: $95.22
+                - gridcell [ref=e1092]:
+                  - generic [ref=e462]: +0.90%
+                - gridcell [ref=e1093]:
+                  - generic [ref=e1094]: $94.21
+                - gridcell [ref=e1095]:
+                  - generic [ref=e466]: "-0.18%"
+                - gridcell [ref=e1096]:
+                  - generic [ref=e1097]: $93.48
+                - gridcell [ref=e1098]:
+                  - generic [ref=e470]: "-0.95%"
+              - row [ref=e1099] [cursor=pointer]:
+                - gridcell [ref=e1100]: CMCSA
+                - gridcell [ref=e1101]: CMCSA
+                - gridcell [ref=e474]
+                - gridcell [ref=e1102]:
+                  - generic [ref=e476]: $28.73
+                - gridcell [ref=e1103]:
+                  - generic [ref=e478]: "-1.47%"
+                - gridcell [ref=e1104]:
+                  - generic [ref=e1105]: CatBoost_standard
+                - gridcell [ref=e1106]:
+                  - generic [ref=e1107]: $28.46
+                - gridcell [ref=e1108]:
+                  - generic [ref=e484]: "-0.95%"
+                - gridcell [ref=e1109]:
+                  - generic [ref=e1110]: $28.98
+                - gridcell [ref=e1111]:
+                  - generic [ref=e488]: +0.88%
+                - gridcell [ref=e1112]:
+                  - generic [ref=e1113]: $28.95
+                - gridcell [ref=e1114]:
+                  - generic [ref=e492]: +0.78%
+                - gridcell [ref=e1115]:
+                  - generic [ref=e1116]: $28.54
+                - gridcell [ref=e1117]:
+                  - generic [ref=e496]: "-0.65%"
+              - row [ref=e1118] [cursor=pointer]:
+                - gridcell [ref=e1119]: ETN
+                - gridcell [ref=e1120]: ETN
+                - gridcell [ref=e500]
+                - gridcell [ref=e1121]:
+                  - generic [ref=e502]: $375.00
+                - gridcell [ref=e1122]:
+                  - generic [ref=e504]: "-0.96%"
+                - gridcell [ref=e1123]:
+                  - generic [ref=e1124]: CatBoost_standard
+                - gridcell [ref=e1125]:
+                  - generic [ref=e1126]: $373.31
+                - gridcell [ref=e1127]:
+                  - generic [ref=e510]: "-0.45%"
+                - gridcell [ref=e1128]:
+                  - generic [ref=e1129]: $378.23
+                - gridcell [ref=e1130]:
+                  - generic [ref=e514]: +0.86%
+                - gridcell [ref=e1131]:
+                  - generic [ref=e1132]: $374.15
+                - gridcell [ref=e1133]:
+                  - generic [ref=e518]: "-0.23%"
+                - gridcell [ref=e1134]:
+                  - generic [ref=e1135]: $377.64
+                - gridcell [ref=e1136]:
+                  - generic [ref=e522]: +0.70%
+              - row [ref=e1137] [cursor=pointer]:
+                - gridcell [ref=e1138]: PG
+                - gridcell [ref=e1139]: Procter & Gamble Co.
+                - gridcell [ref=e1140]: Consumer Defensive
+                - gridcell [ref=e1141]:
+                  - generic [ref=e528]: $144.88
+                - gridcell [ref=e1142]:
+                  - generic [ref=e530]: +1.29%
+                - gridcell [ref=e1143]:
+                  - generic [ref=e1144]: CatBoost_standard
+                - gridcell [ref=e1145]:
+                  - generic [ref=e1146]: $145.63
+                - gridcell [ref=e1147]:
+                  - generic [ref=e536]: +0.51%
+                - gridcell [ref=e1148]:
+                  - generic [ref=e1149]: $146.13
+                - gridcell [ref=e1150]:
+                  - generic [ref=e540]: +0.86%
+                - gridcell [ref=e1151]:
+                  - generic [ref=e1152]: $144.16
+                - gridcell [ref=e1153]:
+                  - generic [ref=e544]: "-0.50%"
+                - gridcell [ref=e1154]:
+                  - generic [ref=e1155]: $146.23
+                - gridcell [ref=e1156]:
+                  - generic [ref=e548]: +0.93%
+              - row [ref=e1157] [cursor=pointer]:
+                - gridcell [ref=e1158]: CBRE
+                - gridcell [ref=e1159]: CBRE
+                - gridcell [ref=e552]
+                - gridcell [ref=e1160]:
+                  - generic [ref=e554]: $134.75
+                - gridcell [ref=e1161]:
+                  - generic [ref=e556]: +0.28%
+                - gridcell [ref=e1162]:
+                  - generic [ref=e1163]: CatBoost_standard
+                - gridcell [ref=e1164]:
+                  - generic [ref=e1165]: $135.21
+                - gridcell [ref=e1166]:
+                  - generic [ref=e562]: +0.34%
+                - gridcell [ref=e1167]:
+                  - generic [ref=e1168]: $135.89
+                - gridcell [ref=e1169]:
+                  - generic [ref=e566]: +0.85%
+                - gridcell [ref=e1170]:
+                  - generic [ref=e1171]: $134.31
+                - gridcell [ref=e1172]:
+                  - generic [ref=e570]: "-0.33%"
+                - gridcell [ref=e1173]:
+                  - generic [ref=e1174]: $134.50
+                - gridcell [ref=e1175]:
+                  - generic [ref=e574]: "-0.19%"
+              - row [ref=e1176] [cursor=pointer]:
+                - gridcell [ref=e1177]: CEG
+                - gridcell [ref=e1178]: CEG
+                - gridcell [ref=e578]
+                - gridcell [ref=e1179]:
+                  - generic [ref=e580]: $303.32
+                - gridcell [ref=e1180]:
+                  - generic [ref=e582]: +0.18%
+                - gridcell [ref=e1181]:
+                  - generic [ref=e1182]: CatBoost_standard
+                - gridcell [ref=e1183]:
+                  - generic [ref=e1184]: $301.76
+                - gridcell [ref=e1185]:
+                  - generic [ref=e588]: "-0.52%"
+                - gridcell [ref=e1186]:
+                  - generic [ref=e1187]: $305.79
+                - gridcell [ref=e1188]:
+                  - generic [ref=e592]: +0.81%
+                - gridcell [ref=e1189]:
+                  - generic [ref=e1190]: $300.99
+                - gridcell [ref=e1191]:
+                  - generic [ref=e596]: "-0.77%"
+                - gridcell [ref=e1192]:
+                  - generic [ref=e1193]: $305.66
+                - gridcell [ref=e1194]:
+                  - generic [ref=e600]: +0.77%
+              - row [ref=e1195] [cursor=pointer]:
+                - gridcell [ref=e1196]: BA
+                - gridcell [ref=e1197]: BA
+                - gridcell [ref=e604]
+                - gridcell [ref=e1198]:
+                  - generic [ref=e606]: $199.61
+                - gridcell [ref=e1199]:
+                  - generic [ref=e608]: +0.58%
+                - gridcell [ref=e1200]:
+                  - generic [ref=e1201]: CatBoost_standard
+                - gridcell [ref=e1202]:
+                  - generic [ref=e1203]: $201.29
+                - gridcell [ref=e1204]:
+                  - generic [ref=e614]: +0.84%
+                - gridcell [ref=e1205]:
+                  - generic [ref=e1206]: $201.23
+                - gridcell [ref=e1207]:
+                  - generic [ref=e618]: +0.81%
+                - gridcell [ref=e1208]:
+                  - generic [ref=e1209]: $200.23
+                - gridcell [ref=e1210]:
+                  - generic [ref=e622]: +0.31%
+                - gridcell [ref=e1211]:
+                  - generic [ref=e1212]: $198.80
+                - gridcell [ref=e1213]:
+                  - generic [ref=e626]: "-0.41%"
+              - row [ref=e1214] [cursor=pointer]:
+                - gridcell [ref=e1215]: CINF
+                - gridcell [ref=e1216]: CINF
+                - gridcell [ref=e630]
+                - gridcell [ref=e1217]:
+                  - generic [ref=e632]: $155.45
+                - gridcell [ref=e1218]:
+                  - generic [ref=e634]: "-2.37%"
+                - gridcell [ref=e1219]:
+                  - generic [ref=e1220]: CatBoost_standard
+                - gridcell [ref=e1221]:
+                  - generic [ref=e1222]: $155.00
+                - gridcell [ref=e1223]:
+                  - generic [ref=e640]: "-0.29%"
+                - gridcell [ref=e1224]:
+                  - generic [ref=e1225]: $156.71
+                - gridcell [ref=e1226]:
+                  - generic [ref=e644]: +0.81%
+                - gridcell [ref=e1227]:
+                  - generic [ref=e1228]: $154.43
+                - gridcell [ref=e1229]:
+                  - generic [ref=e648]: "-0.66%"
+                - gridcell [ref=e1230]:
+                  - generic [ref=e1231]: $154.08
+                - gridcell [ref=e1232]:
+                  - generic [ref=e652]: "-0.88%"
+              - row [ref=e1233] [cursor=pointer]:
+                - gridcell [ref=e1234]: COR
+                - gridcell [ref=e1235]: COR
+                - gridcell [ref=e656]
+                - gridcell [ref=e1236]:
+                  - generic [ref=e658]: $325.08
+                - gridcell [ref=e1237]:
+                  - generic [ref=e660]: "-0.88%"
+                - gridcell [ref=e1238]:
+                  - generic [ref=e1239]: CatBoost_standard
+                - gridcell [ref=e1240]:
+                  - generic [ref=e1241]: $327.26
+                - gridcell [ref=e1242]:
+                  - generic [ref=e666]: +0.67%
+                - gridcell [ref=e1243]:
+                  - generic [ref=e1244]: $327.56
+                - gridcell [ref=e1245]:
+                  - generic [ref=e670]: +0.76%
+                - gridcell [ref=e1246]:
+                  - generic [ref=e1247]: $326.63
+                - gridcell [ref=e1248]:
+                  - generic [ref=e674]: +0.48%
+                - gridcell [ref=e1249]:
+                  - generic [ref=e1250]: $324.87
+                - gridcell [ref=e1251]:
+                  - generic [ref=e678]: "-0.06%"
+              - row [ref=e1252] [cursor=pointer]:
+                - gridcell [ref=e1253]: COST
+                - gridcell [ref=e1254]: COST
+                - gridcell [ref=e682]
+                - gridcell [ref=e1255]:
+                  - generic [ref=e684]: $974.86
+                - gridcell [ref=e1256]:
+                  - generic [ref=e686]: "-0.32%"
+                - gridcell [ref=e1257]:
+                  - generic [ref=e1258]: CatBoost_standard
+                - gridcell [ref=e1259]:
+                  - generic [ref=e1260]: $974.20
+                - gridcell [ref=e1261]:
+                  - generic [ref=e692]: "-0.07%"
+                - gridcell [ref=e1262]:
+                  - generic [ref=e1263]: $982.27
+                - gridcell [ref=e1264]:
+                  - generic [ref=e696]: +0.76%
+                - gridcell [ref=e1265]:
+                  - generic [ref=e1266]: $974.31
+                - gridcell [ref=e1267]:
+                  - generic [ref=e700]: "-0.06%"
+                - gridcell [ref=e1268]:
+                  - generic [ref=e1269]: $973.80
+                - gridcell [ref=e1270]:
+                  - generic [ref=e704]: "-0.11%"
+              - row [ref=e1271] [cursor=pointer]:
+                - gridcell [ref=e1272]: ALGN
+                - gridcell [ref=e1273]: ALGN
+                - gridcell [ref=e708]
+                - gridcell [ref=e1274]:
+                  - generic [ref=e710]: $180.27
+                - gridcell [ref=e1275]:
+                  - generic [ref=e712]: "-0.28%"
+                - gridcell [ref=e1276]:
+                  - generic [ref=e1277]: CatBoost_standard
+                - gridcell [ref=e1278]:
+                  - generic [ref=e1279]: $179.96
+                - gridcell [ref=e1280]:
+                  - generic [ref=e718]: "-0.17%"
+                - gridcell [ref=e1281]:
+                  - generic [ref=e1282]: $181.60
+                - gridcell [ref=e1283]:
+                  - generic [ref=e722]: +0.74%
+                - gridcell [ref=e1284]:
+                  - generic [ref=e1285]: $181.74
+                - gridcell [ref=e1286]:
+                  - generic [ref=e726]: +0.82%
+                - gridcell [ref=e1287]:
+                  - generic [ref=e1288]: $179.04
+                - gridcell [ref=e1289]:
+                  - generic [ref=e730]: "-0.68%"
+              - row [ref=e1290] [cursor=pointer]:
+                - gridcell [ref=e1291]: ABNB
+                - gridcell [ref=e1292]: ABNB
+                - gridcell [ref=e734]
+                - gridcell [ref=e1293]:
+                  - generic [ref=e736]: $131.81
+                - gridcell [ref=e1294]:
+                  - generic [ref=e738]: +0.70%
+                - gridcell [ref=e1295]:
+                  - generic [ref=e1296]: CatBoost_standard
+                - gridcell [ref=e1297]:
+                  - generic [ref=e1298]: $133.07
+                - gridcell [ref=e1299]:
+                  - generic [ref=e744]: +0.96%
+                - gridcell [ref=e1300]:
+                  - generic [ref=e1301]: $132.78
+                - gridcell [ref=e1302]:
+                  - generic [ref=e748]: +0.74%
+                - gridcell [ref=e1303]:
+                  - generic [ref=e1304]: $131.71
+                - gridcell [ref=e1305]:
+                  - generic [ref=e752]: "-0.08%"
+                - gridcell [ref=e1306]:
+                  - generic [ref=e1307]: $130.50
+                - gridcell [ref=e1308]:
+                  - generic [ref=e756]: "-1.00%"
+              - row [ref=e1309] [cursor=pointer]:
+                - gridcell [ref=e1310]: CVX
+                - gridcell [ref=e1311]: Chevron Corp.
+                - gridcell [ref=e1312]: Energy
+                - gridcell [ref=e1313]:
+                  - generic [ref=e762]: $205.15
+                - gridcell [ref=e1314]:
+                  - generic [ref=e764]: "-0.41%"
+                - gridcell [ref=e1315]:
+                  - generic [ref=e1316]: CatBoost_standard
+                - gridcell [ref=e1317]:
+                  - generic [ref=e1318]: $205.95
+                - gridcell [ref=e1319]:
+                  - generic [ref=e770]: +0.39%
+                - gridcell [ref=e1320]:
+                  - generic [ref=e1321]: $206.62
+                - gridcell [ref=e1322]:
+                  - generic [ref=e774]: +0.71%
+                - gridcell [ref=e1323]:
+                  - generic [ref=e1324]: $204.52
+                - gridcell [ref=e1325]:
+                  - generic [ref=e778]: "-0.30%"
+                - gridcell [ref=e1326]:
+                  - generic [ref=e1327]: $205.15
+                - gridcell [ref=e1328]:
+                  - generic [ref=e782]: +0.00%
+              - row [ref=e1329] [cursor=pointer]:
+                - gridcell [ref=e1330]: CNC
+                - gridcell [ref=e1331]: CNC
+                - gridcell [ref=e786]
+                - gridcell [ref=e1332]:
+                  - generic [ref=e788]: $32.73
+                - gridcell [ref=e1333]:
+                  - generic [ref=e790]: "-1.53%"
+                - gridcell [ref=e1334]:
+                  - generic [ref=e1335]: CatBoost_standard
+                - gridcell [ref=e1336]:
+                  - generic [ref=e1337]: $32.84
+                - gridcell [ref=e1338]:
+                  - generic [ref=e796]: +0.35%
+                - gridcell [ref=e1339]:
+                  - generic [ref=e1340]: $32.96
+                - gridcell [ref=e1341]:
+                  - generic [ref=e800]: +0.71%
+                - gridcell [ref=e1342]:
+                  - generic [ref=e1343]: $32.72
+                - gridcell [ref=e1344]:
+                  - generic [ref=e804]: "-0.04%"
+                - gridcell [ref=e1345]:
+                  - generic [ref=e1346]: $32.72
+                - gridcell [ref=e1347]:
+                  - generic [ref=e808]: "-0.04%"
+              - row [ref=e1348] [cursor=pointer]:
+                - gridcell [ref=e1349]: MA
+                - gridcell [ref=e1350]: Mastercard Inc.
+                - gridcell [ref=e1351]: Financial Services
+                - gridcell [ref=e1352]:
+                  - generic [ref=e814]: $492.51
+                - gridcell [ref=e1353]:
+                  - generic [ref=e816]: +0.92%
+                - gridcell [ref=e1354]:
+                  - generic [ref=e1355]: CatBoost_standard
+                - gridcell [ref=e1356]:
+                  - generic [ref=e1357]: $494.28
+                - gridcell [ref=e1358]:
+                  - generic [ref=e822]: +0.36%
+                - gridcell [ref=e1359]:
+                  - generic [ref=e1360]: $495.97
+                - gridcell [ref=e1361]:
+                  - generic [ref=e826]: +0.70%
+                - gridcell [ref=e1362]:
+                  - generic [ref=e1363]: $492.63
+                - gridcell [ref=e1364]:
+                  - generic [ref=e830]: +0.02%
+                - gridcell [ref=e1365]:
+                  - generic [ref=e1366]: $491.11
+                - gridcell [ref=e1367]:
+                  - generic [ref=e834]: "-0.28%"
+              - row [ref=e1368] [cursor=pointer]:
+                - gridcell [ref=e1369]: BSX
+                - gridcell [ref=e1370]: BSX
+                - gridcell [ref=e838]
+                - gridcell [ref=e1371]:
+                  - generic [ref=e840]: $69.78
+                - gridcell [ref=e1372]:
+                  - generic [ref=e842]: +1.28%
+                - gridcell [ref=e1373]:
+                  - generic [ref=e1374]: CatBoost_standard
+                - gridcell [ref=e1375]:
+                  - generic [ref=e1376]: $69.65
+                - gridcell [ref=e1377]:
+                  - generic [ref=e848]: "-0.19%"
+                - gridcell [ref=e1378]:
+                  - generic [ref=e1379]: $70.26
+                - gridcell [ref=e1380]:
+                  - generic [ref=e852]: +0.69%
+                - gridcell [ref=e1381]:
+                  - generic [ref=e1382]: $69.85
+                - gridcell [ref=e1383]:
+                  - generic [ref=e856]: +0.10%
+                - gridcell [ref=e1384]:
+                  - generic [ref=e1385]: $69.94
+                - gridcell [ref=e1386]:
+                  - generic [ref=e860]: +0.23%
+          - generic [ref=e861]:
+            - generic [ref=e1390]: 1 row selected
+            - generic [ref=e863]:
+              - paragraph [ref=e864]: "Rows per page:"
+              - generic [ref=e865]:
+                - combobox [ref=e1391] [cursor=pointer]: "25"
+                - textbox: "25"
+                - img
+              - paragraph [ref=e867]: 1–25 of 160
+              - generic [ref=e868]:
+                - button [disabled]:
+                  - img
+                - button [ref=e1392] [cursor=pointer]:
+                  - img [ref=e870]
+        - paragraph [ref=e872]: Select 2+ stocks in the table to compare side by side.
+  - dialog [active] [ref=e1394]:
+    - group "Prediction horizon" [ref=e1396]:
+      - button "1D" [ref=e1397] [cursor=pointer]
+      - button "7D" [pressed] [ref=e1398] [cursor=pointer]
+      - button "14D" [ref=e1399] [cursor=pointer]
+      - button "30D" [ref=e1400] [cursor=pointer]
+    - generic [ref=e1401]:
+      - generic [ref=e1402]:
+        - heading "CHD — Detail View" [level=6] [ref=e1403]
+        - button "Close" [ref=e1404] [cursor=pointer]:
+          - img [ref=e1406]
+          - text: Close
+      - generic [ref=e1408]:
+        - generic [ref=e1410]:
+          - generic [ref=e1411]:
+            - 'heading "CHD — Price History & 7-Day ForecastCurrent: $94.38" [level=6] [ref=e1412]':
+              - text: CHD — Price History & 7-Day Forecast
+              - generic [ref=e1413]: "Current: $94.38"
+            - application [ref=e1417]:
+              - generic [ref=e1455]:
+                - generic [ref=e1456]:
+                  - generic [ref=e1458]: May 2
+                  - generic [ref=e1460]: Jun 25
+                  - generic [ref=e1462]: Aug 20
+                  - generic [ref=e1464]: Oct 15
+                  - generic [ref=e1466]: Dec 10
+                  - generic [ref=e1468]: Feb 3
+                  - generic [ref=e1470]: Apr 10
+                - generic [ref=e1471]:
+                  - generic [ref=e1473]: $80
+                  - generic [ref=e1475]: $88
+                  - generic [ref=e1477]: $96
+                  - generic [ref=e1479]: $104
+                  - generic [ref=e1481]: $112
+                - generic [ref=e1482]: $95.22
+          - generic [ref=e1483]:
+            - generic [ref=e1484]:
+              - generic [ref=e1485]: RSI (14)
+              - application [ref=e1488]:
+                - generic [ref=e1507]:
+                  - generic [ref=e1508]:
+                    - generic [ref=e1510]: May 2
+                    - generic [ref=e1512]: Jun 18
+                    - generic [ref=e1514]: Aug 5
+                    - generic [ref=e1516]: Sep 19
+                    - generic [ref=e1518]: Nov 4
+                    - generic [ref=e1520]: Dec 19
+                    - generic [ref=e1522]: Feb 6
+                    - generic [ref=e1524]: Mar 25
+                  - generic [ref=e1525]:
+                    - generic [ref=e1527]: "0"
+                    - generic [ref=e1529]: "30"
+                    - generic [ref=e1531]: "50"
+                    - generic [ref=e1533]: "70"
+                    - generic [ref=e1535]: "100"
+            - generic [ref=e1536]:
+              - generic [ref=e1537]: MACD (12/26/9)
+              - application [ref=e1540]:
+                - generic [ref=e1559]:
+                  - generic [ref=e1560]:
+                    - generic [ref=e1562]: Apr 7
+                    - generic [ref=e1564]: May 27
+                    - generic [ref=e1566]: Jul 18
+                    - generic [ref=e1568]: Sep 5
+                    - generic [ref=e1570]: Oct 23
+                    - generic [ref=e1572]: Dec 15
+                    - generic [ref=e1574]: Feb 4
+                    - generic [ref=e1576]: Mar 25
+                  - generic [ref=e1577]:
+                    - generic [ref=e1579]: "-4"
+                    - generic [ref=e1581]: "-2"
+                    - generic [ref=e1583]: "0"
+                    - generic [ref=e1585]: "2"
+                    - generic [ref=e1587]: "4"
+            - generic [ref=e1588]:
+              - generic [ref=e1589]: Bollinger Band Width
+              - application [ref=e1592]:
+                - generic [ref=e1611]:
+                  - generic [ref=e1612]:
+                    - generic [ref=e1614]: May 9
+                    - generic [ref=e1616]: Jun 25
+                    - generic [ref=e1618]: Aug 8
+                    - generic [ref=e1620]: Sep 25
+                    - generic [ref=e1622]: Nov 7
+                    - generic [ref=e1624]: Dec 23
+                    - generic [ref=e1626]: Feb 9
+                    - generic [ref=e1628]: Mar 25
+                  - generic [ref=e1629]:
+                    - generic [ref=e1631]: $0.0
+                    - generic [ref=e1633]: $6.0
+                    - generic [ref=e1635]: $12.0
+                    - generic [ref=e1637]: $18.0
+                    - generic [ref=e1639]: $24.0
+        - generic [ref=e1641]:
+          - generic [ref=e1642]:
+            - heading "Feature Contribution — CHD" [level=6] [ref=e1643]
+            - generic [ref=e1644]: "Model: CatBoost_standard"
+          - generic [ref=e1645]:
+            - heading "SHAP Feature Importance for CHD" [level=6] [ref=e1646]
+            - generic [ref=e1647]:
+              - list [ref=e1648]:
+                - listitem [ref=e1649]:
+                  - generic [ref=e1650]:
+                    - img [ref=e1653]
+                    - generic [ref=e1655]: Importance
+              - img [ref=e1656]:
+                - generic [ref=e1675]:
+                  - generic [ref=e1677]: "0.0"
+                  - generic [ref=e1679]: "0.1"
+                  - generic [ref=e1681]: "0.2"
+                - generic [ref=e1682]:
+                  - generic [ref=e1684]: volu…
+                  - generic [ref=e1686]: obv
+                  - generic [ref=e1688]: ema_…
+                  - generic [ref=e1690]: clos…
+                  - generic [ref=e1692]: sma_…
+                  - generic [ref=e1694]: ret…
+                  - generic [ref=e1696]: bb_l…
+                  - generic [ref=e1698]: macd…
+                  - generic [ref=e1700]: clos…
+                  - generic [ref=e1702]: sma_…
+                  - generic [ref=e1704]: macd…
+                  - generic [ref=e1706]: bb_u…
+                  - generic [ref=e1708]: rsi_…
+                  - generic [ref=e1710]: ema_…
+                  - generic [ref=e1712]: atr
+          - generic [ref=e1713]: Features driving the 7-day prediction. Higher bars indicate stronger influence on the forecast.
+  - generic [ref=e1714]: $0.0
