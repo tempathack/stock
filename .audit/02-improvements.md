@@ -303,3 +303,26 @@ Status: IN PROGRESS
 - audit-p11-models-initial.png — Models page initial state (stacking_ensemble selected)
 - audit-p11-model-detail.png — Full page with CatBoost_standard selected, detail panel updated
 
+---
+
+### US-012: Drift Page Audit — ActiveModelCard, DriftTimeline, RollingPerformanceChart (2026-04-07)
+
+**Status:** PASS with one data gap
+
+**Verified working:**
+- Drift page loads at `/drift` with 0 console errors ✅
+- **ActiveModelCard**: Shows "CatBoost_standard" Active badge, RMSE 0.0234, MAE 0.0187, Dir. Acc 62.0%, Scaler: Standard, Version: v1, Trained: Mar 22, 2026 ✅
+- **RetrainStatusPanel**: "Up to Date", Last retrained: Mar 31, 2026, Previous Model: ridge (1.4089 RMSE, MAE 0.1523) vs Current Model: lasso (1.4120 RMSE, MAE 0.1463) ✅
+- **DriftTimeline**: 15 events detected — Data (Medium), Prediction (Low), Concept (High), Data (Low) drift events with timestamps, feature names (rsi_14, macd_line, bb_upper) ✅
+- `/models/drift` API returns 15 events with `any_recent_drift: true`, latest data drift on rsi_14 and macd_line ✅
+
+**Issues found:**
+1. **RollingPerformanceChart shows "No performance data available"**: `/models/drift/rolling-performance` returns `{"entries":[],"model_name":null,"period_days":30,"count":0}`. The endpoint exists but the DB table has no rolling performance rows. UI handles empty state gracefully. Data population would require predictions to be scored against actuals over 30 days.
+
+**Screenshots:**
+- audit-p12-drift.png — Full Drift page
+- audit-p12-active-model.png — ActiveModelCard (CatBoost_standard Active)
+- audit-p12-retrain-status.png — RetrainStatusPanel (Up to Date)
+- audit-p12-rolling-perf.png — RollingPerformanceChart (empty state)
+- audit-p12-drift-timeline.png — DriftTimeline (15 events)
+

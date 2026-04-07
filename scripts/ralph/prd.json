@@ -203,7 +203,7 @@
         "curl 'http://localhost:8010/models/drift' \u2014 verify response"
       ],
       "priority": 12,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

@@ -787,3 +787,16 @@ Previous run codebase patterns (still valid):
   - /models/list does NOT exist — correct endpoint is /models/comparison
   - features_count is NOT in the models/comparison response — no training feature count exposed by API
 ---
+
+## 2026-04-07 - US-012: Drift page — ActiveModelCard, DriftTimeline, RollingPerformanceChart audit
+- Navigated to http://localhost:5173/drift via Playwright MCP
+- Verified 0 console errors
+- ActiveModelCard: CatBoost_standard Active, RMSE 0.0234, MAE 0.0187, Dir. Acc 62.0%, v1, Trained Mar 22 2026
+- RetrainStatusPanel: Up to Date, Last retrained Mar 31 2026, Previous: ridge (1.4089) → Current: lasso (1.4120)
+- DriftTimeline: 15 events (Data/Medium, Prediction/Low, Concept/High) with feature names rsi_14, macd_line, bb_upper
+- RollingPerformanceChart: empty state "No performance data available" — /models/drift/rolling-performance returns 0 entries (no scored predictions vs actuals yet in DB)
+- Documented findings in .audit/02-improvements.md
+- **Learnings for future iterations:**
+  - Rolling performance chart gap is a data gap, not a bug — endpoint exists at /models/drift/rolling-performance but DB has 0 rows
+  - Drift page is fully functional with real drift events from the API
+---
