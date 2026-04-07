@@ -120,7 +120,7 @@ app.add_middleware(
         "http://192.168.49.2:30080",  # Minikube NodePort
     ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

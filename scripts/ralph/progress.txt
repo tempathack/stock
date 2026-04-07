@@ -1309,3 +1309,4 @@ Previous run codebase patterns (still valid):
 [US-063] PASS — sentiment-writer FlinkDeployment: RUNNING/STABLE; all 5 Flink jobs healthy; operator running; no fix needed. Documented in .audit/02-improvements.md.
 [US-064] PASS — US-021 sweep found 0 console errors; all 7 tabs clean; no fixes needed. Screenshot taken.
 [US-065] PASS — Added summary= to all route decorators in predict.py (3), market.py (7), models.py (7), backtest.py (1). Tags already set at APIRouter level. Swagger UI shows grouped sections with summaries. Screenshot taken.
+[US-066] PASS — CORS already had restricted origins; changed allow_methods from ['*'] to explicit list. evil.com blocked, localhost:5173 allowed. 0 frontend console errors.

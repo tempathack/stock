@@ -1068,7 +1068,7 @@
         "Commit: 'security: [US-066] restrict CORS allowed origins to known frontend URLs'"
       ],
       "priority": 66,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
