@@ -1150,7 +1150,7 @@
         "Commit: 'feat: [US-071] create backtest_results table and verify backtest persistence'"
       ],
       "priority": 71,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
