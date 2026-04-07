@@ -696,8 +696,8 @@
         "Document manifests with no corresponding running resource in .audit/01-stale-code.md under '## Orphaned K8s Manifests'"
       ],
       "priority": 43,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "PASS. Flink(5)/ES/Kibana all Running. Kafka Connect pod absent — KafkaConnect CRD exists but pod fails due to Strimzi schema mismatch (US-033). Connectors registered but unreachable. CDC pipeline broken."
     },
     {
       "id": "US-044",

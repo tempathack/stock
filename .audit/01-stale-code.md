@@ -397,3 +397,36 @@ Note: API port-forward required pod-level forward (not svc-level) due to pod res
 
 **Verdict:** No dead Playwright specs. All fixme/skip usage follows project patterns from CLAUDE.md.
 
+
+---
+
+## Orphaned K8s Manifests
+
+### US-043: K8s manifest vs running resource audit (2026-04-07)
+
+**Flink deployments (k8s/flink/):** All 5 FlinkDeployments RUNNING/STABLE ✓
+- sentiment-writer, feast-writer, indicator-stream, ohlcv-normalizer, sentiment-stream — all Running
+
+**Elasticsearch (k8s/storage/elasticsearch-statefulset.yaml):** Pod `elasticsearch-0` Running in `storage` ✓
+
+**Kibana (k8s/storage/kibana-deployment.yaml):** Pod `kibana-5df4b8474c-8k9n5` Running in `storage` ✓
+
+**Kafka Connect (k8s/processing/kafka-connect-debezium.yaml):** PARTIALLY ORPHANED
+- `debezium-connect` KafkaConnect CRD resource exists in `processing` namespace
+- KafkaConnectors exist: `debezium-postgres-source`, `es-sink-connector` — both show READY empty (not ready)
+- **No Kafka Connect pod running** — ArgoCD shows KafkaConnect SyncFailed (Strimzi schema mismatch, US-033)
+- `kafka-connect-connector-es.yaml` + `kafka-connect-connector-pg.yaml`: connectors registered but Connect pod absent
+
+**ML namespace (k8s/ml/):** All active — feast-feature-server Running, KServe predictors Running, completed training jobs (expected)
+
+**Summary:**
+| Manifest | Running? | Status |
+|---|---|---|
+| Flink deployments (5) | YES | ✓ Healthy |
+| elasticsearch-statefulset.yaml | YES | ✓ Running |
+| kibana-deployment.yaml | YES | ✓ Running |
+| kafka-connect-debezium.yaml | NO pod | ⚠ KafkaConnect CRD exists, pod absent — Strimzi schema error |
+| kafka-connect-connector-*.yaml | NO pod | ⚠ Connectors registered but Connect pod not running |
+
+**One orphaned resource group:** Debezium Kafka Connect pod missing — CDC pipeline broken. Connectors defined but unreachable.
+

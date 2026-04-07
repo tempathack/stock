@@ -1115,3 +1115,11 @@ Previous run codebase patterns (still valid):
 - drift-data-sanity + backtest-data-sanity test valid live endpoints
 - Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
 ---
+
+## 2026-04-07 - US-043: Stale Code: Orphaned Kubernetes manifests — resources not running
+- Flink x5, Elasticsearch, Kibana: all Running ✓
+- Kafka Connect: NO pod — KafkaConnect CRD exists, Strimzi schema mismatch prevents deployment (from US-033)
+- debezium-postgres-source + es-sink-connector: registered but Connect pod absent → CDC broken
+- ML namespace: feast-feature-server + KServe predictors Running ✓
+- Files modified: .audit/01-stale-code.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+---
