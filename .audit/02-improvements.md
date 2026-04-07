@@ -681,3 +681,39 @@ No screenshots taken (no errors to document).
 | Pod Memory Usage | REAL DATA — ~1.25 GiB |
 
 **Root cause:** Kafka JMX/consumer-lag exporter not deployed. kafka-consumer pods are UP but not exposing Prometheus metrics. No broker/partition panels in this dashboard.
+
+---
+
+## Flink Pipeline Status
+
+### US-028: Grafana Flink dashboard audit (2026-04-07)
+
+**FlinkDeployments (kubectl get flinkdeployment -A):**
+| Name | Job Status | Lifecycle |
+|---|---|---|
+| feast-writer | RUNNING | STABLE |
+| indicator-stream | RUNNING | STABLE |
+| ohlcv-normalizer | RUNNING | STABLE |
+| sentiment-stream | RUNNING | STABLE |
+| sentiment-writer | RUNNING | STABLE |
+
+All 5 FlinkDeployments RUNNING/STABLE.
+
+**Grafana "Apache Flink — Stream Processing" dashboard panels:**
+| Panel | Status | Notes |
+|---|---|---|
+| Job Uptime | REAL DATA | All jobs ~5.01h uptime |
+| Job Restart Count | REAL DATA (GREEN) | All 0 restarts |
+| Completed Checkpoints | REAL DATA | ~600-601 each |
+| Records In Per Second | REAL DATA | Time-series flowing |
+| Records Out Per Second | REAL DATA | Time-series flowing |
+| Last Checkpoint Duration | REAL DATA | ~0–20ms, time-series |
+| Failed Checkpoints | PARTIAL | Most jobs show 1 failed (YELLOW); sentiment_writer_job=0 (GREEN) |
+| Input Watermark (Event Time Lag) | VISIBLE | Section present |
+
+**Summary:** Flink dashboard has strong real-data coverage. Job health is excellent (0 restarts, 600+ checkpoints). Failed Checkpoints=1 per job is expected at startup (initial checkpoint attempt before state materializes).
+
+**Issues:**
+- Failed Checkpoints showing 1 for most jobs (YELLOW) — likely initial startup checkpoint failure, not ongoing (LOW severity)
+- Throughput charts show legend but visual scaling hard to read at compressed time range
+

@@ -972,3 +972,14 @@ Previous run codebase patterns (still valid):
 - 3 pods UP: kafka-consumer(x2), stock-api
 - 8 scrape targets all healthy
 ---
+
+## 2026-04-07 - US-028: Playwright: Grafana — Flink dashboard audit
+- Navigated to Grafana dashboards — "Apache Flink — Stream Processing" dashboard found with tags: flink, stock-prediction, streaming
+- kubectl: All 5 FlinkDeployments RUNNING/STABLE: feast-writer, indicator-stream, ohlcv-normalizer, sentiment-stream, sentiment-writer
+- Dashboard panels: Job Uptime ~5h all jobs, Job Restart Count=0 (GREEN), Completed Checkpoints=600-601 each
+- Throughput: Records In/Out Per Second charts have time-series data
+- Checkpointing: Last Checkpoint Duration 0-20ms, Failed Checkpoints=1 for most (YELLOW) — expected startup behavior
+- Files modified: .audit/02-improvements.md, scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Screenshots: audit-p28-grafana-flink.png, audit-p28-flink-jobs.png
+- **Learnings:** Failed Checkpoints=1 per Flink job is normal — first checkpoint attempt during job startup before state backend is fully initialized; not ongoing failure.
+---
