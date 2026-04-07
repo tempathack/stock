@@ -1304,3 +1304,4 @@ Previous run codebase patterns (still valid):
 - EXPLAIN ANALYZE: Index Scan, 0.086ms execution time
 - Files modified: .audit/02-improvements.md, scripts/ralph/prd.json
 ---
+[US-061] PASS — Wrapped all 7 page routes in ErrorBoundary; dual-interface ErrorFallback (legacy+FallbackProps); react-error-boundary@6.1.1; TSC 0 errors; build OK; dashboard loads cleanly (0 console errors).
