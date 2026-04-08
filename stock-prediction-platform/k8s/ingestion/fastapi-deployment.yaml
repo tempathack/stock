@@ -19,6 +19,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
         prometheus.io/path: "/metrics"
+        kubectl.kubernetes.io/restartedAt: "2026-04-08T19:40:00Z"
     spec:
       containers:
         - name: stock-api
