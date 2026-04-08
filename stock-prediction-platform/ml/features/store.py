@@ -65,6 +65,11 @@ def _connect_with_retry(settings: DBSettings):
 
 _BATCH_SIZE = 5000
 
+# numeric(24,8) column max absolute value is 10^16 - 1; clamp well below that.
+# Cumulative volume indicators (OBV, AD-Line) can reach hundreds of billions for
+# high-volume tickers (e.g. NVDA), so the clamp is generous but prevents overflow.
+_FEATURE_VALUE_CLAMP = 9.9e15
+
 
 def compute_features_for_ticker(ticker: str, conn) -> pd.DataFrame:
     """Load OHLCV data and compute all features for a single ticker.
@@ -116,7 +121,16 @@ def write_features(ticker: str, df: pd.DataFrame, conn) -> int:
         for col in feature_cols:
             val = row[col]
             if pd.notna(val):
-                rows.append((ticker, d, col, float(val)))
+                fval = float(val)
+                # Clamp extreme values to fit numeric(24,8); guards against
+                # cumulative indicators (OBV, AD-Line) on high-volume tickers.
+                if not (-_FEATURE_VALUE_CLAMP <= fval <= _FEATURE_VALUE_CLAMP):
+                    logger.warning(
+                        "Clamping extreme feature value for %s.%s on %s: %g → ±%g",
+                        ticker, col, d, fval, _FEATURE_VALUE_CLAMP,
+                    )
+                    fval = max(-_FEATURE_VALUE_CLAMP, min(_FEATURE_VALUE_CLAMP, fval))
+                rows.append((ticker, d, col, fval))
 
     cursor = conn.cursor()
     count = 0
