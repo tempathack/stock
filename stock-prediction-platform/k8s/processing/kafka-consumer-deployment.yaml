@@ -19,6 +19,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
         prometheus.io/path: "/metrics"
+        kubectl.kubernetes.io/restartedAt: "2026-04-08T19:45:00Z"
     spec:
       containers:
         - name: kafka-consumer

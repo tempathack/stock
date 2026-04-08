@@ -123,6 +123,13 @@ class BatchWriter:
         try:
             tickers = {r["ticker"] for r in records}
             self._ensure_tickers(tickers, conn)
+            # Deduplicate by (ticker, date): keep last record per day to avoid
+            # CardinalityViolation when yfinance returns multiple intraday bars
+            # for the same partial day (e.g., today's open bar).
+            seen: dict[tuple, dict] = {}
+            for r in records:
+                key = (r["ticker"], datetime.fromisoformat(r["timestamp"]).date())
+                seen[key] = r
             values = [
                 (
                     r["ticker"],
@@ -133,7 +140,7 @@ class BatchWriter:
                     r["close"],
                     r["volume"],
                 )
-                for r in records
+                for r in seen.values()
             ]
             start = _time.monotonic()
             self._execute_upsert(_DAILY_UPSERT_SQL, values, conn)
