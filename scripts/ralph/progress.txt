@@ -46,3 +46,16 @@ Previous run archived: scripts/ralph/archive/2026-04-07-system-audit/
   - Use cursor + `pd.DataFrame(rows, columns=col_names)` instead of `pd.read_sql(sql, psycopg2_conn)` — the latter triggers a pandas deprecation warning about non-SQLAlchemy connections.
   - The `feast_fred_macro` table stores all FRED data under ticker='MACRO' (market-wide). The join to per-ticker DataFrames is done by date index only — no ticker dimension needed.
 ---
+
+## 2026-04-08 - US-003: Add --use-fred CLI flag and remove LINEAR_ONLY from training cronjob
+
+- Added `use_fred: bool = False` parameter to `run_training_pipeline()`.
+- Gated steps 1c (FRED fetch+write) and 1d (FRED DB join) behind `if use_fred:` — both log an info skip message when disabled.
+- Added `--use-fred` CLI arg (`action=store_true`) with `USE_FRED=true` env var support to `training_pipeline.py` CLI section.
+- Removed `LINEAR_ONLY: "true"` from `k8s/ml/cronjob-training.yaml`; added `USE_FRED: "true"` to enable FRED features in weekly production runs.
+- Weekly training will now train ALL model families: linear, tree, booster (xgboost/lightgbm/catboost), distance/neural (knn, svr, mlp), and sktime models.
+- **Files modified:** `ml/pipelines/training_pipeline.py`, `k8s/ml/cronjob-training.yaml`
+- **Learnings for future iterations:**
+  - The `use_fred` gate defaults to False for backward compatibility — existing tests that call `run_training_pipeline()` directly are unaffected.
+  - LINEAR_ONLY is still supported as a CLI flag for fast E2E validation runs; it's just not the production default anymore.
+---

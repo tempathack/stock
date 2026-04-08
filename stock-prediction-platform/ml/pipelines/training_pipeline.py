@@ -171,6 +171,7 @@ def run_training_pipeline(
     use_feast_data: bool = False,
     include_sktime: bool = True,
     include_sktime_regression: bool = True,
+    use_fred: bool = False,
 ) -> PipelineRunResult:
     """Execute the full 12-step training pipeline.
 
@@ -244,45 +245,51 @@ def run_training_pipeline(
                 except Exception as _exc:
                     logger.warning("Step 1b/12 load_yfinance_macro — failed (%s); continuing without macro features", _exc)
 
-                # Step 1c: FRED macro — create table and upsert latest data
-                try:
-                    from ml.pipelines.components.data_loader import (
-                        create_fred_macro_table,
-                        fetch_fred_macro,
-                        write_fred_macro_to_db,
-                    )
-                    create_fred_macro_table()
-                    fred_df = fetch_fred_macro(start_date=_start, end_date=_end)
-                    write_fred_macro_to_db(fred_df)
-                    logger.info("Step 1c/12 FRED macro: wrote %d rows to feast_fred_macro.", len(fred_df))
-                except Exception as _exc:
-                    logger.warning("Step 1c/12 FRED macro — failed (%s); continuing without FRED features", _exc)
-
-                # Step 1d: join FRED macro features from DB into each ticker's DataFrame
-                try:
-                    from ml.pipelines.components.data_loader import (
-                        _FRED_COLS as _FRED_COLS_LIST,
-                        load_fred_macro_from_db,
-                    )
-                    fred_wide = load_fred_macro_from_db(start_date=_start, end_date=_end, settings=db_settings)
-                    if not fred_wide.empty:
-                        for _ticker, _df in data_dict.items():
-                            _df_copy = _df.copy()
-                            if not isinstance(_df_copy.index, pd.DatetimeIndex):
-                                _df_copy.index = pd.to_datetime(_df_copy.index)
-                            joined = _df_copy.join(fred_wide, how="left")
-                            for _col in _FRED_COLS_LIST:
-                                if _col in joined.columns:
-                                    joined[_col] = joined[_col].ffill().fillna(0.0)
-                            data_dict[_ticker] = joined
-                        logger.info(
-                            "Step 1d/12 FRED DB join — joined %d FRED columns for %d tickers",
-                            len(fred_wide.columns), len(data_dict),
+                # Step 1c: FRED macro — create table and upsert latest data (gated on use_fred)
+                if use_fred:
+                    try:
+                        from ml.pipelines.components.data_loader import (
+                            create_fred_macro_table,
+                            fetch_fred_macro,
+                            write_fred_macro_to_db,
                         )
-                    else:
-                        logger.warning("Step 1d/12 FRED DB join — feast_fred_macro empty; skipping join")
-                except Exception as _exc:
-                    logger.warning("Step 1d/12 FRED DB join — failed (%s); continuing without FRED columns", _exc)
+                        create_fred_macro_table()
+                        fred_df = fetch_fred_macro(start_date=_start, end_date=_end)
+                        write_fred_macro_to_db(fred_df)
+                        logger.info("Step 1c/12 FRED macro: wrote %d rows to feast_fred_macro.", len(fred_df))
+                    except Exception as _exc:
+                        logger.warning("Step 1c/12 FRED macro — failed (%s); continuing without FRED features", _exc)
+                else:
+                    logger.info("Step 1c/12 FRED macro — skipped (use_fred=False)")
+
+                # Step 1d: join FRED macro features from DB into each ticker's DataFrame (gated on use_fred)
+                if use_fred:
+                    try:
+                        from ml.pipelines.components.data_loader import (
+                            _FRED_COLS as _FRED_COLS_LIST,
+                            load_fred_macro_from_db,
+                        )
+                        fred_wide = load_fred_macro_from_db(start_date=_start, end_date=_end, settings=db_settings)
+                        if not fred_wide.empty:
+                            for _ticker, _df in data_dict.items():
+                                _df_copy = _df.copy()
+                                if not isinstance(_df_copy.index, pd.DatetimeIndex):
+                                    _df_copy.index = pd.to_datetime(_df_copy.index)
+                                joined = _df_copy.join(fred_wide, how="left")
+                                for _col in _FRED_COLS_LIST:
+                                    if _col in joined.columns:
+                                        joined[_col] = joined[_col].ffill().fillna(0.0)
+                                data_dict[_ticker] = joined
+                            logger.info(
+                                "Step 1d/12 FRED DB join — joined %d FRED columns for %d tickers",
+                                len(fred_wide.columns), len(data_dict),
+                            )
+                        else:
+                            logger.warning("Step 1d/12 FRED DB join — feast_fred_macro empty; skipping join")
+                    except Exception as _exc:
+                        logger.warning("Step 1d/12 FRED DB join — failed (%s); continuing without FRED columns", _exc)
+                else:
+                    logger.info("Step 1d/12 FRED DB join — skipped (use_fred=False)")
         else:
             # Pre-loaded data_dict provided — track step for consistent step count
             result.steps_completed.append("load_data")
@@ -580,6 +587,13 @@ if __name__ == "__main__":
         default=False,
         help="Skip sktime time series regression model training (MiniROCKET, ROCKET, etc.).",
     )
+    parser.add_argument(
+        "--use-fred",
+        action="store_true",
+        default=False,
+        help="Fetch FRED macro series, write to feast_fred_macro, and join 14 macro columns "
+             "into the training feature matrix. Also enabled via USE_FRED=true env var.",
+    )
     args = parser.parse_args()
 
     tickers_str = args.tickers or os.environ.get("TICKERS")
@@ -590,6 +604,7 @@ if __name__ == "__main__":
         else None
     )
     linear_only = args.linear_only or os.environ.get("LINEAR_ONLY", "").lower() in ("1", "true", "yes")
+    use_fred = args.use_fred or os.environ.get("USE_FRED", "").lower() in ("1", "true", "yes")
     run_result = run_training_pipeline(
         tickers=tickers,
         registry_dir=args.registry_dir,
@@ -599,5 +614,6 @@ if __name__ == "__main__":
         linear_only=linear_only,
         include_sktime=not args.skip_sktime,
         include_sktime_regression=not args.skip_sktime_regression,
+        use_fred=use_fred,
     )
     logger.info(json.dumps({"event": "pipeline_complete", "result": run_result.to_dict()}, default=str))

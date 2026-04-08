@@ -45,8 +45,8 @@
         "Typecheck passes"
       ],
       "priority": 3,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added use_fred param to run_training_pipeline() and --use-fred CLI flag (also via USE_FRED env var). Gated steps 1c and 1d behind use_fred. Removed LINEAR_ONLY from cronjob-training.yaml, added USE_FRED=true. Verified: --use-fred in --help, param present in signature, LINEAR_ONLY absent from YAML."
     },
     {
       "id": "US-004",

@@ -65,7 +65,7 @@ spec:
                       key: FRED_API_KEY
                 - name: POSTGRES_USER
                   value: "stockuser"
-                - name: LINEAR_ONLY
+                - name: USE_FRED
                   value: "true"
               resources:
                 requests:
