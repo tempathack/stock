@@ -33,3 +33,16 @@ Previous run archived: scripts/ralph/archive/2026-04-07-system-audit/
   - Cumulative volume indicators (OBV, AD-Line) accumulate billions of shares for high-volume tickers; always use at least `numeric(24,8)` for feature values.
   - The ML alembic runner has no `alembic.ini` — migrations must be applied manually via `psql` or a migration job until a proper runner is configured.
 ---
+
+## 2026-04-08 - US-002: Add FRED macro data join to on-the-fly feature engineering path
+
+- **Added `load_fred_macro_from_db(start_date, end_date, settings)`** to `ml/pipelines/components/data_loader.py` — reads `feast_fred_macro` table (ticker='MACRO') using a cursor (not `pd.read_sql`) to avoid the psycopg2/SQLAlchemy compatibility warning. Returns wide DataFrame indexed by date with 14 FRED columns.
+- **Added step 1d** to `ml/pipelines/training_pipeline.py` — after step 1c (FRED fetch+write), loads from DB and left-joins the 14 FRED columns onto every ticker's DataFrame. Forward-fills to handle FRED's lower publication frequency, then fills any remaining NaN with 0.0. Wrapped in try/except so the pipeline gracefully continues if the table is empty or DB is unavailable.
+- **Updated `feature_engineer.py` docstring** to document that pre-joined columns (FRED, yfinance macro) are preserved through `compute_all_indicators`, `compute_lag_features`, and `compute_rolling_stats` since those functions only add new columns.
+- **Verified end-to-end**: 366 FRED rows written to `feast_fred_macro`, read back with 14/14 columns, joined to a synthetic ticker DataFrame, passed through `engineer_features` — 14/14 FRED columns present in the result.
+- **Files modified:** `ml/pipelines/components/data_loader.py`, `ml/pipelines/training_pipeline.py`, `ml/pipelines/components/feature_engineer.py`
+- **Learnings for future iterations:**
+  - FRED API key lives in `stock-platform-secrets` in the **ml** namespace, not the storage namespace (storage namespace copy is empty). Training jobs correctly use the ml namespace secret.
+  - Use cursor + `pd.DataFrame(rows, columns=col_names)` instead of `pd.read_sql(sql, psycopg2_conn)` — the latter triggers a pandas deprecation warning about non-SQLAlchemy connections.
+  - The `feast_fred_macro` table stores all FRED data under ticker='MACRO' (market-wide). The join to per-ticker DataFrames is done by date index only — no ticker dimension needed.
+---

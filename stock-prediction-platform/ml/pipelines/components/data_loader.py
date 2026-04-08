@@ -629,3 +629,63 @@ def write_fred_macro_to_db(
         conn.close()
 
     return rows_written
+
+
+def load_fred_macro_from_db(
+    start_date: str,
+    end_date: str,
+    settings: DBSettings | None = None,
+) -> pd.DataFrame:
+    """Read FRED macro data from feast_fred_macro and return a wide daily DataFrame.
+
+    All 14 FRED series are stored under ticker='MACRO' (market-wide, not per-ticker).
+    The returned DataFrame is indexed by date and has 14 columns:
+    dgs2, dgs10, t10y2y, t10y3m, bamlh0a0hym2, dbaa, t10yie,
+    dcoilwtico, dtwexbgs, dexjpus, icsa, nfci, cpiaucsl, pcepilfe.
+
+    Returns an empty DataFrame (no rows, no columns) if the table has no data
+    in the requested window — callers should treat this as a no-op.
+
+    Args:
+        start_date: ISO date string "YYYY-MM-DD" — window start (inclusive).
+        end_date:   ISO date string "YYYY-MM-DD" — window end (inclusive).
+        settings:   DBSettings; defaults to DBSettings.from_env().
+    """
+    if settings is None:
+        settings = DBSettings.from_env()
+
+    col_list = ", ".join(_FRED_COLS)
+    sql = (
+        f"SELECT timestamp::date AS date, {col_list} "
+        "FROM feast_fred_macro "
+        "WHERE ticker = 'MACRO' AND timestamp >= %s AND timestamp <= %s "
+        "ORDER BY timestamp"
+    )
+
+    conn = psycopg2.connect(
+        host=settings.host,
+        port=settings.port,
+        dbname=settings.database,
+        user=settings.user,
+        password=settings.password,
+    )
+    try:
+        # Use cursor directly to avoid the pandas SQLAlchemy compatibility warning
+        # that arises when passing a raw psycopg2 connection to pd.read_sql.
+        with conn.cursor() as cur:
+            cur.execute(sql, [start_date, end_date])
+            rows = cur.fetchall()
+            col_names = ["date"] + _FRED_COLS
+        df = pd.DataFrame(rows, columns=col_names)
+    finally:
+        conn.close()
+
+    if df.empty:
+        logger.warning("load_fred_macro_from_db: no rows in feast_fred_macro for %s–%s.", start_date, end_date)
+        return pd.DataFrame()
+
+    df["date"] = pd.to_datetime(df["date"])
+    df = df.set_index("date")
+    df = df[~df.index.duplicated(keep="last")]  # deduplicate same-day rows
+    logger.info("load_fred_macro_from_db: loaded %d rows × %d FRED columns.", len(df), len(df.columns))
+    return df

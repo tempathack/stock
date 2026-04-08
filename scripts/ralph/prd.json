@@ -31,8 +31,8 @@
         "Typecheck passes"
       ],
       "priority": 2,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Added load_fred_macro_from_db to data_loader.py. Added step 1d to training_pipeline.py joining 14 FRED columns into each ticker DataFrame. Updated feature_engineer.py docstring confirming pre-joined columns survive on-the-fly compute. Verified: 366 FRED rows in feast_fred_macro, 14/14 FRED cols in enriched df. FRED key is in ml-namespace secret (not storage-namespace). Fixed pandas read_sql warning."
     },
     {
       "id": "US-003",

@@ -41,6 +41,12 @@ def engineer_features(
     When *use_feature_store* is True and *db_settings* is provided, precomputed
     features are loaded from the feature_store table.  Tickers missing from the
     store fall back to on-the-fly computation.
+
+    Pre-joined columns in *data* (e.g. FRED macro features: dgs2, dgs10, t10y2y, …,
+    or yfinance macro: vix, spy_return, sector_return) are preserved automatically.
+    The on-the-fly compute functions (compute_all_indicators, compute_lag_features,
+    compute_rolling_stats) only *add* new named columns — they never drop or overwrite
+    columns already present in the DataFrame.
     """
     if not data:
         return {}

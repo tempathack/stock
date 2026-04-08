@@ -257,6 +257,32 @@ def run_training_pipeline(
                     logger.info("Step 1c/12 FRED macro: wrote %d rows to feast_fred_macro.", len(fred_df))
                 except Exception as _exc:
                     logger.warning("Step 1c/12 FRED macro — failed (%s); continuing without FRED features", _exc)
+
+                # Step 1d: join FRED macro features from DB into each ticker's DataFrame
+                try:
+                    from ml.pipelines.components.data_loader import (
+                        _FRED_COLS as _FRED_COLS_LIST,
+                        load_fred_macro_from_db,
+                    )
+                    fred_wide = load_fred_macro_from_db(start_date=_start, end_date=_end, settings=db_settings)
+                    if not fred_wide.empty:
+                        for _ticker, _df in data_dict.items():
+                            _df_copy = _df.copy()
+                            if not isinstance(_df_copy.index, pd.DatetimeIndex):
+                                _df_copy.index = pd.to_datetime(_df_copy.index)
+                            joined = _df_copy.join(fred_wide, how="left")
+                            for _col in _FRED_COLS_LIST:
+                                if _col in joined.columns:
+                                    joined[_col] = joined[_col].ffill().fillna(0.0)
+                            data_dict[_ticker] = joined
+                        logger.info(
+                            "Step 1d/12 FRED DB join — joined %d FRED columns for %d tickers",
+                            len(fred_wide.columns), len(data_dict),
+                        )
+                    else:
+                        logger.warning("Step 1d/12 FRED DB join — feast_fred_macro empty; skipping join")
+                except Exception as _exc:
+                    logger.warning("Step 1d/12 FRED DB join — failed (%s); continuing without FRED columns", _exc)
         else:
             # Pre-loaded data_dict provided — track step for consistent step count
             result.steps_completed.append("load_data")
