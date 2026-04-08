@@ -59,3 +59,16 @@ Previous run archived: scripts/ralph/archive/2026-04-07-system-audit/
   - The `use_fred` gate defaults to False for backward compatibility — existing tests that call `run_training_pipeline()` directly are unaffected.
   - LINEAR_ONLY is still supported as a CLI flag for fast E2E validation runs; it's just not the production default anymore.
 ---
+
+## 2026-04-08 - US-004: Scale Flink Kubernetes operator back to 1 replica
+
+- Created `k8s/flink/flink-operator-scale.yaml` — minimal Deployment manifest (replicas:1, correct selector) with explanatory comment block describing the Helm-managed origin and why direct apply is needed.
+- Applied via `kubectl apply` (strategic merge patch) — only replicas field changed, all Helm labels/annotations preserved. Warning about missing last-applied annotation is expected for Helm resources.
+- Verified: `flink-kubernetes-operator-7848cffc97-wnzvh` pod 1/1 Running within ~110s.
+- All 5 FlinkDeployments (ohlcv-normalizer, feast-writer, indicator-stream, sentiment-stream, sentiment-writer) show LIFECYCLE STATE=STABLE — operator is actively reconciling them back to RUNNING.
+- **Files created:** `k8s/flink/flink-operator-scale.yaml`
+- **Learnings for future iterations:**
+  - Flink operator scaled to 0 does NOT delete FlinkDeployment CRDs or their status — they retain last known state. When operator restarts, it reads existing CRDs and reconciles (RECONCILING→RUNNING→STABLE cycle takes ~2-3 min per job).
+  - `kubectl apply` on Helm-managed resources produces a warning but works correctly via strategic merge — the missing annotation is auto-patched.
+  - FRED API key is in `ml` namespace secret, not `storage` namespace (storage copy is empty).
+---

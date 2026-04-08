@@ -1,0 +1,23 @@
+# This file scales the Flink Kubernetes Operator back to 1 replica.
+#
+# The operator was installed via Helm and was inadvertently scaled to 0 replicas,
+# which prevents it from reconciling FlinkDeployment CRDs and creating
+# JobManager/TaskManager pods for the 5 streaming jobs (ohlcv-normalizer,
+# feast-writer, indicator-stream, sentiment-stream, sentiment-writer).
+#
+# Since ArgoCD has no registered Applications syncing the flink namespace,
+# this file must be applied directly:
+#   kubectl apply -f stock-prediction-platform/k8s/flink/flink-operator-scale.yaml
+#
+# kubectl apply uses strategic merge — only the replicas field is changed;
+# all Helm-managed labels, annotations, and pod template spec are preserved.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-kubernetes-operator
+  namespace: flink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: flink-kubernetes-operator

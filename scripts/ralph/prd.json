@@ -61,8 +61,8 @@
         "Typecheck passes"
       ],
       "priority": 4,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Created k8s/flink/flink-operator-scale.yaml with replicas:1. Applied via kubectl apply (strategic merge). Operator pod 1/1 Running within 110s. FlinkDeployments transitioning RECONCILING->STABLE as operator reconciles each job."
     },
     {
       "id": "US-005",
