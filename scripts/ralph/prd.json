@@ -93,8 +93,8 @@
         "Typecheck passes"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "feast_fred_macro: 2655 rows. feature_store: 30 distinct tickers. model_registry: RandomForest_minmax(3), CatBoost_standard(3) confirm non-linear models registered. full-training-nonlinear job running (70 features, 30 tickers, horizons=[1,7,14,30], linear_only=False). Job will add more non-linear entries as it completes each horizon."
     }
   ]
 }

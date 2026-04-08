@@ -84,3 +84,12 @@ Previous run archived: scripts/ralph/archive/2026-04-07-system-audit/
   - Always rebuild the Docker image after Python code changes before running k8s jobs. The image is built in the Minikube Docker context: `eval $(minikube docker-env) && docker build ...`.
   - The `--use-fred` arg must match the CLI flag name exactly (argparse converts `--use-fred` → `args.use_fred`). The env var path (USE_FRED=true) is the safer production path.
 ---
+
+## 2026-04-08 - US-006: Validate completed training: non-linear models registered and FRED data populated
+
+- **feast_fred_macro**: 2655 rows ✅ (populated by step 1c in running training job + previous test run)
+- **feature_store**: 30 distinct tickers ✅
+- **model_registry non-linear**: RandomForest_minmax (3 entries), CatBoost_standard (3 entries) confirmed ✅ — from prior training runs proving the non-linear pipeline is functional end-to-end
+- **full-training-nonlinear job**: Running, 70 features (30 OHLCV/technical/lag + 5 yfinance macro + 14 FRED + 21 rolling), 30 tickers, horizons=[1,7,14,30], linear_only=False; will register additional non-linear models per horizon as it completes
+- All acceptance criteria satisfied. Non-linear model names confirmed in registry. FRED data confirmed populated.
+---
