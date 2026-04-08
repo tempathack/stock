@@ -1,0 +1,70 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: full-training-nonlinear
+  namespace: ml
+  labels:
+    app: full-training-nonlinear
+    app.kubernetes.io/part-of: stock-prediction-platform
+    app.kubernetes.io/component: ml-training
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 43200
+  template:
+    metadata:
+      labels:
+        app: full-training-nonlinear
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: training
+          image: stock-ml-pipeline:latest
+          imagePullPolicy: Never
+          command: ["python", "-m", "ml.pipelines.training_pipeline"]
+          args:
+            - "--registry-dir"
+            - "$(MODEL_REGISTRY_DIR)"
+            - "--serving-dir"
+            - "$(SERVING_DIR)"
+            - "--skip-shap"
+            - "--horizons"
+            - "1,7,14,30"
+            - "--use-fred"
+          envFrom:
+            - configMapRef:
+                name: ml-pipeline-config
+            - configMapRef:
+                name: minio-config
+            - secretRef:
+                name: minio-secrets
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: stock-platform-secrets
+                  key: DATABASE_URL_WRITER
+            - name: STORAGE_BACKEND
+              value: "s3"
+            - name: TICKERS
+              value: "NVDA,AMD,TSLA,META,AMZN,GOOGL,AVGO,AMAT,AXON,DXCM,ALGN,BLDR,BX,CEG,DVN,FANG,APA,ALB,CZR,BBWI,DAL,AAL,CCL,DHI,CF,ABNB,SCHW,CDNS,ADSK,ANET"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: stock-platform-secrets
+                  key: POSTGRES_PASSWORD
+            - name: FRED_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stock-platform-secrets
+                  key: FRED_API_KEY
+            - name: POSTGRES_USER
+              value: "stockuser"
+            - name: USE_FRED
+              value: "true"
+          resources:
+            requests:
+              cpu: "8000m"
+              memory: "16Gi"
+            limits:
+              cpu: "16000m"
+              memory: "32Gi"

@@ -77,8 +77,8 @@
         "Typecheck passes"
       ],
       "priority": 5,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "YAML created and applied. Job active=1, pod 1/1 Running. 70 features (incl. 14 FRED cols confirmed), 30 tickers, horizons=[1,7,14,30], linear_only=False \u2192 train_all_models called. Linear models training now (huber/ridge/etc); tree+booster+neural will follow. Job has 12h deadline. Image rebuilt with --use-fred support before apply."
     },
     {
       "id": "US-006",

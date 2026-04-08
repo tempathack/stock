@@ -72,3 +72,15 @@ Previous run archived: scripts/ralph/archive/2026-04-07-system-audit/
   - `kubectl apply` on Helm-managed resources produces a warning but works correctly via strategic merge — the missing annotation is auto-patched.
   - FRED API key is in `ml` namespace secret, not `storage` namespace (storage copy is empty).
 ---
+
+## 2026-04-08 - US-005: Create and run full non-linear training job for all 30 tickers
+
+- Created `k8s/ml/job-full-training-nonlinear.yaml` — one-off Job mirroring cronjob-training.yaml with: name=full-training-nonlinear, USE_FRED=true, --use-fred arg, no LINEAR_ONLY, activeDeadlineSeconds=43200 (12h), requests cpu=8000m/mem=16Gi, limits cpu=16000m/mem=32Gi.
+- First apply failed: `--use-fred` unrecognized because image was stale (pre-US-003). Rebuilt image with `eval $(minikube docker-env) && docker build -q -f ml/Dockerfile -t stock-ml-pipeline:latest .` then re-applied.
+- Job confirmed active=1, pod 1/1 Running. Pipeline log shows 70 features (30 OHLCV+indicators+lag + 5 yfinance macro + 14 FRED + 21 rolling = 70 confirmed), 30 tickers, horizons=[1,7,14,30], train_all_models() called (linear_only=False).
+- Training in progress: currently in linear model phase (huber/ridge/etc). Tree+booster+neural models will follow automatically.
+- **Files created:** `k8s/ml/job-full-training-nonlinear.yaml`
+- **Learnings for future iterations:**
+  - Always rebuild the Docker image after Python code changes before running k8s jobs. The image is built in the Minikube Docker context: `eval $(minikube docker-env) && docker build ...`.
+  - The `--use-fred` arg must match the CLI flag name exactly (argparse converts `--use-fred` → `args.use_fred`). The env var path (USE_FRED=true) is the safer production path.
+---
