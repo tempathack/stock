@@ -156,9 +156,13 @@ def _fetch_ticker_data(
 ) -> pd.DataFrame:
     """Fetch OHLCV data for a single ticker with retry."""
     df = yf.download(ticker, period=period, interval=interval, progress=False)
-    # yfinance >= 1.0 returns MultiIndex columns even for single ticker
-    if isinstance(df.columns, pd.MultiIndex):
-        df.columns = df.columns.droplevel(1)
+    # yfinance >= 1.0 returns MultiIndex columns even for single ticker.
+    # Drop all but the first level (Price field) to get flat column names.
+    while isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.droplevel(-1)
+    # If duplicate columns remain after droplevel (e.g. Adj Close→Close clash),
+    # keep only the first occurrence so row[col] always returns a scalar.
+    df = df.loc[:, ~df.columns.duplicated()]
     return df
 
 
@@ -269,7 +273,15 @@ class YahooFinanceService:
                     )
                     continue
 
-            valid_records, skip_count = self.validate_ohlcv(df, ticker)
+            try:
+                valid_records, skip_count = self.validate_ohlcv(df, ticker)
+            except Exception as exc:
+                logger.error(
+                    "validate_error_skipped",
+                    ticker=ticker,
+                    error=str(exc),
+                )
+                continue
 
             # Stamp fetch_mode and ingested_at on each valid record
             now = datetime.now(timezone.utc).isoformat()
