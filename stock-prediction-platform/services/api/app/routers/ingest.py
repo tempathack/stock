@@ -22,6 +22,12 @@ logger = get_logger(__name__)
 
 router = APIRouter(prefix="/ingest", tags=["ingestion"])
 
+# Global lock: yfinance uses a shared session/CrumbManager. Running two
+# concurrent downloads in the same process corrupts per-ticker results
+# (e.g., intraday and historical tasks return swapped data). Serialise all
+# fetch work so only one background task touches yfinance at a time.
+_yf_lock = threading.Lock()
+
 
 def _run_ingestion_task(mode: str, tickers: list[str]) -> None:
     """Background task: fetch tickers in batches and produce to Kafka.
@@ -34,38 +40,39 @@ def _run_ingestion_task(mode: str, tickers: list[str]) -> None:
     total_fetched = 0
     total_produced = 0
 
-    for i in range(0, len(tickers), batch_size):
-        batch = tickers[i : i + batch_size]
-        logger.info("ingestion_batch_start", mode=mode, batch=i // batch_size + 1, size=len(batch))
+    with _yf_lock:
+        for i in range(0, len(tickers), batch_size):
+            batch = tickers[i : i + batch_size]
+            logger.info("ingestion_batch_start", mode=mode, batch=i // batch_size + 1, size=len(batch))
 
-        try:
-            if mode == "intraday":
-                records = yf_service.fetch_intraday(tickers=batch)
-            else:
-                records = yf_service.fetch_historical(tickers=batch)
-        except Exception as exc:
-            logger.error("yahoo_finance_batch_error", mode=mode, batch_start=i, error=str(exc))
-            continue
+            try:
+                if mode == "intraday":
+                    records = yf_service.fetch_intraday(tickers=batch)
+                else:
+                    records = yf_service.fetch_historical(tickers=batch)
+            except Exception as exc:
+                logger.error("yahoo_finance_batch_error", mode=mode, batch_start=i, error=str(exc))
+                continue
 
-        if not records:
-            continue
+            if not records:
+                continue
 
-        try:
-            producer = OHLCVProducer()
-            produced = producer.produce_records(records)
-            total_fetched += len(records)
-            total_produced += produced
-        except Exception as exc:
-            logger.error("kafka_produce_batch_error", mode=mode, batch_start=i, error=str(exc))
-            continue
+            try:
+                producer = OHLCVProducer()
+                produced = producer.produce_records(records)
+                total_fetched += len(records)
+                total_produced += produced
+            except Exception as exc:
+                logger.error("kafka_produce_batch_error", mode=mode, batch_start=i, error=str(exc))
+                continue
 
-        logger.info(
-            "ingestion_batch_complete",
-            mode=mode,
-            batch_start=i,
-            fetched=len(records),
-            produced=produced,
-        )
+            logger.info(
+                "ingestion_batch_complete",
+                mode=mode,
+                batch_start=i,
+                fetched=len(records),
+                produced=produced,
+            )
 
     logger.info(
         "ingestion_complete",
