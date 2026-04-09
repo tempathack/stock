@@ -228,7 +228,7 @@ try:
     BOOSTER_MODELS["catboost"] = ModelConfig(
         name="catboost",
         model_class=CatBoostRegressor,
-        default_params={"random_seed": 42, "verbose": 0},
+        default_params={"random_seed": 42, "verbose": 0, "train_dir": "/tmp/catboost_info"},
         search_space={
             "iterations": [100, 200, 300],
             "learning_rate": [0.01, 0.05, 0.1, 0.2],
