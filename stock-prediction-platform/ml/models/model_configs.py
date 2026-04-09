@@ -16,7 +16,6 @@ from sklearn.ensemble import (
 from sklearn.linear_model import (
     BayesianRidge,
     ElasticNet,
-    HuberRegressor,
     Lasso,
     LinearRegression,
     Ridge,
@@ -100,12 +99,6 @@ LINEAR_MODELS: dict[str, ModelConfig] = {
     "bayesian_ridge": ModelConfig(
         name="bayesian_ridge",
         model_class=BayesianRidge,
-    ),
-    "huber": ModelConfig(
-        name="huber",
-        model_class=HuberRegressor,
-        default_params={"max_iter": 1_000},
-        search_space={"epsilon": np.linspace(1.1, 2.0, 10).tolist()},
     ),
 }
 
