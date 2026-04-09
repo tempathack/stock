@@ -9,9 +9,12 @@ import pickle
 from pathlib import Path
 from typing import Any
 
+import optuna
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import RandomizedSearchCV
+from optuna.pruners import HyperbandPruner
+from sklearn.base import clone
+from sklearn.metrics import mean_squared_error
 from sklearn.pipeline import Pipeline
 
 from ml.evaluation.cross_validation import create_time_series_cv, walk_forward_evaluate
@@ -28,6 +31,24 @@ from ml.models.model_configs import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Optuna helper
+# ---------------------------------------------------------------------------
+
+
+def _suggest_params(trial: optuna.Trial, search_space: dict) -> dict:
+    """Map each search_space entry to a trial.suggest_categorical call.
+
+    All existing search_space values are discrete lists (after .tolist()),
+    including logspaced/linspaced arrays — so categorical covers every case.
+    Mixed-type lists (e.g. [10, None], ["sqrt", 0.5]) work natively.
+    """
+    return {
+        f"model__{name}": trial.suggest_categorical(name, space)
+        for name, space in search_space.items()
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -77,27 +98,47 @@ def train_single_model(
     best_params: dict[str, Any] = {}
 
     if config.search_space is not None:
-        # Prefix keys with "model__" for pipeline parameter routing
-        param_dist = {f"model__{k}": v for k, v in config.search_space.items()}
-        search = RandomizedSearchCV(
-            pipeline,
-            param_distributions=param_dist,
-            n_iter=min(config.n_iter, _search_space_size(param_dist)),
-            cv=cv,
-            scoring="neg_root_mean_squared_error",
-            random_state=42,
-            n_jobs=-1,
-            error_score="raise",
+        splits = list(cv.split(X_train, y_train))
+
+        def objective(trial: optuna.Trial) -> float:
+            params = _suggest_params(trial, config.search_space)
+            candidate = clone(pipeline)
+            candidate.set_params(**params)
+
+            fold_rmses: list[float] = []
+            for step, (tr_idx, val_idx) in enumerate(splits):
+                try:
+                    candidate.fit(X_train[tr_idx], y_train[tr_idx])
+                    y_pred = candidate.predict(X_train[val_idx])
+                    rmse = float(np.sqrt(mean_squared_error(y_train[val_idx], y_pred)))
+                except Exception:
+                    raise optuna.TrialPruned()
+
+                fold_rmses.append(rmse)
+                trial.report(float(np.mean(fold_rmses)), step)
+                if trial.should_prune():
+                    raise optuna.TrialPruned()
+
+            return float(np.mean(fold_rmses))
+
+        optuna.logging.set_verbosity(optuna.logging.WARNING)
+        pruner = HyperbandPruner(
+            min_resource=1,
+            max_resource=len(splits),
+            reduction_factor=3,
         )
-        search.fit(X_train, y_train)
-        pipeline = search.best_estimator_
-        # Strip "model__" prefix for clean output
-        best_params = {
-            k.replace("model__", ""): v for k, v in search.best_params_.items()
-        }
+        study = optuna.create_study(direction="minimize", pruner=pruner)
+        study.optimize(objective, n_trials=config.n_iter, show_progress_bar=False)
+
+        best_params = study.best_params
+        pipeline.set_params(**{f"model__{k}": v for k, v in best_params.items()})
+        pipeline.fit(X_train, y_train)
+
         logger.info(
-            "%s/%s tuning complete — best params: %s",
+            "%s/%s tuning complete — best params: %s  (%d trials, %d pruned)",
             config.name, scaler_variant, best_params,
+            len(study.trials),
+            sum(1 for t in study.trials if t.state == optuna.trial.TrialState.PRUNED),
         )
     else:
         pipeline.fit(X_train, y_train)
@@ -120,17 +161,6 @@ def train_single_model(
         oos_metrics=oos_metrics,
         fold_stability=cv_result["fold_stability"],
     )
-
-
-def _search_space_size(param_dist: dict) -> int:
-    """Compute the total number of combinations in a search space."""
-    size = 1
-    for v in param_dist.values():
-        if hasattr(v, "__len__"):
-            size *= len(v)
-        else:
-            size *= 10  # continuous distribution fallback
-    return size
 
 
 # ---------------------------------------------------------------------------
