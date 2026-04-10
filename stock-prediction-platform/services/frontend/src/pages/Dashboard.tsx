@@ -387,7 +387,10 @@ export default function Dashboard() {
   const [viewMode, setViewMode] = useState<"market" | "macro">("market");
   const detailRef       = useRef<HTMLDivElement>(null);
 
-  const wsUrl = `${(import.meta.env.VITE_API_URL || "http://localhost:8000").replace(/^http/, "ws")}/ws/prices`;
+  const _apiBase = import.meta.env.VITE_API_URL || "/api";
+  const wsUrl = _apiBase.startsWith("http")
+    ? `${_apiBase.replace(/^http/, "ws")}/ws/prices`
+    : `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}${_apiBase}/ws/prices`;
   const { status: wsStatus, prices: livePrices } = useWebSocket(wsUrl);
   void livePrices;
 

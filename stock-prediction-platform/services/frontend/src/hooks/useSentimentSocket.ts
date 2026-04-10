@@ -41,8 +41,10 @@ export function useSentimentSocket(ticker: string | null): UseSentimentSocketRet
       return;
     }
 
-    const wsBase = (import.meta.env.VITE_API_URL || "http://localhost:8000")
-      .replace(/^http/, "ws");
+    const _apiBase = import.meta.env.VITE_API_URL || "/api";
+    const wsBase = _apiBase.startsWith("http")
+      ? _apiBase.replace(/^http/, "ws")
+      : `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}${_apiBase}`;
     const url = `${wsBase}/ws/sentiment/${encodeURIComponent(ticker)}`;
 
     function connect(): void {
