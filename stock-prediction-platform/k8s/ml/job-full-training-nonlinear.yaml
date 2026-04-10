@@ -46,7 +46,7 @@ spec:
             - name: STORAGE_BACKEND
               value: "s3"
             - name: TICKERS
-              value: "NVDA,AMD,TSLA,META,AMZN,GOOGL,AVGO,AMAT,AXON,DXCM,ALGN,BLDR,BX,CEG,DVN,FANG,APA,ALB,CZR,BBWI,DAL,AAL,CCL,DHI,CF,ABNB,SCHW,CDNS,ADSK,ANET"
+              value: "NVDA,TSLA,META,AMZN,GOOGL"
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
